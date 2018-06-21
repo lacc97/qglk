@@ -28,7 +28,7 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
             return TRUE;
 
         case gestalt_Hyperlinks:
-            return TRUE;
+            return FALSE;
 
         case gestalt_HyperlinkInput:
             switch(val) {

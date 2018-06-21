@@ -106,3 +106,11 @@ void glk_request_timer_events(glui32 millisecs) {
         s_Timer->start(millisecs);
     });
 }
+
+void glk_request_hyperlink_event(winid_t win) {
+    
+}
+
+void glk_cancel_hyperlink_event(winid_t win) {
+    
+}

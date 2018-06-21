@@ -379,4 +379,10 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
     return TO_STRID(str);
 }
 
+void glk_set_hyperlink(glui32 linkval) {
+    
+}
 
+void glk_set_hyperlink_stream(strid_t str, glui32 linkval) {
+    
+}
