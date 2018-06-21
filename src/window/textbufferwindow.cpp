@@ -28,6 +28,8 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
     mp_TBWindow->mp_Text->insertPlainText(QString::fromUcs4(udata, ulen));
 //     mp_TBWindow->mp_Text->setText(mp_TBWindow->mp_Text->text() + QString::fromUcs4(udata, ulen));
 
+    delete[] udata;
+    
     return len;
 }
 
@@ -103,10 +105,12 @@ void Glk::TextBufferWindow::onLineInputRequested() {
 }
 
 void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode) {
-    if(cancelled) {
-        for(glui32 ii = 0; ii < len; ii++)
+    if(!keyboardInputProvider()->echoesLine()) {
+        for(glui32 ii = 0; ii < len; ii++) // equality because of newline at end
             mp_Text->textCursor().deletePreviousChar(); // TODO more efficient?
     } else {
+        mp_Text->insertPlainText("\n");
+        
         if(windowStream()->echoStream()) {
             if(unicode)
                 windowStream()->echoStream()->writeUnicodeBuffer(static_cast<glui32*>(buf), len);
@@ -131,7 +135,7 @@ void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc) {
             break;
 
         case keycode_Return:
-            mp_Text->insertPlainText("\n");
+            Q_ASSERT_X(1, "handling line input special character", "this code shouldn't run");
             break;
 //         case keycode_Left:
 //             mp_Text->textCursor().movePosition(QTextCursor::PreviousCharacter);

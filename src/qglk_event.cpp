@@ -4,8 +4,24 @@
 
 #include "qglk.hpp"
 #include "event/eventqueue.hpp"
+#include "exception.hpp"
 #include "thread/taskrequest.hpp"
 #include "window/window.hpp"
+
+void glk_tick() {
+    if(QGlk::getMainWindow().eventQueue().isInterrupted())
+        throw Glk::ExitException(true);
+}
+
+void glk_set_interrupt_handler(void (*func)(void)) {
+    QGlk::getMainWindow().setInterruptHandler(func);
+}
+
+void glk_exit() {
+    QGlk::getMainWindow().close();
+
+    throw Glk::ExitException();
+}
 
 void glk_select(event_t* event) {
     *event = QGlk::getMainWindow().eventQueue().pop();
@@ -49,6 +65,30 @@ void glk_request_line_event_uni(winid_t win, glui32* buf, glui32 maxlen, glui32 
 void glk_cancel_line_event(winid_t win, event_t* event) {
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->cancelLineInputRequest(event);
+    });
+}
+
+void glk_set_echo_line_event(winid_t win, glui32 val) {
+    Glk::sendTaskToEventThread([&] {
+        FROM_WINID(win)->keyboardInputProvider()->setLineEcho(val != 0);
+    });
+}
+
+void glk_set_terminators_line_event(winid_t win, glui32* keycodes, glui32 count) {
+    Glk::sendTaskToEventThread([&] {
+        FROM_WINID(win)->keyboardInputProvider()->setTerminators(keycodes, count);
+    });
+}
+
+void glk_request_mouse_event(winid_t win) {
+    Glk::sendTaskToEventThread([&]{
+        FROM_WINID(win)->mouseInputProvider()->requestMouseInput();
+    });
+}
+
+void glk_cancel_mouse_event(winid_t win) {
+    Glk::sendTaskToEventThread([&]{
+        FROM_WINID(win)->mouseInputProvider()->cancelMouseInputRequest();
     });
 }
 

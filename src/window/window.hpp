@@ -34,6 +34,9 @@ namespace Glk {
             Glk::KeyboardInputProvider* keyboardInputProvider() {
                 return mp_KIProvider;
             }
+            Glk::MouseInputProvider* mouseInputProvider() {
+                return mp_MIProvider;
+            }
             
             inline PairWindow* windowParent() const {
                 return mp_Parent;
@@ -67,9 +70,10 @@ namespace Glk {
             virtual void clearWindow() = 0;
 
         protected:
-            Window(QIODevice* device_, glui32 rock_ = 0, bool acceptsCharRequest = false, bool acceptsLineRequest = false);
+            Window(QIODevice* device_, glui32 rock_ = 0, bool acceptsCharRequest = false, bool acceptsLineRequest = false, bool acceptsMouseRequest = false);
 
             void keyPressEvent(QKeyEvent* event) override;
+            void mouseReleaseEvent(QMouseEvent * event) override;
 
             virtual QSize pixelsToUnits(const QSize& pixels) const = 0;
             virtual QSize unitsToPixels(const QSize& units) const = 0;
@@ -78,6 +82,7 @@ namespace Glk {
             PairWindow* mp_Parent;
             Glk::WindowStream* mp_Stream;
             Glk::KeyboardInputProvider* mp_KIProvider;
+            Glk::MouseInputProvider* mp_MIProvider;
     };
 }
 

@@ -4,6 +4,7 @@
 #include "glk.hpp"
 
 #include <QKeyEvent>
+#include <QMouseEvent>
 
 namespace Glk {
     class Window;
@@ -17,6 +18,11 @@ namespace Glk {
             void cancelCharInputRequest();
             void requestLineInput(void* buf, glui32 maxlen, glui32 initlen, bool unicode);
             void cancelLineInputRequest(event_t* ev);
+
+            bool echoesLine() const;
+            void setLineEcho(bool le);
+
+            void setTerminators(glui32* keycodes, glui32 count);
 
         public slots:
             bool handleKeyEvent(QKeyEvent* ev);
@@ -44,6 +50,32 @@ namespace Glk {
             void* mp_LineInputBuffer;
             glui32 m_LineInputBufferLength;
             glui32 m_LineInputBufferPosition;
+            bool m_EchoesLine;
+            QSet<glui32> m_Terminators;
+    };
+
+    class MouseInputProvider : public QObject {
+            Q_OBJECT
+        public:
+            MouseInputProvider(Glk::Window* parent_, bool m_MouseInputProvider);
+
+            void requestMouseInput();
+            void cancelMouseInputRequest();
+
+        public slots:
+            bool handleMouseEvent(QMouseEvent* ev);
+
+        signals:
+            void mouseInputRequested();
+            void mouseInputRequestEnded(bool cancelled);
+
+        protected:
+            Glk::Window* windowPointer();
+
+        private:
+            bool m_MouseInputProvider;
+            bool m_MouseInputRequested;
+
     };
 }
 

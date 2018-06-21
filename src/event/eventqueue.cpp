@@ -1,8 +1,10 @@
 #include "eventqueue.hpp"
 
+#include "exception.hpp"
+
 #include <QMutexLocker>
 
-Glk::EventQueue::EventQueue() : m_Queue(), m_Semaphore(0) {
+Glk::EventQueue::EventQueue() : m_Queue(), m_Semaphore(0), m_Terminate(false) {
 }
 
 event_t Glk::EventQueue::pop() {
@@ -10,11 +12,17 @@ event_t Glk::EventQueue::pop() {
 
     QMutexLocker ml(&m_AccessMutex);
 
+    if(m_Terminate)
+        throw Glk::ExitException(true);
+
     return m_Queue.dequeue();
 }
 
 event_t Glk::EventQueue::poll() {
     QMutexLocker ml(&m_AccessMutex);
+
+    if(m_Terminate)
+        throw Glk::ExitException(true);
 
     if(m_Queue.isEmpty())
         return event_t {evtype_None, NULL, 0, 0};
@@ -31,6 +39,11 @@ event_t Glk::EventQueue::poll() {
     }
 
     return event_t {evtype_None, NULL, 0, 0};
+}
+
+void Glk::EventQueue::interrupt() {
+    m_Terminate = true;
+    m_Semaphore.release(1);
 }
 
 void Glk::EventQueue::push(const event_t& ev) {
