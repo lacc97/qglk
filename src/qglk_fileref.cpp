@@ -102,6 +102,9 @@ frefid_t glk_fileref_iterate(frefid_t fref, glui32* rockptr) {
     if(fref == NULL) {
         auto iter = s_FileReferenceSet.begin();
 
+        if(iter == s_FileReferenceSet.end())
+            return NULL;
+
         if(rockptr)
             *rockptr = (*iter)->rock();
 
@@ -111,13 +114,13 @@ frefid_t glk_fileref_iterate(frefid_t fref, glui32* rockptr) {
     auto iter = s_FileReferenceSet.find(FROM_FREFID(fref));
     iter++;
 
-    if(iter != s_FileReferenceSet.end()) {
-        if(rockptr)
-            *rockptr = (*iter)->rock();
-
-        return TO_FREFID(*iter);
-    } else
+    if(iter == s_FileReferenceSet.end())
         return NULL;
+
+    if(rockptr)
+        *rockptr = (*iter)->rock();
+
+    return TO_FREFID(*iter);
 }
 
 glui32 glk_fileref_get_rock(frefid_t fref) {

@@ -174,6 +174,9 @@ winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
     if(win == NULL) {
         auto iter = s_WindowSet.begin();
 
+        if(iter == s_WindowSet.end())
+            return NULL;
+
         if(rockptr)
             *rockptr = (*iter)->rock();
 
@@ -183,13 +186,13 @@ winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
     auto iter = s_WindowSet.find(FROM_WINID(win));
     iter++;
 
-    if(iter != s_WindowSet.end()) {
-        if(rockptr)
-            *rockptr = (*iter)->rock();
-
-        return TO_WINID(*iter);
-    } else
+    if(iter == s_WindowSet.end())
         return NULL;
+
+    if(rockptr)
+        *rockptr = (*iter)->rock();
+
+    return TO_WINID(*iter);
 }
 
 glui32 glk_window_get_rock(winid_t win) {

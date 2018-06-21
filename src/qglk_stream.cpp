@@ -24,6 +24,9 @@ strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
     if(str == NULL) {
         auto iter = s_StreamSet.begin();
 
+        if(iter == s_StreamSet.end())
+            return NULL;
+
         if(rockptr)
             *rockptr = (*iter)->rock();
 
@@ -33,13 +36,13 @@ strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
     auto iter = s_StreamSet.find(FROM_STRID(str));
     iter++;
 
-    if(iter != s_StreamSet.end()) {
-        if(rockptr)
-            *rockptr = (*iter)->rock();
-
-        return TO_STRID(*iter);
-    } else
+    if(iter == s_StreamSet.end())
         return NULL;
+
+    if(rockptr)
+        *rockptr = (*iter)->rock();
+
+    return TO_STRID(*iter);
 }
 
 glui32 glk_stream_get_rock(strid_t str) {

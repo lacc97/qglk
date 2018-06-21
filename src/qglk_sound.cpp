@@ -90,6 +90,9 @@ schanid_t glk_schannel_iterate(schanid_t chan, glui32* rockptr) {
     if(chan == NULL) {
         auto iter = s_ChannelSet.begin();
 
+        if(iter == s_ChannelSet.end())
+            return NULL;
+
         if(rockptr)
             *rockptr = (*iter)->rock();
 
@@ -99,13 +102,13 @@ schanid_t glk_schannel_iterate(schanid_t chan, glui32* rockptr) {
     auto iter = s_ChannelSet.find(FROM_SCHANID(chan));
     iter++;
 
-    if(iter != s_ChannelSet.end()) {
-        if(rockptr)
-            *rockptr = (*iter)->rock();
-
-        return TO_SCHANID(*iter);
-    } else
+    if(iter == s_ChannelSet.end())
         return NULL;
+
+    if(rockptr)
+        *rockptr = (*iter)->rock();
+
+    return TO_SCHANID(*iter);
 }
 
 glui32 glk_schannel_get_rock(schanid_t chan) {
