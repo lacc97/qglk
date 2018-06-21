@@ -3,6 +3,7 @@
 
 #include <QBuffer>
 #include <QMediaPlayer>
+#include <QSet>
 
 #include "glk.hpp"
 
@@ -31,6 +32,7 @@ namespace Glk {
         static const glui32 FullVolume = 0x10000;
         
         SoundChannel(glui32 volume_ = FullVolume, glui32 rock_ = 0);
+        ~SoundChannel();
         
         Glk::Object::Type objectType() const override {
             return Object::Type::SoundChannel;
@@ -55,5 +57,7 @@ namespace Glk {
 
 #define TO_SCHANID(sch) (reinterpret_cast<schanid_t>(sch))
 #define FROM_SCHANID(sch) (reinterpret_cast<Glk::SoundChannel*>(sch))
+
+extern QSet<Glk::SoundChannel*> s_ChannelSet;
 
 #endif

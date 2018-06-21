@@ -32,8 +32,6 @@ frefid_t glk_fileref_create_temp(glui32 usage, glui32 rock) {
 
         Glk::FileReference* fref = new Glk::FileReference(finfo, usage, rock);
 
-        s_FileReferenceSet.insert(fref);
-
         return TO_FREFID(fref);
     }
 
@@ -85,35 +83,18 @@ frefid_t glk_fileref_create_by_prompt(glui32 usage, glui32 fmode, glui32 rock) {
     if(fname.isNull())
         return NULL;
 
-    Glk::FileReference* fref = new Glk::FileReference(QFileInfo(fname), usage, rock);
-
-    s_FileReferenceSet.insert(fref);
-    Glk::Dispatch::registerObject(fref);
-
-    return TO_FREFID(fref);
+    return TO_FREFID(new Glk::FileReference(QFileInfo(fname), usage, rock));
 }
 
 frefid_t glk_fileref_create_by_name(glui32 usage, char* name, glui32 rock) {
-    Glk::FileReference* fref = new Glk::FileReference(QFileInfo(name), usage, rock);
-
-    s_FileReferenceSet.insert(fref);
-    Glk::Dispatch::registerObject(fref);
-
-    return TO_FREFID(fref);
+    return TO_FREFID(new Glk::FileReference(QFileInfo(name), usage, rock));
 }
 
 frefid_t glk_fileref_create_from_fileref(glui32 usage, frefid_t fref, glui32 rock) {
-    Glk::FileReference* nfref = new Glk::FileReference(*FROM_FREFID(fref), usage, rock);
-
-    s_FileReferenceSet.insert(nfref);
-    Glk::Dispatch::registerObject(nfref);
-
-    return TO_FREFID(nfref);
+    return TO_FREFID(new Glk::FileReference(*FROM_FREFID(fref), usage, rock));
 }
 
 void glk_fileref_destroy(frefid_t fref) {
-    Glk::Dispatch::unregisterObject(FROM_FREFID(fref));
-    s_FileReferenceSet.remove(FROM_FREFID(fref));
     delete FROM_FREFID(fref);
 }
 

@@ -12,8 +12,12 @@ Glk::Stream::Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type
 }
 
 Glk::Stream::~Stream() {
-    if(isOpen())
-        close();
+    if(isOpen()) {
+        s_StreamSet.remove(this);
+        Glk::Dispatch::unregisterObject(this);
+    }
+
+    close();
 
     switch(type()) {
         case Type::Memory:
@@ -39,7 +43,14 @@ bool Glk::Stream::open(QIODevice::OpenMode om) {
     if(type() == Type::Memory)
         om &= (~QIODevice::Text);
 
-    return mp_Device->open(om);
+    bool done = mp_Device->open(om);
+
+    if(done) {
+        Glk::Dispatch::registerObject(this);
+        s_StreamSet.insert(this);
+    }
+
+    return done;
 }
 
 bool Glk::Stream::close() { // TODO check if can be closed
@@ -62,9 +73,9 @@ bool Glk::Stream::close() { // TODO check if can be closed
     }
 
     mp_Device->close();
-    
+
     emit closed();
-    
+
     return !mp_Device->isOpen();
 }
 
@@ -75,3 +86,5 @@ bool Glk::Stream::isOpen() const {
 }
 
 #include "moc_stream.cpp"
+
+

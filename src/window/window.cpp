@@ -11,8 +11,8 @@ Glk::Window::Window(QIODevice* device_, glui32 rock_, bool acceptsCharRequest, b
 
     mp_Stream->open(QIODevice::WriteOnly);
 
-    s_WindowSet.insert(this);
     Glk::Dispatch::registerObject(this);
+    s_WindowSet.insert(this);
 }
 
 Glk::Window::~Window() {

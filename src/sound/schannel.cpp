@@ -17,6 +17,14 @@ void Glk::SoundRepeater::mediaPlayerStateChanged(QMediaPlayer::State state) {
 
 Glk::SoundChannel::SoundChannel(glui32 volume_, glui32 rock_) : Object(rock_), m_Player(), m_Repeater(m_Player), m_Chunk(), m_Buffer(), m_Paused(false) {
     m_Player.setVolume(100 * volume_ / FullVolume);
+    
+    Glk::Dispatch::registerObject(this);
+    s_ChannelSet.insert(this);
+}
+
+Glk::SoundChannel::~SoundChannel() {
+    s_ChannelSet.remove(this);
+    Glk::Dispatch::unregisterObject(this);
 }
 
 bool Glk::SoundChannel::play(glui32 snd, glui32 repeats, bool notify) { //TODO handle notify

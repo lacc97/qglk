@@ -2,6 +2,7 @@
 #define STREAM_STREAM_HPP
 
 #include <QIODevice>
+#include <QSet>
 
 #include "glk.hpp"
 
@@ -9,7 +10,7 @@
 
 namespace Glk {
     class Stream : public QObject, public Object {
-        Q_OBJECT
+            Q_OBJECT
         public:
             enum class Type {
                 Memory, File, Resource, Window
@@ -21,7 +22,6 @@ namespace Glk {
             Glk::Object::Type objectType() const override;
 
             virtual bool open(QIODevice::OpenMode om);
-            virtual bool close();
 
             inline Type type() const {
                 return m_Type;
@@ -65,14 +65,14 @@ namespace Glk {
             virtual glui32 readUnicodeLine(glui32* buf, glui32 len) = 0;
             virtual glsi32 readUnicodeChar() = 0;
 
-    signals:
-        void closed();
-            
+        signals:
+            void closed();
+
         protected:
             inline void* data() const {
                 return mp_ExtraData;
             }
-            
+
             inline QIODevice* device() const {
                 return mp_Device;
             }
@@ -84,6 +84,8 @@ namespace Glk {
             }
 
         private:
+            bool close();
+
             QIODevice* mp_Device;
             glui32 m_ReadChars;
             glui32 m_WriteChars;
@@ -96,6 +98,8 @@ namespace Glk {
 
 #define TO_STRID(str) (reinterpret_cast<strid_t>(str))
 #define FROM_STRID(str) (reinterpret_cast<Glk::Stream*>(str))
+
+extern QSet<Glk::Stream*> s_StreamSet; // TODO move to QGlk
 
 #endif
 

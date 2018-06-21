@@ -18,21 +18,12 @@ schanid_t glk_schannel_create_ext(glui32 rock, glui32 volume) {
     Glk::SoundChannel* sch;
 
     Glk::sendTaskToEventThread([&] {sch = new Glk::SoundChannel(volume, rock);});
-//     sch = new Glk::SoundChannel(volume, rock);
-
-    s_ChannelSet.insert(sch);
-    Glk::Dispatch::registerObject(sch);
 
     return TO_SCHANID(sch);
 }
 
 void glk_schannel_destroy(schanid_t chan) {
-    s_ChannelSet.remove(FROM_SCHANID(chan));
-    Glk::Dispatch::unregisterObject(FROM_SCHANID(chan));
-
-
     Glk::sendTaskToEventThread([&] {delete FROM_SCHANID(chan);});
-//     delete FROM_SCHANID(chan);
 }
 
 glui32 glk_schannel_play(schanid_t chan, glui32 snd) {

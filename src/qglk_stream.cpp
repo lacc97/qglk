@@ -12,17 +12,12 @@
 QSet<Glk::Stream*> s_StreamSet;
 
 void glk_stream_close(strid_t str, stream_result_t* result) {
-    if(FROM_STRID(str)->close()) {
-        if(result) {
-            result->readcount = FROM_STRID(str)->readCount();
-            result->writecount = FROM_STRID(str)->writeCount();
-        }
-
-        s_StreamSet.remove(FROM_STRID(str));
-        Glk::Dispatch::unregisterObject(FROM_STRID(str));
-
-        delete FROM_STRID(str);
+    if(result) {
+        result->readcount = FROM_STRID(str)->readCount();
+        result->writecount = FROM_STRID(str)->writeCount();
     }
+
+    delete FROM_STRID(str);
 }
 
 strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
@@ -200,9 +195,6 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
         return NULL;
     }
 
-    s_StreamSet.insert(str);
-    Glk::Dispatch::registerObject(str);
-
     if(buf)
         Glk::Dispatch::registerArray(buf, buflen, false);
 
@@ -241,9 +233,6 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
         delete str;
         return NULL;
     }
-
-    s_StreamSet.insert(str);
-    Glk::Dispatch::registerObject(str);
 
     if(buf)
         Glk::Dispatch::registerArray(buf, buflen, true);
@@ -284,9 +273,6 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
         return NULL;
     }
 
-    s_StreamSet.insert(str);
-    Glk::Dispatch::registerObject(str);
-
     return TO_STRID(str);
 }
 
@@ -323,9 +309,6 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
         return NULL;
     }
 
-    s_StreamSet.insert(str);
-    Glk::Dispatch::registerObject(str);
-
     return TO_STRID(str);
 }
 
@@ -347,9 +330,6 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
         delete str;
         return NULL;
     }
-
-    s_StreamSet.insert(str);
-    Glk::Dispatch::registerObject(str);
 
     return TO_STRID(str);
 }
@@ -373,16 +353,13 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
         return NULL;
     }
 
-    s_StreamSet.insert(str);
-    Glk::Dispatch::registerObject(str);
-
     return TO_STRID(str);
 }
 
 void glk_set_hyperlink(glui32 linkval) {
-    
+
 }
 
 void glk_set_hyperlink_stream(strid_t str, glui32 linkval) {
-    
+
 }

@@ -3,6 +3,7 @@
 
 #include <QFile>
 #include <QFileInfo>
+#include <QSet>
 
 #include "glk.hpp"
 
@@ -21,7 +22,7 @@ namespace Glk {
             
             FileReference(QFileInfo fi_, glui32 usage_, glui32 rock_);
             FileReference(const FileReference& fref_, glui32 usage_, glui32 rock_);
-            ~FileReference() {}
+            ~FileReference();
             
             Glk::Object::Type objectType() const override {
                 return Object::Type::FileReference;
@@ -41,5 +42,7 @@ namespace Glk {
 
 #define TO_FREFID(str) (reinterpret_cast<frefid_t>(str))
 #define FROM_FREFID(str) (reinterpret_cast<Glk::FileReference*>(str))
+
+extern QSet<Glk::FileReference*> s_FileReferenceSet;
 
 #endif
