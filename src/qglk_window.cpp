@@ -4,6 +4,7 @@
 
 #include "qglk.hpp"
 
+#include "blorb/chunk.hpp"
 #include "thread/taskrequest.hpp"
 #include "window/blankwindow.hpp"
 #include "window/graphicswindow.hpp"
@@ -283,4 +284,56 @@ glui32 glk_style_measure(winid_t win, glui32 styl, glui32 hint, glui32* result) 
         return FALSE;
 
     return static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl)].measureHint(hint, result);
+}
+
+glui32 glk_image_get_info(glui32 image, glui32* width, glui32* height) {
+    Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
+
+    if(!imgchunk.isValid())
+        return FALSE;
+
+    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
+
+    if(img.isNull())
+        return FALSE;
+
+    if(width)
+        *width = img.width();
+
+    if(height)
+        *height = img.height();
+
+    return TRUE;
+}
+
+glui32 glk_image_draw(winid_t win, glui32 image, glsi32 val1, glsi32 val2) {
+    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
+        return FALSE;
+
+    Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
+
+    if(!imgchunk.isValid())
+        return FALSE;
+
+    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
+
+    if(img.isNull())
+        return FALSE;
+
+    return static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, img.width(), img.height());
+}
+
+glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2, glui32 width, glui32 height) {
+    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
+        return FALSE;
+
+    Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
+
+    if(!imgchunk.isValid())
+        return FALSE;
+
+    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
+
+
+    return static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, width, height);
 }
