@@ -1,5 +1,7 @@
 #include "glk.hpp"
 
+#include "window/window.hpp"
+
 glui32 glk_gestalt(glui32 id, glui32 val) {
     return glk_gestalt_ext(id, val, NULL, 0);
 }
@@ -9,12 +11,34 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
     switch(id) {
         case gestalt_DateTime:
             return TRUE;
+            
+        case gestalt_DrawImage:
+            if(val == Glk::Window::Graphics)
+                return TRUE;
+            else // TODO implement for text buffer windows
+                return FALSE;
 
         case gestalt_Graphics:
             return TRUE;
+            
+        case gestalt_GraphicsCharInput:
+            return FALSE; // TODO implement
 
         case gestalt_GraphicsTransparency:
             return TRUE;
+
+        case gestalt_Hyperlinks:
+            return TRUE;
+
+        case gestalt_HyperlinkInput:
+            switch(val) {
+                case Glk::Window::Graphics:
+                case Glk::Window::TextBuffer:
+                    return TRUE;
+
+                default:
+                    return FALSE;
+            }
 
         case gestalt_LineInputEcho:
             return TRUE;

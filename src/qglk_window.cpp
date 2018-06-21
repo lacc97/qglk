@@ -337,3 +337,7 @@ glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2
 
     return static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, width, height);
 }
+
+void glk_window_flow_break(winid_t win) {
+    // TODO implement
+}
