@@ -7,7 +7,7 @@
 
 #include "blorb/chunk.hpp"
 
-Glk::Stream::Stream(QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : Object(rock_), mp_Device(device_), m_ReadChars(0), m_WriteChars(0), m_Type(type_), mp_ExtraData(userptr_) {
+Glk::Stream::Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : QObject(parent_), Object(rock_), mp_Device(device_), m_ReadChars(0), m_WriteChars(0), m_Type(type_), mp_ExtraData(userptr_) {
     assert(mp_Device);
 }
 

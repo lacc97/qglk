@@ -1,10 +1,11 @@
 #ifndef TEXTBUFFERWINDOW_HPP
 #define TEXTBUFFERWINDOW_HPP
 
-#include "window.hpp"
-
 // #include <QLabel>
 #include <QTextBrowser>
+
+#include "stylemanager.hpp"
+#include "window.hpp"
 
 namespace Glk {
     class TextBufferWindow;
@@ -28,6 +29,10 @@ namespace Glk {
             TextBufferWindow(glui32 rock_ = 0);
             ~TextBufferWindow() {}
 
+            inline const Glk::StyleManager& styles() const {
+                return m_Styles;
+            }
+            
             Glk::Window::Type windowType() const override {
                 return Window::TextBuffer;
             }
@@ -54,7 +59,7 @@ namespace Glk {
 
         private:
             QTextBrowser* mp_Text;
-//         QLabel* mp_Text;
+            Glk::StyleManager m_Styles;
     };
 }
 

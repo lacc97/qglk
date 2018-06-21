@@ -171,9 +171,9 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
     Glk::Stream* str;
 
     if(buf)
-        str = new Glk::Latin1Stream(new QBuffer(new QByteArray(QByteArray::fromRawData(buf, buflen))), Glk::Stream::Type::Memory, buf, rock);
+        str = new Glk::Latin1Stream(NULL, new QBuffer(new QByteArray(QByteArray::fromRawData(buf, buflen))), Glk::Stream::Type::Memory, buf, rock);
     else
-        str = new Glk::Latin1Stream(new Glk::NullDevice(), Glk::Stream::Type::Memory, buf, rock);
+        str = new Glk::Latin1Stream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, buf, rock);
 
     QIODevice::OpenMode om;
 
@@ -213,9 +213,9 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
     Glk::Stream* str;
 
     if(buf)
-        str = new Glk::UnicodeStream(new QBuffer(new QByteArray(QByteArray::fromRawData(reinterpret_cast<char*>(buf), 4 * buflen))), Glk::Stream::Type::Memory, buf, rock);
+        str = new Glk::UnicodeStream(NULL, new QBuffer(new QByteArray(QByteArray::fromRawData(reinterpret_cast<char*>(buf), 4 * buflen))), Glk::Stream::Type::Memory, buf, rock);
     else
-        str = new Glk::UnicodeStream(new Glk::NullDevice(), Glk::Stream::Type::Memory, buf, rock);
+        str = new Glk::UnicodeStream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, buf, rock);
 
     QIODevice::OpenMode om;
 
@@ -252,7 +252,7 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
 }
 
 strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
-    Glk::Stream* str = new Glk::Latin1Stream(FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, NULL, rock);
+    Glk::Stream* str = new Glk::Latin1Stream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, NULL, rock);
     QIODevice::OpenMode om;
 
     switch(fmode) {
@@ -291,7 +291,7 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
 }
 
 strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
-    Glk::Stream* str = new Glk::UnicodeStream(FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, NULL, rock);
+    Glk::Stream* str = new Glk::UnicodeStream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, NULL, rock);
     QIODevice::OpenMode om;
 
     switch(fmode) {
@@ -337,7 +337,7 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
         return NULL;
     }
 
-    Glk::Stream* str = new Glk::Latin1Stream(new QBuffer(new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()))), Glk::Stream::Type::Resource, chunk, rock);
+    Glk::Stream* str = new Glk::Latin1Stream(NULL, new QBuffer(new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()))), Glk::Stream::Type::Resource, chunk, rock);
     QIODevice::OpenMode om = QIODevice::ReadOnly;
 
     if(chunk->type() == Glk::Blorb::ChunkType::TEXT)
@@ -362,7 +362,7 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
         return NULL;
     }
 
-    Glk::Stream* str = new Glk::UnicodeStream(new QBuffer(new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()))), Glk::Stream::Type::Resource, chunk, rock);
+    Glk::Stream* str = new Glk::UnicodeStream(NULL, new QBuffer(new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()))), Glk::Stream::Type::Resource, chunk, rock);
     QIODevice::OpenMode om = QIODevice::ReadOnly;
 
     if(chunk->type() == Glk::Blorb::ChunkType::TEXT)
@@ -378,3 +378,5 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
 
     return TO_STRID(str);
 }
+
+

@@ -4,15 +4,19 @@
 #include "stream/unicodestream.hpp"
 
 namespace Glk {
+    class Window;
+    
     class WindowStream : public UnicodeStream {
             Q_OBJECT
         public:
-            WindowStream(QIODevice* device_);
+            WindowStream(Window* parent_, QIODevice* device_);
 
             inline Glk::Stream* echoStream() const {
                 return mp_EchoStream;
             }
             void setEchoStream(Glk::Stream* echo);
+            
+            void pushStyle(Style::Type sty) override;
 
             void writeUnicodeBuffer(glui32* buf, glui32 len) override;
             void writeUnicodeChar(glui32 ch) override;

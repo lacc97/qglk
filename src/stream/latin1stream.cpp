@@ -1,6 +1,6 @@
 #include "latin1stream.hpp"
 
-Glk::Latin1Stream::Latin1Stream(QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : Stream(device_, type_, userptr_, rock_) {}
+Glk::Latin1Stream::Latin1Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : Stream(parent_, device_, type_, userptr_, rock_) {}
 
 glui32 Glk::Latin1Stream::position() const {
     return glui32(device()->pos());

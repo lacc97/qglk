@@ -20,10 +20,10 @@ void Glk::Runnable::run() {
     return;
 }
 
-QGlk::QGlk(QWidget* parent) : QMainWindow(parent), ui(new Ui::QGlk), mp_Runnable(new Glk::Runnable()), mp_RootWindow(NULL) {
+QGlk::QGlk(QWidget* parent) : QMainWindow(parent), ui(new Ui::QGlk), mp_Runnable(new Glk::Runnable()), mp_RootWindow(NULL), m_InterruptHandler(), m_DefaultStyles(), m_TextBufferStyles() {
     setMinimumSize(600, 400);
     ui->setupUi(this);
-    
+
     mp_Runnable->setAutoDelete(true);
 }
 
@@ -42,8 +42,7 @@ bool QGlk::event(QEvent* event) {
         return QMainWindow::event(event);
 }
 
-void QGlk::closeEvent(QCloseEvent* event)
-{
+void QGlk::closeEvent(QCloseEvent* event) {
     m_EventQueue.interrupt();
     event->accept();
 }

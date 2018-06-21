@@ -9,6 +9,7 @@
 
 #include "event/eventqueue.hpp"
 #include "thread/taskrequest.hpp"
+#include "window/stylemanager.hpp"
 #include "window/window.hpp"
 
 namespace Ui {
@@ -47,6 +48,12 @@ class QGlk : public QMainWindow {
         inline void setInterruptHandler(const std::function<void(void)>& handler) {
             m_InterruptHandler = handler;
         }
+        inline const Glk::StyleManager& defaultStyleManager() const {
+            return m_DefaultStyles;
+        }
+        inline Glk::StyleManager& textBufferStyleManager() {
+            return m_TextBufferStyles;
+        }
 
         inline Glk::EventQueue& eventQueue() {
             return m_EventQueue;
@@ -69,6 +76,9 @@ class QGlk : public QMainWindow {
         Glk::EventQueue m_EventQueue;
         
         std::function<void(void)> m_InterruptHandler;
+        
+        Glk::StyleManager m_DefaultStyles;
+        Glk::StyleManager m_TextBufferStyles;
 };
 
 #endif // QGLK_H

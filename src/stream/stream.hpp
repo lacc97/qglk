@@ -15,7 +15,7 @@ namespace Glk {
                 Memory, File, Resource, Window
             };
 
-            Stream(QIODevice* device_, Type type_, void* userptr_ = NULL, glui32 rock_ = 0);
+            Stream(QObject* parent_, QIODevice* device_, Type type_, void* userptr_ = NULL, glui32 rock_ = 0);
             virtual ~Stream();
 
             Glk::Object::Type objectType() const override;

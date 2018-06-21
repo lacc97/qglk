@@ -34,7 +34,7 @@ namespace {
 winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintype, glui32 rock) {
     Glk::PairWindow* pairw = NULL;
     Glk::Window* neww;
-    
+
     if(split && FROM_WINID(split)->windowType() == Glk::Window::Pair)
         return NULL;
 
@@ -60,7 +60,7 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
             } else {
                 Glk::Window* prntk = (prnt->keyWindow() == FROM_WINID(split) ? pairw : prnt->keyWindow());
                 Glk::Window* prnts = (prnt->splitWindow() == FROM_WINID(split) ? pairw : prnt->splitWindow());
-                
+
                 prnt->constraint()->setupWindows(prnt, prntk, prnts);
             }
         } else {
@@ -255,4 +255,32 @@ void glk_window_erase_rect(winid_t win, glsi32 left, glsi32 top, glui32 width, g
         return;
 
     static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->fillRect(Qt::transparent, left, top, width, height);
+}
+
+void glk_stylehint_set(glui32 wintype, glui32 styl, glui32 hint, glsi32 val) {
+    if(wintype != Glk::Window::TextBuffer)
+        return;
+
+    QGlk::getMainWindow().textBufferStyleManager()[static_cast<Glk::Style::Type>(styl)].setHint(hint, val);
+}
+
+void glk_stylehint_clear(glui32 wintype, glui32 styl, glui32 hint) {
+    if(wintype != Glk::Window::TextBuffer)
+        return;
+
+    QGlk::getMainWindow().textBufferStyleManager()[static_cast<Glk::Style::Type>(styl)].setHint(hint, QGlk::getMainWindow().defaultStyleManager()[static_cast<Glk::Style::Type>(styl)].getHint(hint));
+}
+
+glui32 glk_style_distinguish(winid_t win, glui32 styl1, glui32 styl2) {
+    if(FROM_WINID(win)->windowType() != Glk::Window::TextBuffer)
+        return FALSE;
+
+    return static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl1)] != static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl2)];
+}
+
+glui32 glk_style_measure(winid_t win, glui32 styl, glui32 hint, glui32* result) {
+    if(FROM_WINID(win)->windowType() != Glk::Window::TextBuffer || !result)
+        return FALSE;
+
+    return static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl)].measureHint(hint, result);
 }

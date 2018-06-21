@@ -1,17 +1,23 @@
 #include "windowstream.hpp"
 
+#include "window.hpp"
+
 #include "thread/taskrequest.hpp"
 
-Glk::WindowStream::WindowStream(QIODevice* device_) : UnicodeStream(device_, Stream::Type::Window), mp_EchoStream(NULL) {}
+Glk::WindowStream::WindowStream(Window* parent_, QIODevice* device_) : UnicodeStream(parent_, device_, Stream::Type::Window), mp_EchoStream(NULL) {}
 
 void Glk::WindowStream::setEchoStream(Glk::Stream* echo) {
     if(mp_EchoStream)
         QObject::disconnect(mp_EchoStream, 0, this, 0);
-    
+
     mp_EchoStream = echo;
-    
+
     if(mp_EchoStream)
         QObject::connect(mp_EchoStream, SIGNAL(closed()), this, SLOT(onEchoStreamClosed()), Qt::DirectConnection);
+}
+
+void Glk::WindowStream::pushStyle(Style::Type sty) {
+
 }
 
 void Glk::WindowStream::writeUnicodeBuffer(glui32* buf, glui32 len) {

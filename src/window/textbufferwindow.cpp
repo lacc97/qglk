@@ -8,6 +8,8 @@
 #include <QResizeEvent>
 #include <QScrollBar>
 
+#include "qglk.hpp"
+
 Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindow(win) {
     Q_ASSERT(mp_TBWindow);
 }
@@ -33,7 +35,7 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
     return len;
 }
 
-Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true), mp_Text() {
+Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
     QObject::connect(keyboardInputProvider(), SIGNAL(characterInputRequested()), this, SLOT(onCharacterInputRequested()));
     QObject::connect(keyboardInputProvider(), SIGNAL(characterInputRequestEnded(bool)), this, SLOT(onCharacterInputRequestEnded(bool)));
