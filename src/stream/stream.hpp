@@ -35,6 +35,9 @@ namespace Glk {
             virtual void setPosition(glui32 pos) = 0;
             virtual glui32 position() const = 0;
 
+            inline glui32 size() const {
+                return mp_Device->size();
+            }
             inline glui32 readCount() const {
                 return m_ReadChars;
             }
