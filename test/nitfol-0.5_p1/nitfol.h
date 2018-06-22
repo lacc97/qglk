@@ -78,7 +78,7 @@ typedef unsigned long offset;
 #define PASTE(a, b) a##b
 #define XPASTE(a, b) PASTE(a, b)
 
-
+/* 
 #if defined(__cplusplus) || defined(USE_INLINE)
 #define N_INLINE inline
 #elif defined(INLINE)
@@ -86,8 +86,9 @@ typedef unsigned long offset;
 #elif defined(__GNUC__)
 #define N_INLINE __inline__
 #else
+*/
 #define N_INLINE
-#endif
+/* #endif */
 
 
 
