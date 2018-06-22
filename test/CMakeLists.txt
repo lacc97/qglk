@@ -30,6 +30,7 @@ add_executable(git-qglk
         git-1.3.5/saveundo.c
         git-1.3.5/search.c
         git-1.3.5/terp.c)
+    target_compile_definitions(git-qglk PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
     target_include_directories(git-qglk PRIVATE git-1.3.5/ ../src/)
     target_link_libraries(git-qglk qglk)
 
@@ -75,10 +76,10 @@ add_executable(nitfol-qglk
         nitfol-0.5_p1/blorb.c
         nitfol-0.5_p1/sound.c
 )
-    target_compile_options(nitfol-qglk PRIVATE "-ansi")
-    target_compile_definitions(nitfol-qglk PRIVATE -DSMART_TOKENISER -DNO_TICK -DFAST)
+#     target_compile_options(nitfol-qglk PRIVATE "-ansi")
+    target_compile_definitions(nitfol-qglk PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(nitfol-qglk PRIVATE -DDEBUGGING)
+    target_compile_definitions(nitfol-qglk PRIVATE "-DDEBUGGING")
 endif()
     target_include_directories(nitfol-qglk PRIVATE nitfol-0.5_p1// ../src/)
     target_link_libraries(nitfol-qglk qglk)
@@ -143,6 +144,7 @@ add_executable(git-glkterm
         git-1.3.5/saveundo.c
         git-1.3.5/search.c
         git-1.3.5/terp.c)
+    target_compile_definitions(git-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
     target_include_directories(git-glkterm PRIVATE git-1.3.5/ glkterm-1.0.4/)
     target_link_libraries(git-glkterm glkterm)
 
@@ -184,9 +186,9 @@ add_executable(nitfol-glkterm
         nitfol-0.5_p1/no_snd.c
 )
     target_compile_options(nitfol-glkterm PRIVATE "-ansi")
-    target_compile_definitions(nitfol-glkterm PRIVATE -DSMART_TOKENISER -DNO_TICK -DFAST)
+    target_compile_definitions(nitfol-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(nitfol-glkterm PRIVATE -DDEBUGGING)
+    target_compile_definitions(nitfol-glkterm PRIVATE "-DDEBUGGING")
 endif()
     target_include_directories(nitfol-glkterm PRIVATE nitfol-0.5_p1/ glkterm-1.0.4/)
     target_link_libraries(nitfol-glkterm glkterm)
