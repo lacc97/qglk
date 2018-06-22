@@ -1,6 +1,7 @@
 #include "taskrequest.hpp"
 
 #include <QCoreApplication>
+#include <QThread>
 
 #include "qglk.hpp"
 
@@ -17,11 +18,15 @@ void Glk::TaskEvent::execute() {
     mr_Semaphore.release(1);
 }
 
-void Glk::sendTaskToEventThread(const std::function<void ()>& tsk){
-    QSemaphore sem(0);
-    TaskEvent* te = new TaskEvent(sem, tsk);
-    QCoreApplication::postEvent(&QGlk::getMainWindow(), te, Qt::HighEventPriority);
-    sem.acquire(1);
+void Glk::sendTaskToEventThread(const std::function<void ()>& tsk) {
+    if(QGlk::getMainWindow().thread() != QThread::currentThread()) {
+        QSemaphore sem(0);
+        TaskEvent* te = new TaskEvent(sem, tsk);
+        QCoreApplication::postEvent(&QGlk::getMainWindow(), te, Qt::HighEventPriority);
+        sem.acquire(1);
+    } else {
+        tsk();
+    }
 }
 
 
