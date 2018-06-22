@@ -55,5 +55,20 @@ void Glk::EventQueue::push(const event_t& ev) {
 }
 
 void Glk::EventQueue::pushTimerEvent() {
-    push(event_t {evtype_Timer, NULL, 0, 0});
+    event_t ev {evtype_Timer, NULL, 0, 0};
+
+    QMutexLocker ml(&m_AccessMutex);
+
+    for(int ii = 0; ii < m_Queue.size(); ii++) {
+        switch(m_Queue[ii].type) {
+            case evtype_Timer:
+                m_Queue.takeAt(ii);
+                m_Queue.enqueue(ev);
+                return;
+        }
+    }
+
+    m_Queue.enqueue(ev);
+
+    m_Semaphore.release(1);
 }
