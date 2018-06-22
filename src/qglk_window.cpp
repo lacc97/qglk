@@ -34,7 +34,7 @@ namespace {
 
 winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintype, glui32 rock) {
     Glk::PairWindow* pairw = NULL;
-    Glk::Window* neww;
+    Glk::Window* neww = NULL;
 
     if(split && FROM_WINID(split)->windowType() == Glk::Window::Pair)
         return NULL;
@@ -74,41 +74,38 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
 }
 
 void glk_window_close(winid_t win, stream_result_t* result) {
-    Glk::PairWindow* prntw = static_cast<Glk::PairWindow*>(FROM_WINID(win)->windowParent());
-
-    if(!prntw) {
-        if(FROM_WINID(win)->parent()) {
-            Glk::sendTaskToEventThread([&] {
-                FROM_WINID(win)->unparent();
-            });
-        }
-    } else {
-        if(FROM_WINID(win) == prntw->splitWindow()) {
-            Glk::sendTaskToEventThread([&] {
-                prntw->removeChildWindow(FROM_WINID(win));
-            });
-            glk_window_close(TO_WINID(prntw), NULL);
-        } else {
-            Glk::sendTaskToEventThread([&] {
-                prntw->removeChildWindow(FROM_WINID(win));
-            });
-        }
-    }
-
-    // TODO remove events associated with win
-
-    if(result) {
-        result->readcount = FROM_STRID(FROM_WINID(win)->windowStream())->readCount();
-        result->writecount = FROM_STRID(FROM_WINID(win)->windowStream())->writeCount();
-    }
-
     Glk::sendTaskToEventThread([&] {
+        Glk::PairWindow* prntw = static_cast<Glk::PairWindow*>(FROM_WINID(win)->windowParent());
+
+        if(!prntw) {
+            if(FROM_WINID(win)->parent())
+                FROM_WINID(win)->unparent();
+
+        } else {
+            if(FROM_WINID(win) == prntw->splitWindow()) {
+                prntw->removeChildWindow(FROM_WINID(win));
+                glk_window_close(TO_WINID(prntw), NULL);
+            } else {
+                prntw->removeChildWindow(FROM_WINID(win));
+            }
+        }
+
+        // TODO remove events associated with win
+
+        if(result) {
+            result->readcount = FROM_STRID(FROM_WINID(win)->windowStream())->readCount();
+            result->writecount = FROM_STRID(FROM_WINID(win)->windowStream())->writeCount();
+        }
+
         delete FROM_WINID(win);
     });
 }
 
 void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {
-    QSize s = FROM_WINID(win)->windowSize();
+    QSize s;
+    Glk::sendTaskToEventThread([&] {
+        s = FROM_WINID(win)->windowSize();
+    });
 
     if(widthptr)
         *widthptr = s.width();
@@ -121,15 +118,15 @@ void glk_window_set_arrangement(winid_t win, glui32 method, glui32 size, winid_t
     if(FROM_WINID(win)->windowType() != Glk::Window::Pair)
         return;
 
-    Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(FROM_WINID(win));
-
-    if(pw->splitWindow() != FROM_WINID(keywin) && pw->keyWindow() != FROM_WINID(keywin))
-        return;
-
-    if(pw->splitWindow() == FROM_WINID(keywin))
-        pw->swapWindows();
-
     Glk::sendTaskToEventThread([&] {
+        Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(FROM_WINID(win));
+
+        if(pw->splitWindow() != FROM_WINID(keywin) && pw->keyWindow() != FROM_WINID(keywin))
+            return;
+
+        if(pw->splitWindow() == FROM_WINID(keywin))
+            pw->swapWindows();
+
         if(bool(method & Glk::WindowConstraint::Above) || bool(method & Glk::WindowConstraint::Below)) {
             pw->setConstraint(new Glk::VerticalWindowConstraint(static_cast<Glk::WindowConstraint::Method>(method), size));
         } else {
@@ -142,31 +139,43 @@ void glk_window_get_arrangement(winid_t win, glui32* methodptr, glui32* sizeptr,
     if(FROM_WINID(win)->windowType() != Glk::Window::Pair)
         return;
 
-    Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(FROM_WINID(win));
+    Glk::sendTaskToEventThread([&] {
+        Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(FROM_WINID(win));
 
-    if(methodptr)
-        *methodptr = pw->constraint()->method();
+        if(methodptr)
+            *methodptr = pw->constraint()->method();
 
-    if(sizeptr)
-        *sizeptr = pw->constraint()->size();
+        if(sizeptr)
+            *sizeptr = pw->constraint()->size();
 
-    if(keywinptr)
-        *keywinptr = TO_WINID(pw->keyWindow());
+        if(keywinptr)
+            *keywinptr = TO_WINID(pw->keyWindow());
+    });
 }
 
 void glk_window_move_cursor(winid_t win, glui32 xpos, glui32 ypos) {
     if(FROM_WINID(win)->windowType() != Glk::Window::TextGrid)
         return;
 
-    static_cast<Glk::TextGridWindow*>(FROM_WINID(win))->setGridCursor(xpos, ypos);
+    Glk::sendTaskToEventThread([&] {
+        static_cast<Glk::TextGridWindow*>(FROM_WINID(win))->setGridCursor(xpos, ypos);
+    });
 }
 
 void glk_window_set_echo_stream(winid_t win, strid_t str) {
-    FROM_WINID(win)->windowStream()->setEchoStream(FROM_STRID(str));
+    Glk::sendTaskToEventThread([&] {
+        FROM_WINID(win)->windowStream()->setEchoStream(FROM_STRID(str));
+    });
 }
 
 strid_t glk_window_get_echo_stream(winid_t win) {
-    return TO_STRID(FROM_WINID(win)->windowStream()->echoStream());
+    strid_t str;
+    
+    Glk::sendTaskToEventThread([&] {
+        str = TO_STRID(FROM_WINID(win)->windowStream()->echoStream());
+    });
+    
+    return str;
 }
 
 QSet<Glk::Window*> s_WindowSet;
@@ -222,11 +231,19 @@ winid_t glk_window_get_sibling(winid_t win) {
 }
 
 winid_t glk_window_get_root() {
-    return TO_WINID(QGlk::getMainWindow().rootWindow());
+    winid_t rw = NULL;
+
+    Glk::sendTaskToEventThread([&] {
+        rw = TO_WINID(QGlk::getMainWindow().rootWindow());
+    });
+
+    return rw;
 }
 
 void glk_window_clear(winid_t win) {
-    FROM_WINID(win)->clearWindow();
+    Glk::sendTaskToEventThread([&] {
+        FROM_WINID(win)->clearWindow();
+    });
 }
 
 strid_t glk_window_get_stream(winid_t win) {
@@ -244,49 +261,73 @@ void glk_window_set_background_color(winid_t win, glui32 color) {
     if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
         return;
 
-    static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->setBackgroundColor(QColor::fromRgba(color));
+    Glk::sendTaskToEventThread([&] {
+        static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->setBackgroundColor(QColor::fromRgba(color));
+    });
 }
 
 void glk_window_fill_rect(winid_t win, glui32 color, glsi32 left, glsi32 top, glui32 width, glui32 height) {
     if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
         return;
 
-    static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->fillRect(QColor::fromRgb(color), left, top, width, height);
+    Glk::sendTaskToEventThread([&] {
+        static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->fillRect(QColor::fromRgb(color), left, top, width, height);
+    });
 }
 
 void glk_window_erase_rect(winid_t win, glsi32 left, glsi32 top, glui32 width, glui32 height) {
     if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
         return;
 
-    static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->fillRect(Qt::transparent, left, top, width, height);
+    Glk::sendTaskToEventThread([&] {
+        static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->fillRect(Qt::transparent, left, top, width, height);
+    });
 }
 
+// style related functions use threads because in the future it should be possible to change
+// fonts and colours from QGlk via a menu or something
 void glk_stylehint_set(glui32 wintype, glui32 styl, glui32 hint, glsi32 val) {
     if(wintype != Glk::Window::TextBuffer)
         return;
 
-    QGlk::getMainWindow().textBufferStyleManager()[static_cast<Glk::Style::Type>(styl)].setHint(hint, val);
+    Glk::sendTaskToEventThread([&] {
+        QGlk::getMainWindow().textBufferStyleManager()[static_cast<Glk::Style::Type>(styl)].setHint(hint, val);
+    });
 }
 
 void glk_stylehint_clear(glui32 wintype, glui32 styl, glui32 hint) {
     if(wintype != Glk::Window::TextBuffer)
         return;
 
-    QGlk::getMainWindow().textBufferStyleManager()[static_cast<Glk::Style::Type>(styl)].setHint(hint, QGlk::getMainWindow().defaultStyleManager()[static_cast<Glk::Style::Type>(styl)].getHint(hint));
+    Glk::sendTaskToEventThread([&] {
+        QGlk::getMainWindow().textBufferStyleManager()[static_cast<Glk::Style::Type>(styl)].setHint(hint, QGlk::getMainWindow().defaultStyleManager()[static_cast<Glk::Style::Type>(styl)].getHint(hint));
+    });
 }
 
 glui32 glk_style_distinguish(winid_t win, glui32 styl1, glui32 styl2) {
     if(FROM_WINID(win)->windowType() != Glk::Window::TextBuffer)
         return FALSE;
 
-    return static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl1)] != static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl2)];
+    bool res;
+
+    Glk::sendTaskToEventThread([&] {
+        res = static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl1)] != static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl2)];
+    });
+
+    return res;
 }
 
 glui32 glk_style_measure(winid_t win, glui32 styl, glui32 hint, glui32* result) {
     if(FROM_WINID(win)->windowType() != Glk::Window::TextBuffer || !result)
         return FALSE;
 
-    return static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl)].measureHint(hint, result);
+    bool res;
+
+    Glk::sendTaskToEventThread([&] {
+        res = static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->styles()[static_cast<Glk::Style::Type>(styl)].measureHint(hint, result);
+    });
+
+    return res;
 }
 
 glui32 glk_image_get_info(glui32 image, glui32* width, glui32* height) {
@@ -323,7 +364,13 @@ glui32 glk_image_draw(winid_t win, glui32 image, glsi32 val1, glsi32 val2) {
     if(img.isNull())
         return FALSE;
 
-    return static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, img.width(), img.height());
+    bool res;
+
+    Glk::sendTaskToEventThread([&] {
+        res = static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, img.width(), img.height());
+    });
+
+    return res;
 }
 
 glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2, glui32 width, glui32 height) {
@@ -337,8 +384,16 @@ glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2
 
     QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
 
+    if(img.isNull())
+        return FALSE;
 
-    return static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, width, height);
+    bool res;
+
+    Glk::sendTaskToEventThread([&] {
+        res = static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, width, height);
+    });
+
+    return res;
 }
 
 void glk_window_flow_break(winid_t win) {
