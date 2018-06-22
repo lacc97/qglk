@@ -3,14 +3,14 @@
 #include <cassert>
 
 Glk::FileReference::FileReference(QFileInfo fi_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fi_), m_Usage(usage_) {
-    assert(m_FileInfo.isFile());
+    Q_ASSERT(!m_FileInfo.isDir());
 
     Glk::Dispatch::registerObject(this);
     s_FileReferenceSet.insert(this);
 }
 
 Glk::FileReference::FileReference(const Glk::FileReference& fref_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fref_.m_FileInfo), m_Usage(usage_) {
-    assert(m_FileInfo.isFile());
+    Q_ASSERT(!m_FileInfo.isDir());
 
     Glk::Dispatch::registerObject(this);
     s_FileReferenceSet.insert(this);
