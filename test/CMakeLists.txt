@@ -78,9 +78,6 @@ add_executable(nitfol-qglk
 )
 #     target_compile_options(nitfol-qglk PRIVATE "-ansi")
     target_compile_definitions(nitfol-qglk PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(nitfol-qglk PRIVATE "-DDEBUGGING")
-endif()
     target_include_directories(nitfol-qglk PRIVATE nitfol-0.5_p1// ../src/)
     target_link_libraries(nitfol-qglk qglk)
         
@@ -187,8 +184,5 @@ add_executable(nitfol-glkterm
 )
     target_compile_options(nitfol-glkterm PRIVATE "-ansi")
     target_compile_definitions(nitfol-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(nitfol-glkterm PRIVATE "-DDEBUGGING")
-endif()
     target_include_directories(nitfol-glkterm PRIVATE nitfol-0.5_p1/ glkterm-1.0.4/)
     target_link_libraries(nitfol-glkterm glkterm)
