@@ -53,7 +53,7 @@ void gidispatch_set_object_registry(gidispatch_rock_t (*reg)(void* obj, glui32 o
 
     if(s_ObjectRegisterFunction) {
         for(frefid_t fref = glk_fileref_iterate(NULL, NULL); fref; fref = glk_fileref_iterate(fref, NULL))
-            Glk::Dispatch::registerObject(FROM_STRID(fref));
+            Glk::Dispatch::registerObject(FROM_FREFID(fref));
 
         for(schanid_t schan = glk_schannel_iterate(NULL, NULL); schan; schan = glk_schannel_iterate(schan, NULL))
             Glk::Dispatch::registerObject(FROM_SCHANID(schan));
