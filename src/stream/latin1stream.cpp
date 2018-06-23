@@ -2,6 +2,10 @@
 
 Glk::Latin1Stream::Latin1Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : Stream(parent_, device_, type_, userptr_, rock_) {}
 
+Glk::Latin1Stream::~Latin1Stream() {
+    close();
+}
+
 glui32 Glk::Latin1Stream::position() const {
     return glui32(device()->pos());
 }
@@ -62,12 +66,12 @@ void Glk::Latin1Stream::writeUnicodeString(glui32* str) {
 
 glui32 Glk::Latin1Stream::readBuffer(char* buf, glui32 len) {
     qint64 numr = device()->read(buf, len);
-    
+
     if(numr > 0)
         updateReadCount(glui32(numr));
     else
         return 0;
-    
+
     return glui32(numr);
 }
 
@@ -84,23 +88,23 @@ glsi32 Glk::Latin1Stream::readChar() {
 
 glui32 Glk::Latin1Stream::readLine(char* buf, glui32 len) {
     qint64 numr = device()->readLine(buf, len);
-    
+
     if(numr > 0)
         updateReadCount(glui32(numr));
     else
         return 0;
-    
+
     return glui32(numr);
 }
 
 glui32 Glk::Latin1Stream::readUnicodeBuffer(glui32* buf, glui32 len) {
     char* cbuf = new char[len];
-    
+
     glui32 numr = readBuffer(cbuf, len);
-    
+
     for(glui32 ii = 0; ii < numr; ii++)
         buf[ii] = cbuf[ii];
-    
+
     return numr;
 }
 
@@ -110,11 +114,11 @@ glsi32 Glk::Latin1Stream::readUnicodeChar() {
 
 glui32 Glk::Latin1Stream::readUnicodeLine(glui32* buf, glui32 len) {
     char* cbuf = new char[len];
-    
+
     glui32 numr = readLine(cbuf, len);
-    
-    for(glui32 ii = 0; ii < numr+1; ii++)
+
+    for(glui32 ii = 0; ii < numr + 1; ii++)
         buf[ii] = cbuf[ii];
-    
+
     return numr;
 }

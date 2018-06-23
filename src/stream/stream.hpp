@@ -85,10 +85,10 @@ namespace Glk {
             inline void updateWriteCount(glui32 charwrit) {
                 m_WriteChars += charwrit;
             }
-
-        private:
+            
             bool close();
 
+        private:
             QIODevice* mp_Device;
             glui32 m_ReadChars;
             glui32 m_WriteChars;

@@ -7,7 +7,7 @@ namespace Glk {
     class Latin1Stream : public Stream {
         public:
             Latin1Stream(QObject* parent_, QIODevice* device_, Type type_, void* userptr_, glui32 rock_ = 0);
-            ~Latin1Stream() {}
+            ~Latin1Stream();
 
             bool isUnicode() const override {
                 return false;

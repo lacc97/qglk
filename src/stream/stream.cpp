@@ -12,12 +12,10 @@ Glk::Stream::Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type
 }
 
 Glk::Stream::~Stream() {
-    if(isOpen()) {
-        s_StreamSet.remove(this);
-        Glk::Dispatch::unregisterObject(this);
-    }
+    Q_ASSERT_X(!isOpen(), "Glk::Stream destructor", "close should be called in derived class");
 
-    close();
+    s_StreamSet.remove(this);
+    Glk::Dispatch::unregisterObject(this);
 
     switch(type()) {
         case Type::Memory:

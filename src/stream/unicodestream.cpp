@@ -4,6 +4,10 @@
 
 Glk::UnicodeStream::UnicodeStream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : Stream(parent_, device_, type_, userptr_, rock_) {}
 
+Glk::UnicodeStream::~UnicodeStream() {
+    close();
+}
+
 glui32 Glk::UnicodeStream::position() const {
     if(isInTextMode()) {
         // TODO textmode
@@ -49,7 +53,7 @@ void Glk::UnicodeStream::writeString(char* str) {
 
 void Glk::UnicodeStream::writeUnicodeBuffer(glui32* buf, glui32 len) {
     if(isInTextMode()) {
-        
+
     } else {
         glui32* bufbe = new glui32[len];
 
@@ -60,7 +64,7 @@ void Glk::UnicodeStream::writeUnicodeBuffer(glui32* buf, glui32 len) {
 
         if(writtenb != -1)
             updateWriteCount(glui32(writtenb) / 4);
-        
+
         delete[] bufbe;
     }
 }
@@ -93,7 +97,7 @@ glui32 Glk::UnicodeStream::readBuffer(char* buf, glui32 len) {
 
     for(glui32 ii = 0; ii < numr; ii++)
         buf[ii] = (ibuf[ii] >= 0x100 ? '?' : ibuf[ii]);
-    
+
     delete[] ibuf;
 
     return numr;
@@ -112,7 +116,7 @@ glui32 Glk::UnicodeStream::readLine(char* buf, glui32 len) {
 
     for(glui32 ii = 0; ii < numr + 1; ii++)
         buf[ii] = (ibuf[ii] >= 0x100 ? '?' : ibuf[ii]);
-    
+
     delete[] ibuf;
 
     return numr;
