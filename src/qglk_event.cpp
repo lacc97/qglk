@@ -102,8 +102,8 @@ void glk_request_timer_events(glui32 millisecs) {
 
         if(millisecs == 0)
             s_Timer->stop();
-
-        s_Timer->start(millisecs);
+        else
+            s_Timer->start(millisecs);
     });
 }
 
