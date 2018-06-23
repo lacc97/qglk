@@ -35,10 +35,35 @@ add_executable(git-qglk
     target_link_libraries(git-qglk qglk)
 
     
-find_package(BISON REQUIRED)
-bison_target(InformParser nitfol-0.5_p1/inform.y ${CMAKE_CURRENT_BINARY_DIR}/inform.c COMPILE_FLAGS "-y")
-set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/inform.h PROPERTY SKIP_AUTOGEN ON)
-
+find_package(Perl REQUIRED)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startunix.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/opt2glkc.pl
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/nitfol.opt
+    COMMAND ${PERL_EXECUTABLE} opt2glkc.pl -unix nitfol.opt
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1)
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startunix.c PROPERTY GENERATED TRUE)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startwin.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/opt2glkc.pl
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/nitfol.opt
+    COMMAND ${PERL_EXECUTABLE} opt2glkc.pl -win nitfol.opt
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1)
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startwin.c PROPERTY GENERATED TRUE)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startmac.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/opt2glkc.pl
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/nitfol.opt
+    COMMAND ${PERL_EXECUTABLE} opt2glkc.pl -mac nitfol.opt
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1)
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startmac.c PROPERTY GENERATED TRUE)
+    
+find_package(BISON)
+if(${BISON_FOUND})
+    bison_target(InformParser nitfol-0.5_p1/inform.y ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/inform.c COMPILE_FLAGS "-y")
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/inform.c PROPERTY GENERATED TRUE)
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/inform.h PROPERTY SKIP_AUTOGEN TRUE)
+else()
+    set(BISON_InformParser_OUTPUTS nitfol-0.5_p1/inform.c)
+endif()
+    
 add_executable(nitfol-qglk
         nitfol-0.5_p1/automap.c
         nitfol-0.5_p1/solve.c
@@ -46,7 +71,6 @@ add_executable(nitfol-qglk
         nitfol-0.5_p1/copying.c
         nitfol-0.5_p1/debug.c
         ${BISON_InformParser_OUTPUTS}
-#         nitfol-0.5_p1/inform.c
         nitfol-0.5_p1/quetzal.c
         nitfol-0.5_p1/undo.c
         nitfol-0.5_p1/op_call.c
@@ -71,7 +95,7 @@ add_executable(nitfol-qglk
         nitfol-0.5_p1/objects.c
         nitfol-0.5_p1/portfunc.c
         nitfol-0.5_p1/hash.c
-        nitfol-0.5_p1/startunix.c
+        ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startunix.c
         nitfol-0.5_p1/graphics.c
         nitfol-0.5_p1/blorb.c
         nitfol-0.5_p1/sound.c
@@ -152,7 +176,6 @@ add_executable(nitfol-glkterm
         nitfol-0.5_p1/copying.c
         nitfol-0.5_p1/debug.c
         ${BISON_InformParser_OUTPUTS}
-#         nitfol-0.5_p1/inform.c
         nitfol-0.5_p1/quetzal.c
         nitfol-0.5_p1/undo.c
         nitfol-0.5_p1/op_call.c
@@ -177,7 +200,7 @@ add_executable(nitfol-glkterm
         nitfol-0.5_p1/objects.c
         nitfol-0.5_p1/portfunc.c
         nitfol-0.5_p1/hash.c
-        nitfol-0.5_p1/startunix.c
+        ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startunix.c
         nitfol-0.5_p1/no_graph.c
         nitfol-0.5_p1/blorb.c
         nitfol-0.5_p1/no_snd.c
