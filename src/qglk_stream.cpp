@@ -56,7 +56,7 @@ void glk_stream_set_position(strid_t str, glsi32 pos, glui32 seekmode) {
             return;
 
         case seekmode_End:
-            FROM_STRID(str)->setPosition(FROM_STRID(str)->size() - pos - 1);
+            FROM_STRID(str)->setPosition(FROM_STRID(str)->size() - pos);
             return;
 
         case seekmode_Current:
