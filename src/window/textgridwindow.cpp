@@ -64,8 +64,8 @@ void Glk::TextGridWindow::paintEvent(QPaintEvent* event) {
     int horizadv = fontMetrics().horizontalAdvance('m');
     int baseline = fontMetrics().ascent();
 
-    int regx2 = std::min(region.right(), m_CharArray.size());
-    int regy2 = std::min(region.bottom(), m_CharArray[0].size());
+    int regx2 = std::min(region.right(), m_CharArray.size() - 1);
+    int regy2 = std::min(region.bottom(), m_CharArray[0].size() - 1);
 
     for(int xx = region.left(); xx <= regx2; xx++) {
         for(int yy = region.top(); yy <= regy2; yy++) {
@@ -103,12 +103,6 @@ void Glk::TextGridWindow::resizeEvent(QResizeEvent* ev) {
 
     // TODO reset cursor to origin?
 }
-
-// void Glk::TextGridWindow::onCharacterInputRequested() {
-// }
-//
-// void Glk::TextGridWindow::onCharacterInputRequestEnded() {
-// }
 
 QSize Glk::TextGridWindow::pixelsToUnits(const QSize& pixels) const {
     int hmargins = contentsMargins().left() + contentsMargins().right();
@@ -148,7 +142,7 @@ bool Glk::TextGridWindow::writeChar(glui32 ch) {
         return false;
 
     if(ch == '\n') {
-        m_Cursor += QPoint(-m_Cursor.x(), 1);
+        m_Cursor = QPoint(0, m_Cursor.y() + 1);
         return true;
     }
 

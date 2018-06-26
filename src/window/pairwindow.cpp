@@ -5,146 +5,54 @@
 #include "qglk.hpp"
 #include "stream/nulldevice.hpp"
 
-// Glk::PairLayout::PairLayout(QWidget* parent_, Glk::WindowConstraint* constraint_) : QLayout(parent_), mp_Constraint(constraint_) {}
-//
-// Glk::PairLayout::~PairLayout() {
-//     delete mp_Constraint;
-//
-//     QLayoutItem* item;
-//
-//     while((item = takeAt(0)))
-//         delete item;
-// }
-//
-// void Glk::PairLayout::addItem(QLayoutItem* it) {
-//     if(!mp_Key)
-//         mp_Key = it;
-//     else if(!mp_Split)
-//         mp_Split = it;
-// }
-//
-// int Glk::PairLayout::count() const {
-//     int c = 0;
-//
-//     if(mp_Key)
-//         c++;
-//
-//     if(mp_Split)
-//         c++;
-//
-//     return c;
-// }
-//
-// QLayoutItem* Glk::PairLayout::itemAt(int index) const {
-//     switch(index) {
-//         case 0:
-//             return (mp_Key ? mp_Key : mp_Split);
-//
-//         case 1:
-//             return (mp_Split ? mp_Split : NULL);
-//
-//         default:
-//             return NULL;
-//     }
-// }
-//
-// QSize Glk::PairLayout::minimumSize() const {
-//     return mp_Constraint->minimumSize(static_cast<Window*>(mp_Key->widget()));
-// }
-//
-// void Glk::PairLayout::setGeometry(const QRect& rect) {
-//     QLayout::setGeometry(rect);
-//
-//     if(!mp_Key) {
-//         assert(rect.width() + rect.height() == 0);
-//         mp_Split->setGeometry(rect);
-//         return;
-//     }
-//
-//     QPair<QRect, QRect> geom = mp_Constraint->geometry(rect, static_cast<Window*>(mp_Key->widget()));
-//
-//     mp_Key->setGeometry(geom.first);
-//     mp_Split->setGeometry(geom.second);
-// }
-//
-// QSize Glk::PairLayout::sizeHint() const {
-//     return mp_Constraint->minimumSize(static_cast<Window*>(mp_Key->widget()));
-// }
-//
-// QLayoutItem* Glk::PairLayout::takeAt(int index) {
-//     QLayoutItem* it = NULL;
-//
-//     switch(index) {
-//         case 0:
-//             if(mp_Key) {
-//                 it = mp_Key;
-//                 mp_Key = NULL;
-//             } else {
-//                 it = mp_Split;
-//                 mp_Split = NULL;
-//             }
-//
-//             break;
-//
-//         case 1:
-//             if(mp_Split) {
-//                 it = mp_Split;
-//                 mp_Split = NULL;
-//             }
-//
-//             break;
-//     }
-//
-//     return it;
-// }
-
-Glk::PairWindow::PairWindow(Glk::Window* key_, Glk::Window* split_, WindowConstraint* constraint_) : Window(new NullDevice()), mp_Key(NULL), mp_Split(NULL), mp_Constraint(constraint_) {
-    mp_Constraint->setupWindows(this, key_, split_);
+Glk::PairWindow::PairWindow(Glk::Window* key_, Glk::Window* first_, Glk::Window* second_, WindowConstraint* constraint_) : Window(new NullDevice()), mp_Key(NULL), mp_First(NULL), mp_Second(NULL), mp_Constraint(constraint_) {
+    mp_Constraint->setupWindows(this, key_, first_, second_);
 }
 
 Glk::PairWindow::~PairWindow() {
     delete mp_Constraint;
 }
 
-void Glk::PairWindow::removeChildWindow(Window* ptr) { // TODO fix
-    if(ptr == mp_Split) {
-        Glk::PairWindow* prnt = static_cast<Glk::PairWindow*>(windowParent());
+void Glk::PairWindow::removeChildWindow(Window* ptr) {
+    Q_ASSERT_X(ptr == mp_First || ptr == mp_Second, "Glk::PairWindow::removeChildWindow(Window* ptr)", "ptr must be either mp_First or mp_Second");
 
-        if(prnt) {
-            if(prnt->keyWindow() == this)
-                prnt->mp_Key = mp_Key;
-            else
-                prnt->mp_Split = mp_Key;
+    Glk::PairWindow* prnt = windowParent();
+    Glk::Window* sibling = (ptr == mp_First ? mp_Second : mp_First);
 
-            prnt->mp_Constraint->setupWindows(prnt, prnt->mp_Key, prnt->mp_Split);
-            mp_Key->show();
-        } else {
-            QGlk* qglk = &QGlk::getMainWindow();
-            
-            qglk->setCentralWidget(mp_Key);
-            mp_Key->setWindowParent(NULL);
+    if(prnt) {
+        Glk::Window* prntf = prnt->mp_First;
+        Glk::Window* prnts = prnt->mp_Second;
+
+        if(ptr == mp_Second) { // this means that mp_Second is or could contain the key window of a parent window
+            Glk::Window* kwin = mp_Second;
+
+            while(kwin->windowType() == Glk::Window::Pair)
+                kwin = static_cast<Glk::PairWindow*>(kwin)->mp_Second;
+
+            Glk::PairWindow* ancestor = prnt;
+
+            while(ancestor && ancestor->mp_Key != kwin)
+                ancestor = ancestor->windowParent();
+
+            if(ancestor != NULL)
+                ancestor->mp_Constraint->setupWindows(ancestor, NULL, ancestor->mp_First, ancestor->mp_Second);
         }
 
-        unparent();
-        mp_Split = NULL;
-    } else {
-        mp_Key = NULL;
-        mp_Split->hide();
-    }
+        prntf = (prntf == this ? sibling : prntf);
+        prnts = (prnts == this ? sibling : prnts);
 
-    ptr->unparent();
+        Q_ASSERT_X(sibling == prntf || sibling == prnts, "Glk::PairWindow::removeChildWindow(Window* ptr)", "this should be a child of prnt");
+
+        prnt->mp_Constraint->setupWindows(prnt, prnt->mp_Key, prntf, prnts);
+    } else {
+        QGlk::getMainWindow().setRootWindow(sibling);
+    }
 }
 
 QSize Glk::PairWindow::pixelsToUnits(const QSize& pixels) const {
-    if(!mp_Key)
-        return QSize();
-
-    return QSize(mp_Key->unitWidth(pixels.width()), mp_Key->unitHeight(pixels.height()));
+    return pixels;
 }
 
 QSize Glk::PairWindow::unitsToPixels(const QSize& units) const {
-    if(!mp_Key)
-        return QSize();
-
-    return QSize(mp_Key->pixelWidth(units.width()), mp_Key->pixelHeight(units.height()));
+    return units;
 }

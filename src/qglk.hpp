@@ -3,11 +3,14 @@
 
 #include <functional>
 
+#include <QLinkedList>
 #include <QMainWindow>
 #include <QRunnable>
 #include <QWidget>
 
 #include "event/eventqueue.hpp"
+#include "file/fileref.hpp"
+#include "sound/schannel.hpp"
 #include "thread/taskrequest.hpp"
 #include "window/stylemanager.hpp"
 #include "window/window.hpp"
@@ -19,7 +22,13 @@ namespace Ui {
 namespace Glk {
     class Runnable : public QRunnable {
         public:
+            Runnable(int argc_, char** argv_);
+            
             void run() override;
+            
+    private:
+        int argc;
+        char** argv;
     };
 }
 
@@ -39,6 +48,8 @@ class QGlk : public QMainWindow {
             return mp_RootWindow;
         }
         inline void setRootWindow(Glk::Window* win) {
+            if(win)
+                win->setWindowParent(NULL);
             mp_RootWindow = win;
             setCentralWidget(mp_RootWindow ? mp_RootWindow : new QWidget(this));
         }
@@ -58,6 +69,18 @@ class QGlk : public QMainWindow {
         inline Glk::EventQueue& eventQueue() {
             return m_EventQueue;
         }
+        inline QLinkedList<Glk::Window*>& windowList() {
+            return m_WindowList;
+        }
+        inline QLinkedList<Glk::Stream*>& streamList() {
+            return m_StreamList;
+        }
+        inline QLinkedList<Glk::FileReference*>& fileReferenceList() {
+            return m_FileReferenceList;
+        }
+        inline QLinkedList<Glk::SoundChannel*>& soundChannelList() {
+            return m_SoundChannelList;
+        }
 
         bool event(QEvent* event) override;
 
@@ -66,7 +89,7 @@ class QGlk : public QMainWindow {
         void resizeEvent(QResizeEvent* event) override;
 
     private:
-        QGlk(QWidget* parent = 0);
+        QGlk(int argc, char** argv);
 
         bool handleGlkTask(Glk::TaskEvent* event);
 
@@ -74,6 +97,10 @@ class QGlk : public QMainWindow {
         Glk::Runnable* mp_Runnable;
         Glk::Window* mp_RootWindow;
         Glk::EventQueue m_EventQueue;
+        QLinkedList<Glk::Window*> m_WindowList;
+        QLinkedList<Glk::Stream*> m_StreamList;
+        QLinkedList<Glk::FileReference*> m_FileReferenceList;
+        QLinkedList<Glk::SoundChannel*> m_SoundChannelList;
         
         std::function<void(void)> m_InterruptHandler;
         

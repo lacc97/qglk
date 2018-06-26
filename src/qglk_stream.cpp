@@ -1,15 +1,14 @@
 #include "file/fileref.hpp"
 
-#include "blorb/chunk.hpp"
+#include <QBuffer>
+#include <QDebug>
 
+#include "qglk.hpp"
+
+#include "blorb/chunk.hpp"
 #include "stream/latin1stream.hpp"
 #include "stream/nulldevice.hpp"
 #include "stream/unicodestream.hpp"
-
-#include <QBuffer>
-#include <QSet>
-
-QSet<Glk::Stream*> s_StreamSet;
 
 void glk_stream_close(strid_t str, stream_result_t* result) {
     if(result) {
@@ -22,27 +21,28 @@ void glk_stream_close(strid_t str, stream_result_t* result) {
 
 strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
     if(str == NULL) {
-        auto iter = s_StreamSet.begin();
-
-        if(iter == s_StreamSet.end())
+        if(QGlk::getMainWindow().streamList().empty())
             return NULL;
 
-        if(rockptr)
-            *rockptr = (*iter)->rock();
+        Glk::Stream* first = QGlk::getMainWindow().streamList().first();
 
-        return TO_STRID(*iter);
+        if(rockptr)
+            *rockptr = first->rock();
+
+        return TO_STRID(first);
     }
 
-    auto iter = s_StreamSet.find(FROM_STRID(str));
-    iter++;
+    auto it = QGlk::getMainWindow().streamList().cbegin();
 
-    if(iter == s_StreamSet.end())
+    while(it != QGlk::getMainWindow().streamList().cend() && (*it++) != FROM_STRID(str));
+
+    if(it == QGlk::getMainWindow().streamList().cend())
         return NULL;
 
     if(rockptr)
-        *rockptr = (*iter)->rock();
-
-    return TO_STRID(*iter);
+        *rockptr = (*it)->rock();
+    
+    return TO_STRID(*it);
 }
 
 glui32 glk_stream_get_rock(strid_t str) {

@@ -16,7 +16,7 @@ namespace Glk {
                 Memory, File, Resource, Window
             };
 
-            Stream(QObject* parent_, QIODevice* device_, Type type_, void* userptr_ = NULL, glui32 rock_ = 0);
+            Stream(QObject* parent_, QIODevice* device_, Type type_, bool unicode_ = false, void* userptr_ = NULL, glui32 rock_ = 0);
             virtual ~Stream();
 
             Glk::Object::Type objectType() const override;
@@ -30,7 +30,10 @@ namespace Glk {
             virtual void pushStyle(Style::Type sty);
 
             bool isOpen() const;
-            virtual bool isUnicode() const = 0;
+            
+            inline bool isUnicode() const {
+                return m_Unicode;
+            }
 
             virtual void setPosition(glui32 pos) = 0;
             virtual glui32 position() const = 0;
@@ -85,11 +88,10 @@ namespace Glk {
             inline void updateWriteCount(glui32 charwrit) {
                 m_WriteChars += charwrit;
             }
-            
-            bool close();
-
+        
         private:
             QIODevice* mp_Device;
+            bool m_Unicode;
             glui32 m_ReadChars;
             glui32 m_WriteChars;
 
@@ -101,8 +103,6 @@ namespace Glk {
 
 #define TO_STRID(str) (reinterpret_cast<strid_t>(str))
 #define FROM_STRID(str) (reinterpret_cast<Glk::Stream*>(str))
-
-extern QSet<Glk::Stream*> s_StreamSet; // TODO move to QGlk
 
 #endif
 

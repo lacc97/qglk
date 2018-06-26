@@ -13,7 +13,7 @@
 namespace Glk {
     class PairWindow;
     class LineEventRequest;
-
+    
     class Window : public Object, public QWidget {
             friend winid_t glk_window_open(winid_t, glui32, glui32, glui32, glui32);
         public:
@@ -42,7 +42,7 @@ namespace Glk {
                 return mp_Parent;
             }
             void setWindowParent(PairWindow* prnt);
-            inline void unparent() {
+            inline void orphan() {
                 setParent(NULL);
                 mp_Parent = NULL;
             }

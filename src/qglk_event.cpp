@@ -81,13 +81,13 @@ void glk_set_terminators_line_event(winid_t win, glui32* keycodes, glui32 count)
 }
 
 void glk_request_mouse_event(winid_t win) {
-    Glk::sendTaskToEventThread([&]{
+    Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->mouseInputProvider()->requestMouseInput();
     });
 }
 
 void glk_cancel_mouse_event(winid_t win) {
-    Glk::sendTaskToEventThread([&]{
+    Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->mouseInputProvider()->cancelMouseInputRequest();
     });
 }
@@ -108,9 +108,9 @@ void glk_request_timer_events(glui32 millisecs) {
 }
 
 void glk_request_hyperlink_event(winid_t win) {
-    
+
 }
 
 void glk_cancel_hyperlink_event(winid_t win) {
-    
+
 }

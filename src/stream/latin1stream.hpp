@@ -8,11 +8,7 @@ namespace Glk {
         public:
             Latin1Stream(QObject* parent_, QIODevice* device_, Type type_, void* userptr_, glui32 rock_ = 0);
             ~Latin1Stream();
-
-            bool isUnicode() const override {
-                return false;
-            }
-
+            
             glui32 position() const override;
             void setPosition(glui32 pos) override;
 

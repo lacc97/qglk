@@ -23,6 +23,7 @@ namespace Glk {
         }
         
     public slots:
+        void cleanWindowEvents(winid_t win);
         void push(const event_t& ev);
         void pushTimerEvent();
         

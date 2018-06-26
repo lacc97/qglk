@@ -1,5 +1,6 @@
 #include "window/window.hpp"
 
+#include <QDebug>
 #include <QSet>
 
 #include "qglk.hpp"
@@ -32,11 +33,46 @@ namespace {
     }
 }
 
+#ifndef NDEBUG
+void printTree(Glk::Window* root) {
+    static int tabs = 0;
+
+    if(!root)
+        return;
+
+    {
+        QDebug debug = qDebug();
+
+        for(int ii = 0; ii < tabs; ii++)
+            debug << "  ";
+
+        debug << root << ": {"
+//               << "parent <=" << root->windowParent() << ";"
+//               << "children <=" << root->children() << ";"
+              << "layout <=" << root->layout() << ";"
+              << "rect <=" << root->rect() << ";";
+
+        if(root->windowType() == Glk::Window::Pair)
+            debug << "key <=" << static_cast<Glk::PairWindow*>(root)->keyWindow() << ";";
+
+        debug << "}";
+    }
+
+    if(root->windowType() == Glk::Window::Pair) {
+        Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(root);
+        tabs++;
+        printTree(pw->firstWindow());
+        printTree(pw->secondWindow());
+        tabs--;
+    }
+}
+#endif
+
 winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintype, glui32 rock) {
     Glk::PairWindow* pairw = NULL;
     Glk::Window* neww = NULL;
 
-    if(split && FROM_WINID(split)->windowType() == Glk::Window::Pair)
+    if(wintype == Glk::Window::Pair || (!split && s_WindowSet.size() > 0))
         return NULL;
 
     Glk::sendTaskToEventThread([&] {
@@ -44,31 +80,42 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
 
         if(split) {
             Glk::PairWindow* prnt = FROM_WINID(split)->windowParent();
+            Glk::Window* prntf = NULL;
+            Glk::Window* prnts = NULL;
+
+            if(prnt) {
+                prntf = prnt->firstWindow();
+                prnts = prnt->secondWindow();
+            }
 
             Glk::WindowConstraint* cnt;
 
-            if(bool(method & Glk::WindowConstraint::Above) || bool(method & Glk::WindowConstraint::Below)) {
+            if(Glk::WindowConstraint::isVertical(method)) {
                 cnt = new Glk::VerticalWindowConstraint(static_cast<Glk::WindowConstraint::Method>(method), size);
             } else {
                 cnt = new Glk::HorizontalWindowConstraint(static_cast<Glk::WindowConstraint::Method>(method), size);
             }
 
-            pairw = new Glk::PairWindow(neww, FROM_WINID(split), cnt);
+            pairw = new Glk::PairWindow(neww, neww, FROM_WINID(split), cnt);
 
             if(!prnt) {
-                QGlk::getMainWindow().setCentralWidget(pairw);
                 pairw->setWindowParent(NULL);
+                QGlk::getMainWindow().setRootWindow(pairw);
             } else {
-                Glk::Window* prntk = (prnt->keyWindow() == FROM_WINID(split) ? pairw : prnt->keyWindow());
-                Glk::Window* prnts = (prnt->splitWindow() == FROM_WINID(split) ? pairw : prnt->splitWindow());
+                prntf = (prntf == FROM_WINID(split) ? pairw : prntf);
+                prnts = (prnts == FROM_WINID(split) ? pairw : prnts);
 
-                prnt->constraint()->setupWindows(prnt, prntk, prnts);
+                prnt->constraint()->setupWindows(prnt, prnt->keyWindow(), prntf, prnts);
             }
         } else {
-            QGlk::getMainWindow().setCentralWidget(neww);
-            neww->setWindowParent(NULL);
+            QGlk::getMainWindow().setRootWindow(neww);
         }
     });
+
+#ifndef NDEBUG
+    printTree(QGlk::getMainWindow().rootWindow());
+    qDebug() << "";
+#endif
 
     return TO_WINID(neww);
 }
@@ -77,20 +124,19 @@ void glk_window_close(winid_t win, stream_result_t* result) {
     Glk::sendTaskToEventThread([&] {
         Glk::PairWindow* prntw = static_cast<Glk::PairWindow*>(FROM_WINID(win)->windowParent());
 
-        if(!prntw) {
-            if(FROM_WINID(win)->parent())
-                FROM_WINID(win)->unparent();
+        if(prntw) {
+            Glk::Window* prntws = prntw->secondWindow();
 
-        } else {
-            if(FROM_WINID(win) == prntw->splitWindow()) {
-                prntw->removeChildWindow(FROM_WINID(win));
-                glk_window_close(TO_WINID(prntw), NULL);
-            } else {
-                prntw->removeChildWindow(FROM_WINID(win));
-            }
+            prntw->removeChildWindow(FROM_WINID(win));
+            FROM_WINID(win)->orphan();
+
+            if(FROM_WINID(win) == prntws)
+                delete prntw;
+        } else if(FROM_WINID(win)->parent()) {
+            QGlk::getMainWindow().setRootWindow(NULL);
         }
 
-        // TODO remove events associated with win
+        QGlk::getMainWindow().eventQueue().cleanWindowEvents(win);
 
         if(result) {
             result->readcount = FROM_STRID(FROM_WINID(win)->windowStream())->readCount();
@@ -99,6 +145,11 @@ void glk_window_close(winid_t win, stream_result_t* result) {
 
         delete FROM_WINID(win);
     });
+
+#ifndef NDEBUG
+    printTree(QGlk::getMainWindow().rootWindow());
+    qDebug() << "";
+#endif
 }
 
 void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {
@@ -121,11 +172,7 @@ void glk_window_set_arrangement(winid_t win, glui32 method, glui32 size, winid_t
     Glk::sendTaskToEventThread([&] {
         Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(FROM_WINID(win));
 
-        if(pw->splitWindow() != FROM_WINID(keywin) && pw->keyWindow() != FROM_WINID(keywin))
-            return;
-
-        if(pw->splitWindow() == FROM_WINID(keywin))
-            pw->swapWindows();
+        pw->setKeyWindow(FROM_WINID(keywin)); // assert that keywin is a child of win
 
         if(bool(method & Glk::WindowConstraint::Above) || bool(method & Glk::WindowConstraint::Below)) {
             pw->setConstraint(new Glk::VerticalWindowConstraint(static_cast<Glk::WindowConstraint::Method>(method), size));
@@ -170,11 +217,11 @@ void glk_window_set_echo_stream(winid_t win, strid_t str) {
 
 strid_t glk_window_get_echo_stream(winid_t win) {
     strid_t str;
-    
+
     Glk::sendTaskToEventThread([&] {
         str = TO_STRID(FROM_WINID(win)->windowStream()->echoStream());
     });
-    
+
     return str;
 }
 
@@ -223,8 +270,8 @@ winid_t glk_window_get_sibling(winid_t win) {
     Glk::PairWindow* prnt = FROM_WINID(win)->windowParent();
 
     if(prnt->keyWindow() == FROM_WINID(win))
-        return TO_WINID(prnt->splitWindow());
-    else if(prnt->splitWindow() == FROM_WINID(win))
+        return TO_WINID(prnt->secondWindow());
+    else if(prnt->secondWindow() == FROM_WINID(win))
         return TO_WINID(prnt->keyWindow());
 
     return NULL;

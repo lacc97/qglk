@@ -9,10 +9,6 @@ namespace Glk {
             UnicodeStream(QObject* parent_, QIODevice* device_, Type type_, void* userptr_ = NULL, glui32 rock_ = 0);
             virtual ~UnicodeStream();
 
-            bool isUnicode() const override {
-                return true;
-            }
-
             glui32 position() const override;
             void setPosition(glui32 pos) override;
 

@@ -18,11 +18,11 @@ int main(int argc, char* argv[]) {
 
     QEvent::registerEventType(Glk::TaskEvent::Type);
 
-    QGlk w;
+    QGlk w(argc, argv);
     w.show();
 
     s_MainWindow = &w;
-    
+
     w.run();
 
     return app.exec();

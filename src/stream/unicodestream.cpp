@@ -2,10 +2,9 @@
 
 #include <QtEndian>
 
-Glk::UnicodeStream::UnicodeStream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : Stream(parent_, device_, type_, userptr_, rock_) {}
+Glk::UnicodeStream::UnicodeStream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : Stream(parent_, device_, type_, true, userptr_, rock_) {}
 
 Glk::UnicodeStream::~UnicodeStream() {
-    close();
 }
 
 glui32 Glk::UnicodeStream::position() const {

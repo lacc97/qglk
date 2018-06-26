@@ -23,6 +23,22 @@ namespace Glk {
                 Border = winmethod_Border,
                 NoBorder = winmethod_NoBorder
             };
+            static inline bool isBordered(glui32 met) {
+                return !bool(met & NoBorder);
+            }
+            static inline bool isProportional(glui32 met) {
+                return bool(met & Proportional);
+            }
+            static inline bool isFixed(glui32 met) {
+                return bool(met & Fixed);
+            }
+            static inline bool isHorizontal(glui32 met) {
+                return !(bool(met & Above) || bool(met & Below));
+            }
+            static inline bool isVertical(glui32 met) {
+                return bool(met & Above) || bool(met & Below);
+            }
+            
             WindowConstraint(Method method_, glui32 size_);
             virtual ~WindowConstraint() = default;
 
@@ -34,28 +50,25 @@ namespace Glk {
             }
 
             inline bool isBordered() const {
-                return !bool(method() & NoBorder);
+                return isBordered(method());
             }
             inline bool isProportional() const {
-                return bool(method() & Proportional);
+                return isProportional(method());
             }
             inline bool isFixed() const {
-                return bool(method() & Fixed);
+                return isFixed(method());
             }
             inline bool isHorizontal() const {
-                return !(bool(method() & Above) || bool(method() & Below));
+                return isHorizontal(method());
             }
             inline bool isVertical() const {
-                return bool(method() & Above) || bool(method() & Below);
+                return isVertical(method());
             }
 
-            virtual void setupWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* splitwin) = 0;
-
-//             virtual QPair<QRect, QRect> geometry(const QRect& region, Window* key) = 0;
-//             virtual QSize minimumSize(Window* key) = 0;
+            virtual void setupWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* firstwin, Glk::Window* secondwin) const = 0;
 
         protected:
-            void setChildWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* splitwin);
+            void setChildWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* firstwin, Glk::Window* secondwin) const;
 
         private:
             Method m_Method;
@@ -73,10 +86,7 @@ namespace Glk {
                 return bool(method() & WindowConstraint::Right);
             }
 
-            void setupWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* splitwin) override;
-
-//             QPair<QRect, QRect> geometry(const QRect& region, Window* key) override;
-//             QSize minimumSize(Glk::Window* key) override;
+            void setupWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* firstwin, Glk::Window* secondwin) const override;
     };
 
     class VerticalWindowConstraint : public WindowConstraint {
@@ -90,10 +100,7 @@ namespace Glk {
                 return bool(method() & WindowConstraint::Below);
             }
 
-            void setupWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* splitwin) override;
-
-//             QPair<QRect, QRect> geometry(const QRect& region, Window* key) override;
-//             QSize minimumSize(Glk::Window* key) override;
+            void setupWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* firstwin, Glk::Window* secondwin) const override;
     };
 }
 

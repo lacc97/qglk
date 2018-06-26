@@ -46,6 +46,15 @@ void Glk::EventQueue::interrupt() {
     m_Semaphore.release(1);
 }
 
+void Glk::EventQueue::cleanWindowEvents(winid_t win) {
+    QMutexLocker ml(&m_AccessMutex);
+
+    for(int ii = 0; ii < m_Queue.size(); ii++) {
+        if(m_Queue[ii].win == win)
+            m_Queue.removeAt(ii--);
+    }
+}
+
 void Glk::EventQueue::push(const event_t& ev) {
     QMutexLocker ml(&m_AccessMutex);
 
@@ -62,7 +71,7 @@ void Glk::EventQueue::pushTimerEvent() {
     for(int ii = 0; ii < m_Queue.size(); ii++) {
         switch(m_Queue[ii].type) {
             case evtype_Timer:
-                m_Queue.takeAt(ii);
+                m_Queue.removeAt(ii);
                 m_Queue.enqueue(ev);
                 return;
         }
