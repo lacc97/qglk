@@ -49,6 +49,20 @@ void Glk::PairWindow::removeChildWindow(Window* ptr) {
     }
 }
 
+bool Glk::PairWindow::isDescendant(Glk::Window* win) const {
+    bool des = (win == mp_First || win == mp_Second);
+    
+    if(!des) {
+        if(mp_First->windowType() == Glk::Window::Pair)
+            des = static_cast<Glk::PairWindow*>(mp_First)->isDescendant(win);
+        
+        if(mp_Second->windowType() == Glk::Window::Pair)
+            des = des || static_cast<Glk::PairWindow*>(mp_Second)->isDescendant(win);
+    }
+    
+    return des;
+}
+
 QSize Glk::PairWindow::pixelsToUnits(const QSize& pixels) const {
     return pixels;
 }

@@ -6,6 +6,7 @@
 #include <QBuffer>
 #include <QDebug>
 
+#include "glk.hpp"
 #include "qglk.hpp"
 #include "blorb/chunk.hpp"
 
@@ -45,6 +46,9 @@ Glk::Stream::~Stream() {
             delete reinterpret_cast<Glk::Blorb::Chunk*>(data());
             break;
     }
+    
+    if(glk_stream_get_current() == TO_STRID(this))
+        glk_stream_set_current(NULL);
 
     delete mp_Device;
 }

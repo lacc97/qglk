@@ -172,7 +172,10 @@ void glk_window_set_arrangement(winid_t win, glui32 method, glui32 size, winid_t
     Glk::sendTaskToEventThread([&] {
         Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(FROM_WINID(win));
 
-        pw->setKeyWindow(FROM_WINID(keywin)); // assert that keywin is a child of win
+        if(keywin) {
+            Q_ASSERT_X(pw->isDescendant(FROM_WINID(keywin)), "glk_window_set_arrangement", "keywin must be a descendant of win");
+            pw->setKeyWindow(FROM_WINID(keywin)); // assert that keywin is a descendant of win
+        }
 
         if(bool(method & Glk::WindowConstraint::Above) || bool(method & Glk::WindowConstraint::Below)) {
             pw->setConstraint(new Glk::VerticalWindowConstraint(static_cast<Glk::WindowConstraint::Method>(method), size));
