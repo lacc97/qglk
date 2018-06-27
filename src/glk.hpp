@@ -24,7 +24,7 @@ namespace Glk {
     
     namespace Dispatch {
         void registerObject(Object* ptr);
-        gidispatch_rock_t objectRock(Object* ptr);
+        gidispatch_rock_t dispatchRock(Object* ptr);
         void unregisterObject(Object* ptr);
         
 //         gidispatch_rock_t arrayRock(void* ptr);
@@ -34,7 +34,7 @@ namespace Glk {
     
     class Object {
         friend void Dispatch::registerObject(Object* ptr);
-        friend gidispatch_rock_t Dispatch::objectRock(Object* ptr);
+        friend gidispatch_rock_t Dispatch::dispatchRock(Object* ptr);
         friend void Dispatch::unregisterObject(Object* ptr);
         public:
             enum class Type : glui32 {

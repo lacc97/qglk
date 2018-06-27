@@ -1,5 +1,6 @@
 #include "glk.hpp"
 
+#include <QDebug>
 #include <QSet>
 #include <QHash>
 
@@ -16,17 +17,58 @@ gidispatch_rock_t (*s_ArrayRegisterFunction)(void* array, glui32 len, char* type
 void (*s_ArrayUnregisterFunction)(void* array, glui32 len, char* typecode, gidispatch_rock_t objrock) = NULL;
 
 void Glk::Dispatch::registerObject(Glk::Object* ptr) {
-    if(s_ObjectRegisterFunction)
-        ptr->m_DispatchRock = s_ObjectRegisterFunction(ptr, glui32(ptr->objectType()));
+    if(s_ObjectRegisterFunction) {
+        switch(ptr->objectType()) {
+            case Glk::Object::Type::Window:
+                ptr->m_DispatchRock = s_ObjectRegisterFunction(static_cast<Glk::Window*>(ptr), glui32(ptr->objectType()));
+                return;
+
+            case Glk::Object::Type::Stream:
+                ptr->m_DispatchRock = s_ObjectRegisterFunction(static_cast<Glk::Stream*>(ptr), glui32(ptr->objectType()));
+                return;
+
+            case Glk::Object::Type::FileReference:
+                ptr->m_DispatchRock = s_ObjectRegisterFunction(static_cast<Glk::FileReference*>(ptr), glui32(ptr->objectType()));
+                return;
+
+            case Glk::Object::Type::SoundChannel:
+                ptr->m_DispatchRock = s_ObjectRegisterFunction(static_cast<Glk::SoundChannel*>(ptr), glui32(ptr->objectType()));
+                return;
+
+            default:
+                qCritical() << "Invalid object type";
+                glk_exit();
+        }
+    }
 }
 
-gidispatch_rock_t Glk::Dispatch::objectRock(Glk::Object* ptr) {
+gidispatch_rock_t Glk::Dispatch::dispatchRock(Glk::Object* ptr) {
     return ptr->m_DispatchRock;
 }
 
 void Glk::Dispatch::unregisterObject(Glk::Object* ptr) {
     if(s_ObjectUnregisterFunction)
-        s_ObjectUnregisterFunction(ptr, glui32(ptr->objectType()), ptr->m_DispatchRock);
+        switch(ptr->objectType()) {
+            case Glk::Object::Type::Window:
+                s_ObjectUnregisterFunction(static_cast<Glk::Window*>(ptr), glui32(ptr->objectType()), ptr->m_DispatchRock);
+                return;
+
+            case Glk::Object::Type::Stream:
+                s_ObjectUnregisterFunction(static_cast<Glk::Stream*>(ptr), glui32(ptr->objectType()), ptr->m_DispatchRock);
+                return;
+
+            case Glk::Object::Type::FileReference:
+                s_ObjectUnregisterFunction(static_cast<Glk::FileReference*>(ptr), glui32(ptr->objectType()), ptr->m_DispatchRock);
+                return;
+
+            case Glk::Object::Type::SoundChannel:
+                s_ObjectUnregisterFunction(static_cast<Glk::SoundChannel*>(ptr), glui32(ptr->objectType()), ptr->m_DispatchRock);
+                return;
+
+            default:
+                qCritical() << "Invalid object type";
+                glk_exit();
+        }
 }
 
 // gidispatch_rock_t Glk::Dispatch::arrayRock(void* ptr) {
@@ -67,7 +109,31 @@ void gidispatch_set_object_registry(gidispatch_rock_t (*reg)(void* obj, glui32 o
 }
 
 gidispatch_rock_t gidispatch_get_objrock(void* obj, glui32 objclass) {
-    return Glk::Dispatch::objectRock(static_cast<Glk::Object*>(obj));
+    Glk::Object* glkobj;
+
+    switch(static_cast<Glk::Object::Type>(objclass)) {
+        case Glk::Object::Type::Window:
+            glkobj = FROM_WINID(obj);
+            break;
+
+        case Glk::Object::Type::Stream:
+            glkobj = FROM_STRID(obj);
+            break;
+
+        case Glk::Object::Type::FileReference:
+            glkobj = FROM_FREFID(obj);
+            break;
+
+        case Glk::Object::Type::SoundChannel:
+            glkobj = FROM_SCHANID(obj);
+            break;
+
+        default:
+            qCritical() << "Invalid object type";
+            glk_exit();
+    }
+
+    return Glk::Dispatch::dispatchRock(glkobj);
 }
 
 void gidispatch_set_retained_registry(gidispatch_rock_t (*reg)(void* array, glui32 len, char* typecode), void (*unreg)(void* array, glui32 len, char* typecode, gidispatch_rock_t objrock)) {
