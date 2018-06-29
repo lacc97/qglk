@@ -29,4 +29,15 @@ void Glk::sendTaskToEventThread(const std::function<void ()>& tsk) {
     }
 }
 
+void Glk::sendTaskToGlkThread(const std::function<void ()>& tsk) {
+    if(QGlk::getMainWindow().glkRunnable()->glkThread() != QThread::currentThread()) {
+        QSemaphore sem(0);
+        TaskEvent* te = new TaskEvent(sem, tsk);
+        QGlk::getMainWindow().eventQueue().pushTaskEvent(te);
+        sem.acquire(1);
+    } else {
+        tsk();
+    }
+}
+
 

@@ -22,6 +22,7 @@ namespace Glk {
     };
     
     void sendTaskToEventThread(const std::function<void(void)>& tsk);
+    void sendTaskToGlkThread(const std::function<void(void)>& tsk);
 }
 
 #endif

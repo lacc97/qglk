@@ -36,7 +36,7 @@ void Glk::Dispatch::registerObject(Glk::Object* ptr) {
                 return;
 
             default:
-                qCritical() << "Invalid object type";
+                qCritical() << "Object" << (ptr) << "has an invalid object type" << glui32(ptr->objectType());
                 glk_exit();
         }
     }
@@ -66,7 +66,7 @@ void Glk::Dispatch::unregisterObject(Glk::Object* ptr) {
                 return;
 
             default:
-                qCritical() << "Invalid object type";
+                qCritical() << "Object" << (ptr) << "has an invalid object type" << glui32(ptr->objectType());
                 glk_exit();
         }
 }
@@ -129,7 +129,7 @@ gidispatch_rock_t gidispatch_get_objrock(void* obj, glui32 objclass) {
             break;
 
         default:
-            qCritical() << "Invalid object type";
+            qCritical() << "Object" << (obj) << "has an invalid object type" << objclass;
             glk_exit();
     }
 

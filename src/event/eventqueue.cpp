@@ -4,18 +4,33 @@
 
 #include <QMutexLocker>
 
+// #define evtype_TaskEvent (0xfafbfcfd)
+#define evtype_TaskEvent (evtype_None)
+
 Glk::EventQueue::EventQueue() : m_Queue(), m_Semaphore(0), m_Terminate(false) {
 }
 
 event_t Glk::EventQueue::pop() {
-    m_Semaphore.acquire(1);
+    event_t ev;
 
-    QMutexLocker ml(&m_AccessMutex);
+    do {
+        m_Semaphore.acquire(1);
 
-    if(m_Terminate)
-        throw Glk::ExitException(true);
+        QMutexLocker ml(&m_AccessMutex);
 
-    return m_Queue.dequeue();
+        if(m_Terminate)
+            throw Glk::ExitException(true);
+
+        ev = m_Queue.dequeue();
+        
+        if(ev.type == evtype_TaskEvent) {
+            TaskEvent* tev = m_TaskEventQueue.dequeue();
+            tev->execute();
+            delete tev;
+        }
+    } while(ev.type == evtype_TaskEvent);
+    
+    return ev;
 }
 
 event_t Glk::EventQueue::poll() {
@@ -28,13 +43,25 @@ event_t Glk::EventQueue::poll() {
         return event_t {evtype_None, NULL, 0, 0};
 
     for(int ii = 0; ii < m_Queue.size(); ii++) {
+        event_t ev;
+
         switch(m_Queue[ii].type) {
+            case evtype_TaskEvent: {
+                ev = m_Queue.takeAt(ii--);
+                TaskEvent* tev = m_TaskEventQueue.dequeue();
+                tev->execute();
+                delete tev;
+                m_Semaphore.acquire(1);
+                break;
+            }
+
             case evtype_Timer:
             case evtype_Arrange:
-            case evtype_SoundNotify:
-                event_t ev = m_Queue.takeAt(ii);
+            case evtype_SoundNotify: {
+                ev = m_Queue.takeAt(ii);
                 m_Semaphore.acquire(1);
                 return ev;
+            }
         }
     }
 
@@ -59,6 +86,17 @@ void Glk::EventQueue::push(const event_t& ev) {
     QMutexLocker ml(&m_AccessMutex);
 
     m_Queue.enqueue(ev);
+
+    m_Semaphore.release(1);
+}
+
+void Glk::EventQueue::pushTaskEvent(Glk::TaskEvent* ev) {
+    Q_ASSERT(ev);
+    
+    QMutexLocker ml(&m_AccessMutex);
+
+    m_Queue.enqueue(event_t {evtype_TaskEvent, NULL, 0, 0});
+    m_TaskEventQueue.enqueue(ev);
 
     m_Semaphore.release(1);
 }

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "glk.hpp"
 #include "qglk.hpp"
 #include "event/eventqueue.hpp"
 
@@ -39,6 +40,8 @@ void Glk::KeyboardInputProvider::requestLineInput(void* buf, glui32 maxlen, glui
     m_LineInputBufferPosition = initlen;
     m_Unicode = unicode;
 
+    Glk::Dispatch::registerArray(buf, maxlen, unicode);
+
     m_LineInputRequested = true;
 
     emit lineInputRequested();
@@ -66,6 +69,8 @@ void Glk::KeyboardInputProvider::cancelLineInputRequest(event_t* ev) {
     ev->val2 = 0; // TODO line terminators
 
     emit lineInputRequestEnded(true, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
+
+    Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
 }
 
 bool Glk::KeyboardInputProvider::echoesLine() const {
@@ -85,7 +90,8 @@ void Glk::KeyboardInputProvider::setTerminators(glui32* keycodes, glui32 count) 
 
 inline glui32 switchKeyCode(int qkeycode) {
     switch(qkeycode) {
-        case Qt::Key_Backspace: // TODO delete?
+        case Qt::Key_Delete:
+        case Qt::Key_Backspace:
             return keycode_Delete;
 
         case Qt::Key_Down:
@@ -164,7 +170,6 @@ inline glui32 switchKeyCode(int qkeycode) {
 }
 
 bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
-//     qDebug() << "Received key event";
     if(m_CharacterInputRequested) {
         glui32 keyc = switchKeyCode(ev->key());
 
@@ -173,7 +178,7 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
             QGlk::getMainWindow().eventQueue().push(event_t {evtype_CharInput, TO_WINID(windowPointer()), keyc, 0});
             m_CharacterInputRequested = false;
         } else {
-            QVector<uint> ucs4 = ev->text().toUcs4();
+            QVector<uint> ucs4 = ev->text().normalized(QString::NormalizationForm_KC).toUcs4();
 
             if(ucs4.size() == 1) {
                 glui32 ch = ucs4[0];
@@ -202,7 +207,7 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
             }
 
             case keycode_MAXVAL: {
-                QVector<uint> ucs4 = ev->text().toUcs4();
+                QVector<uint> ucs4 = ev->text().normalized(QString::NormalizationForm_KC).toUcs4();
 
                 if(ucs4.size() == 1) {
                     if(!m_Unicode) {
@@ -216,8 +221,10 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
                     }
 
                     if(m_LineInputBufferPosition == m_LineInputBufferLength) {
-                        emit lineInputSpecialCharacterEntered(keyc);
                         emit lineInputRequestEnded(false, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
+                        Glk::sendTaskToGlkThread([&] {
+                            Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
+                        });
                         QGlk::getMainWindow().eventQueue().push(event_t {evtype_LineInput, TO_WINID(windowPointer()), m_LineInputBufferPosition, 0});
                         m_LineInputRequested = false;
                     }
@@ -229,6 +236,9 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
             default: {
                 if(keyc == keycode_Return || m_Terminators.contains(keyc)) {
                     emit lineInputRequestEnded(false, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
+                    Glk::sendTaskToGlkThread([&] {
+                        Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
+                    });
                     QGlk::getMainWindow().eventQueue().push(event_t {evtype_LineInput, TO_WINID(windowPointer()), m_LineInputBufferPosition, keyc == keycode_Return ? 0 : keyc});
                     m_LineInputRequested = false;
                 }
@@ -268,7 +278,7 @@ void Glk::MouseInputProvider::cancelMouseInputRequest() {
     emit mouseInputRequestEnded(true);
 }
 
-bool Glk::MouseInputProvider::handleMouseEvent(QMouseEvent* ev) {
+bool Glk::MouseInputProvider::handleMouseEvent(QMouseEvent* ev) { //TODO fix
     if(m_MouseInputRequested) {
         QSize ws = windowPointer()->windowSize();
 

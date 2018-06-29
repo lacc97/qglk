@@ -127,6 +127,8 @@ Glk::Runnable::Runnable(int argc_, char** argv_) : argc(argc_), argv(argv_) {
 }
 
 void Glk::Runnable::run() {
+    mp_Thread = QThread::currentThread();
+    
     // Code taken from glkterm-1.0.4
     //
     int ix, jx, val;
@@ -274,7 +276,7 @@ void Glk::Runnable::run() {
 }
 
 QGlk::QGlk(int argc, char** argv) : QMainWindow(), ui(new Ui::QGlk), mp_Runnable(new Glk::Runnable(argc, argv)), mp_RootWindow(NULL), m_InterruptHandler(), m_DefaultStyles(), m_TextBufferStyles() {
-    setMinimumSize(600, 400);
+    setMinimumSize(1280, 720);
     ui->setupUi(this);
 
     mp_Runnable->setAutoDelete(true);

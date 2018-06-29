@@ -26,7 +26,12 @@ namespace Glk {
             
             void run() override;
             
+            const QThread* glkThread() const {
+                return mp_Thread;
+            }
+            
     private:
+        QThread* mp_Thread;
         int argc;
         char** argv;
     };
@@ -52,6 +57,9 @@ class QGlk : public QMainWindow {
                 win->setWindowParent(NULL);
             mp_RootWindow = win;
             setCentralWidget(mp_RootWindow ? mp_RootWindow : new QWidget(this));
+        }
+        inline const Glk::Runnable* glkRunnable() const {
+            return mp_Runnable;
         }
         inline const std::function<void(void)>& interruptHandler() {
             return m_InterruptHandler;
