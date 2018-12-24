@@ -11,6 +11,7 @@ namespace Glk {
     class TextBufferWindow;
 
     class TextBufferDevice : public QIODevice {
+            Q_OBJECT
         public:
             TextBufferDevice(TextBufferWindow* win);
 
@@ -22,9 +23,9 @@ namespace Glk {
     };
 
     class TextBufferWindow : public Window {
-            friend class TextBufferDevice;
-
             Q_OBJECT
+
+            friend class TextBufferDevice;
         public:
             TextBufferWindow(glui32 rock_ = 0);
             ~TextBufferWindow() {}
@@ -32,7 +33,7 @@ namespace Glk {
             inline const Glk::StyleManager& styles() const {
                 return m_Styles;
             }
-            
+
             Glk::Window::Type windowType() const override {
                 return Window::TextBuffer;
             }
@@ -53,7 +54,7 @@ namespace Glk {
             void onCharacterInputRequestEnded(bool cancelled);
             void onLineInputRequested();
             void onLineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode);
-            
+
             void onCharacterInput(glui32 ch);
             void onSpecialCharacterInput(glui32 ch);
 

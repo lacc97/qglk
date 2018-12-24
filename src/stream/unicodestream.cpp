@@ -85,8 +85,9 @@ void Glk::UnicodeStream::writeUnicodeString(glui32* str) {
     glui32 len;
 
     for(len = 0; str[len] != 0; len++);
-
-    return writeUnicodeBuffer(str, len);
+    
+    writeUnicodeBuffer(str, len);
+    return;
 }
 
 glui32 Glk::UnicodeStream::readBuffer(char* buf, glui32 len) {

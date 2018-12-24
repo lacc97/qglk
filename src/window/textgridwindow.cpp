@@ -38,12 +38,25 @@ Glk::TextGridWindow::TextGridWindow(glui32 rock_) : Window(new TextGridDevice(th
 
     setFocusPolicy(Qt::StrongFocus);
     setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-    QObject::connect(keyboardInputProvider(), SIGNAL(characterInputRequested()), this, SLOT(onCharacterInputRequested()));
-    QObject::connect(keyboardInputProvider(), SIGNAL(characterInputRequestEnded(bool)), this, SLOT(onCharacterInputRequestEnded(bool)));
-    QObject::connect(keyboardInputProvider(), SIGNAL(lineInputRequested()), this, SLOT(onLineInputRequested()));
-    QObject::connect(keyboardInputProvider(), SIGNAL(lineInputRequestEnded(bool, void*, glui32, bool)), this, SLOT(onLineInputRequestEnded(bool, void*, glui32, bool)));
-    QObject::connect(keyboardInputProvider(), SIGNAL(lineInputCharacterEntered(glui32)), this, SLOT(onCharacterInput(glui32)));
-    QObject::connect(keyboardInputProvider(), SIGNAL(lineInputSpecialCharacterEntered(glui32)), this, SLOT(onSpecialCharacterInput(glui32)));
+    
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::characterInputRequested,
+        this, &Glk::TextGridWindow::onCharacterInputRequested);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::characterInputRequestEnded,
+        this, &Glk::TextGridWindow::onCharacterInputRequestEnded);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputRequested,
+        this, &Glk::TextGridWindow::onLineInputRequested);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputRequestEnded,
+        this, &Glk::TextGridWindow::onLineInputRequestEnded);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputCharacterEntered,
+        this, &Glk::TextGridWindow::onCharacterInput);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputSpecialCharacterEntered,
+        this, &Glk::TextGridWindow::onSpecialCharacterInput);
 }
 
 void Glk::TextGridWindow::clearWindow() {
@@ -116,7 +129,7 @@ QSize Glk::TextGridWindow::pixelsToUnits(const QSize& pixels) const {
     return u;
 }
 
-QPoint Glk::TextGridWindow::pixelsToUnits(const QPoint& pixels) const {
+QPoint Glk::TextGridWindow::pixelsToUnits(QPoint pixels) const {
     int hmargins = contentsMargins().left() + contentsMargins().right();
     int vmargins = contentsMargins().top() + contentsMargins().bottom();
 
@@ -226,3 +239,4 @@ void Glk::TextGridWindow::onSpecialCharacterInput(glui32 kc) {
 }
 
 #include "moc_textgridwindow.cpp"
+

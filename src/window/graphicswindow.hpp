@@ -8,6 +8,7 @@
 
 namespace Glk {
     class GraphicsWindow : public Window {
+            Q_OBJECT
         public:
             GraphicsWindow(glui32 rock_ = 0);
             ~GraphicsWindow() {}

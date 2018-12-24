@@ -5,6 +5,7 @@
 
 namespace Glk {
     class UnicodeStream : public Stream {
+            Q_OBJECT
         public:
             UnicodeStream(QObject* parent_, QIODevice* device_, Type type_, void* userptr_ = NULL, glui32 rock_ = 0);
             virtual ~UnicodeStream();

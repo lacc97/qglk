@@ -49,7 +49,7 @@ namespace Glk {
 //             void onCharacterEntered(glui32 ch) override;
 
             QSize pixelsToUnits(const QSize& pixels) const override;
-            QPoint pixelsToUnits(const QPoint& pixels) const;
+            QPoint pixelsToUnits(QPoint pixels) const;
             QSize unitsToPixels(const QSize& units) const override;
 
             bool writeChar(glui32 ch);

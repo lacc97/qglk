@@ -1,7 +1,7 @@
 #include "schannel.hpp"
 
 Glk::SoundRepeater::SoundRepeater(QMediaPlayer& mp) : QObject(), mr_Player(mp), m_NumRepeat(0) {
-    connect(&mr_Player, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(mediaPlayerStateChanged(QMediaPlayer::State)));
+    connect(&mr_Player, &QMediaPlayer::stateChanged, this, &Glk::SoundRepeater::mediaPlayerStateChanged);
 }
 
 void Glk::SoundRepeater::mediaPlayerStateChanged(QMediaPlayer::State state) {

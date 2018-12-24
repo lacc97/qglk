@@ -8,6 +8,8 @@
 
 namespace Glk {
     class PairWindow : public Window {
+            Q_OBJECT
+
             friend class WindowConstraint;
         public:
             PairWindow(Window* key_, Window* first_, Window* second_, WindowConstraint* constraint_);
@@ -38,7 +40,7 @@ namespace Glk {
 
                 mp_Constraint->setupWindows(this, mp_Key, mp_First, mp_Second);
             }
-            
+
             bool isDescendant(Glk::Window* win) const;
 
             Glk::Window::Type windowType() const override {

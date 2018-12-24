@@ -14,7 +14,9 @@ namespace Glk {
     class PairWindow;
     class LineEventRequest;
     
-    class Window : public Object, public QWidget {
+    class Window : public QWidget, public Object {
+            Q_OBJECT
+        
             friend winid_t glk_window_open(winid_t, glui32, glui32, glui32, glui32);
         public:
             enum Type : glui32 {

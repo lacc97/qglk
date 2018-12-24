@@ -5,6 +5,7 @@
 
 namespace Glk {
     class NullDevice : public QIODevice {
+            Q_OBJECT
         public:
             NullDevice();
             

@@ -20,7 +20,7 @@ namespace Glk {
                 TextMode = fileusage_TextMode
             };
 
-            FileReference(QFileInfo fi_, glui32 usage_, glui32 rock_);
+            FileReference(const QFileInfo& fi_, glui32 usage_, glui32 rock_);
             FileReference(const FileReference& fref_, glui32 usage_, glui32 rock_);
             ~FileReference();
 

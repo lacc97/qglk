@@ -33,6 +33,8 @@ namespace Glk {
     }
     
     class Object {
+        Q_DISABLE_COPY(Object)
+        
         friend void Dispatch::registerObject(Object* ptr);
         friend gidispatch_rock_t Dispatch::dispatchRock(Object* ptr);
         friend void Dispatch::unregisterObject(Object* ptr);

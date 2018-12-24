@@ -37,7 +37,7 @@ void Glk::sendTaskToEventThread(const std::function<void ()>& tsk) {
     if(QGlk::getMainWindow().thread() != QThread::currentThread()) {
         QSemaphore sem(0);
         TaskEvent* te = new SynchronizedTaskEvent(sem, tsk);
-        QCoreApplication::sendEvent(&QGlk::getMainWindow(), te);
+        QCoreApplication::postEvent(&QGlk::getMainWindow(), te, Qt::HighEventPriority);
         sem.acquire(1);
     } else {
         tsk();

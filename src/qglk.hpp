@@ -21,19 +21,20 @@ namespace Ui {
 
 namespace Glk {
     class Runnable : public QRunnable {
+            Q_DISABLE_COPY(Runnable)
         public:
             Runnable(int argc_, char** argv_);
-            
+
             void run() override;
-            
+
             const QThread* glkThread() const {
                 return mp_Thread;
             }
-            
-    private:
-        QThread* mp_Thread;
-        int argc;
-        char** argv;
+
+        private:
+            QThread* mp_Thread;
+            int argc;
+            char** argv;
     };
 }
 
@@ -45,16 +46,18 @@ class QGlk : public QMainWindow {
     public:
         static QGlk& getMainWindow();
 
+        QGlk(QWidget* parent = NULL) : QMainWindow(parent) {}
         ~QGlk();
-        
+
         void run();
-        
+
         inline Glk::Window* rootWindow() const {
             return mp_RootWindow;
         }
         inline void setRootWindow(Glk::Window* win) {
             if(win)
                 win->setWindowParent(NULL);
+
             mp_RootWindow = win;
             setCentralWidget(mp_RootWindow ? mp_RootWindow : new QWidget(this));
         }
@@ -93,7 +96,7 @@ class QGlk : public QMainWindow {
         bool event(QEvent* event) override;
 
     protected:
-        void closeEvent(QCloseEvent * event) override;
+        void closeEvent(QCloseEvent* event) override;
         void resizeEvent(QResizeEvent* event) override;
 
     private:
@@ -109,9 +112,9 @@ class QGlk : public QMainWindow {
         QLinkedList<Glk::Stream*> m_StreamList;
         QLinkedList<Glk::FileReference*> m_FileReferenceList;
         QLinkedList<Glk::SoundChannel*> m_SoundChannelList;
-        
+
         std::function<void(void)> m_InterruptHandler;
-        
+
         Glk::StyleManager m_DefaultStyles;
         Glk::StyleManager m_TextBufferStyles;
 };

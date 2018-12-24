@@ -31,18 +31,12 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
 //     mp_TBWindow->mp_Text->setText(mp_TBWindow->mp_Text->text() + QString::fromUcs4(udata, ulen));
 
     delete[] udata;
-    
+
     return len;
 }
 
 Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
-    QObject::connect(keyboardInputProvider(), SIGNAL(characterInputRequested()), this, SLOT(onCharacterInputRequested()));
-    QObject::connect(keyboardInputProvider(), SIGNAL(characterInputRequestEnded(bool)), this, SLOT(onCharacterInputRequestEnded(bool)));
-    QObject::connect(keyboardInputProvider(), SIGNAL(lineInputRequested()), this, SLOT(onLineInputRequested()));
-    QObject::connect(keyboardInputProvider(), SIGNAL(lineInputRequestEnded(bool, void*, glui32, bool)), this, SLOT(onLineInputRequestEnded(bool, void*, glui32, bool)));
-    QObject::connect(keyboardInputProvider(), SIGNAL(lineInputCharacterEntered(glui32)), this, SLOT(onCharacterInput(glui32)));
-    QObject::connect(keyboardInputProvider(), SIGNAL(lineInputSpecialCharacterEntered(glui32)), this, SLOT(onSpecialCharacterInput(glui32)));
 
     QLayout* lay = new QGridLayout(this);
     lay->setMargin(0);
@@ -52,9 +46,31 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
 //     mp_Text->setAlignment(Qt::AlignBottom);
     mp_Text->setReadOnly(true);
     mp_Text->setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
-    QObject::connect(mp_Text, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
 
     lay->addWidget(mp_Text);
+    
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::characterInputRequested,
+        this, &Glk::TextBufferWindow::onCharacterInputRequested);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::characterInputRequestEnded,
+        this, &Glk::TextBufferWindow::onCharacterInputRequestEnded);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputRequested,
+        this, &Glk::TextBufferWindow::onLineInputRequested);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputRequestEnded,
+        this, &Glk::TextBufferWindow::onLineInputRequestEnded);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputCharacterEntered,
+        this, &Glk::TextBufferWindow::onCharacterInput);
+    connect(
+        keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputSpecialCharacterEntered,
+        this, &Glk::TextBufferWindow::onSpecialCharacterInput);
+    
+    connect(
+        mp_Text, &QTextBrowser::textChanged,
+        this, &Glk::TextBufferWindow::onTextChanged);
 }
 
 void Glk::TextBufferWindow::clearWindow() {
@@ -111,8 +127,8 @@ void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, g
         for(glui32 ii = 0; ii < len; ii++) // equality because of newline at end
             mp_Text->textCursor().deletePreviousChar(); // TODO more efficient?
     } else {
-        mp_Text->insertPlainText("\n");
-        
+        mp_Text->insertPlainText(QStringLiteral("\n"));
+
         if(windowStream()->echoStream()) {
             if(unicode)
                 windowStream()->echoStream()->writeUnicodeBuffer(static_cast<glui32*>(buf), len);

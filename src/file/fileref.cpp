@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-Glk::FileReference::FileReference(QFileInfo fi_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fi_), m_Usage(usage_) {
+Glk::FileReference::FileReference(const QFileInfo& fi_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fi_), m_Usage(usage_) {
     Q_ASSERT(!m_FileInfo.isDir());
 
     Glk::Dispatch::registerObject(this);

@@ -97,7 +97,7 @@ void glk_request_timer_events(glui32 millisecs) {
     Glk::sendTaskToEventThread([&] {
         if(!s_Timer) {
             s_Timer = new QTimer();
-            QObject::connect(s_Timer, SIGNAL(timeout()), &QGlk::getMainWindow().eventQueue(), SLOT(pushTimerEvent()));
+            QObject::connect(s_Timer, &QTimer::timeout, &QGlk::getMainWindow().eventQueue(), &Glk::EventQueue::pushTimerEvent);
         }
 
         if(millisecs == 0)

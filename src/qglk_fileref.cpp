@@ -15,13 +15,13 @@ QSet<Glk::FileReference*> s_FileReferenceSet;
 QString extFromUsage(glui32 usg) {
     switch(usg & 0x03) {
         case Glk::FileReference::SavedGame:
-            return "glksave";
+            return QStringLiteral("glksave");
 
         case Glk::FileReference::Data:
-            return "glkdata";
+            return QStringLiteral("glkdata");
 
         default:
-            return "txt";
+            return QStringLiteral("txt");
     }
 }
 

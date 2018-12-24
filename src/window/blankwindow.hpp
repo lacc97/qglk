@@ -5,6 +5,7 @@
 
 namespace Glk {
     class BlankWindow : public Window {
+            Q_OBJECT
         public:
             BlankWindow(glui32 rock_ = 0);
 

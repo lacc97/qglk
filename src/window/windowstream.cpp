@@ -13,7 +13,7 @@ void Glk::WindowStream::setEchoStream(Glk::Stream* echo) {
     mp_EchoStream = echo;
 
     if(mp_EchoStream)
-        QObject::connect(mp_EchoStream, SIGNAL(closed()), this, SLOT(onEchoStreamClosed()), Qt::DirectConnection);
+        connect(mp_EchoStream, &Glk::Stream::closed, this, &Glk::WindowStream::onEchoStreamClosed, Qt::DirectConnection);
 }
 
 void Glk::WindowStream::pushStyle(Style::Type sty) {
