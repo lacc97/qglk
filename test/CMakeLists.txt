@@ -179,3 +179,35 @@ add_executable(nitfol-glkterm
     target_compile_definitions(nitfol-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
     target_include_directories(nitfol-glkterm PRIVATE nitfol-0.5_p1/ glkterm-1.0.4/)
     target_link_libraries(nitfol-glkterm glkterm)
+
+set(GLULXE_SOURCES
+    glulxe-0.5.4/main.c
+    glulxe-0.5.4/files.c
+    glulxe-0.5.4/vm.c
+    glulxe-0.5.4/exec.c
+    glulxe-0.5.4/funcs.c
+    glulxe-0.5.4/operand.c
+    glulxe-0.5.4/string.c
+    glulxe-0.5.4/glkop.c
+    glulxe-0.5.4/heap.c
+    glulxe-0.5.4/serial.c
+    glulxe-0.5.4/search.c
+    glulxe-0.5.4/accel.c
+    glulxe-0.5.4/float.c
+    glulxe-0.5.4/gestalt.c
+    glulxe-0.5.4/osdepend.c
+    glulxe-0.5.4/profile.c
+    glulxe-0.5.4/debugger.c
+)
+
+if(UNIX)
+    set(GLULXE_OS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/glulxe-0.5.4/unixstrt.c)
+endif()
+
+add_executable(glulxe-qglk
+        ${GLULXE_SOURCES}
+        ${GLULXE_OS_SOURCES}
+)
+    target_compile_definitions(glulxe-qglk PRIVATE "-DOS_UNIX")
+    target_include_directories(glulxe-qglk PRIVATE glulxe-0.5.4/ ../src/)
+    target_link_libraries(glulxe-qglk qglk)
