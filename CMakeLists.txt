@@ -14,20 +14,6 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-set(QT_REQUIRED_LIBS Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
-
-add_library(qglk STATIC "")
-    target_include_directories(qglk PRIVATE src/)
-    target_link_libraries(qglk ${QT_REQUIRED_LIBS})
-
-install(TARGETS qglk DESTINATION lib/glk)
 
 add_subdirectory(src/)
 add_subdirectory(test/)
