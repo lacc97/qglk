@@ -88,7 +88,11 @@ namespace Glk {
 
 extern QSet<Glk::Window*> s_WindowSet;
 
-#define TO_WINID(ptr) (reinterpret_cast<winid_t>(ptr))
-#define FROM_WINID(ptr) (reinterpret_cast<Glk::Window*>(ptr))
+inline const winid_t TO_WINID(Glk::Window* win) {
+    return reinterpret_cast<winid_t>(win);
+}
+inline Glk::Window* const FROM_WINID(winid_t win) {
+    return reinterpret_cast<Glk::Window*>(win);
+}
 
 #endif

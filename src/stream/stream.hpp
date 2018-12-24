@@ -30,7 +30,7 @@ namespace Glk {
             virtual void pushStyle(Style::Type sty);
 
             bool isOpen() const;
-            
+
             inline bool isUnicode() const {
                 return m_Unicode;
             }
@@ -88,7 +88,7 @@ namespace Glk {
             inline void updateWriteCount(glui32 charwrit) {
                 m_WriteChars += charwrit;
             }
-        
+
         private:
             QIODevice* mp_Device;
             bool m_Unicode;
@@ -101,8 +101,12 @@ namespace Glk {
     };
 }
 
-#define TO_STRID(str) (reinterpret_cast<strid_t>(str))
-#define FROM_STRID(str) (reinterpret_cast<Glk::Stream*>(str))
+inline const strid_t TO_STRID(Glk::Stream* str) {
+    return reinterpret_cast<strid_t>(str);
+}
+inline Glk::Stream* const FROM_STRID(strid_t str) {
+    return reinterpret_cast<Glk::Stream*>(str);
+}
 
 #endif
 
