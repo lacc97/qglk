@@ -16,11 +16,11 @@ inline void fromQDateTime(const QDateTime& dt, glkdate_t& gds) {
 inline QDateTime toQDateTime(const glkdate_t& gds, QDateTime& dt) {
     dt.setSecsSinceEpoch(0);
 
-    dt.addYears(gds.year - 1970);
-    dt.addMonths(gds.month - 1);
-    dt.addDays(gds.day);
-    dt.addSecs(gds.hour * 3600 + gds.minute * 60 + gds.second);
-    dt.addMSecs(gds.microsec / 1000);
+    dt = dt.addYears(gds.year - 1970);
+    dt = dt.addMonths(gds.month - 1);
+    dt = dt.addDays(gds.day);
+    dt = dt.addSecs(gds.hour * 3600 + gds.minute * 60 + gds.second);
+    dt = dt.addMSecs(gds.microsec / 1000);
 
     return dt;
 }
