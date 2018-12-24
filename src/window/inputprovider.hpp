@@ -24,8 +24,7 @@ namespace Glk {
 
             void setTerminators(glui32* keycodes, glui32 count);
 
-        public slots:
-            bool handleKeyEvent(QKeyEvent* ev);
+            bool handleKeyEvent(int key, const QString& text);
 
         signals:
             void characterInputRequested();
@@ -62,8 +61,7 @@ namespace Glk {
             void requestMouseInput();
             void cancelMouseInputRequest();
 
-        public slots:
-            bool handleMouseEvent(QMouseEvent* ev);
+            bool handleMouseEvent(QPoint pos);
 
         signals:
             void mouseInputRequested();

@@ -32,13 +32,18 @@ void Glk::Window::setWindowParent(Glk::PairWindow* prnt) {
 }
 
 void Glk::Window::keyPressEvent(QKeyEvent* event) {
-    Glk::postTaskToGlkThread([&]() {
-        mp_KIProvider->handleKeyEvent(event);
+    int key = event->key();
+    QString text(event->text().data());
+    
+    Glk::postTaskToGlkThread([=]() {
+        mp_KIProvider->handleKeyEvent(key, text);
     });
 }
 
 void Glk::Window::mouseReleaseEvent(QMouseEvent* event) {
-    Glk::postTaskToGlkThread([&]() {
-        mp_MIProvider->handleMouseEvent(event);
+    QPoint pos = event->pos();
+    
+    Glk::postTaskToGlkThread([=]() {
+        mp_MIProvider->handleMouseEvent(pos);
     });
 }

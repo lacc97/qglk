@@ -170,9 +170,9 @@ inline glui32 switchKeyCode(int qkeycode) {
 }
 
 // This code is executed in the glk thread.
-bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
+bool Glk::KeyboardInputProvider::handleKeyEvent(int key, const QString& text) {
     if(m_CharacterInputRequested) {
-        glui32 keyc = switchKeyCode(ev->key());
+        glui32 keyc = switchKeyCode(key);
 
         if(keyc != keycode_MAXVAL) {
             Glk::sendTaskToEventThread([&]() {
@@ -181,7 +181,7 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
             QGlk::getMainWindow().eventQueue().push(event_t {evtype_CharInput, TO_WINID(windowPointer()), keyc, 0});
             m_CharacterInputRequested = false;
         } else {
-            QVector<uint> ucs4 = ev->text().normalized(QString::NormalizationForm_KC).toUcs4();
+            QVector<uint> ucs4 = text.normalized(QString::NormalizationForm_KC).toUcs4();
 
             if(ucs4.size() == 1) {
                 glui32 ch = ucs4[0];
@@ -199,7 +199,7 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
 
         return true;
     } else if(m_LineInputRequested) {
-        glui32 keyc = switchKeyCode(ev->key());
+        glui32 keyc = switchKeyCode(key);
 
         switch(keyc) {
             case keycode_Delete: {
@@ -214,7 +214,7 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
             }
 
             case keycode_MAXVAL: {
-                QVector<uint> ucs4 = ev->text().normalized(QString::NormalizationForm_KC).toUcs4();
+                QVector<uint> ucs4 = text.normalized(QString::NormalizationForm_KC).toUcs4();
 
                 if(ucs4.size() == 1) {
                     if(!m_Unicode) {
@@ -290,12 +290,12 @@ void Glk::MouseInputProvider::cancelMouseInputRequest() {
 }
 
 // This code is executed in the glk thread.
-bool Glk::MouseInputProvider::handleMouseEvent(QMouseEvent* ev) { //TODO fix
+bool Glk::MouseInputProvider::handleMouseEvent(QPoint pos) { //TODO fix
     if(m_MouseInputRequested) {
         QSize ws = windowPointer()->windowSize();
 
-        glui32 x = std::clamp(ev->pos().x(), 0, ws.width() - 1);
-        glui32 y = std::clamp(ev->pos().y(), 0, ws.height() - 1);
+        glui32 x = std::clamp(pos.x(), 0, ws.width() - 1);
+        glui32 y = std::clamp(pos.y(), 0, ws.height() - 1);
 
         Glk::sendTaskToEventThread([&]() {
             emit mouseInputRequestEnded(false);

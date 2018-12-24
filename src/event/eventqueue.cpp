@@ -25,7 +25,9 @@ event_t Glk::EventQueue::pop() {
         
         if(ev.type == evtype_TaskEvent) {
             TaskEvent* tev = m_TaskEventQueue.dequeue();
+            ml.unlock();
             tev->execute();
+            ml.relock();
             delete tev;
         }
     } while(ev.type == evtype_TaskEvent);
@@ -49,7 +51,9 @@ event_t Glk::EventQueue::poll() {
             case evtype_TaskEvent: {
                 ev = m_Queue.takeAt(ii--);
                 TaskEvent* tev = m_TaskEventQueue.dequeue();
+                ml.unlock();
                 tev->execute();
+                ml.relock();
                 delete tev;
                 m_Semaphore.acquire(1);
                 break;
