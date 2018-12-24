@@ -112,17 +112,17 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
         }
     });
 
-#ifndef NDEBUG
-    printTree(QGlk::getMainWindow().rootWindow());
-    qDebug() << "";
-#endif
+// #ifndef NDEBUG
+//     printTree(QGlk::getMainWindow().rootWindow());
+//     qDebug() << "";
+// #endif
 
     return TO_WINID(neww);
 }
 
 void glk_window_close(winid_t win, stream_result_t* result) {
     Glk::sendTaskToEventThread([&] {
-        Glk::PairWindow* prntw = static_cast<Glk::PairWindow*>(FROM_WINID(win)->windowParent());
+        Glk::PairWindow* prntw = FROM_WINID(win)->windowParent();
 
         if(prntw) {
             Glk::Window* prntws = prntw->secondWindow();
@@ -139,17 +139,17 @@ void glk_window_close(winid_t win, stream_result_t* result) {
         QGlk::getMainWindow().eventQueue().cleanWindowEvents(win);
 
         if(result) {
-            result->readcount = FROM_STRID(FROM_WINID(win)->windowStream())->readCount();
-            result->writecount = FROM_STRID(FROM_WINID(win)->windowStream())->writeCount();
+            result->readcount = FROM_WINID(win)->windowStream()->readCount();
+            result->writecount = FROM_WINID(win)->windowStream()->writeCount();
         }
 
         delete FROM_WINID(win);
     });
 
-#ifndef NDEBUG
-    printTree(QGlk::getMainWindow().rootWindow());
-    qDebug() << "";
-#endif
+// #ifndef NDEBUG
+//     printTree(QGlk::getMainWindow().rootWindow());
+//     qDebug() << "";
+// #endif
 }
 
 void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {

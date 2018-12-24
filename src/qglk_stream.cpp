@@ -10,11 +10,33 @@
 #include "stream/nulldevice.hpp"
 #include "stream/unicodestream.hpp"
 
+Glk::Stream* s_CurrentStream = NULL;
+void glk_stream_set_current(strid_t str) {
+#ifndef NDEBUG
+    qDebug() << "glk_stream_set_current(" << str << ")";
+#endif
+    s_CurrentStream = FROM_STRID(str);
+}
+
+strid_t glk_stream_get_current(void) {
+#ifndef NDEBUG
+    qDebug() << "glk_stream_get_current() =>" << TO_STRID(s_CurrentStream);
+#endif
+    return TO_STRID(s_CurrentStream);
+}
+
 void glk_stream_close(strid_t str, stream_result_t* result) {
+#ifndef NDEBUG
+    qDebug() << "glk_stream_close(" << str << "," << result << ")";
+#endif
+
     if(result) {
         result->readcount = FROM_STRID(str)->readCount();
         result->writecount = FROM_STRID(str)->writeCount();
     }
+
+    if(TO_STRID(s_CurrentStream) == str)
+        s_CurrentStream = NULL;
 
     delete FROM_STRID(str);
 }
@@ -41,7 +63,7 @@ strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
 
     if(rockptr)
         *rockptr = (*it)->rock();
-    
+
     return TO_STRID(*it);
 }
 
@@ -67,15 +89,6 @@ void glk_stream_set_position(strid_t str, glsi32 pos, glui32 seekmode) {
 
 glui32 glk_stream_get_position(strid_t str) {
     return FROM_STRID(str)->position();
-}
-
-Glk::Stream* s_CurrentStream = NULL;
-void glk_stream_set_current(strid_t str) {
-    s_CurrentStream = FROM_STRID(str);
-}
-
-strid_t glk_stream_get_current(void) {
-    return TO_STRID(s_CurrentStream);
 }
 
 void glk_put_char(unsigned char ch) {
@@ -201,6 +214,10 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
     if(buf)
         Glk::Dispatch::registerArray(buf, buflen, false);
 
+#ifndef NDEBUG
+    qDebug() << "glk_stream_open_memory(" << ((void*)buf) << "," << buflen << "," << fmode << "," << rock << ") =>" << TO_STRID(str);
+#endif
+
     return TO_STRID(str);
 }
 
@@ -239,6 +256,10 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
 
     if(buf)
         Glk::Dispatch::registerArray(buf, buflen, true);
+
+#ifndef NDEBUG
+    qDebug() << "glk_stream_open_memory_uni(" << buf << "," << buflen << "," << fmode << "," << rock << ") =>" << TO_STRID(str);
+#endif
 
     return TO_STRID(str);
 }
