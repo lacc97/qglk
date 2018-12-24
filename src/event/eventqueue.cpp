@@ -7,7 +7,7 @@
 // #define evtype_TaskEvent (0xfafbfcfd)
 #define evtype_TaskEvent (evtype_None)
 
-Glk::EventQueue::EventQueue() : m_Queue(), m_Semaphore(0), m_Terminate(false) {
+Glk::EventQueue::EventQueue(QObject* parent) : QObject(parent), m_Queue(), m_Semaphore(0), m_Terminate(false) {
 }
 
 event_t Glk::EventQueue::pop() {

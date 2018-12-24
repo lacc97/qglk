@@ -64,7 +64,7 @@ void Glk::KeyboardInputProvider::cancelLineInputRequest(event_t* ev) {
         return;
 
     ev->type = evtype_LineInput;
-    ev->win = TO_WINID(this);
+    ev->win = TO_WINID(windowPointer());
     ev->val1 = m_LineInputBufferPosition;
     ev->val2 = 0; // TODO line terminators
 
@@ -169,12 +169,15 @@ inline glui32 switchKeyCode(int qkeycode) {
     }
 }
 
+// This code is executed in the glk thread.
 bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
     if(m_CharacterInputRequested) {
         glui32 keyc = switchKeyCode(ev->key());
 
         if(keyc != keycode_MAXVAL) {
-            emit characterInputRequestEnded(false);
+            Glk::sendTaskToEventThread([&]() {
+                emit characterInputRequestEnded(false);
+            });
             QGlk::getMainWindow().eventQueue().push(event_t {evtype_CharInput, TO_WINID(windowPointer()), keyc, 0});
             m_CharacterInputRequested = false;
         } else {
@@ -186,7 +189,9 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
                 if(!m_Unicode)
                     ch = (ch < 256 ? ch : '?');
 
-                emit characterInputRequestEnded(false);
+                Glk::sendTaskToEventThread([&]() {
+                    emit characterInputRequestEnded(false);
+                });
                 QGlk::getMainWindow().eventQueue().push(event_t {evtype_CharInput, TO_WINID(windowPointer()), ch, 0});
                 m_CharacterInputRequested = false;
             }
@@ -200,7 +205,9 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
             case keycode_Delete: {
                 if(m_LineInputBufferPosition > 0) {
                     m_LineInputBufferPosition--;
-                    emit lineInputSpecialCharacterEntered(keyc);
+                    Glk::sendTaskToEventThread([&]() {
+                        emit lineInputSpecialCharacterEntered(keyc);
+                    });
                 }
 
                 break;
@@ -213,18 +220,22 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
                     if(!m_Unicode) {
                         unsigned char ch = (ucs4[0] < 256 ? ucs4[0] : '?');
                         static_cast<unsigned char*>(mp_LineInputBuffer)[m_LineInputBufferPosition++] = ch;
-                        emit lineInputCharacterEntered(ch);
+                        Glk::sendTaskToEventThread([&]() {
+                            emit lineInputCharacterEntered(ch);
+                        });
                     } else {
                         glui32 ch = ucs4[0];
                         static_cast<glui32*>(mp_LineInputBuffer)[m_LineInputBufferPosition++] = ch;
-                        emit lineInputCharacterEntered(ch);
+                        Glk::sendTaskToEventThread([&]() {
+                            emit lineInputCharacterEntered(ch);
+                        });
                     }
 
                     if(m_LineInputBufferPosition == m_LineInputBufferLength) {
-                        emit lineInputRequestEnded(false, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
-                        Glk::sendTaskToGlkThread([&] {
-                            Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
+                        Glk::sendTaskToEventThread([&]() {
+                            emit lineInputRequestEnded(false, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
                         });
+                        Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
                         QGlk::getMainWindow().eventQueue().push(event_t {evtype_LineInput, TO_WINID(windowPointer()), m_LineInputBufferPosition, 0});
                         m_LineInputRequested = false;
                     }
@@ -235,10 +246,10 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(QKeyEvent* ev) {
 
             default: {
                 if(keyc == keycode_Return || m_Terminators.contains(keyc)) {
-                    emit lineInputRequestEnded(false, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
-                    Glk::sendTaskToGlkThread([&] {
-                        Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
+                    Glk::sendTaskToEventThread([&]() {
+                        emit lineInputRequestEnded(false, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
                     });
+                    Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
                     QGlk::getMainWindow().eventQueue().push(event_t {evtype_LineInput, TO_WINID(windowPointer()), m_LineInputBufferPosition, keyc == keycode_Return ? 0 : keyc});
                     m_LineInputRequested = false;
                 }
@@ -278,6 +289,7 @@ void Glk::MouseInputProvider::cancelMouseInputRequest() {
     emit mouseInputRequestEnded(true);
 }
 
+// This code is executed in the glk thread.
 bool Glk::MouseInputProvider::handleMouseEvent(QMouseEvent* ev) { //TODO fix
     if(m_MouseInputRequested) {
         QSize ws = windowPointer()->windowSize();
@@ -285,7 +297,9 @@ bool Glk::MouseInputProvider::handleMouseEvent(QMouseEvent* ev) { //TODO fix
         glui32 x = std::clamp(ev->pos().x(), 0, ws.width() - 1);
         glui32 y = std::clamp(ev->pos().y(), 0, ws.height() - 1);
 
-        emit mouseInputRequestEnded(false);
+        Glk::sendTaskToEventThread([&]() {
+            emit mouseInputRequestEnded(false);
+        });
         QGlk::getMainWindow().eventQueue().push(event_t {evtype_MouseInput, TO_WINID(windowPointer()), x, y});
         m_MouseInputRequested = false;
     }

@@ -322,7 +322,6 @@ void QGlk::resizeEvent(QResizeEvent* event) {
 
 bool QGlk::handleGlkTask(Glk::TaskEvent* event) {
     event->execute();
-
-    return true;
+    return event->handled();
 }
 

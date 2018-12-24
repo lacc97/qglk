@@ -8,21 +8,36 @@
 
 namespace Glk {
     class TaskEvent : public QEvent {
+        Q_DISABLE_COPY(TaskEvent)
         public:
             static const int Type = QEvent::User + 1;
 
-            TaskEvent(QSemaphore& sem, const std::function<void(void)>& tsk);
+            TaskEvent(const std::function<void(void)>& tsk);
 
-            void execute();
+            virtual void execute();
+            
+            inline bool handled() const {
+                return m_Handled;
+            }
 
         private:
             std::function<void(void)> m_Task;
-            QSemaphore& mr_Semaphore;
             bool m_Handled;
     };
     
+    class SynchronizedTaskEvent : public TaskEvent {
+    public:
+        SynchronizedTaskEvent(QSemaphore& sem, const std::function<void(void)>& tsk);
+        
+        virtual void execute() override;
+        
+    private:
+        QSemaphore& mr_Semaphore;
+    };
+    
+    void postTaskToGlkThread(const std::function<void(void)>& tsk);
+    
     void sendTaskToEventThread(const std::function<void(void)>& tsk);
-    void sendTaskToGlkThread(const std::function<void(void)>& tsk);
 }
 
 #endif
