@@ -113,19 +113,19 @@ gidispatch_rock_t gidispatch_get_objrock(void* obj, glui32 objclass) {
 
     switch(static_cast<Glk::Object::Type>(objclass)) {
         case Glk::Object::Type::Window:
-            glkobj = FROM_WINID(obj);
+            glkobj = FROM_WINID(static_cast<winid_t>(obj));
             break;
 
         case Glk::Object::Type::Stream:
-            glkobj = FROM_STRID(obj);
+            glkobj = FROM_STRID(static_cast<strid_t>(obj));
             break;
 
         case Glk::Object::Type::FileReference:
-            glkobj = FROM_FREFID(obj);
+            glkobj = FROM_FREFID(static_cast<frefid_t>(obj));
             break;
 
         case Glk::Object::Type::SoundChannel:
-            glkobj = FROM_SCHANID(obj);
+            glkobj = FROM_SCHANID(static_cast<schanid_t>(obj));
             break;
 
         default:
