@@ -12,6 +12,7 @@ namespace Glk {
     class Window;
 
     class WindowConstraint {
+            Q_DISABLE_COPY(WindowConstraint)
         public:
             enum Method : glui32 {
                 Left = winmethod_Left,
@@ -24,21 +25,21 @@ namespace Glk {
                 NoBorder = winmethod_NoBorder
             };
             static inline bool isBordered(glui32 met) {
-                return !bool(met & NoBorder);
+                return (met & NoBorder) == 0;
             }
             static inline bool isProportional(glui32 met) {
-                return bool(met & Proportional);
+                return (met & Proportional) != 0;
             }
             static inline bool isFixed(glui32 met) {
-                return bool(met & Fixed);
+                return (met & Fixed) != 0;
             }
             static inline bool isHorizontal(glui32 met) {
-                return !(bool(met & Above) || bool(met & Below));
+                return (met & Above) == 0;
             }
             static inline bool isVertical(glui32 met) {
-                return bool(met & Above) || bool(met & Below);
+                return (met & Above) != 0;
             }
-            
+
             WindowConstraint(Method method_, glui32 size_);
             virtual ~WindowConstraint() = default;
 
@@ -76,28 +77,30 @@ namespace Glk {
     };
 
     class HorizontalWindowConstraint : public WindowConstraint {
+            Q_DISABLE_COPY(HorizontalWindowConstraint)
         public:
             HorizontalWindowConstraint(Method method_, glui32 size_);
 
             inline bool constrainsLeft() const {
-                return !bool(method() & WindowConstraint::Right);
+                return (method() & 1) == 0;
             }
             inline bool constrainsRight() const {
-                return bool(method() & WindowConstraint::Right);
+                return (method() & 1) != 0;
             }
 
             void setupWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* firstwin, Glk::Window* secondwin) const override;
     };
 
     class VerticalWindowConstraint : public WindowConstraint {
+            Q_DISABLE_COPY(VerticalWindowConstraint)
         public:
             VerticalWindowConstraint(Method method_, glui32 size_);
 
             inline bool constrainsAbove() const {
-                return bool(method() & WindowConstraint::Above);
+                return WindowConstraint::isVertical(method()) && (method() & 1) == 0;
             }
             inline bool constrainsBelow() const {
-                return bool(method() & WindowConstraint::Below);
+                return WindowConstraint::isVertical(method()) && (method() & 1) != 0;
             }
 
             void setupWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* firstwin, Glk::Window* secondwin) const override;
