@@ -71,7 +71,7 @@ extern void gidispatch_set_retained_registry(
     on libraries that support autorestore. (Only iosglk, currently.)
     Only call this if GIDISPATCH_AUTORESTORE_REGISTRY is defined.
 */
-#define GIDISPATCH_AUTORESTORE_REGISTRY
+// #define GIDISPATCH_AUTORESTORE_REGISTRY
 extern void gidispatch_set_autorestore_registry(
     long (*locatearr)(void *array, glui32 len, char *typecode,
         gidispatch_rock_t objrock, int *elemsizeref),
@@ -94,7 +94,7 @@ extern glui32 gidispatch_count_functions(void);
 extern gidispatch_function_t *gidispatch_get_function(glui32 index);
 extern gidispatch_function_t *gidispatch_get_function_by_id(glui32 id);
 
-#define GI_DISPA_GAME_ID_AVAILABLE
+// #define GI_DISPA_GAME_ID_AVAILABLE
 /* These function is not part of Glk dispatching per se; they allow the
    game to provide an identifier string for the Glk library to use.
    The functions themselves are in gi_dispa.c.
