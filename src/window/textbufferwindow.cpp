@@ -26,52 +26,57 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
 
     for(glui32 ii = 0; ii < ulen; ii++)
         udata[ii] = qFromBigEndian(reinterpret_cast<const glui32*>(data)[ii]);
-    
+
     QString text = QString::fromUcs4(udata, ulen);
     QStringList blocks = text.split('\n');
-    
-    insertText(blocks.front());
-    blocks.pop_front();
-    
-    for(const QString& block : blocks) {
-        mp_TBWindow->mp_Text->insertPlainText(QStringLiteral("\n"));
-        insertText(block);
+
+    qDebug() << blocks;
+
+    if(m_Buffer.isEmpty()) {
+        m_Buffer.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(m_StyleString).arg(blocks.front()));
+    } else {
+        m_Buffer.back().chop(7);
+        m_Buffer.back().append(QStringLiteral("%1</span>").arg(blocks.front()));
     }
 
-//     qDebug() << mp_TBWindow->mp_Text->document()->defaultStyleSheet();
-//     mp_TBWindow->mp_Text->insertPlainText(QString::fromUcs4(udata, ulen));
-//     qDebug() << mp_TBWindow->mp_Text->toHtml();
+    blocks.pop_front();
 
-    emit textChanged();
+    for(const QString& b : blocks)
+        m_Buffer.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(m_StyleString).arg(b));
 
     delete[] udata;
 
     return len;
 }
 
-void Glk::TextBufferDevice::onWindowStyleChanged(const QString& newStyleString) {
-//     cleanClosingSpanTag();
-//     mp_TBWindow->mp_Text->insertPlainText(QStringLiteral("<span style=\"%1\"></span>").arg(newStyle.styleString()));
-// //     mp_TBWindow->mp_Text->document()->setDefaultStyleSheet(QStringLiteral("p{%1}").arg(newStyle.styleString()));
-    m_StyleString = newStyleString;
+void Glk::TextBufferDevice::discard() {
+    m_Buffer.clear();
 }
 
-void Glk::TextBufferDevice::cleanClosingSpanTag() {
-    mp_TBWindow->mp_Text->textCursor().movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, 7);
-//     for(size_t ii = 0; ii < 7; ii++) mp_TBWindow->mp_Text->textCursor().deletePreviousChar();
-}
+void Glk::TextBufferDevice::flush() {
+    if(m_Buffer.isEmpty())
+        return;
 
-void Glk::TextBufferDevice::insertText(const QString& str) {
-    QString textString = str;
-    
-    while(textString[0] == ' ') {
-        mp_TBWindow->mp_Text->insertPlainText(QStringLiteral(" "));
-        textString.remove(0,1);
+    qDebug() << m_Buffer.front();
+    mp_TBWindow->mp_Text->insertHtml(m_Buffer.front());
+    m_Buffer.pop_front();
+
+    for(const QString& block : m_Buffer) {
+        qDebug() << block;
+        mp_TBWindow->mp_Text->insertPlainText(QStringLiteral("\n"));
+        mp_TBWindow->mp_Text->insertHtml(block);
     }
-    
-    if(!textString.isEmpty())
-        mp_TBWindow->mp_Text->insertHtml(QStringLiteral("<span style=\"%1\">%2</span>").arg(m_StyleString).arg(str));
-//     qDebug() << QStringLiteral("<span style=\"%1\">%2</span>").arg(m_StyleString).arg(str);
+
+    m_Buffer.clear();
+
+    emit textChanged();
+}
+
+void Glk::TextBufferDevice::onWindowStyleChanged(const QString& newStyleString) {
+    m_StyleString = newStyleString;
+
+    if(!m_Buffer.isEmpty())
+        m_Buffer.back().append(QStringLiteral("<span style=\"%1\"></span>").arg(m_StyleString));
 }
 
 Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
@@ -110,22 +115,24 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
     connect(
         ioDevice(), &Glk::TextBufferDevice::textChanged,
         this, &Glk::TextBufferWindow::onTextChanged);
-//     connect(
-//         this, &Glk::TextBufferWindow::styleChanged,
-//         ioDevice(), &Glk::TextBufferDevice::onWindowStyleChanged);
-    
+
+    connect(
+        &QGlk::getMainWindow(), &QGlk::poll,
+        ioDevice(), &Glk::TextBufferDevice::flush);
+
     ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString());
 }
 
 void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
-    qDebug() << "Changed style from" << m_CurrentStyleType << "to" << style; 
-    
+    qDebug() << "Changed style from" << m_CurrentStyleType << "to" << style;
+
     m_PreviousStyleType = m_CurrentStyleType;
     m_CurrentStyleType = style;
     ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString());
 }
 
 void Glk::TextBufferWindow::clearWindow() {
+    ioDevice()->discard();
     mp_Text->clear();
 }
 
@@ -163,16 +170,19 @@ QSize Glk::TextBufferWindow::unitsToPixels(const QSize& units) const {
 void Glk::TextBufferWindow::onCharacterInputRequested() {
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     setFocus();
+    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onCharacterInputRequestEnded(bool cancelled) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
+    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onLineInputRequested() {
     setStyle(Glk::Style::Input);
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     setFocus();
+    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode) {
@@ -191,12 +201,15 @@ void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, g
             windowStream()->echoStream()->writeChar('\n');
         }
     }
+
     setStyle(m_PreviousStyleType);
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
+    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onCharacterInput(glui32 ch) {
     windowStream()->writeUnicodeChar(ch);
+    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc) {
@@ -215,6 +228,8 @@ void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc) {
 //             mp_Text->textCursor().movePosition(QTextCursor::NextCharacter);
 //             break;
     }
+
+    ioDevice()->flush();
 }
 
 #include "moc_textbufferwindow.cpp"

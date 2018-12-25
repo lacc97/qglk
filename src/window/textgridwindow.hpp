@@ -16,7 +16,7 @@ namespace Glk {
 
             qint64 readData(char* data, qint64 maxlen) override;
             qint64 writeData(const char* data, qint64 len) override;
-
+            
         private:
             TextGridWindow* mp_TGWindow;
     };
@@ -47,6 +47,10 @@ namespace Glk {
 //             void onCharacterInputRequestEnded() override;
 
 //             void onCharacterEntered(glui32 ch) override;
+
+            inline Glk::TextGridDevice* ioDevice() const {
+                return static_cast<Glk::TextGridDevice*>(windowStream()->getIODevice());
+            }
 
             QSize pixelsToUnits(const QSize& pixels) const override;
             QPoint pixelsToUnits(QPoint pixels) const;

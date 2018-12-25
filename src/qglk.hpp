@@ -40,9 +40,11 @@ namespace Glk {
 
 class QGlk : public QMainWindow {
         Q_OBJECT
+        Q_DISABLE_COPY(QGlk)
 
         friend int main(int, char**);
         friend void glk_tick();
+//         friend void glk_select(event_t*);
     public:
         static QGlk& getMainWindow();
 
@@ -94,6 +96,10 @@ class QGlk : public QMainWindow {
         }
 
         bool event(QEvent* event) override;
+
+    signals:
+        void tick();
+        void poll();
 
     protected:
         void closeEvent(QCloseEvent* event) override;

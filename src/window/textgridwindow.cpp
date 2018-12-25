@@ -8,6 +8,8 @@
 #include <QPainter>
 #include <QResizeEvent>
 
+#include "qglk.hpp"
+
 Glk::TextGridDevice::TextGridDevice(Glk::TextGridWindow* win) : mp_TGWindow(win) {}
 
 qint64 Glk::TextGridDevice::readData(char* data, qint64 maxlen) {
@@ -27,8 +29,6 @@ qint64 Glk::TextGridDevice::writeData(const char* data, qint64 len) {
             break;
     }
 
-    mp_TGWindow->update(); // TODO too much?
-
     return wcount * 4;
 }
 
@@ -38,7 +38,7 @@ Glk::TextGridWindow::TextGridWindow(glui32 rock_) : Window(new TextGridDevice(th
 
     setFocusPolicy(Qt::StrongFocus);
     setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-    
+
     connect(
         keyboardInputProvider(), &Glk::KeyboardInputProvider::characterInputRequested,
         this, &Glk::TextGridWindow::onCharacterInputRequested);
@@ -57,6 +57,10 @@ Glk::TextGridWindow::TextGridWindow(glui32 rock_) : Window(new TextGridDevice(th
     connect(
         keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputSpecialCharacterEntered,
         this, &Glk::TextGridWindow::onSpecialCharacterInput);
+
+    connect(
+        &QGlk::getMainWindow(), &QGlk::poll,
+        this, qOverload<>(&Glk::TextGridWindow::update));
 }
 
 void Glk::TextGridWindow::clearWindow() {

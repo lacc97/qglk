@@ -19,17 +19,17 @@ namespace Glk {
             qint64 writeData(const char* data, qint64 len) override;
 
         public slots:
+            void discard();
+            void flush();
             void onWindowStyleChanged(const QString& newStyleString);
 
         signals:
             void textChanged();
 
         private:
-            void cleanClosingSpanTag();
-            void insertText(const QString& str);
-
             TextBufferWindow* mp_TBWindow;
             QString m_StyleString;
+            QStringList m_Buffer;
     };
 
     class TextBufferWindow : public Window {

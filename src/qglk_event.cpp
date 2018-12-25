@@ -11,6 +11,8 @@
 void glk_tick() {
     if(QGlk::getMainWindow().eventQueue().isInterrupted())
         throw Glk::ExitException(true);
+    
+    emit QGlk::getMainWindow().tick();
 }
 
 void glk_set_interrupt_handler(void (*func)(void)) {
@@ -27,6 +29,7 @@ void glk_select(event_t* event) {
 #ifndef NDEBUG
     qDebug() << "Waiting for event...";
 #endif
+    emit QGlk::getMainWindow().poll();
     *event = QGlk::getMainWindow().eventQueue().pop();
 #ifndef NDEBUG
     qDebug() << "Received event of type" << to_string(*event);
@@ -34,8 +37,8 @@ void glk_select(event_t* event) {
 }
 
 void glk_select_poll(event_t* event) {
-    QGlk::getMainWindow().update();
-
+    emit QGlk::getMainWindow().poll();
+    
 #ifndef NDEBUG
     qDebug() << "Polling events...";
 #endif
