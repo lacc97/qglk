@@ -22,7 +22,7 @@ event_t Glk::EventQueue::pop() {
             throw Glk::ExitException(true);
 
         ev = m_Queue.dequeue();
-        
+
         if(ev.type == evtype_TaskEvent) {
             TaskEvent* tev = m_TaskEventQueue.dequeue();
             ml.unlock();
@@ -31,7 +31,7 @@ event_t Glk::EventQueue::pop() {
             delete tev;
         }
     } while(ev.type == evtype_TaskEvent);
-    
+
     return ev;
 }
 
@@ -96,7 +96,7 @@ void Glk::EventQueue::push(const event_t& ev) {
 
 void Glk::EventQueue::pushTaskEvent(Glk::TaskEvent* ev) {
     Q_ASSERT(ev);
-    
+
     QMutexLocker ml(&m_AccessMutex);
 
     m_Queue.enqueue(event_t {evtype_TaskEvent, NULL, 0, 0});
@@ -122,4 +122,45 @@ void Glk::EventQueue::pushTimerEvent() {
     m_Queue.enqueue(ev);
 
     m_Semaphore.release(1);
+}
+
+const std::string eventTypeName(glui32 t) {
+    switch(t) {
+        case evtype_None:
+            return "None";
+
+        case evtype_Timer:
+            return "Timer";
+
+        case evtype_CharInput:
+            return "CharInput";
+
+        case evtype_LineInput:
+            return "LineInput";
+
+        case evtype_MouseInput:
+            return "MouseInput";
+
+        case evtype_Arrange:
+            return "Arrange";
+
+        case evtype_Redraw:
+            return "Redraw";
+
+        case evtype_SoundNotify:
+            return "SoundNotify";
+
+        case evtype_Hyperlink:
+            return "HyperLink";
+
+        case evtype_VolumeNotify:
+            return "VolumeNotify";
+
+        default:
+            return "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& os, const event_t& e) {
+    return os << eventTypeName(e.type) << "{" << e.win << ", " << e.val1 << ", " << e.val2 << "}";
 }

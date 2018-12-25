@@ -24,45 +24,87 @@ void glk_exit() {
 }
 
 void glk_select(event_t* event) {
+#ifndef NDEBUG
+    qDebug() << "Waiting for event...";
+#endif
     *event = QGlk::getMainWindow().eventQueue().pop();
+#ifndef NDEBUG
+    qDebug() << "Received event of type" << to_string(*event);
+#endif
 }
 
 void glk_select_poll(event_t* event) {
     QGlk::getMainWindow().update();
+
+#ifndef NDEBUG
+    qDebug() << "Polling events...";
+#endif
     *event = QGlk::getMainWindow().eventQueue().poll();
+#ifndef NDEBUG
+
+    if(event->type == evtype_None)
+        qDebug() << "No event received.";
+    else
+        qDebug() << "Received event" << to_string(*event);
+
+#endif
 }
 
 void glk_request_char_event(winid_t win) {
+#ifndef NDEBUG
+    qDebug() << "glk_request_char_event(" << win << ")";
+#endif
+
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestCharInput(false);
     });
 }
 
 void glk_request_char_event_uni(winid_t win) {
+#ifndef NDEBUG
+    qDebug() << "glk_request_char_event_uni(" << win << ")";
+#endif
+
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestCharInput(true);
     });
 }
 
 void glk_cancel_char_event(winid_t win) {
+#ifndef NDEBUG
+    qDebug() << "glk_cancel_char_event(" << win << ")";
+#endif
+
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->cancelCharInputRequest();
     });
 }
 
 void glk_request_line_event(winid_t win, char* buf, glui32 maxlen, glui32 initlen) {
+#ifndef NDEBUG
+    qDebug() << "glk_request_line_event(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
+#endif
+
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestLineInput(buf, maxlen, initlen, false);
     });
 }
 
 void glk_request_line_event_uni(winid_t win, glui32* buf, glui32 maxlen, glui32 initlen) {
+#ifndef NDEBUG
+    qDebug() << "glk_request_line_event_uni(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
+#endif
+    
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestLineInput(buf, maxlen, initlen, true);
     });
 }
 
 void glk_cancel_line_event(winid_t win, event_t* event) {
+#ifndef NDEBUG
+    qDebug() << "glk_cancel_line_event(" << win << ")";
+#endif
+    
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->cancelLineInputRequest(event);
     });

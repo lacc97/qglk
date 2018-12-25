@@ -21,6 +21,10 @@ Glk::FileReference::~FileReference() {
     Glk::Dispatch::unregisterObject(this);
 }
 
+QString Glk::FileReference::path() {
+    return m_FileInfo.absolutePath();
+}
+
 bool Glk::FileReference::exists() const {
     return m_FileInfo.exists();
 }

@@ -92,20 +92,25 @@ glui32 glk_stream_get_position(strid_t str) {
 }
 
 void glk_put_char(unsigned char ch) {
+//     qDebug() << "glk_put_char(" << ch << ")";
     if(s_CurrentStream)
         s_CurrentStream->writeChar(ch);
 }
 
 void glk_put_char_stream(strid_t str, unsigned char ch) {
+//     qDebug() << "glk_put_char_stream(" << str << "," << ch << ")";
     FROM_STRID(str)->writeChar(ch);
 }
 
 void glk_put_string(char* s) {
+    qDebug() << "glk_put_string(" << s << ")";
+
     if(s_CurrentStream)
         s_CurrentStream->writeString(s);
 }
 
 void glk_put_string_stream(strid_t str, char* s) {
+    qDebug() << "glk_put_string_stream(" << str << "," << s << ")";
     FROM_STRID(str)->writeString(s);
 }
 
@@ -222,6 +227,10 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
 }
 
 strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glui32 rock) {
+#ifndef NDEBUG
+    QDebug deb = qDebug();
+    deb << "glk_stream_open_memory_uni(" << buf << "," << buflen << "," << fmode << "," << rock << ") =>";
+#endif
     Glk::Stream* str;
 
     if(buf)
@@ -251,6 +260,9 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
 
     if(!str->open(om)) {
         delete str;
+#ifndef NDEBUG
+        deb << ((void*)NULL);
+#endif
         return NULL;
     }
 
@@ -258,13 +270,17 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
         Glk::Dispatch::registerArray(buf, buflen, true);
 
 #ifndef NDEBUG
-    qDebug() << "glk_stream_open_memory_uni(" << buf << "," << buflen << "," << fmode << "," << rock << ") =>" << TO_STRID(str);
+    deb << TO_STRID(str);
 #endif
 
     return TO_STRID(str);
 }
 
 strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
+#ifndef NDEBUG
+    QDebug deb = qDebug();
+    deb << "glk_stream_open_file(" << FROM_FREFID(fileref)->path() << "," << fmode << "," << rock << ") =>";
+#endif
     Glk::Stream* str = new Glk::Latin1Stream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, NULL, rock);
     QIODevice::OpenMode om;
 
@@ -294,13 +310,24 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
 
     if(!str->open(om)) {
         delete str;
+#ifndef NDEBUG
+        deb << ((void*)NULL);
+#endif
         return NULL;
     }
+
+#ifndef NDEBUG
+    deb << TO_STRID(str);
+#endif
 
     return TO_STRID(str);
 }
 
 strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
+#ifndef NDEBUG
+    QDebug deb = qDebug();
+    deb << "glk_stream_open_file_uni(" << FROM_FREFID(fileref)->path() << "," << fmode << "," << rock << ") =>";
+#endif
     Glk::Stream* str = new Glk::UnicodeStream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, NULL, rock);
     QIODevice::OpenMode om;
 
@@ -330,8 +357,15 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
 
     if(!str->open(om)) {
         delete str;
+#ifndef NDEBUG
+        deb << ((void*)NULL);
+#endif
         return NULL;
     }
+
+#ifndef NDEBUG
+    deb << TO_STRID(str);
+#endif
 
     return TO_STRID(str);
 }

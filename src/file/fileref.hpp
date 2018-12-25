@@ -27,6 +27,8 @@ namespace Glk {
             Glk::Object::Type objectType() const override {
                 return Object::Type::FileReference;
             }
+            
+            QString path();
 
             bool exists() const;
             void remove() const;

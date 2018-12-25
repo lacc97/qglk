@@ -3,7 +3,10 @@
 
 #include <cstddef>
 
+#include <sstream>
+
 #include <QByteArray>
+#include <QString>
 
 #ifndef TRUE
 #define TRUE (1)
@@ -56,6 +59,13 @@ namespace Glk {
             glui32 m_Rock;
             gidispatch_rock_t m_DispatchRock;
     };
+}
+
+template <typename T>
+inline const QString to_string(T val) {
+    std::ostringstream ss;
+    ss << val;
+    return QString::fromStdString(ss.str());
 }
 
 #endif

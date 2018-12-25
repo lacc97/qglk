@@ -45,4 +45,6 @@ namespace Glk {
     };
 }
 
+std::ostream& operator<<(std::ostream& os, const event_t& e);
+
 #endif
