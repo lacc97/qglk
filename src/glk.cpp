@@ -9,9 +9,41 @@ glui32 glk_gestalt(glui32 id, glui32 val) {
 
 glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
     switch(id) {
+        case gestalt_CharInput:
+            switch(val) {
+                case keycode_Delete:
+                case keycode_Down:
+                case keycode_End:
+                case keycode_Escape:
+                case keycode_Func1:
+                case keycode_Func2:
+                case keycode_Func3:
+                case keycode_Func4:
+                case keycode_Func5:
+                case keycode_Func6:
+                case keycode_Func7:
+                case keycode_Func8:
+                case keycode_Func9:
+                case keycode_Func10:
+                case keycode_Func11:
+                case keycode_Func12:
+                case keycode_Home:
+                case keycode_Left:
+                case keycode_PageDown:
+                case keycode_PageUp:
+                case keycode_Return:
+                case keycode_Right:
+                case keycode_Tab:
+                case keycode_Up:
+                    return TRUE;
+
+                default:
+                    return (val >= 32 && val <= 126);
+            }
+
         case gestalt_DateTime:
             return TRUE;
-            
+
         case gestalt_DrawImage:
             if(val == Glk::Window::Graphics)
                 return TRUE;
@@ -20,7 +52,7 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
 
         case gestalt_Graphics:
             return TRUE;
-            
+
         case gestalt_GraphicsCharInput:
             return FALSE; // TODO implement
 
@@ -39,6 +71,9 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
                 default:
                     return FALSE;
             }
+
+        case gestalt_LineInput:
+            return (val >= 32 && val <= 126);
 
         case gestalt_LineInputEcho:
             return TRUE;
