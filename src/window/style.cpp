@@ -71,7 +71,7 @@ QString Glk::Style::styleString() const {
     QString fontSizeString = QStringLiteral("font-size: %1pt").arg(m_Font.pointSize());
     QString fontWeightString = QStringLiteral("font-weight: %1").arg(m_Font.bold() ? "bold" : "normal");
     QString fontVariantString = QStringLiteral("font-variant: %1").arg(m_Font.capitalization() == QFont::SmallCaps ? "small-caps" : "normal");
-    QString fontString = QStringLiteral("%1; %2; %3; %4;%5").arg(fontFamilyString).arg(fontStyleString).arg(fontSizeString).arg(fontWeightString).arg(fontVariantString);
+    QString fontString = QStringLiteral("%1; %2; %3; %4; %5").arg(fontFamilyString).arg(fontStyleString).arg(fontSizeString).arg(fontWeightString).arg(fontVariantString);
 
     QString justificationString = QStringLiteral("text-align: %1").arg(toJustificationString(m_Justification));
     
