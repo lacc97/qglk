@@ -12,6 +12,18 @@ namespace Glk {
 
     class TextBufferDevice : public QIODevice {
             Q_OBJECT
+            
+            // TODO all of this seems unnecessary
+            class Block {
+            public:
+                // Plain text
+                void appendWords(QStringList words, const QString& styleString);
+                
+                void writeToBrowser(QTextBrowser* qtb) const;
+                
+            private:
+                QStringList m_Words;
+            };
         public:
             TextBufferDevice(TextBufferWindow* win);
 
@@ -29,7 +41,7 @@ namespace Glk {
         private:
             TextBufferWindow* mp_TBWindow;
             QString m_StyleString;
-            QStringList m_Buffer;
+            QList<Block> m_Buffer;
     };
 
     class TextBufferWindow : public Window {

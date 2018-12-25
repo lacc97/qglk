@@ -238,8 +238,8 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(int key, const QString& text) {
                         Glk::sendTaskToEventThread([&]() {
                             emit lineInputRequestEnded(false, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
                         });
-                        Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
                         QGlk::getMainWindow().eventQueue().push(event_t {evtype_LineInput, TO_WINID(windowPointer()), m_LineInputBufferPosition, 0});
+                        Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
                         m_LineInputRequested = false;
                     }
                 }
@@ -252,8 +252,8 @@ bool Glk::KeyboardInputProvider::handleKeyEvent(int key, const QString& text) {
                     Glk::sendTaskToEventThread([&]() {
                         emit lineInputRequestEnded(false, mp_LineInputBuffer, m_LineInputBufferPosition, m_Unicode);
                     });
-                    Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
                     QGlk::getMainWindow().eventQueue().push(event_t {evtype_LineInput, TO_WINID(windowPointer()), m_LineInputBufferPosition, keyc == keycode_Return ? 0 : keyc});
+                    Glk::Dispatch::unregisterArray(mp_LineInputBuffer, m_LineInputBufferLength, m_Unicode);
                     m_LineInputRequested = false;
                 }
 

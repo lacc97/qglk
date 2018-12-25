@@ -10,6 +10,31 @@
 
 #include "qglk.hpp"
 
+void Glk::TextBufferDevice::Block::appendWords(QStringList words, const QString& styleString) {
+    Q_ASSERT_X(!words.isEmpty(), "Glk::TextBufferDevice::Block::appendWords", "word list should not be empty");
+
+    if(m_Words.isEmpty())
+        m_Words.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(words.front()));
+    else
+        m_Words.back().append(QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(words.front()));
+
+    words.pop_front();
+
+    for(const QString& w : words)
+        m_Words.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(w));
+}
+
+void Glk::TextBufferDevice::Block::writeToBrowser(QTextBrowser* qtb) const {
+    Q_ASSERT_X(!m_Words.isEmpty(), "Glk::TextBufferDevice::Block::writeToBrowser", "word list should not be empty");
+
+    qtb->insertHtml(m_Words.front());
+
+    for(auto it = (++m_Words.begin()); it != m_Words.end(); it++) {
+        qtb->insertPlainText(QStringLiteral(" "));
+        qtb->insertHtml(*it);
+    }
+}
+
 Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindow(win) {
     Q_ASSERT(mp_TBWindow);
 }
@@ -30,19 +55,23 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
     QString text = QString::fromUcs4(udata, ulen);
     QStringList blocks = text.split('\n');
 
-    qDebug() << blocks;
+    QStringList words = blocks.front().split(' ');
 
     if(m_Buffer.isEmpty()) {
-        m_Buffer.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(m_StyleString).arg(blocks.front()));
+        m_Buffer.append(Block());
+        m_Buffer.back().appendWords(words, m_StyleString);
     } else {
-        m_Buffer.back().chop(7);
-        m_Buffer.back().append(QStringLiteral("%1</span>").arg(blocks.front()));
+        m_Buffer.back().appendWords(words, m_StyleString);
     }
 
     blocks.pop_front();
 
-    for(const QString& b : blocks)
-        m_Buffer.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(m_StyleString).arg(b));
+    for(const QString& b : blocks) {
+        words.clear();
+        words = b.split(' ');
+        m_Buffer.append(Block());
+        m_Buffer.back().appendWords(words, m_StyleString);
+    }
 
     delete[] udata;
 
@@ -57,14 +86,12 @@ void Glk::TextBufferDevice::flush() {
     if(m_Buffer.isEmpty())
         return;
 
-    qDebug() << m_Buffer.front();
-    mp_TBWindow->mp_Text->insertHtml(m_Buffer.front());
+    m_Buffer.front().writeToBrowser(mp_TBWindow->mp_Text);
     m_Buffer.pop_front();
 
-    for(const QString& block : m_Buffer) {
-        qDebug() << block;
+    for(const Block& b : m_Buffer) {
         mp_TBWindow->mp_Text->insertPlainText(QStringLiteral("\n"));
-        mp_TBWindow->mp_Text->insertHtml(block);
+        b.writeToBrowser(mp_TBWindow->mp_Text);
     }
 
     m_Buffer.clear();
@@ -74,9 +101,6 @@ void Glk::TextBufferDevice::flush() {
 
 void Glk::TextBufferDevice::onWindowStyleChanged(const QString& newStyleString) {
     m_StyleString = newStyleString;
-
-    if(!m_Buffer.isEmpty())
-        m_Buffer.back().append(QStringLiteral("<span style=\"%1\"></span>").arg(m_StyleString));
 }
 
 Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
