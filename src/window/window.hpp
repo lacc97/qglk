@@ -8,6 +8,7 @@
 #include "glk.hpp"
 
 #include "inputprovider.hpp"
+#include "style.hpp"
 #include "windowstream.hpp"
 
 namespace Glk {
@@ -66,6 +67,8 @@ namespace Glk {
             inline glui32 unitHeight(glui32 pixels) const {
                 return pixelsToUnits(QSize(0, pixels)).height();
             }
+            
+            virtual void setStyle(Glk::Style::Type style) {}
 
             virtual Type windowType() const = 0;
 

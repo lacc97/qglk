@@ -26,6 +26,8 @@ namespace Glk {
             };
 
             Style(Type type_ = Normal);
+            
+            QString styleString() const;
 
             glui32 getHint(glui32 hint) const;
             bool measureHint(glui32 hint, glui32* result) const;

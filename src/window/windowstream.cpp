@@ -17,7 +17,7 @@ void Glk::WindowStream::setEchoStream(Glk::Stream* echo) {
 }
 
 void Glk::WindowStream::pushStyle(Style::Type sty) {
-
+    static_cast<Window*>(parent())->setStyle(sty);
 }
 
 void Glk::WindowStream::writeUnicodeBuffer(glui32* buf, glui32 len) {

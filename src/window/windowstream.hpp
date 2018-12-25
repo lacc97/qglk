@@ -21,6 +21,10 @@ namespace Glk {
             void writeUnicodeBuffer(glui32* buf, glui32 len) override;
             void writeUnicodeChar(glui32 ch) override;
             void writeUnicodeString(glui32* str) override;
+            
+            inline QIODevice* getIODevice() const {
+                return device();
+            }
 
         public slots:
             void onEchoStreamClosed();

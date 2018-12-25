@@ -18,8 +18,18 @@ namespace Glk {
             qint64 readData(char* data, qint64 maxlen) override;
             qint64 writeData(const char* data, qint64 len) override;
 
+        public slots:
+            void onWindowStyleChanged(const QString& newStyleString);
+
+        signals:
+            void textChanged();
+
         private:
+            void cleanClosingSpanTag();
+            void insertText(const QString& str);
+
             TextBufferWindow* mp_TBWindow;
+            QString m_StyleString;
     };
 
     class TextBufferWindow : public Window {
@@ -34,6 +44,11 @@ namespace Glk {
                 return m_Styles;
             }
 
+            inline Glk::Style::Type getStyle() const {
+                return m_CurrentStyleType;
+            }
+            void setStyle(Glk::Style::Type style) override;
+
             Glk::Window::Type windowType() const override {
                 return Window::TextBuffer;
             }
@@ -43,7 +58,14 @@ namespace Glk {
         public slots:
             void onTextChanged();
 
+        signals:
+            void styleChanged(const QString& newStyleString);
+
         protected:
+            inline Glk::TextBufferDevice* ioDevice() const {
+                return static_cast<Glk::TextBufferDevice*>(windowStream()->getIODevice());
+            }
+            
             void resizeEvent(QResizeEvent* ev) override;
 
             QSize pixelsToUnits(const QSize& pixels) const override;
@@ -61,6 +83,8 @@ namespace Glk {
         private:
             QTextBrowser* mp_Text;
             Glk::StyleManager m_Styles;
+            Glk::Style::Type m_CurrentStyleType;
+            Glk::Style::Type m_PreviousStyleType;
     };
 }
 

@@ -26,16 +26,55 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
 
     for(glui32 ii = 0; ii < ulen; ii++)
         udata[ii] = qFromBigEndian(reinterpret_cast<const glui32*>(data)[ii]);
+    
+    QString text = QString::fromUcs4(udata, ulen);
+    QStringList blocks = text.split('\n');
+    
+    insertText(blocks.front());
+    blocks.pop_front();
+    
+    for(const QString& block : blocks) {
+        mp_TBWindow->mp_Text->insertPlainText(QStringLiteral("\n"));
+        insertText(block);
+    }
 
-    mp_TBWindow->mp_Text->insertPlainText(QString::fromUcs4(udata, ulen));
-//     mp_TBWindow->mp_Text->setText(mp_TBWindow->mp_Text->text() + QString::fromUcs4(udata, ulen));
+//     qDebug() << mp_TBWindow->mp_Text->document()->defaultStyleSheet();
+//     mp_TBWindow->mp_Text->insertPlainText(QString::fromUcs4(udata, ulen));
+//     qDebug() << mp_TBWindow->mp_Text->toHtml();
+
+    emit textChanged();
 
     delete[] udata;
 
     return len;
 }
 
-Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()) {
+void Glk::TextBufferDevice::onWindowStyleChanged(const QString& newStyleString) {
+//     cleanClosingSpanTag();
+//     mp_TBWindow->mp_Text->insertPlainText(QStringLiteral("<span style=\"%1\"></span>").arg(newStyle.styleString()));
+// //     mp_TBWindow->mp_Text->document()->setDefaultStyleSheet(QStringLiteral("p{%1}").arg(newStyle.styleString()));
+    m_StyleString = newStyleString;
+}
+
+void Glk::TextBufferDevice::cleanClosingSpanTag() {
+    mp_TBWindow->mp_Text->textCursor().movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, 7);
+//     for(size_t ii = 0; ii < 7; ii++) mp_TBWindow->mp_Text->textCursor().deletePreviousChar();
+}
+
+void Glk::TextBufferDevice::insertText(const QString& str) {
+    QString textString = str;
+    
+    while(textString[0] == ' ') {
+        mp_TBWindow->mp_Text->insertPlainText(QStringLiteral(" "));
+        textString.remove(0,1);
+    }
+    
+    if(!textString.isEmpty())
+        mp_TBWindow->mp_Text->insertHtml(QStringLiteral("<span style=\"%1\">%2</span>").arg(m_StyleString).arg(str));
+//     qDebug() << QStringLiteral("<span style=\"%1\">%2</span>").arg(m_StyleString).arg(str);
+}
+
+Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     QLayout* lay = new QGridLayout(this);
@@ -48,7 +87,7 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
     mp_Text->setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 
     lay->addWidget(mp_Text);
-    
+
     connect(
         keyboardInputProvider(), &Glk::KeyboardInputProvider::characterInputRequested,
         this, &Glk::TextBufferWindow::onCharacterInputRequested);
@@ -67,10 +106,23 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
     connect(
         keyboardInputProvider(), &Glk::KeyboardInputProvider::lineInputSpecialCharacterEntered,
         this, &Glk::TextBufferWindow::onSpecialCharacterInput);
-    
+
     connect(
-        mp_Text, &QTextBrowser::textChanged,
+        ioDevice(), &Glk::TextBufferDevice::textChanged,
         this, &Glk::TextBufferWindow::onTextChanged);
+//     connect(
+//         this, &Glk::TextBufferWindow::styleChanged,
+//         ioDevice(), &Glk::TextBufferDevice::onWindowStyleChanged);
+    
+    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString());
+}
+
+void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
+    qDebug() << "Changed style from" << m_CurrentStyleType << "to" << style; 
+    
+    m_PreviousStyleType = m_CurrentStyleType;
+    m_CurrentStyleType = style;
+    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString());
 }
 
 void Glk::TextBufferWindow::clearWindow() {
@@ -118,6 +170,7 @@ void Glk::TextBufferWindow::onCharacterInputRequestEnded(bool cancelled) {
 }
 
 void Glk::TextBufferWindow::onLineInputRequested() {
+    setStyle(Glk::Style::Input);
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     setFocus();
 }
@@ -127,7 +180,7 @@ void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, g
         for(glui32 ii = 0; ii < len; ii++) // equality because of newline at end
             mp_Text->textCursor().deletePreviousChar(); // TODO more efficient?
     } else {
-        mp_Text->insertPlainText(QStringLiteral("\n"));
+        windowStream()->writeUnicodeChar('\n');
 
         if(windowStream()->echoStream()) {
             if(unicode)
@@ -138,12 +191,12 @@ void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, g
             windowStream()->echoStream()->writeChar('\n');
         }
     }
-
+    setStyle(m_PreviousStyleType);
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
 }
 
 void Glk::TextBufferWindow::onCharacterInput(glui32 ch) {
-    mp_Text->insertPlainText(QString::fromUcs4(&ch, 1));
+    windowStream()->writeUnicodeChar(ch);
 }
 
 void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc) {

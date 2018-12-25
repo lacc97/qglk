@@ -55,8 +55,11 @@ void Glk::KeyboardInputProvider::requestLineInput(void* buf, glui32 maxlen, glui
 }
 
 void Glk::KeyboardInputProvider::cancelLineInputRequest(event_t* ev) {
-    if(!m_LineInputProvider || !m_LineInputRequested)
+    if(!m_LineInputProvider || !m_LineInputRequested) {
+        if(ev)
+            ev->type = evtype_None;
         return;
+    }
 
     m_LineInputRequested = false;
 

@@ -6,16 +6,15 @@
 Glk::Style::Style(Glk::Style::Type type_) : m_Type(type_), m_Font(QFontDatabase::systemFont(QFontDatabase::GeneralFont)), m_Indentation(0), m_ParaIndentation(0), m_Justification(stylehint_just_LeftFlush), m_FontSizeIncrease(0) {
     switch(m_Type) { // TODO load these up from a stylesheet file?
         case Emphasized:
-            m_Font.setItalic(true);
+            m_Font.setWeight(QFont::Bold);
             break;
 
         case Preformatted:
-            m_Font.setFixedPitch(true);
+            m_Font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
             break;
 
         case Header:
             m_Font = QFontDatabase::systemFont(QFontDatabase::TitleFont);
-            qDebug() << "title font size: " << m_Font.pointSize();
             m_Font.setWeight(QFont::Bold);
             m_Font.setCapitalization(QFont::SmallCaps);
             m_Justification = stylehint_just_Centered;
@@ -32,7 +31,7 @@ Glk::Style::Style(Glk::Style::Type type_) : m_Type(type_), m_Font(QFontDatabase:
             break;
 
         case Note:
-            m_Font.setWeight(QFont::Bold);
+            m_Font.setItalic(true);
             break;
 
         case BlockQuote:
@@ -41,12 +40,46 @@ Glk::Style::Style(Glk::Style::Type type_) : m_Type(type_), m_Font(QFontDatabase:
             break;
 
         case Input:
-            m_Font.setFixedPitch(true);
+            m_Font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
             break;
 
         default: // Normal, User1, User2
             break;
     }
+}
+
+QString toJustificationString(glui32 just) {
+    switch(just) {
+        case stylehint_just_Centered:
+            return "center";
+
+        case stylehint_just_LeftRight:
+            return "justify";
+
+        case stylehint_just_RightFlush:
+            return "right";
+
+        case stylehint_just_LeftFlush:
+        default:
+            return "left";
+    }
+}
+
+QString Glk::Style::styleString() const {
+    QString fontFamilyString = QStringLiteral("font-family: '%1', '%2'").arg(m_Font.family()).arg(m_Font.lastResortFamily());
+    QString fontStyleString = QStringLiteral("font-style: %1").arg(m_Font.italic() ? "italic" : "normal");
+    QString fontSizeString = QStringLiteral("font-size: %1pt").arg(m_Font.pointSize());
+    QString fontWeightString = QStringLiteral("font-weight: %1").arg(m_Font.bold() ? "bold" : "normal");
+    QString fontVariantString = QStringLiteral("font-variant: %1").arg(m_Font.capitalization() == QFont::SmallCaps ? "small-caps" : "normal");
+    QString fontString = QStringLiteral("%1; %2; %3; %4;%5").arg(fontFamilyString).arg(fontStyleString).arg(fontSizeString).arg(fontWeightString).arg(fontVariantString);
+
+    QString justificationString = QStringLiteral("text-align: %1").arg(toJustificationString(m_Justification));
+    
+    QString paraIndentationString = QStringLiteral("text-indent: %1px").arg(5*m_ParaIndentation);
+    
+    // TODO regular indentation
+    
+    return QStringLiteral("%1; %2; %3").arg(fontString).arg(justificationString).arg(paraIndentationString);
 }
 
 glui32 Glk::Style::getHint(glui32 hint) const {
@@ -88,7 +121,7 @@ glui32 Glk::Style::getHint(glui32 hint) const {
 
 bool Glk::Style::measureHint(glui32 hint, glui32* result) const {
     Q_ASSERT(result);
-    
+
     switch(hint) {
         case stylehint_Indentation:
             *result = *reinterpret_cast<const glui32*>(&m_Indentation);
@@ -187,15 +220,15 @@ void Glk::Style::setHint(glui32 hint, glui32 value) {
 bool Glk::Style::operator==(const Glk::Style& other) const {
     if(m_Indentation != other.m_Indentation)
         return true;
-    
+
     if(m_ParaIndentation != other.m_ParaIndentation)
         return true;
-    
+
     if(m_Justification)
         return true;
-    
+
     if(m_Font != other.m_Font)
         return true;
-    
+
     return false;
 }
