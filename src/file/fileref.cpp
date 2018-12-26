@@ -5,20 +5,20 @@
 Glk::FileReference::FileReference(const QFileInfo& fi_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fi_), m_Usage(usage_) {
     Q_ASSERT(!m_FileInfo.isDir());
 
-    Glk::Dispatch::registerObject(this);
     s_FileReferenceSet.insert(this);
+    Glk::Dispatch::registerObject(this);
 }
 
 Glk::FileReference::FileReference(const Glk::FileReference& fref_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fref_.m_FileInfo), m_Usage(usage_) {
     Q_ASSERT(!m_FileInfo.isDir());
 
-    Glk::Dispatch::registerObject(this);
     s_FileReferenceSet.insert(this);
+    Glk::Dispatch::registerObject(this);
 }
 
 Glk::FileReference::~FileReference() {
-    s_FileReferenceSet.remove(this);
     Glk::Dispatch::unregisterObject(this);
+    s_FileReferenceSet.remove(this);
 }
 
 QString Glk::FileReference::path() {

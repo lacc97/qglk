@@ -9,6 +9,8 @@
 
 namespace Glk {
     class FileReference : public Object {
+        Q_DISABLE_COPY(FileReference)
+        
         public:
             enum Usage : glui32 {
                 SavedGame = fileusage_SavedGame,
