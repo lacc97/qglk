@@ -48,8 +48,8 @@ namespace Glk {
             glsi32 m_ParaIndentation;
             glui32 m_Justification;
             glsi32 m_FontSizeIncrease;
-//             QColor m_TextColor;
-//             QColor m_BackgroundColor;
+            QColor m_TextColor;
+            QColor m_BackgroundColor;
 
     };
 }

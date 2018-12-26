@@ -2,8 +2,9 @@
 
 #include <QDebug>
 #include <QFontDatabase>
+#include <QTextBrowser>
 
-Glk::Style::Style(Glk::Style::Type type_) : m_Type(type_), m_Font(QFontDatabase::systemFont(QFontDatabase::GeneralFont)), m_Indentation(0), m_ParaIndentation(0), m_Justification(stylehint_just_LeftFlush), m_FontSizeIncrease(0) {
+Glk::Style::Style(Glk::Style::Type type_) : m_Type(type_), m_Font(QFontDatabase::systemFont(QFontDatabase::GeneralFont)), m_Indentation(0), m_ParaIndentation(0), m_Justification(stylehint_just_LeftFlush), m_FontSizeIncrease(0), m_TextColor(Qt::black), m_BackgroundColor(Qt::white) {
     switch(m_Type) { // TODO load these up from a stylesheet file?
         case Emphasized:
             m_Font.setWeight(QFont::Bold);
@@ -79,7 +80,11 @@ QString Glk::Style::styleString() const {
     
     // TODO regular indentation
     
-    return QStringLiteral("%1; %2; %3").arg(fontString).arg(justificationString).arg(paraIndentationString);
+    QString textColourString = QStringLiteral("color: rgb(%1, %2, %3)").arg(QString::number(m_TextColor.red())).arg(QString::number(m_TextColor.green())).arg(QString::number(m_TextColor.blue()));
+//     QString backColourString = QStringLiteral("background-color: rgb(%1, %2, %3)").arg(QString::number(m_BackgroundColor.red())).arg(QString::number(m_BackgroundColor.green())).arg(QString::number(m_BackgroundColor.blue()));
+    QString colourString = QStringLiteral("%1"/*"%1; %2"*/).arg(textColourString)/*.arg(backColourString)*/;
+    
+    return QStringLiteral("%1; %2; %3; %4;").arg(fontString).arg(justificationString).arg(paraIndentationString).arg(colourString);
 }
 
 glui32 Glk::Style::getHint(glui32 hint) const {
@@ -114,6 +119,12 @@ glui32 Glk::Style::getHint(glui32 hint) const {
 
         case stylehint_Proportional:
             return (m_Font.fixedPitch() ? TRUE : FALSE);
+            
+        case stylehint_TextColor:
+            return m_TextColor.rgb();
+        
+        case stylehint_BackColor:
+            return m_BackgroundColor.rgb();
     }
 
     return 0;
@@ -166,6 +177,14 @@ bool Glk::Style::measureHint(glui32 hint, glui32* result) const {
         case stylehint_Proportional:
             *result = (m_Font.fixedPitch() ? 1 : 0);
             return true;
+            
+        case stylehint_TextColor:
+            *result = m_TextColor.rgb();
+            return true;
+        
+        case stylehint_BackColor:
+            *result = m_BackgroundColor.rgb();
+            return false;
     }
 
     return false;
@@ -214,6 +233,14 @@ void Glk::Style::setHint(glui32 hint, glui32 value) {
         case stylehint_Proportional:
             m_Font.setFixedPitch(value);
             break;
+        
+        case stylehint_TextColor:
+            m_TextColor.setRgb(value);
+            break;
+            
+        case stylehint_BackColor:
+            m_TextColor.setRgb(value);
+            break;
     }
 }
 
@@ -228,6 +255,12 @@ bool Glk::Style::operator==(const Glk::Style& other) const {
         return true;
 
     if(m_Font != other.m_Font)
+        return true;
+    
+    if(m_TextColor == other.m_TextColor)
+        return true;
+    
+    if(m_BackgroundColor == other.m_BackgroundColor)
         return true;
 
     return false;
