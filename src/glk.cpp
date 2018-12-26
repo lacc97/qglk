@@ -125,16 +125,16 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
             return TRUE;
 
         case gestalt_Sound:
-            return FALSE;
+            return TRUE;
 
         case gestalt_SoundMusic:
-            return FALSE;
+            return TRUE;
 
         case gestalt_SoundVolume:
-            return FALSE;
+            return TRUE;
 
         case gestalt_Sound2:
-            return FALSE;
+            return TRUE;
 
         case gestalt_Timer:
             return TRUE;
