@@ -270,7 +270,7 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
 
         QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba]() {
             if((om & QIODevice::WriteOnly) != 0)
-                std::memcpy(buf, qba->data(), buflen);
+                std::memcpy(buf, qba->data(), qba->size());
 
             Glk::Dispatch::unregisterArray(buf, buflen, false);
 
@@ -328,18 +328,18 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
 
     if(buf) {
         QByteArray* qba = new QByteArray(QByteArray::fromRawData(reinterpret_cast<char*>(buf), 4 * buflen));
-        str = new Glk::Latin1Stream(NULL, new QBuffer(qba), Glk::Stream::Type::Memory, rock);
+        str = new Glk::UnicodeStream(NULL, new QBuffer(qba), Glk::Stream::Type::Memory, rock);
 
         QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba]() {
             if((om & QIODevice::WriteOnly) != 0)
-                std::memcpy(buf, qba->data(), buflen);
+                std::memcpy(buf, qba->data(), qba->size());
 
             Glk::Dispatch::unregisterArray(buf, buflen, true);
 
             delete qba;
         });
     } else {
-        str = new Glk::Latin1Stream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, rock);
+        str = new Glk::UnicodeStream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, rock);
     }
 
     if(!str->open(om)) {
@@ -455,6 +455,11 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
 }
 
 strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
+#ifndef NDEBUG
+    QDebug deb = qDebug();
+    deb << "glk_stream_open_resource(" << filenum << "," << rock << ") =>";
+#endif
+    
     Glk::Blorb::Chunk* chunk;
 
     if(!(chunk = new Glk::Blorb::Chunk(Glk::Blorb::loadResource(filenum)))->isValid()) {
@@ -479,13 +484,25 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
 
     if(!str->open(om)) {
         delete str;
+        #ifndef NDEBUG
+        deb << ((void*)NULL);
+#endif
         return NULL;
     }
+    
+    #ifndef NDEBUG
+    deb << TO_STRID(str);
+#endif
 
     return TO_STRID(str);
 }
 
 strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
+    #ifndef NDEBUG
+    QDebug deb = qDebug();
+    deb << "glk_stream_open_resource_uni(" << filenum << "," << rock << ") =>";
+#endif
+    
     Glk::Blorb::Chunk* chunk;
 
     if(!(chunk = new Glk::Blorb::Chunk(Glk::Blorb::loadResource(filenum)))->isValid()) {
