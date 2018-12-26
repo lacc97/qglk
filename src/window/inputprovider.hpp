@@ -23,6 +23,9 @@ namespace Glk {
             void setLineEcho(bool le);
 
             void setTerminators(glui32* keycodes, glui32 count);
+            
+            void clearLineInputBuffer();
+            void fillLineInputBuffer(const QString& text);
 
             bool handleKeyEvent(int key, const QString& text);
 
@@ -32,11 +35,13 @@ namespace Glk {
             void lineInputRequested();
             void lineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode);
 
-            void lineInputCharacterEntered(glui32 ch);
-            void lineInputSpecialCharacterEntered(glui32 kc);
+            void lineInputCharacterEntered(glui32 ch, bool doUpdate = true);
+            void lineInputSpecialCharacterEntered(glui32 kc, bool doUpdate = true);
 
         protected:
             Glk::Window* windowPointer();
+            
+            void processLineInputCharacterEntered(glui32 ch, bool doUpdate = true);
 
         private:
             bool m_CharacterInputProvider;

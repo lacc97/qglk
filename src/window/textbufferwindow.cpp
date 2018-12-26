@@ -10,18 +10,31 @@
 
 #include "qglk.hpp"
 
-void Glk::TextBufferDevice::Block::appendWords(QStringList words, const QString& styleString) {
+void Glk::TextBufferDevice::Block::appendWords(QStringList words, const QString& styleString, const QString& styleStringNoColour) {
     Q_ASSERT_X(!words.isEmpty(), "Glk::TextBufferDevice::Block::appendWords", "word list should not be empty");
 
-    if(m_Words.isEmpty())
-        m_Words.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(words.front()));
+    QString spanTag;
+
+    if(m_IsHyperlinkTagOpen)
+        spanTag = QStringLiteral("<span style=\"%1 %2\">%3</span>").arg(styleStringNoColour).arg("text-decoration: underline; color: blue;").arg(words.front());
     else
-        m_Words.back().append(QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(words.front()));
+        spanTag = QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(words.front());
+
+    if(m_Words.isEmpty())
+        m_Words.append(spanTag);
+    else
+        m_Words.back().append(spanTag);
 
     words.pop_front();
 
-    for(const QString& w : words)
+    for(const QString& w : words) {
+        if(m_IsHyperlinkTagOpen)
+            spanTag = QStringLiteral("<span style=\"%1 %2\">%3</span>").arg(styleStringNoColour).arg("text-decoration: underline; color: blue;").arg(w);
+        else
+            spanTag = QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(w);
+
         m_Words.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(w));
+    }
 }
 
 void Glk::TextBufferDevice::Block::insertOpenHyperlinkTag(glui32 linkval) {
@@ -29,12 +42,16 @@ void Glk::TextBufferDevice::Block::insertOpenHyperlinkTag(glui32 linkval) {
         m_Words.push_back(QStringLiteral("<a href=\"#%1\">").arg(QString::number(linkval)));
     else
         m_Words.back().append(QStringLiteral("<a href=\"#%1\">").arg(QString::number(linkval)));
+
+    m_IsHyperlinkTagOpen = true;
 }
 
 void Glk::TextBufferDevice::Block::insertCloseHyperlinkTag() {
     Q_ASSERT_X(!m_Words.isEmpty(), "Glk::TextBufferDevice::Block::insertCloseHyperlinkTag", "if hyperlink tag is till open when flushing, we need to ensure a new closing and opening tag is appended");
-    
+
     m_Words.back().append(QStringLiteral("</a>"));
+
+    m_IsHyperlinkTagOpen = false;
 }
 
 void Glk::TextBufferDevice::Block::writeToBrowser(QTextBrowser* qtb) const {
@@ -69,9 +86,9 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
 
     if(m_Buffer.isEmpty()) {
         m_Buffer.append(Block());
-        m_Buffer.back().appendWords(words, m_StyleString);
+        m_Buffer.back().appendWords(words, m_StyleString, m_StyleStringNoColour);
     } else {
-        m_Buffer.back().appendWords(words, m_StyleString);
+        m_Buffer.back().appendWords(words, m_StyleString, m_StyleStringNoColour);
     }
 
     blocks.pop_front();
@@ -80,7 +97,7 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
         words.clear();
         words = b.split(' ');
         m_Buffer.append(Block());
-        m_Buffer.back().appendWords(words, m_StyleString);
+        m_Buffer.back().appendWords(words, m_StyleString, m_StyleStringNoColour);
     }
 
     return len;
@@ -93,9 +110,9 @@ void Glk::TextBufferDevice::discard() {
 void Glk::TextBufferDevice::flush() {
     if(m_Buffer.isEmpty())
         return;
-    
+
     mp_TBWindow->mp_Text->moveCursor(QTextCursor::End);
-    
+
     if(m_CurrentHyperlink != 0)
         m_Buffer.back().insertCloseHyperlinkTag();
 
@@ -110,7 +127,7 @@ void Glk::TextBufferDevice::flush() {
     m_Buffer.clear();
 
     emit textChanged();
-    
+
     if(m_CurrentHyperlink != 0) {
         m_Buffer.append(Block());
         m_Buffer.back().insertOpenHyperlinkTag(m_CurrentHyperlink);
@@ -129,21 +146,60 @@ void Glk::TextBufferDevice::onHyperlinkPushed(glui32 linkval) {
             Q_ASSERT_X(!m_Buffer.isEmpty(), "Glk::TextBufferDevice::onHyperlinkPushed", "if hyperlink tag is till open when flushing, we need to ensure a new opening tag is appended");
             m_Buffer.back().insertCloseHyperlinkTag();
         }
-        
+
         if(m_Buffer.isEmpty())
             m_Buffer.append(Block());
-        
+
         m_Buffer.back().insertOpenHyperlinkTag(linkval);
     }
 
     m_CurrentHyperlink = linkval;
 }
 
-void Glk::TextBufferDevice::onWindowStyleChanged(const QString& newStyleString) {
+void Glk::TextBufferDevice::onWindowStyleChanged(const QString& newStyleString, const QString& newStyleStringNoColour) {
     m_StyleString = newStyleString;
+    m_StyleStringNoColour = newStyleStringNoColour;
+}
+Glk::TextBufferWindow::History::History() : m_History(), m_Iterator(m_History.begin()) {
 }
 
-Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
+void Glk::TextBufferWindow::History::push(const QString& newcmd) {
+    if(m_History.size() > MAX_SIZE)
+        m_History.takeLast();
+
+    m_History.prepend(newcmd);
+}
+
+void Glk::TextBufferWindow::History::resetIterator() {
+    m_Iterator = m_History.begin();
+}
+
+const QString Glk::TextBufferWindow::History::next() {
+    if(m_History.size() == 0)
+        return QStringLiteral("");
+
+    if(m_Iterator == m_History.end())
+        return m_History.back();
+
+    return *(m_Iterator++);
+}
+
+const QString Glk::TextBufferWindow::History::previous() {
+    if(m_History.size() == 0)
+        return QStringLiteral("");
+
+    if(m_Iterator == m_History.begin())
+        return QStringLiteral("");
+
+    auto it = --m_Iterator;
+
+    if(it == m_History.begin())
+        return QStringLiteral("");
+
+    return *(--it);
+}
+
+Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false, true), mp_Text(), m_History(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     QLayout* lay = new QGridLayout(this);
@@ -180,7 +236,7 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
     connect(
         mp_Text, &QTextBrowser::anchorClicked,
         this, &Glk::TextBufferWindow::onHyperlinkClicked);
-    
+
     connect(
         windowStream(), &Glk::WindowStream::hyperlinkPushed,
         ioDevice(), &Glk::TextBufferDevice::onHyperlinkPushed);
@@ -193,7 +249,7 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
         &QGlk::getMainWindow(), &QGlk::poll,
         ioDevice(), &Glk::TextBufferDevice::flush);
 
-    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString());
+    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString(), m_Styles[m_CurrentStyleType].styleStringNoColour());
 }
 
 void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
@@ -201,7 +257,7 @@ void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
 
     m_PreviousStyleType = m_CurrentStyleType;
     m_CurrentStyleType = style;
-    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString());
+    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString(), m_Styles[m_CurrentStyleType].styleStringNoColour());
 }
 
 void Glk::TextBufferWindow::clearWindow() {
@@ -211,11 +267,11 @@ void Glk::TextBufferWindow::clearWindow() {
 
 void Glk::TextBufferWindow::onHyperlinkClicked(const QUrl& link) {
     qDebug() << link;
-    
+
     QString linkvalStr = link.toString().mid(1);
     glui32 linkval = linkvalStr.toUInt();
-    
-    Glk::postTaskToGlkThread([=]() {
+
+    Glk::postTaskToGlkThread([ = ]() {
         hyperlinkInputProvider()->handleHyperlinkClicked(linkval);
     });
 }
@@ -285,21 +341,35 @@ void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, g
             windowStream()->echoStream()->writeChar('\n');
         }
     }
+    
+    if(unicode)
+        m_History.push(QString::fromUcs4(static_cast<glui32*>(buf), len));
+    else
+        m_History.push(QString::fromLatin1(static_cast<char*>(buf), len));
+    
+    m_History.resetIterator();
 
     setStyle(m_PreviousStyleType);
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
     ioDevice()->flush();
 }
 
-void Glk::TextBufferWindow::onCharacterInput(glui32 ch) {
+void Glk::TextBufferWindow::onCharacterInput(glui32 ch, bool doFlush) {
     windowStream()->writeUnicodeChar(ch);
-    ioDevice()->flush();
+
+    if(doFlush)
+        ioDevice()->flush();
 }
 
-void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc) {
+void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc, bool doFlush) {
     switch(kc) {
         case keycode_Delete:
             mp_Text->textCursor().deletePreviousChar();
+            break;
+
+        case keycode_Down:
+            keyboardInputProvider()->clearLineInputBuffer();
+            keyboardInputProvider()->fillLineInputBuffer(m_History.previous());
             break;
 
         case keycode_Return:
@@ -311,9 +381,15 @@ void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc) {
 //         case keycode_Right:
 //             mp_Text->textCursor().movePosition(QTextCursor::NextCharacter);
 //             break;
+        
+        case keycode_Up:
+            keyboardInputProvider()->clearLineInputBuffer();
+            keyboardInputProvider()->fillLineInputBuffer(m_History.next());
+            break;
     }
 
-    ioDevice()->flush();
+    if(doFlush)
+        ioDevice()->flush();
 }
 
 #include "moc_textbufferwindow.cpp"

@@ -66,7 +66,16 @@ QString toJustificationString(glui32 just) {
     }
 }
 
-QString Glk::Style::styleString() const {
+const QString Glk::Style::styleString() const {
+    QString noColourString = styleStringNoColour();
+    
+    QString colourString = colourStyleString();
+    
+    return QStringLiteral("%1 %2").arg(noColourString).arg(colourString);
+}
+
+const QString Glk::Style::styleStringNoColour() const
+{
     QString fontFamilyString = QStringLiteral("font-family: '%1', '%2'").arg(m_Font.family()).arg(m_Font.lastResortFamily());
     QString fontStyleString = QStringLiteral("font-style: %1").arg(m_Font.italic() ? "italic" : "normal");
     QString fontSizeString = QStringLiteral("font-size: %1pt").arg(m_Font.pointSize());
@@ -80,11 +89,7 @@ QString Glk::Style::styleString() const {
     
     // TODO regular indentation
     
-    QString textColourString = QStringLiteral("color: rgb(%1, %2, %3)").arg(QString::number(m_TextColor.red())).arg(QString::number(m_TextColor.green())).arg(QString::number(m_TextColor.blue()));
-//     QString backColourString = QStringLiteral("background-color: rgb(%1, %2, %3)").arg(QString::number(m_BackgroundColor.red())).arg(QString::number(m_BackgroundColor.green())).arg(QString::number(m_BackgroundColor.blue()));
-    QString colourString = QStringLiteral("%1"/*"%1; %2"*/).arg(textColourString)/*.arg(backColourString)*/;
-    
-    return QStringLiteral("%1; %2; %3; %4;").arg(fontString).arg(justificationString).arg(paraIndentationString).arg(colourString);
+    return QStringLiteral("%1; %2; %3;").arg(fontString).arg(justificationString).arg(paraIndentationString);
 }
 
 glui32 Glk::Style::getHint(glui32 hint) const {
@@ -264,4 +269,11 @@ bool Glk::Style::operator==(const Glk::Style& other) const {
         return true;
 
     return false;
+}
+
+const QString Glk::Style::colourStyleString() const {
+    QString textColourString = QStringLiteral("color: rgb(%1, %2, %3)").arg(QString::number(m_TextColor.red())).arg(QString::number(m_TextColor.green())).arg(QString::number(m_TextColor.blue()));
+//     QString backColourString = QStringLiteral("background-color: rgb(%1, %2, %3)").arg(QString::number(m_BackgroundColor.red())).arg(QString::number(m_BackgroundColor.green())).arg(QString::number(m_BackgroundColor.blue()));
+    
+    return QStringLiteral("%1;"/*"%1; %2;"*/).arg(textColourString)/*.arg(backColourString)*/;
 }

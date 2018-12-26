@@ -1,7 +1,7 @@
 #ifndef TEXTBUFFERWINDOW_HPP
 #define TEXTBUFFERWINDOW_HPP
 
-// #include <QLabel>
+#include <QLinkedList>
 #include <QTextBrowser>
 
 #include "stylemanager.hpp"
@@ -12,21 +12,24 @@ namespace Glk {
 
     class TextBufferDevice : public QIODevice {
             Q_OBJECT
-            
+
             // TODO all of this seems unnecessary
             class Block {
-            public:
-                // Plain text
-                void appendWords(QStringList words, const QString& styleString);
-                void insertOpenHyperlinkTag(glui32 linkval);
-                void insertCloseHyperlinkTag();
-                
-                void writeToBrowser(QTextBrowser* qtb) const;
-                
-            private:
-                QStringList m_Words;
+                public:
+                    Block() : m_Words(), m_IsHyperlinkTagOpen(false) {}
+
+                    // Plain text
+                    void appendWords(QStringList words, const QString& styleString, const QString& styleStringNoColour);
+                    void insertOpenHyperlinkTag(glui32 linkval);
+                    void insertCloseHyperlinkTag();
+
+                    void writeToBrowser(QTextBrowser* qtb) const;
+
+                private:
+                    QStringList m_Words;
+                    bool m_IsHyperlinkTagOpen;
             };
-            
+
         public:
             TextBufferDevice(TextBufferWindow* win);
 
@@ -37,7 +40,7 @@ namespace Glk {
             void discard();
             void flush();
             void onHyperlinkPushed(glui32 linkval);
-            void onWindowStyleChanged(const QString& newStyleString);
+            void onWindowStyleChanged(const QString& newStyleString, const QString& newStyleStringNoColour);
 
         signals:
             void textChanged();
@@ -45,6 +48,7 @@ namespace Glk {
         private:
             TextBufferWindow* mp_TBWindow;
             QString m_StyleString;
+            QString m_StyleStringNoColour;
             QList<Block> m_Buffer;
             glui32 m_CurrentHyperlink;
     };
@@ -53,6 +57,25 @@ namespace Glk {
             Q_OBJECT
 
             friend class TextBufferDevice;
+
+            class History {
+                    typedef QLinkedList<QString> linked_list_type;
+
+                    static constexpr int MAX_SIZE = 1000;
+                public:
+                    History();
+                    
+                    void push(const QString& newcmd);
+
+                    void resetIterator();
+                    const QString next();
+                    const QString previous();
+
+                private:
+                    linked_list_type m_History;
+                    linked_list_type::iterator m_Iterator;
+            };
+
         public:
             TextBufferWindow(glui32 rock_ = 0);
             ~TextBufferWindow() {}
@@ -83,7 +106,7 @@ namespace Glk {
             inline Glk::TextBufferDevice* ioDevice() const {
                 return static_cast<Glk::TextBufferDevice*>(windowStream()->getIODevice());
             }
-            
+
             void resizeEvent(QResizeEvent* ev) override;
 
             QSize pixelsToUnits(const QSize& pixels) const override;
@@ -95,11 +118,12 @@ namespace Glk {
             void onLineInputRequested();
             void onLineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode);
 
-            void onCharacterInput(glui32 ch);
-            void onSpecialCharacterInput(glui32 ch);
+            void onCharacterInput(glui32 ch, bool doUpdate = true);
+            void onSpecialCharacterInput(glui32 ch, bool doUpdate = true);
 
         private:
             QTextBrowser* mp_Text;
+            History m_History;
             Glk::StyleManager m_Styles;
             Glk::Style::Type m_CurrentStyleType;
             Glk::Style::Type m_PreviousStyleType;
