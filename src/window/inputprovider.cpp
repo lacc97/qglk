@@ -58,6 +58,7 @@ void Glk::KeyboardInputProvider::cancelLineInputRequest(event_t* ev) {
     if(!m_LineInputProvider || !m_LineInputRequested) {
         if(ev)
             ev->type = evtype_None;
+
         return;
     }
 
@@ -172,7 +173,7 @@ inline glui32 switchKeyCode(int qkeycode) {
     }
 }
 
-// This code is executed in the glk thread.
+// TODO Move this code to event thread.
 bool Glk::KeyboardInputProvider::handleKeyEvent(int key, const QString& text) {
     if(m_CharacterInputRequested) {
         glui32 keyc = switchKeyCode(key);
@@ -292,8 +293,8 @@ void Glk::MouseInputProvider::cancelMouseInputRequest() {
     emit mouseInputRequestEnded(true);
 }
 
-// This code is executed in the glk thread.
-bool Glk::MouseInputProvider::handleMouseEvent(QPoint pos) { //TODO fix
+// TODO Move this code to event thread.
+bool Glk::MouseInputProvider::handleMouseEvent(QPoint pos) {
     if(m_MouseInputRequested) {
         QSize ws = windowPointer()->windowSize();
 
@@ -314,4 +315,39 @@ Glk::Window* Glk::MouseInputProvider::windowPointer() {
     return static_cast<Glk::Window*>(parent());
 }
 
-#include "moc_inputprovider.cpp"
+Glk::HyperlinkInputProvider::HyperlinkInputProvider(Glk::Window* parent_, bool hyperlinkInputProvider_) : QObject(parent_), m_HyperlinkInputProvider(hyperlinkInputProvider_), m_HyperlinkInputRequested(false) {
+}
+
+void Glk::HyperlinkInputProvider::requestHyperlinkInput() {
+    if(!m_HyperlinkInputProvider || m_HyperlinkInputRequested)
+        return;
+
+    m_HyperlinkInputRequested = true;
+
+    emit hyperlinkInputRequested();
+}
+
+void Glk::HyperlinkInputProvider::cancelHyperlinkInputRequest() {
+    if(!m_HyperlinkInputProvider || !m_HyperlinkInputRequested)
+        return;
+
+    m_HyperlinkInputRequested = false;
+
+    emit hyperlinkInputRequestEnded(true);
+}
+
+// TODO Move this code to event thread.
+void Glk::HyperlinkInputProvider::handleHyperlinkClicked(glui32 linkval) {
+    if(m_HyperlinkInputRequested) {
+        qDebug() << "Hyperlink number " << linkval;
+        Glk::sendTaskToEventThread([&]() {
+            emit hyperlinkInputRequestEnded(false);
+        });
+        QGlk::getMainWindow().eventQueue().push(event_t{evtype_Hyperlink, TO_WINID(windowPointer()), linkval, 0});
+        m_HyperlinkInputRequested = false;
+    }
+}
+
+Glk::Window* Glk::HyperlinkInputProvider::windowPointer() {
+    return static_cast<Glk::Window*>(parent());
+}

@@ -20,6 +20,12 @@ void Glk::WindowStream::pushStyle(Style::Type sty) {
     static_cast<Window*>(parent())->setStyle(sty);
 }
 
+void Glk::WindowStream::pushHyperlink(glui32 linkval) {
+    Glk::sendTaskToEventThread([&] {
+        emit hyperlinkPushed(linkval);
+    });
+}
+
 void Glk::WindowStream::writeUnicodeBuffer(glui32* buf, glui32 len) {
     if(mp_EchoStream)
         mp_EchoStream->writeUnicodeBuffer(buf, len);

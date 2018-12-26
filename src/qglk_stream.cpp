@@ -459,7 +459,7 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
     QDebug deb = qDebug();
     deb << "glk_stream_open_resource(" << filenum << "," << rock << ") =>";
 #endif
-    
+
     Glk::Blorb::Chunk* chunk;
 
     if(!(chunk = new Glk::Blorb::Chunk(Glk::Blorb::loadResource(filenum)))->isValid()) {
@@ -484,13 +484,13 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
 
     if(!str->open(om)) {
         delete str;
-        #ifndef NDEBUG
+#ifndef NDEBUG
         deb << ((void*)NULL);
 #endif
         return NULL;
     }
-    
-    #ifndef NDEBUG
+
+#ifndef NDEBUG
     deb << TO_STRID(str);
 #endif
 
@@ -498,11 +498,11 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
 }
 
 strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
-    #ifndef NDEBUG
+#ifndef NDEBUG
     QDebug deb = qDebug();
     deb << "glk_stream_open_resource_uni(" << filenum << "," << rock << ") =>";
 #endif
-    
+
     Glk::Blorb::Chunk* chunk;
 
     if(!(chunk = new Glk::Blorb::Chunk(Glk::Blorb::loadResource(filenum)))->isValid()) {
@@ -534,9 +534,15 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
 }
 
 void glk_set_hyperlink(glui32 linkval) {
-
+    if(s_CurrentStream) {
+        Glk::sendTaskToEventThread([&] {
+            s_CurrentStream->pushHyperlink(linkval);
+        });
+    }
 }
 
 void glk_set_hyperlink_stream(strid_t str, glui32 linkval) {
-
+    Glk::sendTaskToEventThread([&] {
+        FROM_STRID(str)->pushHyperlink(linkval);
+    });
 }

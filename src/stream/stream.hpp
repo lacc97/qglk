@@ -38,6 +38,8 @@ namespace Glk {
             }
 
             virtual void pushStyle(Style::Type sty);
+            
+            virtual void pushHyperlink(glui32 linkval) {}
 
             bool isOpen() const;
 

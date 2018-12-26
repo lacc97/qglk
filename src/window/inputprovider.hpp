@@ -73,7 +73,29 @@ namespace Glk {
         private:
             bool m_MouseInputProvider;
             bool m_MouseInputRequested;
+    };
 
+    class HyperlinkInputProvider : public QObject {
+            Q_OBJECT
+
+        public:
+            HyperlinkInputProvider(Glk::Window* parent_, bool hyperlinkInputProvider_);
+
+            void requestHyperlinkInput();
+            void cancelHyperlinkInputRequest();
+
+            void handleHyperlinkClicked(glui32 linkval);
+
+        signals:
+            void hyperlinkInputRequested();
+            void hyperlinkInputRequestEnded(bool cancelled);
+            
+        protected:
+            Glk::Window* windowPointer();
+
+        private:
+            bool m_HyperlinkInputProvider;
+            bool m_HyperlinkInputRequested;
     };
 }
 

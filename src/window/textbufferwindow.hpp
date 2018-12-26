@@ -18,12 +18,15 @@ namespace Glk {
             public:
                 // Plain text
                 void appendWords(QStringList words, const QString& styleString);
+                void insertOpenHyperlinkTag(glui32 linkval);
+                void insertCloseHyperlinkTag();
                 
                 void writeToBrowser(QTextBrowser* qtb) const;
                 
             private:
                 QStringList m_Words;
             };
+            
         public:
             TextBufferDevice(TextBufferWindow* win);
 
@@ -33,6 +36,7 @@ namespace Glk {
         public slots:
             void discard();
             void flush();
+            void onHyperlinkPushed(glui32 linkval);
             void onWindowStyleChanged(const QString& newStyleString);
 
         signals:
@@ -42,6 +46,7 @@ namespace Glk {
             TextBufferWindow* mp_TBWindow;
             QString m_StyleString;
             QList<Block> m_Buffer;
+            glui32 m_CurrentHyperlink;
     };
 
     class TextBufferWindow : public Window {
@@ -68,6 +73,7 @@ namespace Glk {
             void clearWindow() override;
 
         public slots:
+            void onHyperlinkClicked(const QUrl& link);
             void onTextChanged();
 
         signals:

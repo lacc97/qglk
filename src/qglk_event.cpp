@@ -11,7 +11,7 @@
 void glk_tick() {
     if(QGlk::getMainWindow().eventQueue().isInterrupted())
         throw Glk::ExitException(true);
-    
+
     emit QGlk::getMainWindow().tick();
 }
 
@@ -38,7 +38,7 @@ void glk_select(event_t* event) {
 
 void glk_select_poll(event_t* event) {
     emit QGlk::getMainWindow().poll();
-    
+
 #ifndef NDEBUG
     qDebug() << "Polling events...";
 #endif
@@ -97,7 +97,7 @@ void glk_request_line_event_uni(winid_t win, glui32* buf, glui32 maxlen, glui32 
 #ifndef NDEBUG
     qDebug() << "glk_request_line_event_uni(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
 #endif
-    
+
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestLineInput(buf, maxlen, initlen, true);
     });
@@ -107,7 +107,7 @@ void glk_cancel_line_event(winid_t win, event_t* event) {
 #ifndef NDEBUG
     qDebug() << "glk_cancel_line_event(" << win << ")";
 #endif
-    
+
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->cancelLineInputRequest(event);
     });
@@ -153,9 +153,13 @@ void glk_request_timer_events(glui32 millisecs) {
 }
 
 void glk_request_hyperlink_event(winid_t win) {
-
+    Glk::sendTaskToEventThread([&] {
+        FROM_WINID(win)->hyperlinkInputProvider()->requestHyperlinkInput();
+    });
 }
 
 void glk_cancel_hyperlink_event(winid_t win) {
-
+    Glk::sendTaskToEventThread([&] {
+        FROM_WINID(win)->hyperlinkInputProvider()->cancelHyperlinkInputRequest();
+    });
 }

@@ -24,6 +24,19 @@ void Glk::TextBufferDevice::Block::appendWords(QStringList words, const QString&
         m_Words.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(w));
 }
 
+void Glk::TextBufferDevice::Block::insertOpenHyperlinkTag(glui32 linkval) {
+    if(m_Words.isEmpty())
+        m_Words.push_back(QStringLiteral("<a href=\"#%1\">").arg(QString::number(linkval)));
+    else
+        m_Words.back().append(QStringLiteral("<a href=\"#%1\">").arg(QString::number(linkval)));
+}
+
+void Glk::TextBufferDevice::Block::insertCloseHyperlinkTag() {
+    Q_ASSERT_X(!m_Words.isEmpty(), "Glk::TextBufferDevice::Block::insertCloseHyperlinkTag", "if hyperlink tag is till open when flushing, we need to ensure a new closing and opening tag is appended");
+    
+    m_Words.back().append(QStringLiteral("</a>"));
+}
+
 void Glk::TextBufferDevice::Block::writeToBrowser(QTextBrowser* qtb) const {
     Q_ASSERT_X(!m_Words.isEmpty(), "Glk::TextBufferDevice::Block::writeToBrowser", "word list should not be empty");
 
@@ -35,7 +48,7 @@ void Glk::TextBufferDevice::Block::writeToBrowser(QTextBrowser* qtb) const {
     }
 }
 
-Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindow(win) {
+Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindow(win), m_CurrentHyperlink(0) {
     Q_ASSERT(mp_TBWindow);
 }
 
@@ -80,6 +93,11 @@ void Glk::TextBufferDevice::discard() {
 void Glk::TextBufferDevice::flush() {
     if(m_Buffer.isEmpty())
         return;
+    
+    mp_TBWindow->mp_Text->moveCursor(QTextCursor::End);
+    
+    if(m_CurrentHyperlink != 0)
+        m_Buffer.back().insertCloseHyperlinkTag();
 
     m_Buffer.front().writeToBrowser(mp_TBWindow->mp_Text);
     m_Buffer.pop_front();
@@ -92,13 +110,40 @@ void Glk::TextBufferDevice::flush() {
     m_Buffer.clear();
 
     emit textChanged();
+    
+    if(m_CurrentHyperlink != 0) {
+        m_Buffer.append(Block());
+        m_Buffer.back().insertOpenHyperlinkTag(m_CurrentHyperlink);
+    }
+}
+
+void Glk::TextBufferDevice::onHyperlinkPushed(glui32 linkval) {
+    if(m_CurrentHyperlink == linkval)
+        return;
+
+    if(linkval == 0) {
+        Q_ASSERT_X(!m_Buffer.isEmpty(), "Glk::TextBufferDevice::onHyperlinkPushed", "if hyperlink tag is till open when flushing, we need to ensure a new opening tag is appended");
+        m_Buffer.back().insertCloseHyperlinkTag();
+    } else {
+        if(m_CurrentHyperlink != 0) {
+            Q_ASSERT_X(!m_Buffer.isEmpty(), "Glk::TextBufferDevice::onHyperlinkPushed", "if hyperlink tag is till open when flushing, we need to ensure a new opening tag is appended");
+            m_Buffer.back().insertCloseHyperlinkTag();
+        }
+        
+        if(m_Buffer.isEmpty())
+            m_Buffer.append(Block());
+        
+        m_Buffer.back().insertOpenHyperlinkTag(linkval);
+    }
+
+    m_CurrentHyperlink = linkval;
 }
 
 void Glk::TextBufferDevice::onWindowStyleChanged(const QString& newStyleString) {
     m_StyleString = newStyleString;
 }
 
-Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
+Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false, true), mp_Text(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     QLayout* lay = new QGridLayout(this);
@@ -108,7 +153,8 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
 //     mp_Text = new QLabel(this);
 //     mp_Text->setAlignment(Qt::AlignBottom);
     mp_Text->setReadOnly(true);
-    mp_Text->setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
+    mp_Text->setOpenExternalLinks(false);
+    mp_Text->setOpenLinks(false);
 
     lay->addWidget(mp_Text);
 
@@ -132,6 +178,14 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
         this, &Glk::TextBufferWindow::onSpecialCharacterInput);
 
     connect(
+        mp_Text, &QTextBrowser::anchorClicked,
+        this, &Glk::TextBufferWindow::onHyperlinkClicked);
+    
+    connect(
+        windowStream(), &Glk::WindowStream::hyperlinkPushed,
+        ioDevice(), &Glk::TextBufferDevice::onHyperlinkPushed);
+
+    connect(
         ioDevice(), &Glk::TextBufferDevice::textChanged,
         this, &Glk::TextBufferWindow::onTextChanged);
 
@@ -153,6 +207,17 @@ void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
 void Glk::TextBufferWindow::clearWindow() {
     ioDevice()->discard();
     mp_Text->clear();
+}
+
+void Glk::TextBufferWindow::onHyperlinkClicked(const QUrl& link) {
+    qDebug() << link;
+    
+    QString linkvalStr = link.toString().mid(1);
+    glui32 linkval = linkvalStr.toUInt();
+    
+    Glk::postTaskToGlkThread([=]() {
+        hyperlinkInputProvider()->handleHyperlinkClicked(linkval);
+    });
 }
 
 void Glk::TextBufferWindow::onTextChanged() {

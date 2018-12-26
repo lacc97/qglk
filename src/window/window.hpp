@@ -34,11 +34,14 @@ namespace Glk {
                 return Object::Type::Window;
             }
 
-            Glk::KeyboardInputProvider* keyboardInputProvider() {
+            inline Glk::KeyboardInputProvider* keyboardInputProvider() {
                 return mp_KIProvider;
             }
-            Glk::MouseInputProvider* mouseInputProvider() {
+            inline Glk::MouseInputProvider* mouseInputProvider() {
                 return mp_MIProvider;
+            }
+            inline Glk::HyperlinkInputProvider* hyperlinkInputProvider() {
+                return mp_HLProvider;
             }
             
             inline PairWindow* windowParent() const {
@@ -75,7 +78,7 @@ namespace Glk {
             virtual void clearWindow() = 0;
 
         protected:
-            Window(QIODevice* device_, glui32 rock_ = 0, bool acceptsCharRequest = false, bool acceptsLineRequest = false, bool acceptsMouseRequest = false);
+            Window(QIODevice* device_, glui32 rock_ = 0, bool acceptsCharRequest = false, bool acceptsLineRequest = false, bool acceptsMouseRequest = false, bool acceptsHyperlinkRequest = false);
 
             void keyPressEvent(QKeyEvent* event) override;
             void mouseReleaseEvent(QMouseEvent * event) override;
@@ -88,6 +91,7 @@ namespace Glk {
             Glk::WindowStream* mp_Stream;
             Glk::KeyboardInputProvider* mp_KIProvider;
             Glk::MouseInputProvider* mp_MIProvider;
+            Glk::HyperlinkInputProvider* mp_HLProvider;
     };
 }
 

@@ -17,6 +17,8 @@ namespace Glk {
             void setEchoStream(Glk::Stream* echo);
             
             void pushStyle(Style::Type sty) override;
+            
+            void pushHyperlink(glui32 linkval) override;
 
             void writeUnicodeBuffer(glui32* buf, glui32 len) override;
             void writeUnicodeChar(glui32 ch) override;
@@ -28,6 +30,9 @@ namespace Glk {
 
         public slots:
             void onEchoStreamClosed();
+            
+        signals:
+            void hyperlinkPushed(glui32 linkval);
             
         private:
             Glk::Stream* mp_EchoStream;

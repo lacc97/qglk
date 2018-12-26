@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include <QByteArray>
+#include <QMetaType>
 #include <QString>
 
 #ifndef TRUE
@@ -21,6 +22,8 @@ extern "C" {
 #include "gi_blorb.h"
 #include "gi_dispa.h"
 }
+
+// Q_DECLARE_METATYPE(glui32)
 
 namespace Glk {
     class Object;

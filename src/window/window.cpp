@@ -6,7 +6,7 @@
 
 #include "pairwindow.hpp"
 
-Glk::Window::Window(QIODevice* device_, glui32 rock_, bool acceptsCharRequest, bool acceptsLineRequest, bool acceptsMouseRequest) : QWidget(NULL), Object(rock_), mp_Parent(NULL), mp_Stream(new WindowStream(this, device_)), mp_KIProvider(new KeyboardInputProvider(this, acceptsCharRequest, acceptsLineRequest)), mp_MIProvider(new MouseInputProvider(this, acceptsMouseRequest)) {
+Glk::Window::Window(QIODevice* device_, glui32 rock_, bool acceptsCharRequest, bool acceptsLineRequest, bool acceptsMouseRequest, bool acceptsHyperlinkRequest) : QWidget(NULL), Object(rock_), mp_Parent(NULL), mp_Stream(new WindowStream(this, device_)), mp_KIProvider(new KeyboardInputProvider(this, acceptsCharRequest, acceptsLineRequest)), mp_MIProvider(new MouseInputProvider(this, acceptsMouseRequest)), mp_HLProvider(new HyperlinkInputProvider(this, acceptsHyperlinkRequest)) {
     assert(device_);
 
     mp_Stream->open(QIODevice::WriteOnly);
