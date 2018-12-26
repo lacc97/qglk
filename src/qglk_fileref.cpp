@@ -87,7 +87,11 @@ frefid_t glk_fileref_create_by_prompt(glui32 usage, glui32 fmode, glui32 rock) {
 }
 
 frefid_t glk_fileref_create_by_name(glui32 usage, char* name, glui32 rock) {
-    return TO_FREFID(new Glk::FileReference(QFileInfo(name), usage, rock));
+    frefid_t fref =  TO_FREFID(new Glk::FileReference(QFileInfo(QString(name).append(".").append(extFromUsage(usage))), usage, rock));
+#ifndef NDEBUG
+    qDebug() << "glk_fileref_create_by_name(" << usage << "," << QString(name) << "," << rock << ") => " << fref;
+#endif
+    return fref;
 }
 
 frefid_t glk_fileref_create_from_fileref(glui32 usage, frefid_t fref, glui32 rock) {
@@ -132,5 +136,8 @@ void glk_fileref_delete_file(frefid_t fref) {
 }
 
 glui32 glk_fileref_does_file_exist(frefid_t fref) {
+#ifndef NDEBUG
+    qDebug() << "glk_fileref_does_file_exist(" << FROM_FREFID(fref)->path() << ") => " << FROM_FREFID(fref)->exists();
+#endif
     return FROM_FREFID(fref)->exists();
 }

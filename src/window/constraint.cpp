@@ -81,12 +81,6 @@ void Glk::HorizontalWindowConstraint::setupWindows(Glk::PairWindow* parentw, Glk
     }
 
     setChildWindows(parentw, keywin, firstwin, secondwin);
-    
-    QDebug debug = qDebug();
-    debug << (parentw) << "horizontal layout: [";
-    for(int ii = 0; ii < parentw->layout()->count(); ii++)
-        debug << "\n{" << parentw->layout()->itemAt(ii)->widget() << "," << parentw->layout()->itemAt(ii)->geometry() << "}";
-    debug << "\n]";
 }
 
 Glk::VerticalWindowConstraint::VerticalWindowConstraint(Glk::WindowConstraint::Method method_, glui32 size_) : WindowConstraint(method_, size_) {}
@@ -142,11 +136,5 @@ void Glk::VerticalWindowConstraint::setupWindows(Glk::PairWindow* parentw, Glk::
     }
 
     setChildWindows(parentw, keywin, firstwin, secondwin);
-    
-    QDebug debug = qDebug();
-    debug << (parentw) << "vertical layout: [";
-    for(int ii = 0; ii < parentw->layout()->count(); ii++)
-        debug << "\n{" << parentw->layout()->itemAt(ii)->widget() << "," << parentw->layout()->itemAt(ii)->geometry() << "}";
-    debug << "\n]";
 }
 
