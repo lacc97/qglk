@@ -401,7 +401,7 @@ glui32 glk_image_get_info(glui32 image, glui32* width, glui32* height) {
 }
 
 glui32 glk_image_draw(winid_t win, glui32 image, glsi32 val1, glsi32 val2) {
-    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
+    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics && FROM_WINID(win)->windowType() != Glk::Window::TextBuffer)
         return FALSE;
 
     Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
@@ -416,15 +416,21 @@ glui32 glk_image_draw(winid_t win, glui32 image, glsi32 val1, glsi32 val2) {
 
     bool res;
 
-    Glk::sendTaskToEventThread([&] {
-        res = static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, img.width(), img.height());
-    });
+    if(FROM_WINID(win)->windowType() == Glk::Window::Graphics) {
+        Glk::sendTaskToEventThread([&] {
+            res = static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, img.width(), img.height());
+        });
+    } else {
+        Glk::sendTaskToEventThread([&] {
+            res = static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->drawImage(img, val1, img.width(), img.height());
+        });
+    }
 
     return res;
 }
 
 glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2, glui32 width, glui32 height) {
-    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
+    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics && FROM_WINID(win)->windowType() != Glk::Window::TextBuffer)
         return FALSE;
 
     Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
@@ -439,9 +445,15 @@ glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2
 
     bool res;
 
-    Glk::sendTaskToEventThread([&] {
-        res = static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, width, height);
-    });
+    if(FROM_WINID(win)->windowType() == Glk::Window::Graphics) {
+        Glk::sendTaskToEventThread([&] {
+            res = static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->drawImage(img, val1, val2, width, height);
+        });
+    } else {
+        Glk::sendTaskToEventThread([&] {
+            res = static_cast<Glk::TextBufferWindow*>(FROM_WINID(win))->drawImage(img, val1, width, height);
+        });
+    }
 
     return res;
 }

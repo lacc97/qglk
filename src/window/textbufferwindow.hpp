@@ -20,6 +20,7 @@ namespace Glk {
 
                     // Plain text
                     void appendWords(QStringList words, const QString& styleString, const QString& styleStringNoColour);
+                    void appendImage(int imgnum, const QString& imgAttributes);
                     void insertOpenHyperlinkTag(glui32 linkval);
                     void insertCloseHyperlinkTag();
 
@@ -32,6 +33,8 @@ namespace Glk {
 
         public:
             TextBufferDevice(TextBufferWindow* win);
+            
+            void drawImage(int imgnum, glsi32 alignment, glui32 w, glui32 h);
 
             qint64 readData(char* data, qint64 maxlen) override;
             qint64 writeData(const char* data, qint64 len) override;
@@ -53,6 +56,21 @@ namespace Glk {
             glui32 m_CurrentHyperlink;
     };
 
+    class TextBufferBrowser : public QTextBrowser {
+        public:
+            TextBufferBrowser(QWidget* parent = NULL) : QTextBrowser(parent) {}
+            
+            int numImages() const;
+            
+            void addImage(const QPixmap& pix);
+            void clearImages();
+
+            QVariant loadResource(int type, const QUrl& name) override;
+
+        private:
+            QList<QPixmap> m_ImageList;
+    };
+
     class TextBufferWindow : public Window {
             Q_OBJECT
 
@@ -64,7 +82,7 @@ namespace Glk {
                     static constexpr int MAX_SIZE = 1000;
                 public:
                     History();
-                    
+
                     void push(const QString& newcmd);
 
                     void resetIterator();
@@ -80,6 +98,8 @@ namespace Glk {
             TextBufferWindow(glui32 rock_ = 0);
             ~TextBufferWindow() {}
 
+            bool drawImage(const QPixmap& im, glsi32 alignment, glui32 w, glui32 h);
+            
             inline const Glk::StyleManager& styles() const {
                 return m_Styles;
             }
@@ -122,7 +142,7 @@ namespace Glk {
             void onSpecialCharacterInput(glui32 ch, bool doUpdate = true);
 
         private:
-            QTextBrowser* mp_Text;
+            TextBufferBrowser* mp_Text;
             History m_History;
             Glk::StyleManager m_Styles;
             Glk::Style::Type m_CurrentStyleType;

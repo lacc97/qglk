@@ -37,6 +37,15 @@ void Glk::TextBufferDevice::Block::appendWords(QStringList words, const QString&
     }
 }
 
+void Glk::TextBufferDevice::Block::appendImage(int imgnum, const QString& imgAttributes) {
+    QString imgTag = QStringLiteral("<img src=\"%1\" %2 />").arg(imgnum).arg(imgAttributes);
+
+    if(m_Words.isEmpty())
+        m_Words.append(imgTag);
+    else
+        m_Words.back().append(imgTag);
+}
+
 void Glk::TextBufferDevice::Block::insertOpenHyperlinkTag(glui32 linkval) {
     if(m_Words.isEmpty())
         m_Words.push_back(QStringLiteral("<a href=\"#%1\">").arg(QString::number(linkval)));
@@ -67,6 +76,41 @@ void Glk::TextBufferDevice::Block::writeToBrowser(QTextBrowser* qtb) const {
 
 Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindow(win), m_CurrentHyperlink(0) {
     Q_ASSERT(mp_TBWindow);
+}
+
+void Glk::TextBufferDevice::drawImage(int imgnum, glsi32 alignment, glui32 w, glui32 h) {
+    QString altAttrib = QStringLiteral("alt=\"%1\"").arg(imgnum);
+    QString sizeAttrib = QStringLiteral("width=\"%1\" height=\"%2\"").arg(w).arg(h);
+    QString alignAttrib = QStringLiteral("");
+
+    switch(alignment) {
+        case imagealign_InlineUp:
+            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg("top");
+            break;
+
+        case imagealign_InlineCenter:
+            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg("middle");
+            break;
+
+        case imagealign_InlineDown:
+            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg("bottom");
+            break;
+
+        case imagealign_MarginLeft:
+            alignAttrib = QStringLiteral("style=\"float: %1;\"").arg("left");
+            break;
+
+        case imagealign_MarginRight:
+            alignAttrib = QStringLiteral("style=\"float: %1;\"").arg("right");
+            break;
+    }
+
+    if(m_Buffer.isEmpty()) {
+        m_Buffer.append(Block());
+        m_Buffer.back().appendImage(imgnum, QStringLiteral("%1 %2 %3").arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
+    } else {
+        m_Buffer.back().appendImage(imgnum, QStringLiteral("%1 %2 %3").arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
+    }
 }
 
 qint64 Glk::TextBufferDevice::readData(char* data, qint64 maxlen) {
@@ -199,13 +243,36 @@ const QString Glk::TextBufferWindow::History::previous() {
     return *(--it);
 }
 
+int Glk::TextBufferBrowser::numImages() const {
+    return m_ImageList.size();
+}
+
+void Glk::TextBufferBrowser::addImage(const QPixmap& pix) {
+    m_ImageList.append(pix);
+}
+
+void Glk::TextBufferBrowser::clearImages() {
+    m_ImageList.clear();
+}
+
+QVariant Glk::TextBufferBrowser::loadResource(int type, const QUrl& name) {
+    if(type == QTextDocument::ImageResource) {
+        int imgIndex = name.toString().toUInt();
+
+        if(imgIndex < m_ImageList.size())
+            return QVariant::fromValue(m_ImageList[imgIndex]);
+    }
+
+    return QTextBrowser::loadResource(type, name);
+}
+
 Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false, true), mp_Text(), m_History(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     QLayout* lay = new QGridLayout(this);
     lay->setMargin(0);
 
-    mp_Text = new QTextBrowser(this);
+    mp_Text = new TextBufferBrowser(this);
 //     mp_Text = new QLabel(this);
 //     mp_Text->setAlignment(Qt::AlignBottom);
     mp_Text->setReadOnly(true);
@@ -252,6 +319,15 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
     ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString(), m_Styles[m_CurrentStyleType].styleStringNoColour());
 }
 
+bool Glk::TextBufferWindow::drawImage(const QPixmap& im, glsi32 alignment, glui32 w, glui32 h) {
+    int imageIndex = mp_Text->numImages();
+    mp_Text->addImage(im);
+
+    ioDevice()->drawImage(imageIndex, alignment, w, h);
+    
+    return true;
+}
+
 void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
     qDebug() << "Changed style from" << m_CurrentStyleType << "to" << style;
 
@@ -263,11 +339,10 @@ void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
 void Glk::TextBufferWindow::clearWindow() {
     ioDevice()->discard();
     mp_Text->clear();
+    mp_Text->clearImages();
 }
 
 void Glk::TextBufferWindow::onHyperlinkClicked(const QUrl& link) {
-    qDebug() << link;
-
     QString linkvalStr = link.toString().mid(1);
     glui32 linkval = linkvalStr.toUInt();
 
@@ -341,12 +416,12 @@ void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, g
             windowStream()->echoStream()->writeChar('\n');
         }
     }
-    
+
     if(unicode)
         m_History.push(QString::fromUcs4(static_cast<glui32*>(buf), len));
     else
         m_History.push(QString::fromLatin1(static_cast<char*>(buf), len));
-    
+
     m_History.resetIterator();
 
     setStyle(m_PreviousStyleType);
@@ -375,13 +450,14 @@ void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc, bool doFlush) {
         case keycode_Return:
             Q_ASSERT_X(1, "handling line input special character", "this code shouldn't run");
             break;
+
 //         case keycode_Left:
 //             mp_Text->textCursor().movePosition(QTextCursor::PreviousCharacter);
 //             break;
 //         case keycode_Right:
 //             mp_Text->textCursor().movePosition(QTextCursor::NextCharacter);
 //             break;
-        
+
         case keycode_Up:
             keyboardInputProvider()->clearLineInputBuffer();
             keyboardInputProvider()->fillLineInputBuffer(m_History.next());
