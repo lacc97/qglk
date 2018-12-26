@@ -40,6 +40,12 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
                 default:
                     return (val >= 32 && val <= 126);
             }
+        
+        case gestalt_CharOutput:
+            if(QChar::isPrint(val))
+                return gestalt_CharOutput_ExactPrint;
+            else
+                return gestalt_CharOutput_CannotPrint;
 
         case gestalt_DateTime:
             return TRUE;
@@ -119,16 +125,16 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
             return TRUE;
 
         case gestalt_Sound:
-            return TRUE;
+            return FALSE;
 
         case gestalt_SoundMusic:
-            return TRUE;
+            return FALSE;
 
         case gestalt_SoundVolume:
-            return TRUE;
+            return FALSE;
 
         case gestalt_Sound2:
-            return TRUE;
+            return FALSE;
 
         case gestalt_Timer:
             return TRUE;
