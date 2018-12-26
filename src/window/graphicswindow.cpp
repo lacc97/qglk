@@ -4,10 +4,15 @@
 #include <QPaintEvent>
 #include <QResizeEvent>
 
+#include "qglk.hpp"
 #include "stream/nulldevice.hpp"
 
 Glk::GraphicsWindow::GraphicsWindow(glui32 rock_) : Window(new NullDevice(), rock_, true, false), m_Buffer(QSize(1, 1), QImage::Format_ARGB32) {
     setBackgroundColor(Qt::white);
+    
+    connect(
+        &QGlk::getMainWindow(), &QGlk::poll,
+        this, qOverload<>(&Glk::GraphicsWindow::update));
 }
 
 void Glk::GraphicsWindow::setBackgroundColor(const QColor& c) {
@@ -33,6 +38,8 @@ void Glk::GraphicsWindow::clearWindow() {
 }
 
 void Glk::GraphicsWindow::paintEvent(QPaintEvent* ev) {
+//     Window::paintEvent(ev);
+    
     QRect r = ev->region().boundingRect();
 
     QPainter p(this);
@@ -41,6 +48,8 @@ void Glk::GraphicsWindow::paintEvent(QPaintEvent* ev) {
 }
 
 void Glk::GraphicsWindow::resizeEvent(QResizeEvent* ev) {
+//     Window::resizeEvent(ev);
+    
     QImage newi(ev->size(), QImage::Format_ARGB32);
 
     QPainter* p = new QPainter(&newi);
@@ -49,6 +58,8 @@ void Glk::GraphicsWindow::resizeEvent(QResizeEvent* ev) {
     delete p;
 
     m_Buffer = std::move(newi);
+    
+//     QGlk::getMainWindow().eventQueue().push(event_t{evtype_Redraw, TO_WINID(this), 0, 0});
 }
 
 QSize Glk::GraphicsWindow::pixelsToUnits(const QSize& pixels) const {

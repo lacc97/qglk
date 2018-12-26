@@ -33,6 +33,7 @@ namespace Glk {
 
         private:
             QImage m_Buffer;
+            QImage m_BackBuffer;
     };
 }
 
