@@ -312,7 +312,7 @@ void glk_window_set_background_color(winid_t win, glui32 color) {
         return;
 
     Glk::sendTaskToEventThread([&] {
-        static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->setBackgroundColor(QColor::fromRgba(color));
+        static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->setBackgroundColor(QColor::fromRgb(color));
     });
 }
 
@@ -386,7 +386,7 @@ glui32 glk_image_get_info(glui32 image, glui32* width, glui32* height) {
     if(!imgchunk.isValid())
         return FALSE;
 
-    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
+    QPixmap img = QPixmap::fromImage(QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length()));
 
     if(img.isNull())
         return FALSE;
@@ -409,7 +409,7 @@ glui32 glk_image_draw(winid_t win, glui32 image, glsi32 val1, glsi32 val2) {
     if(!imgchunk.isValid())
         return FALSE;
 
-    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
+    QPixmap img = QPixmap::fromImage(QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length()));
 
     if(img.isNull())
         return FALSE;
@@ -432,7 +432,7 @@ glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2
     if(!imgchunk.isValid())
         return FALSE;
 
-    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
+    QPixmap img = QPixmap::fromImage(QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length()));
 
     if(img.isNull())
         return FALSE;
