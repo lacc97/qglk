@@ -1,5 +1,7 @@
 #include "file/fileref.hpp"
 
+#include <cstring>
+
 #include <QBuffer>
 #include <QDebug>
 
@@ -92,34 +94,53 @@ glui32 glk_stream_get_position(strid_t str) {
 }
 
 void glk_put_char(unsigned char ch) {
-//     qDebug() << "glk_put_char(" << ch << ")";
+#ifndef NDEBUG
+    qDebug() << "glk_put_char(" << QString(ch) << ")";
+#endif
+
     if(s_CurrentStream)
         s_CurrentStream->writeChar(ch);
 }
 
 void glk_put_char_stream(strid_t str, unsigned char ch) {
-//     qDebug() << "glk_put_char_stream(" << str << "," << ch << ")";
+#ifndef NDEBUG
+    qDebug() << "glk_put_char_stream(" << str << "," << QString(ch) << ")";
+#endif
+
     FROM_STRID(str)->writeChar(ch);
 }
 
 void glk_put_string(char* s) {
-    qDebug() << "glk_put_string(" << s << ")";
+#ifndef NDEBUG
+    qDebug() << "glk_put_string(" << QString(s) << ")";
+#endif
 
     if(s_CurrentStream)
         s_CurrentStream->writeString(s);
 }
 
 void glk_put_string_stream(strid_t str, char* s) {
-    qDebug() << "glk_put_string_stream(" << str << "," << s << ")";
+#ifndef NDEBUG
+    qDebug() << "glk_put_string_stream(" << str << "," << QString(s) << ")";
+#endif
+
     FROM_STRID(str)->writeString(s);
 }
 
 void glk_put_buffer(char* buf, glui32 len) {
+#ifndef NDEBUG
+    qDebug() << "glk_put_buffer(" << QString::fromLatin1(buf, len) << ")";
+#endif
+
     if(s_CurrentStream)
         s_CurrentStream->writeBuffer(buf, len);
 }
 
 void glk_put_buffer_stream(strid_t str, char* buf, glui32 len) {
+#ifndef NDEBUG
+    qDebug() << "glk_put_buffer_stream(" << str << "," << QString::fromLatin1(buf, len) << ")";
+#endif
+
     FROM_STRID(str)->writeBuffer(buf, len);
 }
 
@@ -133,7 +154,11 @@ void glk_set_style_stream(strid_t str, glui32 styl) {
 }
 
 glsi32 glk_get_char_stream(strid_t str) {
-    return FROM_STRID(str)->readChar();
+    glsi32 ch = FROM_STRID(str)->readChar();
+#ifndef NDEBUG
+    qDebug() << "glk_get_char_stream(" << str << ") =>" << QString::fromUcs4(reinterpret_cast<glui32*>(&ch), 1);
+#endif
+    return ch;
 }
 
 glui32 glk_get_line_stream(strid_t str, char* buf, glui32 len) {
@@ -145,34 +170,62 @@ glui32 glk_get_buffer_stream(strid_t str, char* buf, glui32 len) {
 }
 
 void glk_put_char_uni(glui32 ch) {
+#ifndef NDEBUG
+    qDebug() << "glk_put_char_uni(" << QString::fromUcs4(&ch, 1) << ")";
+#endif
+
     if(s_CurrentStream)
         s_CurrentStream->writeUnicodeChar(ch);
 }
 
 void glk_put_string_uni(glui32* s) {
+#ifndef NDEBUG
+    qDebug() << "glk_put_string_uni(" << QString::fromUcs4(s) << ")";
+#endif
+
     if(s_CurrentStream)
         s_CurrentStream->writeUnicodeString(s);
 }
 
 void glk_put_buffer_uni(glui32* buf, glui32 len) {
+#ifndef NDEBUG
+    qDebug() << "glk_put_buffer_uni(" << QString::fromUcs4(buf, len) << ")";
+#endif
+
     if(s_CurrentStream)
         s_CurrentStream->writeUnicodeBuffer(buf, len);
 }
 
 void glk_put_char_stream_uni(strid_t str, glui32 ch) {
+#ifndef NDEBUG
+    qDebug() << "glk_put_char_stream_uni(" << str << "," << QString::fromUcs4(&ch, 1) << ")";
+#endif
+
     FROM_STRID(str)->writeUnicodeChar(ch);
 }
 
 void glk_put_string_stream_uni(strid_t str, glui32* s) {
+#ifndef NDEBUG
+    qDebug() << "glk_put_string_stream_uni(" << str << "," << QString::fromUcs4(s) << ")";
+#endif
+
     FROM_STRID(str)->writeUnicodeString(s);
 }
 
 void glk_put_buffer_stream_uni(strid_t str, glui32* buf, glui32 len) {
+#ifndef NDEBUG
+    qDebug() << "glk_put_buffer_stream_uni(" << str << "," << QString::fromUcs4(buf, len) << ")";
+#endif
+
     FROM_STRID(str)->writeUnicodeBuffer(buf, len);
 }
 
 glsi32 glk_get_char_stream_uni(strid_t str) {
-    return FROM_STRID(str)->readUnicodeChar();
+    glsi32 ch = FROM_STRID(str)->readUnicodeChar();
+#ifndef NDEBUG
+    qDebug() << "glk_get_char_stream_uni(" << str << ") =>" << QString::fromUcs4(reinterpret_cast<glui32*>(&ch), 1);
+#endif
+    return ch;
 }
 
 glui32 glk_get_buffer_stream_uni(strid_t str, glui32* buf, glui32 len) {
@@ -184,12 +237,10 @@ glui32 glk_get_line_stream_uni(strid_t str, glui32* buf, glui32 len) {
 }
 
 strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 rock) {
-    Glk::Stream* str;
-
-    if(buf)
-        str = new Glk::Latin1Stream(NULL, new QBuffer(new QByteArray(QByteArray::fromRawData(buf, buflen))), Glk::Stream::Type::Memory, buf, rock);
-    else
-        str = new Glk::Latin1Stream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, buf, rock);
+#ifndef NDEBUG
+    QDebug deb = qDebug();
+    deb << "glk_stream_open_memory(" << ((void*)buf) << "," << buflen << "," << fmode << "," << rock << ") =>";
+#endif
 
     QIODevice::OpenMode om;
 
@@ -211,8 +262,29 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
             break;
     }
 
+    Glk::Stream* str;
+
+    if(buf) {
+        QByteArray* qba = new QByteArray(QByteArray::fromRawData(buf, buflen));
+        str = new Glk::Latin1Stream(NULL, new QBuffer(qba), Glk::Stream::Type::Memory, rock);
+
+        QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba]() {
+            if((om & QIODevice::WriteOnly) != 0)
+                std::memcpy(buf, qba->data(), buflen);
+
+            Glk::Dispatch::unregisterArray(buf, buflen, false);
+
+            delete qba;
+        });
+    } else {
+        str = new Glk::Latin1Stream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, rock);
+    }
+
     if(!str->open(om)) {
         delete str;
+#ifndef NDEBUG
+        deb << ((void*)NULL);
+#endif
         return NULL;
     }
 
@@ -220,7 +292,7 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
         Glk::Dispatch::registerArray(buf, buflen, false);
 
 #ifndef NDEBUG
-    qDebug() << "glk_stream_open_memory(" << ((void*)buf) << "," << buflen << "," << fmode << "," << rock << ") =>" << TO_STRID(str);
+    deb << TO_STRID(str);
 #endif
 
     return TO_STRID(str);
@@ -229,14 +301,8 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
 strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glui32 rock) {
 #ifndef NDEBUG
     QDebug deb = qDebug();
-    deb << "glk_stream_open_memory_uni(" << buf << "," << buflen << "," << fmode << "," << rock << ") =>";
+    deb << "glk_stream_open_memory_uni(" << ((void*)buf) << "," << buflen << "," << fmode << "," << rock << ") =>";
 #endif
-    Glk::Stream* str;
-
-    if(buf)
-        str = new Glk::UnicodeStream(NULL, new QBuffer(new QByteArray(QByteArray::fromRawData(reinterpret_cast<char*>(buf), 4 * buflen))), Glk::Stream::Type::Memory, buf, rock);
-    else
-        str = new Glk::UnicodeStream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, buf, rock);
 
     QIODevice::OpenMode om;
 
@@ -256,6 +322,24 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
         case filemode_WriteAppend:
             om = QIODevice::WriteOnly | QIODevice::Append;
             break;
+    }
+
+    Glk::Stream* str;
+
+    if(buf) {
+        QByteArray* qba = new QByteArray(QByteArray::fromRawData(reinterpret_cast<char*>(buf), 4 * buflen));
+        str = new Glk::Latin1Stream(NULL, new QBuffer(qba), Glk::Stream::Type::Memory, rock);
+
+        QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba]() {
+            if((om & QIODevice::WriteOnly) != 0)
+                std::memcpy(buf, qba->data(), buflen);
+
+            Glk::Dispatch::unregisterArray(buf, buflen, true);
+
+            delete qba;
+        });
+    } else {
+        str = new Glk::Latin1Stream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, rock);
     }
 
     if(!str->open(om)) {
@@ -281,7 +365,7 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
     QDebug deb = qDebug();
     deb << "glk_stream_open_file(" << FROM_FREFID(fileref)->path() << "," << fmode << "," << rock << ") =>";
 #endif
-    Glk::Stream* str = new Glk::Latin1Stream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, NULL, rock);
+    Glk::Stream* str = new Glk::Latin1Stream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, rock);
     QIODevice::OpenMode om;
 
     switch(fmode) {
@@ -328,7 +412,7 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
     QDebug deb = qDebug();
     deb << "glk_stream_open_file_uni(" << FROM_FREFID(fileref)->path() << "," << fmode << "," << rock << ") =>";
 #endif
-    Glk::Stream* str = new Glk::UnicodeStream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, NULL, rock);
+    Glk::Stream* str = new Glk::UnicodeStream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, rock);
     QIODevice::OpenMode om;
 
     switch(fmode) {
@@ -378,7 +462,16 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
         return NULL;
     }
 
-    Glk::Stream* str = new Glk::Latin1Stream(NULL, new QBuffer(new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()))), Glk::Stream::Type::Resource, chunk, rock);
+    QByteArray* qba = new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()));
+    Glk::Stream* str = new Glk::Latin1Stream(NULL, new QBuffer(qba), Glk::Stream::Type::Resource, rock);
+
+    QObject::connect(str, &QObject::destroyed, [qba, chunk]() {
+        delete qba;
+
+        Glk::Blorb::unloadChunk(*chunk);
+        delete chunk;
+    });
+
     QIODevice::OpenMode om = QIODevice::ReadOnly;
 
     if(chunk->type() == Glk::Blorb::ChunkType::TEXT)
@@ -400,7 +493,16 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
         return NULL;
     }
 
-    Glk::Stream* str = new Glk::UnicodeStream(NULL, new QBuffer(new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()))), Glk::Stream::Type::Resource, chunk, rock);
+    QByteArray* qba = new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()));
+    Glk::Stream* str = new Glk::UnicodeStream(NULL, new QBuffer(qba), Glk::Stream::Type::Resource, rock);
+
+    QObject::connect(str, &QObject::destroyed, [qba, chunk]() {
+        delete qba;
+
+        Glk::Blorb::unloadChunk(*chunk);
+        delete chunk;
+    });
+
     QIODevice::OpenMode om = QIODevice::ReadOnly;
 
     if(chunk->type() == Glk::Blorb::ChunkType::TEXT)

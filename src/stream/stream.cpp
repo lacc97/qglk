@@ -10,43 +10,18 @@
 #include "qglk.hpp"
 #include "blorb/chunk.hpp"
 
-Glk::Stream::Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, bool unicode_, void* userptr_, glui32 rock_) : QObject(parent_), Object(rock_), mp_Device(device_), m_Unicode(unicode_), m_ReadChars(0), m_WriteChars(0), m_Type(type_), mp_ExtraData(userptr_) {
+Glk::Stream::Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, bool unicode_, glui32 rock_) : QObject(parent_), Object(rock_), mp_Device(device_), m_Unicode(unicode_), m_ReadChars(0), m_WriteChars(0), m_Type(type_) {
     assert(mp_Device);
 }
 
 Glk::Stream::~Stream() {
-    if(mp_Device->isOpen()) {
-        mp_Device->close();
+    close();
 
-        emit closed();
+    if(!QGlk::getMainWindow().streamList().removeOne(this))
+        qWarning() << "this" << (this) << "not found in stream list while removing";
 
-        if(!QGlk::getMainWindow().streamList().removeOne(this))
-            qWarning() << "this" << (this) << "not found in stream list while removing";
+    Glk::Dispatch::unregisterObject(this);
 
-        Glk::Dispatch::unregisterObject(this);
-    }
-    
-    switch(type()) {
-        case Type::Memory:
-            if(data()) {
-                QByteArray& qba = static_cast<QBuffer*>(mp_Device)->buffer();
-
-                if((device()->openMode() & QIODevice::WriteOnly) != 0)
-                    std::memcpy(data(), qba.data(), qba.size());
-
-                Glk::Dispatch::unregisterArray(data(), (isUnicode() ? qba.size() / 4 : qba.size()), isUnicode());
-
-                delete &static_cast<QBuffer*>(mp_Device)->buffer();
-            }
-
-            break;
-
-        case Type::Resource:
-            Glk::Blorb::unloadChunk(*reinterpret_cast<Glk::Blorb::Chunk*>(data()));
-            delete reinterpret_cast<Glk::Blorb::Chunk*>(data());
-            break;
-    }
-    
     if(glk_stream_get_current() == TO_STRID(this))
         glk_stream_set_current(NULL);
 

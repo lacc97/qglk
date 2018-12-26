@@ -7,7 +7,7 @@ namespace Glk {
     class Latin1Stream : public Stream {
             Q_OBJECT
         public:
-            Latin1Stream(QObject* parent_, QIODevice* device_, Type type_, void* userptr_, glui32 rock_ = 0);
+            Latin1Stream(QObject* parent_, QIODevice* device_, Type type_, glui32 rock_ = 0);
             ~Latin1Stream();
             
             glui32 position() const override;

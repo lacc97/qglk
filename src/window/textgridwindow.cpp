@@ -25,7 +25,7 @@ qint64 Glk::TextGridDevice::writeData(const char* data, qint64 len) {
     qint64 wcount;
 
     for(wcount = 0; wcount < ulen; wcount++) {
-        if(!mp_TGWindow->writeChar(qFromBigEndian(udata[wcount])))
+        if(!mp_TGWindow->writeChar(udata[wcount]))
             break;
     }
 

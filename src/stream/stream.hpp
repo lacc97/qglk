@@ -16,12 +16,22 @@ namespace Glk {
                 Memory, File, Resource, Window
             };
 
-            Stream(QObject* parent_, QIODevice* device_, Type type_, bool unicode_ = false, void* userptr_ = NULL, glui32 rock_ = 0);
+            Stream(QObject* parent_, QIODevice* device_, Type type_, bool unicode_ = false, glui32 rock_ = 0);
             virtual ~Stream();
 
             Glk::Object::Type objectType() const override;
 
             virtual bool open(QIODevice::OpenMode om);
+            inline bool close() {
+                if(mp_Device->isOpen()) {
+                    mp_Device->close();
+
+                    if(!mp_Device->isOpen())
+                        emit closed();
+                }
+
+                return !mp_Device->isOpen();
+            }
 
             inline Type type() const {
                 return m_Type;
@@ -75,10 +85,6 @@ namespace Glk {
             void closed();
 
         protected:
-            inline void* data() const {
-                return mp_ExtraData;
-            }
-
             inline QIODevice* device() const {
                 return mp_Device;
             }
@@ -96,8 +102,6 @@ namespace Glk {
             glui32 m_WriteChars;
 
             Type m_Type;
-
-            void* mp_ExtraData;
     };
 }
 

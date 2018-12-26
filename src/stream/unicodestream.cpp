@@ -1,26 +1,28 @@
 #include "unicodestream.hpp"
 
+#include <cstring>
+
 #include <QtEndian>
 
-Glk::UnicodeStream::UnicodeStream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, void* userptr_, glui32 rock_) : Stream(parent_, device_, type_, true, userptr_, rock_) {}
+Glk::UnicodeStream::UnicodeStream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, glui32 rock_) : Stream(parent_, device_, type_, true, rock_) {}
 
 Glk::UnicodeStream::~UnicodeStream() {
 }
 
 glui32 Glk::UnicodeStream::position() const {
-    if(isInTextMode()) {
-        // TODO textmode
-    } else {
+//     if(isInTextMode()) {
+//         // TODO textmode
+//     } else {
         return glui32(device()->pos() / 4);
-    }
+//     }
 }
 
 void Glk::UnicodeStream::setPosition(glui32 pos) {
-    if(isInTextMode()) {
-        // TODO textmode
-    } else {
+//     if(isInTextMode()) {
+//         // TODO textmode
+//     } else {
         device()->seek(pos * 4);
-    }
+//     }
 }
 
 void Glk::UnicodeStream::writeBuffer(char* buf, glui32 len) {
@@ -51,41 +53,50 @@ void Glk::UnicodeStream::writeString(char* str) {
 }
 
 void Glk::UnicodeStream::writeUnicodeBuffer(glui32* buf, glui32 len) {
-    if(isInTextMode()) {
+//     if(isInTextMode()) {
+// 
+//     } else {
+        glui32* newbuf;
 
-    } else {
-        glui32* bufbe = new glui32[len];
+        if(!isInTextMode() && (!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))) {
+            newbuf = new glui32[len];
+            std::memcpy(newbuf, buf, len);
 
-        for(glui32 ii = 0; ii < len; ii++)
-            bufbe[ii] = qToBigEndian(buf[ii]);
+            for(glui32 ii = 0; ii < len; ii++)
+                newbuf[ii] = qToBigEndian(newbuf[ii]);
+        } else {
+            newbuf = buf;
+        }
 
-        qint64 writtenb = device()->write(reinterpret_cast<char*>(bufbe), len * 4);
+        qint64 writtenb = device()->write(reinterpret_cast<char*>(newbuf), len * 4);
 
         if(writtenb != -1)
             updateWriteCount(glui32(writtenb) / 4);
 
-        delete[] bufbe;
-    }
+        if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))
+            delete[] newbuf;
+//     }
 }
 
 void Glk::UnicodeStream::writeUnicodeChar(glui32 ch) {
-    if(isInTextMode()) {
+//     if(isInTextMode()) {
+// 
+//     } else {
+        if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))
+            ch = qToBigEndian(ch);
 
-    } else {
-        glui32 chbe = qToBigEndian(ch);
-
-        qint64 writtenb = device()->write(reinterpret_cast<char*>(&chbe), 4);
+        qint64 writtenb = device()->write(reinterpret_cast<char*>(&ch), 4);
 
         if(writtenb != -1)
             updateWriteCount(1);
-    }
+//     }
 }
 
 void Glk::UnicodeStream::writeUnicodeString(glui32* str) {
     glui32 len;
 
     for(len = 0; str[len] != 0; len++);
-    
+
     writeUnicodeBuffer(str, len);
     return;
 }
@@ -123,9 +134,9 @@ glui32 Glk::UnicodeStream::readLine(char* buf, glui32 len) {
 }
 
 glui32 Glk::UnicodeStream::readUnicodeBuffer(glui32* buf, glui32 len) {
-    if(isInTextMode()) {
-
-    } else {
+//     if(isInTextMode()) {
+// 
+//     } else {
         qint64 numr = device()->read(reinterpret_cast<char*>(buf), len * 4);
 
         if(numr > 0)
@@ -133,32 +144,38 @@ glui32 Glk::UnicodeStream::readUnicodeBuffer(glui32* buf, glui32 len) {
         else
             return 0;
 
-        for(glui32 ii = 0; ii < (numr) / 4; ii++)
-            buf[ii] = qFromBigEndian(buf[ii]);
+        if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource)) {
+            for(glui32 ii = 0; ii < (numr) / 4; ii++)
+                buf[ii] = qFromBigEndian(buf[ii]);
+        }
 
         return glui32(numr) / 4;
-    }
+//     }
 }
 
 glsi32 Glk::UnicodeStream::readUnicodeChar() {
-    if(isInTextMode()) {
-
-    } else {
+//     if(isInTextMode()) {
+// 
+//     } else {
         glsi32 ch;
 
         if(device()->read(reinterpret_cast<char*>(&ch), 4) > 0) {
             updateReadCount(1);
-            return qFromBigEndian(ch);
+
+            if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))
+                return qFromBigEndian(ch);
+            else
+                return ch;
         } else {
             return -1;
         }
-    }
+//     }
 }
 
 glui32 Glk::UnicodeStream::readUnicodeLine(glui32* buf, glui32 len) {
-    if(isInTextMode()) {
-
-    } else {
+//     if(isInTextMode()) {
+// 
+//     } else {
         glui32* iptr = buf - 1;
         glui32 numr = 0;
 
@@ -172,7 +189,8 @@ glui32 Glk::UnicodeStream::readUnicodeLine(glui32* buf, glui32 len) {
                 break;
             }
 
-            *iptr = qFromBigEndian(*iptr);
+            if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))
+                *iptr = qFromBigEndian(*iptr);
         } while(*iptr != 0);
 
         numr--;
@@ -180,6 +198,7 @@ glui32 Glk::UnicodeStream::readUnicodeLine(glui32* buf, glui32 len) {
         updateReadCount(numr);
 
         return numr;
-    }
+//     }
 }
+
 

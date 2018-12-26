@@ -47,10 +47,7 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
     Q_ASSERT(len % 4 == 0);
 
     qint64 ulen = len / 4;
-    glui32* udata = new glui32[ulen];
-
-    for(glui32 ii = 0; ii < ulen; ii++)
-        udata[ii] = qFromBigEndian(reinterpret_cast<const glui32*>(data)[ii]);
+    const glui32* udata = reinterpret_cast<const glui32*>(data);
 
     QString text = QString::fromUcs4(udata, ulen);
     QStringList blocks = text.split('\n');
@@ -72,8 +69,6 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
         m_Buffer.append(Block());
         m_Buffer.back().appendWords(words, m_StyleString);
     }
-
-    delete[] udata;
 
     return len;
 }
