@@ -247,8 +247,8 @@ int Glk::TextBufferBrowser::numImages() const {
     return m_ImageList.size();
 }
 
-void Glk::TextBufferBrowser::addImage(const QPixmap& pix) {
-    m_ImageList.append(pix);
+void Glk::TextBufferBrowser::addImage(const QImage& im) {
+    m_ImageList.append(im);
 }
 
 void Glk::TextBufferBrowser::clearImages() {
@@ -319,7 +319,7 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
     ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString(), m_Styles[m_CurrentStyleType].styleStringNoColour());
 }
 
-bool Glk::TextBufferWindow::drawImage(const QPixmap& im, glsi32 alignment, glui32 w, glui32 h) {
+bool Glk::TextBufferWindow::drawImage(const QImage& im, glsi32 alignment, glui32 w, glui32 h) {
     int imageIndex = mp_Text->numImages();
     mp_Text->addImage(im);
 

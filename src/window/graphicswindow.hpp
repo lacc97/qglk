@@ -4,7 +4,7 @@
 #include "window.hpp"
 
 #include <QColor>
-#include <QPixmap>
+#include <QImage>
 
 namespace Glk {
     class GraphicsWindow : public Window {
@@ -15,7 +15,7 @@ namespace Glk {
 
             void setBackgroundColor(const QColor& c);
 
-            bool drawImage(const QPixmap& im, glsi32 x, glsi32 y, glui32 w, glui32 h);
+            bool drawImage(const QImage& im, glsi32 x, glsi32 y, glui32 w, glui32 h);
             void fillRect(const QColor& c, glsi32 x, glsi32 y, glui32 w, glui32 h);
 
             Glk::Window::Type windowType() const override {
@@ -32,8 +32,8 @@ namespace Glk {
             QSize unitsToPixels(const QSize & units) const override;
 
         private:
-            QPixmap m_Buffer;
-            QPixmap m_BackBuffer;
+            QImage m_Buffer;
+            QImage m_BackBuffer;
     };
 }
 

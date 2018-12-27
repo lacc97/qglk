@@ -386,7 +386,7 @@ glui32 glk_image_get_info(glui32 image, glui32* width, glui32* height) {
     if(!imgchunk.isValid())
         return FALSE;
 
-    QPixmap img = QPixmap::fromImage(QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length()));
+    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
 
     if(img.isNull())
         return FALSE;
@@ -409,7 +409,7 @@ glui32 glk_image_draw(winid_t win, glui32 image, glsi32 val1, glsi32 val2) {
     if(!imgchunk.isValid())
         return FALSE;
 
-    QPixmap img = QPixmap::fromImage(QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length()));
+    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length()).convertToFormat(QImage::Format_ARGB32_Premultiplied);
 
     if(img.isNull())
         return FALSE;
@@ -438,7 +438,7 @@ glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2
     if(!imgchunk.isValid())
         return FALSE;
 
-    QPixmap img = QPixmap::fromImage(QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length()));
+    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length()).convertToFormat(QImage::Format_ARGB32_Premultiplied);;
 
     if(img.isNull())
         return FALSE;

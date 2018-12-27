@@ -62,13 +62,13 @@ namespace Glk {
             
             int numImages() const;
             
-            void addImage(const QPixmap& pix);
+            void addImage(const QImage& im);
             void clearImages();
 
             QVariant loadResource(int type, const QUrl& name) override;
 
         private:
-            QList<QPixmap> m_ImageList;
+            QList<QImage> m_ImageList;
     };
 
     class TextBufferWindow : public Window {
@@ -98,7 +98,7 @@ namespace Glk {
             TextBufferWindow(glui32 rock_ = 0);
             ~TextBufferWindow() {}
 
-            bool drawImage(const QPixmap& im, glsi32 alignment, glui32 w, glui32 h);
+            bool drawImage(const QImage& im, glsi32 alignment, glui32 w, glui32 h);
             
             inline const Glk::StyleManager& styles() const {
                 return m_Styles;
