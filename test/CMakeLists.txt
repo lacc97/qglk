@@ -1,5 +1,9 @@
 set_property(DIRECTORY . PROPERTY SKIP_AUTOGEN ON)
 
+add_executable(test main.c)
+    target_include_directories(test PRIVATE ../src/)
+    target_link_libraries(test qglk)
+
 if(UNIX)
     set(MATH_LIBRARY m)
 else()
