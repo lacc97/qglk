@@ -276,7 +276,7 @@ void Glk::Runnable::run() {
 }
 
 QGlk::QGlk(int argc, char** argv) : QMainWindow(), ui(new Ui::QGlk), mp_Runnable(new Glk::Runnable(argc, argv)), mp_RootWindow(NULL), m_InterruptHandler(), m_DefaultStyles(), m_TextBufferStyles() {
-    setMinimumSize(1280, 720);
+    setMinimumSize(640, 480);
     ui->setupUi(this);
 
     mp_Runnable->setAutoDelete(true);
