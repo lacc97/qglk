@@ -33,7 +33,7 @@ void Glk::TextBufferDevice::Block::appendWords(QStringList words, const QString&
         else
             spanTag = QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(w);
 
-        m_Words.append(QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(w));
+        m_Words.append(spanTag);
     }
 }
 
@@ -329,7 +329,9 @@ bool Glk::TextBufferWindow::drawImage(const QImage& im, glsi32 alignment, glui32
 }
 
 void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
+#ifndef NDEBUG
     qDebug() << "Changed style from" << m_CurrentStyleType << "to" << style;
+#endif
 
     m_PreviousStyleType = m_CurrentStyleType;
     m_CurrentStyleType = style;

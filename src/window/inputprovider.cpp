@@ -371,7 +371,6 @@ void Glk::HyperlinkInputProvider::cancelHyperlinkInputRequest() {
 // TODO Move this code to event thread.
 void Glk::HyperlinkInputProvider::handleHyperlinkClicked(glui32 linkval) {
     if(m_HyperlinkInputRequested) {
-        qDebug() << "Hyperlink number " << linkval;
         Glk::sendTaskToEventThread([&]() {
             emit hyperlinkInputRequestEnded(false);
         });
