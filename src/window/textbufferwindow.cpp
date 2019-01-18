@@ -26,32 +26,32 @@ Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindo
 void Glk::TextBufferDevice::drawImage(int imgnum, glsi32 alignment, glui32 w, glui32 h) {
     QString altAttrib = QStringLiteral("alt=\"%1\"").arg(imgnum);
     QString sizeAttrib = QStringLiteral("width=\"%1\" height=\"%2\"").arg(w).arg(h);
-    QString alignAttrib = QStringLiteral("");
+    QString alignAttrib;
 
     switch(alignment) {
         case imagealign_InlineUp:
-            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg("top");
+            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg(QStringLiteral("top"));
             break;
 
         case imagealign_InlineCenter:
-            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg("middle");
+            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg(QStringLiteral("middle"));
             break;
 
         case imagealign_InlineDown:
-            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg("bottom");
+            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg(QStringLiteral("bottom"));
             break;
 
         case imagealign_MarginLeft:
-            alignAttrib = QStringLiteral("style=\"float: %1;\"").arg("left");
+            alignAttrib = QStringLiteral("style=\"float: %1;\"").arg(QStringLiteral("left"));
             break;
 
         case imagealign_MarginRight:
-            alignAttrib = QStringLiteral("style=\"float: %1;\"").arg("right");
+            alignAttrib = QStringLiteral("style=\"float: %1;\"").arg(QStringLiteral("right"));
             break;
     }
-    
+
     flush();
-    
+
     mp_TBWindow->m_EditingCursor.insertHtml(QStringLiteral("<img src=\"%1\" %2 %3 %4 />").arg(imgnum).arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
 }
 
@@ -71,7 +71,7 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
 //     QStringList words = blocks.front().split(' ');
 
     if(m_Buffer.isEmpty())
-        m_Buffer.append(FormattedText("", m_CurrentBlockFormat, m_CurrentCharFormat));
+        m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, m_CurrentCharFormat));
 
     m_Buffer.back().appendText(text);
 
@@ -86,7 +86,7 @@ void Glk::TextBufferDevice::flush() {
     if(m_Buffer.isEmpty())
         return;
 
-    for(const FormattedText& text : m_Buffer)
+    for(const FormattedText& text : qAsConst(m_Buffer))
         text.writeToCursor(mp_TBWindow->m_EditingCursor);
 
     m_Buffer.clear();
@@ -96,7 +96,7 @@ void Glk::TextBufferDevice::flush() {
         chfmt.setAnchor(true);
         chfmt.setAnchorHref(QStringLiteral("%1").arg(m_CurrentHyperlink));
 
-        m_Buffer.append(FormattedText("", m_CurrentBlockFormat, chfmt));
+        m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, chfmt));
     }
 
     emit textChanged();
@@ -109,7 +109,7 @@ void Glk::TextBufferDevice::onHyperlinkPushed(glui32 linkval) {
     m_CurrentHyperlink = linkval;
 
     if(m_CurrentHyperlink == 0) {
-        m_Buffer.append(FormattedText("", m_CurrentBlockFormat, m_CurrentCharFormat));
+        m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, m_CurrentCharFormat));
     } else {
         QTextCharFormat chfmt(m_CurrentCharFormat);
         chfmt.setAnchor(true);
@@ -117,7 +117,7 @@ void Glk::TextBufferDevice::onHyperlinkPushed(glui32 linkval) {
         chfmt.setForeground(Qt::blue);
         chfmt.setUnderlineStyle(QTextCharFormat::SingleUnderline);
 
-        m_Buffer.append(FormattedText("", m_CurrentBlockFormat, chfmt));
+        m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, chfmt));
     }
 }
 
@@ -125,7 +125,7 @@ void Glk::TextBufferDevice::onWindowStyleChanged(const QTextBlockFormat& blkfmt,
     m_CurrentBlockFormat = blkfmt;
     m_CurrentCharFormat = chfmt;
 
-    m_Buffer.append(FormattedText("", m_CurrentBlockFormat, m_CurrentCharFormat));
+    m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, m_CurrentCharFormat));
 }
 
 Glk::TextBufferWindow::History::History() : m_History(), m_Iterator(m_History.begin()) {
@@ -144,7 +144,7 @@ void Glk::TextBufferWindow::History::resetIterator() {
 
 const QString Glk::TextBufferWindow::History::next() {
     if(m_History.size() == 0)
-        return QStringLiteral("");
+        return QString();
 
     if(m_Iterator == m_History.end())
         return m_History.back();
@@ -154,15 +154,15 @@ const QString Glk::TextBufferWindow::History::next() {
 
 const QString Glk::TextBufferWindow::History::previous() {
     if(m_History.size() == 0)
-        return QStringLiteral("");
+        return QString();
 
     if(m_Iterator == m_History.begin())
-        return QStringLiteral("");
+        return QString();
 
     auto it = --m_Iterator;
 
     if(it == m_History.begin())
-        return QStringLiteral("");
+        return QString();
 
     return *(--it);
 }
