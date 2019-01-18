@@ -67,6 +67,9 @@ namespace Glk {
 
             QVariant loadResource(int type, const QUrl& name) override;
 
+    protected:
+        void keyPressEvent(QKeyEvent * event) override;
+            
         private:
             QList<QImage> m_ImageList;
     };

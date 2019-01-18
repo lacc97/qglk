@@ -169,13 +169,13 @@ void Glk::TextBufferDevice::flush() {
     }
 
     m_Buffer.clear();
-
-    emit textChanged();
-
+    
     if(m_CurrentHyperlink != 0) {
         m_Buffer.append(Block());
         m_Buffer.back().insertOpenHyperlinkTag(m_CurrentHyperlink);
     }
+
+    emit textChanged();
 }
 
 void Glk::TextBufferDevice::onHyperlinkPushed(glui32 linkval) {
@@ -264,6 +264,20 @@ QVariant Glk::TextBufferBrowser::loadResource(int type, const QUrl& name) {
     }
 
     return QTextBrowser::loadResource(type, name);
+}
+
+void Glk::TextBufferBrowser::keyPressEvent(QKeyEvent* event) {
+    switch(event->key()) {
+        case Qt::Key_Down:   // disable scrolling
+        case Qt::Key_Up:     // with vertical keys
+        case Qt::Key_Space:  // fix space sometimes not recognised as input
+            QWidget::keyPressEvent(event);
+            break;
+        
+        default:
+            QTextBrowser::keyPressEvent(event);
+            break;
+    }
 }
 
 Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false, true), mp_Text(), m_History(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
@@ -441,6 +455,7 @@ void Glk::TextBufferWindow::onCharacterInput(glui32 ch, bool doFlush) {
 void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc, bool doFlush) {
     switch(kc) {
         case keycode_Delete:
+            mp_Text->moveCursor(QTextCursor::End);
             mp_Text->textCursor().deletePreviousChar();
             break;
 
