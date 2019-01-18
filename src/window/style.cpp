@@ -85,48 +85,6 @@ const QTextCharFormat Glk::Style::charFormat() const {
     return ch;
 }
 
-QString toJustificationString(glui32 just) {
-    switch(just) {
-        case stylehint_just_Centered:
-            return "center";
-
-        case stylehint_just_LeftRight:
-            return "justify";
-
-        case stylehint_just_RightFlush:
-            return "right";
-
-        case stylehint_just_LeftFlush:
-        default:
-            return "left";
-    }
-}
-
-const QString Glk::Style::styleString() const {
-    QString noColourString = styleStringNoColour();
-
-    QString colourString = colourStyleString();
-
-    return QStringLiteral("%1 %2").arg(noColourString).arg(colourString);
-}
-
-const QString Glk::Style::styleStringNoColour() const {
-    QString fontFamilyString = QStringLiteral("font-family: '%1', '%2'").arg(m_Font.family()).arg(m_Font.lastResortFamily());
-    QString fontStyleString = QStringLiteral("font-style: %1").arg(m_Font.italic() ? "italic" : "normal");
-    QString fontSizeString = QStringLiteral("font-size: %1pt").arg(m_Font.pointSize());
-    QString fontWeightString = QStringLiteral("font-weight: %1").arg(m_Font.bold() ? "bold" : "normal");
-    QString fontVariantString = QStringLiteral("font-variant: %1").arg(m_Font.capitalization() == QFont::SmallCaps ? "small-caps" : "normal");
-    QString fontString = QStringLiteral("%1; %2; %3; %4; %5").arg(fontFamilyString).arg(fontStyleString).arg(fontSizeString).arg(fontWeightString).arg(fontVariantString);
-
-    QString justificationString = QStringLiteral("text-align: %1").arg(toJustificationString(m_Justification));
-
-    QString paraIndentationString = QStringLiteral("text-indent: %1px").arg(5 * m_ParaIndentation);
-
-    // TODO regular indentation
-
-    return QStringLiteral("%1; %2; %3;").arg(fontString).arg(justificationString).arg(paraIndentationString);
-}
-
 glui32 Glk::Style::getHint(glui32 hint) const {
     switch(hint) {
         case stylehint_Indentation:
@@ -304,11 +262,4 @@ bool Glk::Style::operator==(const Glk::Style& other) const {
         return true;
 
     return false;
-}
-
-const QString Glk::Style::colourStyleString() const {
-    QString textColourString = QStringLiteral("color: rgb(%1, %2, %3)").arg(QString::number(m_TextColor.red())).arg(QString::number(m_TextColor.green())).arg(QString::number(m_TextColor.blue()));
-//     QString backColourString = QStringLiteral("background-color: rgb(%1, %2, %3)").arg(QString::number(m_BackgroundColor.red())).arg(QString::number(m_BackgroundColor.green())).arg(QString::number(m_BackgroundColor.blue()));
-
-    return QStringLiteral("%1;"/*"%1; %2;"*/).arg(textColourString)/*.arg(backColourString)*/;
 }

@@ -32,9 +32,6 @@ namespace Glk {
             const QTextBlockFormat blockFormat() const;
             const QTextCharFormat charFormat() const;
             
-            const QString styleString() const;
-            const QString styleStringNoColour() const;
-
             glui32 getHint(glui32 hint) const;
             bool measureHint(glui32 hint, glui32* result) const;
             void setHint(glui32 hint, glui32 value);
@@ -46,10 +43,6 @@ namespace Glk {
             inline bool operator!=(const Style& other) const {
                 return !(operator==(other));
             }
-            
-            
-    protected:
-        const QString colourStyleString() const;
 
         private:
             Type m_Type;
