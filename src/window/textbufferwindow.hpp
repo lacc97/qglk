@@ -13,27 +13,29 @@ namespace Glk {
     class TextBufferDevice : public QIODevice {
             Q_OBJECT
 
-            // TODO all of this seems unnecessary
-            class Block {
+            class FormattedText {
                 public:
-                    Block() : m_Words(), m_IsHyperlinkTagOpen(false) {}
+                    FormattedText(const QString& qstr, const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt);
 
-                    // Plain text
-                    void appendWords(QStringList words, const QString& styleString, const QString& styleStringNoColour);
-                    void appendImage(int imgnum, const QString& imgAttributes);
-                    void insertOpenHyperlinkTag(glui32 linkval);
-                    void insertCloseHyperlinkTag();
+                    inline void appendText(const QString& qstr) {
+                        m_Text.append(qstr);
+                    }
 
-                    void writeToBrowser(QTextBrowser* qtb) const;
+                    void writeToCursor(QTextCursor& cursor) const;
+
+                    inline QString text() const {
+                        return m_Text;
+                    }
 
                 private:
-                    QStringList m_Words;
-                    bool m_IsHyperlinkTagOpen;
+                    QString m_Text;
+                    QTextBlockFormat m_BlockFormat;
+                    QTextCharFormat m_CharFormat;
             };
 
         public:
             TextBufferDevice(TextBufferWindow* win);
-            
+
             void drawImage(int imgnum, glsi32 alignment, glui32 w, glui32 h);
 
             qint64 readData(char* data, qint64 maxlen) override;
@@ -43,33 +45,33 @@ namespace Glk {
             void discard();
             void flush();
             void onHyperlinkPushed(glui32 linkval);
-            void onWindowStyleChanged(const QString& newStyleString, const QString& newStyleStringNoColour);
+            void onWindowStyleChanged(const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt);
 
         signals:
             void textChanged();
 
         private:
             TextBufferWindow* mp_TBWindow;
-            QString m_StyleString;
-            QString m_StyleStringNoColour;
-            QList<Block> m_Buffer;
+            QTextBlockFormat m_CurrentBlockFormat;
+            QTextCharFormat m_CurrentCharFormat;
+            QList<FormattedText> m_Buffer;
             glui32 m_CurrentHyperlink;
     };
 
     class TextBufferBrowser : public QTextBrowser {
         public:
             TextBufferBrowser(QWidget* parent = NULL) : QTextBrowser(parent) {}
-            
+
             int numImages() const;
-            
+
             void addImage(const QImage& im);
             void clearImages();
 
             QVariant loadResource(int type, const QUrl& name) override;
 
-    protected:
-        void keyPressEvent(QKeyEvent * event) override;
-            
+        protected:
+            void keyPressEvent(QKeyEvent* event) override;
+
         private:
             QList<QImage> m_ImageList;
     };
@@ -102,7 +104,7 @@ namespace Glk {
             ~TextBufferWindow() {}
 
             bool drawImage(const QImage& im, glsi32 alignment, glui32 w, glui32 h);
-            
+
             inline const Glk::StyleManager& styles() const {
                 return m_Styles;
             }
@@ -146,6 +148,7 @@ namespace Glk {
 
         private:
             TextBufferBrowser* mp_Text;
+            QTextCursor m_EditingCursor;
             History m_History;
             Glk::StyleManager m_Styles;
             Glk::Style::Type m_CurrentStyleType;

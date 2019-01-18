@@ -5,6 +5,8 @@
 
 #include <QColor>
 #include <QFont>
+#include <QTextBlockFormat>
+#include <QTextCharFormat>
 
 #define STYLE(n) n = style_##n
 
@@ -26,6 +28,9 @@ namespace Glk {
             };
 
             Style(Type type_ = Normal);
+            
+            const QTextBlockFormat blockFormat() const;
+            const QTextCharFormat charFormat() const;
             
             const QString styleString() const;
             const QString styleStringNoColour() const;

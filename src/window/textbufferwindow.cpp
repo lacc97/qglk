@@ -10,68 +10,13 @@
 
 #include "qglk.hpp"
 
-void Glk::TextBufferDevice::Block::appendWords(QStringList words, const QString& styleString, const QString& styleStringNoColour) {
-    Q_ASSERT_X(!words.isEmpty(), "Glk::TextBufferDevice::Block::appendWords", "word list should not be empty");
+Glk::TextBufferDevice::FormattedText::FormattedText(const QString& qstr, const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt) : m_Text(qstr), m_BlockFormat(blkfmt), m_CharFormat(chfmt) {}
 
-    QString spanTag;
+void Glk::TextBufferDevice::FormattedText::writeToCursor(QTextCursor& cursor) const {
+    cursor.setBlockFormat(m_BlockFormat);
+    cursor.setCharFormat(m_CharFormat);
 
-    if(m_IsHyperlinkTagOpen)
-        spanTag = QStringLiteral("<span style=\"%1 %2\">%3</span>").arg(styleStringNoColour).arg("text-decoration: underline; color: blue;").arg(words.front());
-    else
-        spanTag = QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(words.front());
-
-    if(m_Words.isEmpty())
-        m_Words.append(spanTag);
-    else
-        m_Words.back().append(spanTag);
-
-    words.pop_front();
-
-    for(const QString& w : words) {
-        if(m_IsHyperlinkTagOpen)
-            spanTag = QStringLiteral("<span style=\"%1 %2\">%3</span>").arg(styleStringNoColour).arg("text-decoration: underline; color: blue;").arg(w);
-        else
-            spanTag = QStringLiteral("<span style=\"%1\">%2</span>").arg(styleString).arg(w);
-
-        m_Words.append(spanTag);
-    }
-}
-
-void Glk::TextBufferDevice::Block::appendImage(int imgnum, const QString& imgAttributes) {
-    QString imgTag = QStringLiteral("<img src=\"%1\" %2 />").arg(imgnum).arg(imgAttributes);
-
-    if(m_Words.isEmpty())
-        m_Words.append(imgTag);
-    else
-        m_Words.back().append(imgTag);
-}
-
-void Glk::TextBufferDevice::Block::insertOpenHyperlinkTag(glui32 linkval) {
-    if(m_Words.isEmpty())
-        m_Words.push_back(QStringLiteral("<a href=\"#%1\">").arg(QString::number(linkval)));
-    else
-        m_Words.back().append(QStringLiteral("<a href=\"#%1\">").arg(QString::number(linkval)));
-
-    m_IsHyperlinkTagOpen = true;
-}
-
-void Glk::TextBufferDevice::Block::insertCloseHyperlinkTag() {
-    Q_ASSERT_X(!m_Words.isEmpty(), "Glk::TextBufferDevice::Block::insertCloseHyperlinkTag", "if hyperlink tag is till open when flushing, we need to ensure a new closing and opening tag is appended");
-
-    m_Words.back().append(QStringLiteral("</a>"));
-
-    m_IsHyperlinkTagOpen = false;
-}
-
-void Glk::TextBufferDevice::Block::writeToBrowser(QTextBrowser* qtb) const {
-    Q_ASSERT_X(!m_Words.isEmpty(), "Glk::TextBufferDevice::Block::writeToBrowser", "word list should not be empty");
-
-    qtb->insertHtml(m_Words.front());
-
-    for(auto it = (++m_Words.begin()); it != m_Words.end(); it++) {
-        qtb->insertPlainText(QStringLiteral(" "));
-        qtb->insertHtml(*it);
-    }
+    cursor.insertText(m_Text);
 }
 
 Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindow(win), m_CurrentHyperlink(0) {
@@ -104,13 +49,10 @@ void Glk::TextBufferDevice::drawImage(int imgnum, glsi32 alignment, glui32 w, gl
             alignAttrib = QStringLiteral("style=\"float: %1;\"").arg("right");
             break;
     }
-
-    if(m_Buffer.isEmpty()) {
-        m_Buffer.append(Block());
-        m_Buffer.back().appendImage(imgnum, QStringLiteral("%1 %2 %3").arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
-    } else {
-        m_Buffer.back().appendImage(imgnum, QStringLiteral("%1 %2 %3").arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
-    }
+    
+    flush();
+    
+    mp_TBWindow->m_EditingCursor.insertHtml(QStringLiteral("<img src=\"%1\" %2 %3 %4 />").arg(imgnum).arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
 }
 
 qint64 Glk::TextBufferDevice::readData(char* data, qint64 maxlen) {
@@ -124,25 +66,14 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
     const glui32* udata = reinterpret_cast<const glui32*>(data);
 
     QString text = QString::fromUcs4(udata, ulen);
-    QStringList blocks = text.split('\n');
+//     QStringList blocks = text.split('\n');
+//
+//     QStringList words = blocks.front().split(' ');
 
-    QStringList words = blocks.front().split(' ');
+    if(m_Buffer.isEmpty())
+        m_Buffer.append(FormattedText("", m_CurrentBlockFormat, m_CurrentCharFormat));
 
-    if(m_Buffer.isEmpty()) {
-        m_Buffer.append(Block());
-        m_Buffer.back().appendWords(words, m_StyleString, m_StyleStringNoColour);
-    } else {
-        m_Buffer.back().appendWords(words, m_StyleString, m_StyleStringNoColour);
-    }
-
-    blocks.pop_front();
-
-    for(const QString& b : blocks) {
-        words.clear();
-        words = b.split(' ');
-        m_Buffer.append(Block());
-        m_Buffer.back().appendWords(words, m_StyleString, m_StyleStringNoColour);
-    }
+    m_Buffer.back().appendText(text);
 
     return len;
 }
@@ -155,24 +86,17 @@ void Glk::TextBufferDevice::flush() {
     if(m_Buffer.isEmpty())
         return;
 
-    mp_TBWindow->mp_Text->moveCursor(QTextCursor::End);
-
-    if(m_CurrentHyperlink != 0)
-        m_Buffer.back().insertCloseHyperlinkTag();
-
-    m_Buffer.front().writeToBrowser(mp_TBWindow->mp_Text);
-    m_Buffer.pop_front();
-
-    for(const Block& b : m_Buffer) {
-        mp_TBWindow->mp_Text->insertPlainText(QStringLiteral("\n"));
-        b.writeToBrowser(mp_TBWindow->mp_Text);
-    }
+    for(const FormattedText& text : m_Buffer)
+        text.writeToCursor(mp_TBWindow->m_EditingCursor);
 
     m_Buffer.clear();
-    
+
     if(m_CurrentHyperlink != 0) {
-        m_Buffer.append(Block());
-        m_Buffer.back().insertOpenHyperlinkTag(m_CurrentHyperlink);
+        QTextCharFormat chfmt(m_CurrentCharFormat);
+        chfmt.setAnchor(true);
+        chfmt.setAnchorHref(QStringLiteral("%1").arg(m_CurrentHyperlink));
+
+        m_Buffer.append(FormattedText("", m_CurrentBlockFormat, chfmt));
     }
 
     emit textChanged();
@@ -182,28 +106,28 @@ void Glk::TextBufferDevice::onHyperlinkPushed(glui32 linkval) {
     if(m_CurrentHyperlink == linkval)
         return;
 
-    if(linkval == 0) {
-        Q_ASSERT_X(!m_Buffer.isEmpty(), "Glk::TextBufferDevice::onHyperlinkPushed", "if hyperlink tag is till open when flushing, we need to ensure a new opening tag is appended");
-        m_Buffer.back().insertCloseHyperlinkTag();
-    } else {
-        if(m_CurrentHyperlink != 0) {
-            Q_ASSERT_X(!m_Buffer.isEmpty(), "Glk::TextBufferDevice::onHyperlinkPushed", "if hyperlink tag is till open when flushing, we need to ensure a new opening tag is appended");
-            m_Buffer.back().insertCloseHyperlinkTag();
-        }
-
-        if(m_Buffer.isEmpty())
-            m_Buffer.append(Block());
-
-        m_Buffer.back().insertOpenHyperlinkTag(linkval);
-    }
-
     m_CurrentHyperlink = linkval;
+
+    if(m_CurrentHyperlink == 0) {
+        m_Buffer.append(FormattedText("", m_CurrentBlockFormat, m_CurrentCharFormat));
+    } else {
+        QTextCharFormat chfmt(m_CurrentCharFormat);
+        chfmt.setAnchor(true);
+        chfmt.setAnchorHref(QStringLiteral("%1").arg(m_CurrentHyperlink));
+        chfmt.setForeground(Qt::blue);
+        chfmt.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+
+        m_Buffer.append(FormattedText("", m_CurrentBlockFormat, chfmt));
+    }
 }
 
-void Glk::TextBufferDevice::onWindowStyleChanged(const QString& newStyleString, const QString& newStyleStringNoColour) {
-    m_StyleString = newStyleString;
-    m_StyleStringNoColour = newStyleStringNoColour;
+void Glk::TextBufferDevice::onWindowStyleChanged(const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt) {
+    m_CurrentBlockFormat = blkfmt;
+    m_CurrentCharFormat = chfmt;
+
+    m_Buffer.append(FormattedText("", m_CurrentBlockFormat, m_CurrentCharFormat));
 }
+
 Glk::TextBufferWindow::History::History() : m_History(), m_Iterator(m_History.begin()) {
 }
 
@@ -268,19 +192,22 @@ QVariant Glk::TextBufferBrowser::loadResource(int type, const QUrl& name) {
 
 void Glk::TextBufferBrowser::keyPressEvent(QKeyEvent* event) {
     switch(event->key()) {
-        case Qt::Key_Down:   // disable scrolling
-        case Qt::Key_Up:     // with vertical keys
+        case Qt::Key_Down:   // disable
+        case Qt::Key_Left:   // scrolling
+        case Qt::Key_Right:  // with arrow
+        case Qt::Key_Up:     // keys
+
         case Qt::Key_Space:  // fix space sometimes not recognised as input
             QWidget::keyPressEvent(event);
             break;
-        
+
         default:
             QTextBrowser::keyPressEvent(event);
             break;
     }
 }
 
-Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false, true), mp_Text(), m_History(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
+Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false, true), mp_Text(), m_EditingCursor(), m_History(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     QLayout* lay = new QGridLayout(this);
@@ -292,6 +219,9 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
     mp_Text->setReadOnly(true);
     mp_Text->setOpenExternalLinks(false);
     mp_Text->setOpenLinks(false);
+
+    m_EditingCursor = mp_Text->textCursor();
+    m_EditingCursor.movePosition(QTextCursor::End);
 
     lay->addWidget(mp_Text);
 
@@ -330,7 +260,7 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
         &QGlk::getMainWindow(), &QGlk::poll,
         ioDevice(), &Glk::TextBufferDevice::flush);
 
-    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString(), m_Styles[m_CurrentStyleType].styleStringNoColour());
+    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].blockFormat(), m_Styles[m_CurrentStyleType].charFormat());
 }
 
 bool Glk::TextBufferWindow::drawImage(const QImage& im, glsi32 alignment, glui32 w, glui32 h) {
@@ -338,7 +268,7 @@ bool Glk::TextBufferWindow::drawImage(const QImage& im, glsi32 alignment, glui32
     mp_Text->addImage(im);
 
     ioDevice()->drawImage(imageIndex, alignment, w, h);
-    
+
     return true;
 }
 
@@ -349,7 +279,7 @@ void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
 
     m_PreviousStyleType = m_CurrentStyleType;
     m_CurrentStyleType = style;
-    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].styleString(), m_Styles[m_CurrentStyleType].styleStringNoColour());
+    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].blockFormat(), m_Styles[m_CurrentStyleType].charFormat());
 }
 
 void Glk::TextBufferWindow::clearWindow() {
@@ -359,8 +289,7 @@ void Glk::TextBufferWindow::clearWindow() {
 }
 
 void Glk::TextBufferWindow::onHyperlinkClicked(const QUrl& link) {
-    QString linkvalStr = link.toString().mid(1);
-    glui32 linkval = linkvalStr.toUInt();
+    glui32 linkval = link.toString().toUInt();
 
     Glk::postTaskToGlkThread([ = ]() {
         hyperlinkInputProvider()->handleHyperlinkClicked(linkval);
@@ -417,9 +346,11 @@ void Glk::TextBufferWindow::onLineInputRequested() {
 }
 
 void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode) {
+    m_EditingCursor.movePosition(QTextCursor::End);
+
     if(!keyboardInputProvider()->echoesLine()) {
         for(glui32 ii = 0; ii < len; ii++) // equality because of newline at end
-            mp_Text->textCursor().deletePreviousChar(); // TODO more efficient?
+            m_EditingCursor.deletePreviousChar(); // TODO more efficient?
     } else {
         windowStream()->writeUnicodeChar('\n');
 
@@ -455,8 +386,7 @@ void Glk::TextBufferWindow::onCharacterInput(glui32 ch, bool doFlush) {
 void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc, bool doFlush) {
     switch(kc) {
         case keycode_Delete:
-            mp_Text->moveCursor(QTextCursor::End);
-            mp_Text->textCursor().deletePreviousChar();
+            m_EditingCursor.deletePreviousChar();
             break;
 
         case keycode_Down:
@@ -468,12 +398,13 @@ void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc, bool doFlush) {
             Q_ASSERT_X(1, "handling line input special character", "this code shouldn't run");
             break;
 
-//         case keycode_Left:
-//             mp_Text->textCursor().movePosition(QTextCursor::PreviousCharacter);
-//             break;
-//         case keycode_Right:
-//             mp_Text->textCursor().movePosition(QTextCursor::NextCharacter);
-//             break;
+        case keycode_Left:
+            m_EditingCursor.movePosition(QTextCursor::PreviousCharacter);
+            break;
+
+        case keycode_Right:
+            m_EditingCursor.movePosition(QTextCursor::NextCharacter);
+            break;
 
         case keycode_Up:
             keyboardInputProvider()->clearLineInputBuffer();
