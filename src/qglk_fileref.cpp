@@ -87,7 +87,12 @@ frefid_t glk_fileref_create_by_prompt(glui32 usage, glui32 fmode, glui32 rock) {
 }
 
 frefid_t glk_fileref_create_by_name(glui32 usage, char* name, glui32 rock) {
-    frefid_t fref =  TO_FREFID(new Glk::FileReference(QFileInfo(QString(name).append(".").append(extFromUsage(usage))), usage, rock));
+    QString filename(name);
+    
+    if(!filename.contains('.'))  // We append our own extension
+        filename = filename.append(".").append(extFromUsage(usage));
+    
+    frefid_t fref =  TO_FREFID(new Glk::FileReference(QFileInfo(filename), usage, rock));
 #ifndef NDEBUG
     qDebug() << "glk_fileref_create_by_name(" << usage << "," << QString(name) << "," << rock << ") => " << fref;
 #endif
