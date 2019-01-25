@@ -75,9 +75,9 @@ glui32 Glk::Latin1Stream::readBuffer(char* buf, glui32 len) {
 }
 
 glsi32 Glk::Latin1Stream::readChar() {
-    char c;
+    unsigned char c;
 
-    if(device()->getChar(&c)) {
+    if(device()->getChar(reinterpret_cast<char*>(&c))) {
         updateReadCount(1);
         return c;
     } else {
