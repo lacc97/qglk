@@ -22,7 +22,7 @@ Glk::FileReference::~FileReference() {
 }
 
 QString Glk::FileReference::path() {
-    return m_FileInfo.absolutePath();
+    return m_FileInfo.absoluteFilePath();
 }
 
 bool Glk::FileReference::exists() const {
