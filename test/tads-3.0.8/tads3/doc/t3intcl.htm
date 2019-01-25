@@ -1,0 +1,374 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3intcl_files/filelist.xml">
+<title>Intrinsic Classes</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>9</o:Revision>
+  <o:TotalTime>35</o:TotalTime>
+  <o:Created>2000-02-26T00:39:00Z</o:Created>
+  <o:LastSaved>2003-02-26T07:39:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>881</o:Words>
+  <o:Characters>5027</o:Characters>
+  <o:Lines>41</o:Lines>
+  <o:Paragraphs>10</o:Paragraphs>
+  <o:CharactersWithSpaces>6173</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	font-style:italic;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1818037303;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1478055250 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'><a name=FnsetT3>Intrinsic Classes</a></h3>
+
+<p class=MsoBodyText style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>Note:
+most authors will not need to know anything about intrinsic classes in general;
+rather, authors will simply want to know about particular intrinsic classes,
+such as Dictionary.<span style="mso-spacerun: yes">  </span>This section is
+included for the curious.</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>The
+T3 VM has an extensibility mechanism that allows object classes to be
+implemented using native code.<span style="mso-spacerun: yes">  </span>The VM
+documentation refers to these native classes as &quot;metaclasses,&quot; but we
+refer to them here as <b>intrinsic classes</b>.</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>An
+intrinsic class is implemented as native code (sometimes called &quot;machine
+code&quot;), but it is not built in to the VM in the sense that it is an
+essential part of the VM design.<span style="mso-spacerun: yes"> 
+</span>Instead, T3 lets the VM implementation include a chosen set of intrinsic
+classes; like the </span><a href="t3intfn.htm"><span style='mso-bookmark:FnsetT3'>intrinsic
+functions</span><span style='mso-bookmark:FnsetT3'></span></a><span
+style='mso-bookmark:FnsetT3'>, the set of intrinsic classes that a particular
+VM implementation provides is up to host application.<span style="mso-spacerun:
+yes">  </span>The host application is to some extent defined by the set of
+intrinsic functions and classes that it provides.</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>The
+compiler is not pre-configured with a particular set of intrinsic classes.<span
+style="mso-spacerun: yes">  </span>Instead, the compiler accepts syntax that
+defines the intrinsic classes that the program uses; the compiler stores this
+information in the image file, and the VM &quot;dynamically links&quot; the
+image file to the intrinsic classes when the VM loads the image file at
+run-time.<span style="mso-spacerun: yes">  </span>If the image file depends
+upon intrinsic classes that are not included in the VM implementation, an error
+occurs when the image is loaded.</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>You
+will probably not need to write your own intrinsic class definitions, because
+you will normally get these definitions from header files that are provided
+with the VM implementation you're using.<span style="mso-spacerun: yes"> 
+</span>However, for the sake of completeness, here's what the syntax for an
+intrinsic class definition looks like:</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<pre><span style='mso-bookmark:FnsetT3'><span style="mso-spacerun: yes">    </span>intrinsic class <i>class_name </i>'<i>global_name</i>' <i>optional_superclass<o:p></o:p></i></span></pre><pre><span
+style='mso-bookmark:FnsetT3'><span style="mso-spacerun: yes">    </span>{</span></pre><pre><span
+style='mso-bookmark:FnsetT3'><span style="mso-spacerun: yes">        </span><i>optional_</i>static<i> first_prop_name</i> <i>optional_parameter_list </i>;</span></pre><pre><span
+style='mso-bookmark:FnsetT3'><span style="mso-spacerun: yes">        </span><i>optional­_</i>static <i>second_prop_name optional_parameter_list </i>;</span></pre><pre><span
+style='mso-bookmark:FnsetT3'><span style="mso-spacerun: yes">    </span><span style="mso-spacerun: yes">    </span>...</span></pre><pre><span
+style='mso-bookmark:FnsetT3'><span style="mso-spacerun: yes">        </span><i>optional­_</i>static <i>last_prop_name</i> <i>optional_parameter_list </i>;</span></pre><pre><span
+style='mso-bookmark:FnsetT3'><span style="mso-spacerun: yes">    </span>}</span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>The
+<i>class_name</i> is the name of the intrinsic class, as used in the source
+code; this can be any valid symbol, and exists at global scope in the source
+code (at the same level as object, property, and function names).<span
+style="mso-spacerun: yes">  </span>The <i>global_name </i>is the name that the
+VM uses to dynamically link to the class when loading the image file.<span
+style="mso-spacerun: yes">  </span>The <i>global_name </i>is defined by the
+person who created the intrinsic class; a list of known metaclass names is part
+of the T3 VM specification.<span style="mso-spacerun: yes">   </span>The
+property names listed are ordinary property names, and define the symbols that
+your source code uses to access the methods and properties of the intrinsic
+class.<span style="mso-spacerun: yes">  </span>The order of these names is
+important, because the dynamic linking to the intrinsic class's methods is done
+on the basis of the positions of these property names: the first property
+listed links to the first intrinsic class function, and so on.</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>The
+<i>optional_superclass</i> clause consists of a colon followed by the name of
+another intrinsic class, previously declared through the </span><span
+style='mso-bookmark:FnsetT3'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>intrinsic class</span></tt>
+statement.<span style="mso-spacerun: yes">  </span>If included, this provides
+the compiler with information on the inheritance relationship between this
+class and its superclass.</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>You
+can optionally provide a formal parameter list for each property defined.<span
+style="mso-spacerun: yes">  </span>The compiler completely ignores these
+definitions, but you can include them for documentary purposes.<span
+style="mso-spacerun: yes">  </span>(The compiler ignores any formal parameter
+lists defined here because the TADS language has no compile-time type
+declarations for local variables, properties, return values, or other
+expression elements.<span style="mso-spacerun: yes">  </span>If you invoke one
+of the named methods on, say, a local variable, the compiler has no way of
+knowing what type of object the local variable will contain at run-time, so the
+compiler cannot assume that the method's parameter list should be the same as
+that defined for an intrinsic class.)</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:FnsetT3'>In
+addition, each property name can be immediately preceded by the keyword
+&quot;static,&quot; which indicates that the property being defined is a static
+method.<span style="mso-spacerun: yes">  </span>A static method is a method
+that can be invoked directly on the class itself, without needing an
+instance.<span style="mso-spacerun: yes">  </span>If the &quot;static&quot;
+keyword is provided, the compiler accepts it but otherwise ignores it; the
+keyword is allowed to allow for documentary purposes, to make it plain to
+someone reading the intrinsic class definition that the method is static.</span></p>
+
+<h3><span style='mso-bookmark:FnsetT3'>Creating an Instance of an Intrinsic
+Class</span></h3>
+
+<p class=MsoNormal><span style='mso-bookmark:FnsetT3'>The TADS compiler
+provides special syntax to define instances of certain intrinsic classes, so in
+many cases a program instantiates an intrinsic class implicitly.<span
+style="mso-spacerun: yes">  </span>For example, the &quot;dictionary&quot;
+statement implicitly defines an object of intrinsic class Dictionary, which the
+compiler initializes with dictionary property data defined in the program.<span
+style="mso-spacerun: yes">  </span>In addition, the compiler automatically
+creates BigNumber objects when a program contains floating-point numbers.</span></p>
+
+<p class=MsoNormal><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='mso-bookmark:FnsetT3'>Most intrinsic classes
+also let you create instances explicitly using the &quot;new&quot;
+operator.<span style="mso-spacerun: yes">  </span>The syntax to create an
+instance of an intrinsic class is the same as for a regular object, and uses
+the class name defined in the &quot;intrinsic class&quot; statement.<span
+style="mso-spacerun: yes">  </span>For example, to create an instance of a
+BigNumber, you would write something like this:</span></p>
+
+<p class=MsoNormal><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<pre><span style='mso-bookmark:FnsetT3'><span style="mso-spacerun: yes">  </span>x = new BigNumber('3.14159265');</span></pre>
+
+<p class=MsoNormal><span style='mso-bookmark:FnsetT3'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<span style='mso-bookmark:FnsetT3'></span>
+
+<h3>Testing for Class Membership</h3>
+
+<p class=MsoNormal>You can determine if an object is an instance of an
+intrinsic class using the ofKind() method.<span style="mso-spacerun: yes"> 
+</span>Simply use the intrinsic class name as the argument:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>if (x.ofKind(BigNumber)) // etc</pre>
+
+<h3>Reflection Behavior</h3>
+
+<p class=MsoNormal>The property reflection methods have some special behavior
+when used with intrinsic class objects.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>getPropParams(), propDefined(), </b>and<b> propType()</b>
+will all indicate that a property is undefined when called with a non-static
+property on an intrinsic class object.<span style="mso-spacerun: yes">  </span>For
+example, File.propDefined(&amp;closeFile) will return nil, because closeFile()
+is not a static property of File.<span style="mso-spacerun: yes">  </span>This
+might be a little surprising at first, but there's a good reason: calling
+File.closeFile() isn't meaningful.<span style="mso-spacerun: yes">  </span>It's
+only meaningful to call closeFile() on <i>instances</i> of File, not on File
+itself.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>getPropList()</b>, on the other hand, does include
+non-static methods in its return value.<span style="mso-spacerun: yes"> 
+</span>The reason is that getPropList(), when called on an intrinsic class,
+returns the properties that can be used with <i>instances</i> of the
+class.<span style="mso-spacerun: yes">  </span>So, File.getPropList() includes
+&amp;closeFile in its return value, because closeFile() can be called on any
+instance of File.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>A &quot;static method&quot; of an intrinsic class is one
+that you can call directly on the intrinsic class object.<span
+style="mso-spacerun: yes">  </span>Non-static methods are only meaningful when
+called on instances of the class.<span style="mso-spacerun: yes">  </span>getPropList()
+returns both kinds of methods, because you can also call static methods on
+instances of an intrinsic class.<span style="mso-spacerun: yes">  </span>To
+determine which is which, you can use propDefined(): if <i>x</i> is an
+intrinsic class, and <i>x.</i>getPropList() returns a particular property <i>p</i>,
+then call <i>x.</i>propDefined(<i>p</i>) to determine if <i>p </i>is static or
+non-static.<span style="mso-spacerun: yes">  </span>If propDefined() returns
+true, then <i>p</i> is static, because it's defined directly on the intrinsic
+class object; if propDefined() returns nil, then <i>p</i> is non-static.</p>
+
+<h3>Extending Intrinsic Classes</h3>
+
+<p class=MsoNormal>It is possible to extend intrinsic classes by adding new
+methods.<span style="mso-spacerun: yes">  </span>Refer to the section on <a
+href="t3icext.htm">intrinsic class extensions</a> for details.</p>
+
+<h3>Restrictions on Intrinsic Classes</h3>
+
+<p class=MsoNormal>The TADS compiler does not allow arbitrary intrinsic class
+names to be used interchangeably with regular objects and classes.<span
+style="mso-spacerun: yes">  </span>Some of the specific restrictions on when
+you may use intrinsic classes are:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     may not use &quot;replace&quot; with an intrinsic class.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>An
+     intrinsic class cannot be used as the superclass of a regular object or
+     class.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

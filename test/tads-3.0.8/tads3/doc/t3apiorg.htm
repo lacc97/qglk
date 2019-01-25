@@ -1,0 +1,204 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3apiorg_files/filelist.xml">
+<title>TADS 3 API Organization</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Unknown User</o:LastAuthor>
+  <o:Revision>3</o:Revision>
+  <o:TotalTime>2</o:TotalTime>
+  <o:Created>2000-03-25T21:34:00Z</o:Created>
+  <o:LastSaved>2002-02-16T22:06:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>269</o:Words>
+  <o:Characters>1536</o:Characters>
+  <o:Lines>12</o:Lines>
+  <o:Paragraphs>3</o:Paragraphs>
+  <o:CharactersWithSpaces>1886</o:CharactersWithSpaces>
+  <o:Version>9.3821</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1705328771;
+	mso-list-type:hybrid;
+	mso-list-template-ids:616194862 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:1718505737;
+	mso-list-type:hybrid;
+	mso-list-template-ids:323405608 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>TADS 3 API Organization</h3>
+
+<p class=MsoNormal>The TADS 3 Application Program Interface (or
+&quot;API,&quot; a term that refers collectively to the set of functions and methods
+that the system exposes in order to give programmers access to system
+functionality) is not simply a single set of native functions, as it was in
+TADS 2.<span style="mso-spacerun: yes">  </span>Instead, the TADS 3 API is
+organized into several packages of functions and methods.<span
+style="mso-spacerun: yes">  </span></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The names that TADS 3 uses for its intrinsic functions are
+different from the names of the corresponding functions from TADS 2.<span
+style="mso-spacerun: yes">  </span>Furthermore, many TADS 2 functions are now
+object methods in TADS 3.<span style="mso-spacerun: yes">  </span>Strings and
+lists in particular now behave like objects, so many of the former intrinsic
+functions that manipulate these types are now methods.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The following packages contain equivalents for most of the
+functions that TADS 2 provided:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <a
+     href="t3tgen.htm">&quot;tads-gen&quot; function set</a>, which provides utility
+     and type conversion functions.<i><o:p></o:p></i></li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <a
+     href="t3tadsio.htm">&quot;tads-io&quot; function set</a>, which provides
+     input/output functions for the user interface and file system.<span
+     style="mso-spacerun: yes">  </span>All of these I/O functions are grouped
+     together to allow different implementations to completely replace the user
+     interface subsystem.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <a
+     href="t3t3.htm">&quot;t3vm&quot; function set</a>, which provides access
+     to low-level VM information and operations.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <a
+     href="t3str.htm">String</a> intrinsic class.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <a
+     href="t3list.htm">List</a> intrinsic class.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <a
+     href="t3objcl.htm">Object</a> intrinsic class.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In addition, TADS 3 offers several new packages of
+functionality with no equivalents in TADS 2:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list .5in'>The <a
+     href="t3bignum.htm">BigNumber</a> intrinsic class.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list .5in'>The <a
+     href="t3dict.htm">Dictionary</a> intrinsic class.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list .5in'>The <a
+     href="t3gram.htm">GrammarProd</a> intrinsic class.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list .5in'>The <a
+     href="t3tok.htm">Tokenizer</a> class.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list .5in'>The <a
+     href="t3vector.htm">Vector</a> intrinsic class.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

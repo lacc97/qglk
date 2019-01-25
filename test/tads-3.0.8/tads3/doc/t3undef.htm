@@ -1,0 +1,233 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3undef_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Merkin Muffley</o:LastAuthor>
+  <o:Revision>4</o:Revision>
+  <o:TotalTime>31</o:TotalTime>
+  <o:Created>2001-04-08T05:19:00Z</o:Created>
+  <o:LastSaved>2001-04-08T05:52:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>571</o:Words>
+  <o:Characters>3255</o:Characters>
+  <o:Lines>27</o:Lines>
+  <o:Paragraphs>6</o:Paragraphs>
+  <o:CharactersWithSpaces>3997</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:.5in;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:360742095;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-660290966 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Capturing Calls to Undefined Properties</h3>
+
+<p class=MsoNormal>The TADS 3 language doesn't require you to specify the types
+of variables, functions, and properties when you declare them – in fact, the
+language doesn't have any way of making these declarations even if you wanted
+to.<span style="mso-spacerun: yes">  </span>This means that the language is not
+&quot;statically typed&quot;: you can't tell the type of a variable with
+certainty just by looking at the variable's definition.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>(Note that this isn't to say the language is &quot;weakly
+typed&quot;; a weakly typed language is one that allows different types to be
+used more or less interchangeably, so that the interpretation of a value
+depends on the context in which it's used.<span style="mso-spacerun: yes"> 
+</span>In a weakly typed language, it's always up to the programmer to specify
+the correct interpretation for a value each time it's used; for example, you
+might have to call one function to display a value as a string, and a different
+function to display the same value as an integer.<span style="mso-spacerun:
+yes">  </span>TADS 3 is a strongly typed language, but it is not statically
+typed; it is instead run-time typed, which means that each value has a fixed
+type that cannot change, but a particular variable can hold values of any
+type.<span style="mso-spacerun: yes">  </span>In a statically typed language,
+the variables keep track of the types; in a run-time typed language, the values
+themselves carry the type information.)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Because the compiler doesn't know in advance what kind of
+object a variable might contain, the compiler can't determine whether or not a
+particular property will be defined for the object.<span style="mso-spacerun:
+yes">  </span>For example, consider this code:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>local x;</pre><pre><span style="mso-spacerun: yes">  </span>x = getSomeObject();</pre><pre><span style="mso-spacerun: yes">  </span>x.name;</pre>
+
+<p class=MsoNormal><br>
+Because the compiler can't tell what kind of object x will contain when this
+code is executed, the compiler can't know whether or not that object will
+define the property &quot;name.&quot;</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>When you call a property (or, equivalently, a method) on an
+object, and the object doesn't define that property and doesn't inherit it from
+any superclass, the VM will do one of two things:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo1;tab-stops:list .5in'>If the
+     program <a href="t3export.htm">exports</a> a property called
+     propNotDefined, and the object defines or inherits this property, the VM
+     invokes propNotDefined with the original property ID as the first
+     argument, followed by all of the other arguments of the original
+     invocation.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo1;tab-stops:list .5in'>Otherwise,
+     the undefined property invocation returns nil.</li>
+</ul>
+
+<h3>Throwing an Exception for Undefined Properties</h3>
+
+<p class=MsoNormal>Some library authors might decide that calls to undefined properties
+are inherently incorrect, and so choose to treat such calls as errors.<span
+style="mso-spacerun: yes">  </span>The propNotDefined mechanism can be used to
+accomplish this, as shown in the code below.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>// this export is needed only if the library doesn't</pre><pre><span style="mso-spacerun: yes">  </span>// otherwise define it</pre><pre><span style="mso-spacerun: yes">  </span>property propNotDefined;</pre><pre><span style="mso-spacerun: yes">  </span>export propNotDefined;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>// an exception for invoking an undefined property -</pre><pre><span style="mso-spacerun: yes">  </span>// note that reflection could be used to provide a better message</pre><pre><span style="mso-spacerun: yes">  </span>class PropNotDefinedException: Exception</pre><pre><span style="mso-spacerun: yes">    </span>construct(prop, argList) { prop_ = prop; argList_ = argList; }</pre><pre><span style="mso-spacerun: yes">    </span>displayException() { &quot;call to undefined property&quot;; }</pre><pre><span style="mso-spacerun: yes">    </span>prop_ = nil</pre><pre><span style="mso-spacerun: yes">    </span>argList_ = nil</pre><pre><span style="mso-spacerun: yes">  </span>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>// throw an exception for any undefined property invocations</pre><pre><span style="mso-spacerun: yes">  </span>modify Object</pre><pre><span style="mso-spacerun: yes">    </span>propNotDefined(prop, [args])</pre><pre><span style="mso-spacerun: yes">    </span>{</pre><pre><span style="mso-spacerun: yes">      </span>throw new PropNotDefinedException(prop, args);</pre><pre><span style="mso-spacerun: yes">    </span>}</pre><pre><span style="mso-spacerun: yes">  </span>;</pre>
+
+<h3>Proxy Objects</h3>
+
+<p class=MsoNormal>In some cases, it is useful to define one object as a
+&quot;proxy&quot; for another, so that the proxy object redirects most method
+calls to its underlying object.<span style="mso-spacerun: yes">  </span>This
+allows the proxy to provide its own definitions for a few particular
+properties, while letting the original object do everything else.<span
+style="mso-spacerun: yes">  </span>The propNotDefined mechanism makes this easy
+to implement.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>// redirect everything but 'name' to the original</pre><pre><span style="mso-spacerun: yes">  </span>class Proxy: object</pre><pre><span style="mso-spacerun: yes">    </span>construct(original) { orig_ = original; }</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>// change the name</pre><pre><span style="mso-spacerun: yes">    </span>name = &quot;proxy for &lt;&lt;orig_.name&gt;&gt;&quot;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>// redirect everything we don't define ourselves</pre><pre><span style="mso-spacerun: yes">    </span>propNotDefined(prop, [args])</pre><pre><span style="mso-spacerun: yes">    </span>{</pre><pre><span style="mso-spacerun: yes">      </span>// call the undefined property on the original object</pre><pre><span style="mso-spacerun: yes">      </span>orig_.(prop)(args...);<br>
+<span style="mso-spacerun: yes">    </span>}</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>// my underlying object</pre><pre><span style="mso-spacerun: yes">    </span>orig_ = nil</pre><pre><span style="mso-spacerun: yes">  </span>;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

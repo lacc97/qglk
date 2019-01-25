@@ -1,0 +1,241 @@
+# TADS 3 makefile
+#
+# Warning: this file was mechanically generated.  You may edit
+# manually, but your changes might be modified or lost if
+# you load this file into a TADS development tool.  The TADS tools
+# generally retain the comment at the start of the  file and the
+# comment marked "##sources" below, but other comments might be
+# discarded, the formatting might be changed, and some option
+# settings might be modified.
+
+# tads 3 makefile for the library sample game
+#
+# To compile the library sample game, use this makefile with the
+# command-line compiler like this:
+#
+#   t3make -f sample
+#
+# You can also use this makefile with Workbench on Windows - start Workbench,
+# select "Load Project" from the "File" menu, and then choose this file from
+# the file selector dialog.
+#
+
+-o sample.t3
+-pre
+-nodef
+-D LANGUAGE=en_us
+-D MESSAGESTYLE=neu
+-Fy obj
+-Fo obj
+-w1
+
+##sources
+# This is the list of source files making up the sample game.
+#
+-source reflect
+-lib system
+-lib adv3/adv3
+-source sample
+-source bantest
+
+# The following is machine-generated - DO NOT EDIT
+[Config:devsys]
+*44 src win pos:c:\tads\build\include\gramprod.h:R:66,72,822,425
+*57 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\pov.t:R:0,0,737,343
+*59 src win pos:C:\downloads\tsrc\t3\src\build\samples\sample.t:R:173,56,881,503
+*37 src win pos:c:\tads\build\lib\_main.t:R:132,43,905,501
+build:ext resfile cnt:I:0
+build:defaults set:I:1
+*45 src win pos:c:\tads\build\lib\adv3\disambig.t:R:71,62,828,504
+*67 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\en_us\msg_neu.t:R:102,65,848,512
+watch win:vis:I:1
+watch win:pos:R:359,520,891,695
+*43 src win pos:C:\TADS\build\samples\bantest.t:R:132,144,888,497
+log win max::I:0
+*53 src win pos:d:\program files\tads 3\include\strcomp.h:R:114,30,912,525
+*62 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\resolver.t:R:110,35,869,487
+build:c ops:I:0
+log win vis::I:1
+log win pos::R:69,55,800,501
+*59 src win pos:c:\downloads\tsrc\t3\src\build\samples\sample.t:R:59,59,811,495
+*40 src win pos:c:\tads\build\lib\adv3\pov.t:R:110,120,868,489
+build:charmap:S:0:
+*42 src win pos:c:\tads\build\include\tadsio.h:R:88,96,844,449
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\action.t:R:108,52,855,503
+build:include_files-sys:S:0:user
+build:include_files-sys:S:1:user
+build:include_files-sys:S:2:user
+build:include_files-sys:S:3:user
+build:include_files-sys:S:4:user
+build:include_files-sys:S:5:user
+build:include_files-sys:S:6:user
+build:include_files-sys:S:7:user
+build:include_files-sys:S:8:user
+build:include_files-sys:S:9:user
+build:include_files-sys:S:10:user
+build:include_files-sys:S:11:user
+build:include_files-sys:S:12:user
+build:include_files-sys:S:13:user
+build:include_files-sys:S:14:user
+build:include_files-sys:S:15:user
+build:include_files-sys:S:16:user
+project win:dock id:I:16
+*41 src win pos:c:\tads\build\lib\adv3\adv3.h:R:22,24,778,377
+*52 src win pos:c:\downloads\tsrc\t3\src\build\lib\tok.t:R:119,52,858,509
+*50 src win pos:c:\tads\build\lib\adv3\en_us\msg_neu.t:R:132,20,852,473
+*42 src win pos:c:\tads\build\include\vector.h:R:66,72,822,425
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\parser.t:R:108,16,852,493
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\travel.t:R:99,24,823,487
+*65 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\en_us\en_us.t:R:97,36,867,496
+*45 src win pos:c:\tads\build\lib\adv3\footnote.t:R:22,24,778,377
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\lister.t:R:22,24,798,460
+*42 src win pos:c:\tads\build\include\lookup.h:R:110,120,866,473
+*45 src win pos:c:\tads\build\lib\adv3\resolver.t:R:133,49,876,506
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\events.t:R:0,0,737,343
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\extras.t:R:84,38,794,482
+build:installer options:S:0:name=sample
+build:installer options:S:1:savext=sample
+*43 src win pos:c:\tads\build\lib\adv3\banner.t:R:104,29,890,512
+*40 src win pos:c:\tads\build\include\file.h:R:154,168,910,521
+search:start at top:I:0
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\report.t:R:22,24,765,501
+*40 src win pos:c:\tads\build\include\dict.h:R:66,72,822,425
+*52 src win pos:d:\program files\tads 3\lib\adv3\modid.t:R:66,72,803,415
+*43 src win pos:c:\tads\build\lib\adv3\action.t:R:120,32,877,506
+*38 src win pos:c:\tads\build\include\t3.h:R:154,168,910,521
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\status.t:R:154,168,891,511
+*40 src win pos:c:\tads\build\include\tads.h:R:132,144,888,497
+*58 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\exec.t:R:74,10,829,496
+breakpoints:cond-mode:S:0:true
+breakpoints:cond-mode:S:1:true
+breakpoints:cond-mode:S:2:true
+breakpoints:cond-mode:S:3:true
+breakpoints:cond-mode:S:4:true
+*48 src win pos:c:\tads\build\lib\adv3\en_us\en_us.h:R:44,48,824,505
+*35 src win pos:c:\tads\build\lib\tok.t:R:66,72,822,425
+*39 src win pos:C:\TADS\build\include\tok.h:R:66,72,822,425
+*52 src win pos:d:\program files\tads 3\lib\adv3\actor.t:R:88,96,825,439
+*52 src win pos:d:\program files\tads 3\lib\adv3\thing.t:R:132,144,869,487
+*52 src win pos:d:\program files\tads 3\lib\adv3\score.t:R:110,120,847,463
+*43 src win pos:c:\tads\build\lib\adv3\parser.t:R:121,33,861,510
+*43 src win pos:c:\tads\build\lib\adv3\travel.t:R:94,27,886,496
+*60 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\output.t:R:151,35,886,478
+*48 src win pos:c:\tads\build\lib\adv3\en_us\en_us.t:R:83,28,790,503
+*43 src win max:c:\tads\build\lib\adv3\report.t:I:0
+*43 src win pos:c:\tads\build\lib\adv3\lister.t:R:133,37,900,505
+*43 src win pos:c:\tads\build\lib\adv3\events.t:R:103,65,900,536
+*43 src win pos:c:\tads\build\lib\adv3\extras.t:R:88,96,844,503
+*43 src win pos:c:\tads\build\lib\adv3\report.t:R:52,13,820,496
+search:wrap:I:1
+*52 src win pos:d:\program files\tads 3\lib\adv3\input.t:R:22,24,759,367
+*43 src win pos:c:\tads\build\lib\adv3\status.t:R:104,33,861,522
+*41 src win pos:c:\tads\build\lib\adv3\exec.t:R:67,35,796,492
+docking config::S:0:CL
+docking config::S:1:CL
+docking config::S:2:CR
+docking config::S:3:CB
+docking config::S:4:CB
+docking config::S:5:CB
+docking config::S:6:CB
+docking config::S:7:CB
+docking config::S:8:CB
+docking config::S:9:CB
+docking config::S:10:CB
+docking config::S:11:W10,270,184,-177,562,355,723,D,locals win
+docking config::S:12:W10,270,184,381,562,913,723,D,watch win
+docking config::S:13:CR
+docking config::S:14:W13,170,170,297,114,1036,589,M,log win
+docking config::S:15:CL
+docking config::S:16:CR
+docking config::S:17:W16,170,170,239,89,911,562,M,stack win
+docking config::S:18:CL
+docking config::S:19:W18,217,270,-212,17,-9,537,D,project win
+search:text:S:0:origorder
+locals win:vis:I:1
+locals win:pos:R:-200,520,333,695
+main win max::I:0
+*41 src win pos:c:\tads\build\lib\adv3\misc.t:R:113,68,848,492
+*55 src win pos:d:\program files\tads 3\lib\adv3\disambig.t:R:132,144,869,487
+*43 src win pos:c:\tads\build\lib\adv3\output.t:R:130,28,869,510
+search:exact case:I:0
+main win pos::R:9,11,1129,808
+src win pos:sample.t:R:71,23,841,513
+build:ignore case:I:0
+*43 src win pos:c:\tads\build\include\tadsgen.h:R:0,0,756,353
+build:exe:S:0:sample.exe
+*43 src win pos:c:\tads\build\include\charset.h:R:22,24,778,377
+build:use charmap:I:0
+*61 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\objects.t:R:66,40,826,508
+*61 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\precond.t:R:85,52,875,512
+hist win vis::I:0
+*61 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\actions.t:R:103,25,871,487
+*43 src win pos:c:\tads\build\include\bytearr.h:R:22,24,778,377
+*51 src win pos:d:\program files\tads 3\lib\adv3\adv3.h:R:65,32,870,518
+build:include_files:S:0:tads.h
+build:include_files:S:1:t3.h
+build:include_files:S:2:lookup.h
+build:include_files:S:3:systype.h
+build:include_files:S:4:vector.h
+build:include_files:S:5:charset.h
+build:include_files:S:6:bytearr.h
+build:include_files:S:7:tadsgen.h
+build:include_files:S:8:tadsio.h
+build:include_files:S:9:file.h
+build:include_files:S:10:dict.h
+build:include_files:S:11:tok.h
+build:include_files:S:12:adv3.h
+build:include_files:S:13:gramprod.h
+build:include_files:S:14:strcomp.h
+build:include_files:S:15:en_us.h
+*60 src win pos:d:\program files\tads 3\lib\adv3\en_us\msg_neu.t:R:22,24,759,367
+*42 src win pos:C:\TADS\build\samples\sample.t:R:135,9,841,484
+*42 src win pos:c:\tads\build\lib\adv3\adv3.tl:R:0,0,756,353
+*55 src win pos:d:\program files\tads 3\lib\adv3\footnote.t:R:0,0,737,343
+*43 src win pos:c:\tads\build\include\strcomp.h:R:67,69,836,512
+build:debug_image_file:S:0:sample_dbg.t3
+*53 src win pos:d:\program files\tads 3\lib\adv3\banner.t:R:110,120,847,463
+search dlg:old searches:S:0:origorder
+search dlg:old searches:S:1:makeopen
+search dlg:old searches:S:2:patid
+search dlg:old searches:S:3:throwshort
+search dlg:old searches:S:4:throwshortmsg
+search dlg:old searches:S:5:bounces
+search dlg:old searches:S:6:filterresolve
+search dlg:old searches:S:7:pagenumber =
+search dlg:old searches:S:8:desc {
+search dlg:old searches:S:9:new talkto
+*44 src win pos:c:\tads\build\lib\adv3\objects.t:R:94,28,855,502
+*44 src win pos:c:\tads\build\lib\adv3\precond.t:R:167,39,875,489
+*59 src win pos:C:\TADS\build\samples\..\lib\adv3\en_us\en_us.h:R:18,29,793,519
+*53 src win pos:d:\program files\tads 3\lib\adv3\action.t:R:66,72,803,415
+*44 src win pos:c:\tads\build\lib\adv3\actions.t:R:86,25,846,505
+*51 src win pos:c:\tads\build\lib\adv3\en_us\instruct.t:R:63,3,843,512
+*45 src win pos:d:\program files\tads 3\lib\tok.t:R:44,48,781,391
+*59 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\actor.t:R:120,64,867,506
+*59 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\thing.t:R:150,68,875,504
+*43 src win pos:c:\tads\build\include\systype.h:R:88,96,844,449
+*53 src win pos:d:\program files\tads 3\lib\adv3\travel.t:R:154,168,891,511
+*58 src win pos:d:\program files\tads 3\lib\adv3\en_us\en_us.t:R:0,0,737,343
+build:rlsgam:S:0:sample.t3
+*53 src win pos:d:\program files\tads 3\lib\adv3\events.t:R:154,168,891,511
+main win mdi max::I:0
+*54 src win pos:c:\downloads\tsrc\t3\src\build\lib\_main.t:R:44,48,781,391
+*42 src win pos:c:\tads\build\lib\adv3\actor.t:R:118,32,817,503
+*42 src win pos:c:\tads\build\lib\adv3\thing.t:R:108,59,856,500
+*39 src win pos:c:\tads\build\lib\reflect.t:R:88,96,841,465
+*51 src win pos:d:\program files\tads 3\lib\adv3\misc.t:R:44,48,781,391
+stack win max::I:0
+*62 src win pos:c:\downloads\tsrc\t3\src\build\lib\adv3\disambig.t:R:132,144,885,512
+*42 src win pos:c:\tads\build\lib\adv3\sense.t:R:47,38,767,505
+*53 src win pos:d:\program files\tads 3\lib\adv3\output.t:R:88,96,825,439
+search:dir:I:1
+build:installer prog:S:0:sample_Setup.exe
+project win:vis:I:1
+project win:pos:R:-217,17,-9,511
+*39 src win pos:c:\tads\build\include\tok.h:R:0,0,756,353
+src win pos:bantest.t:R:110,120,852,470
+stack win pos::R:11,30,675,474
+stack win vis::I:1
+*42 src win pos:c:\tads\build\lib\adv3\exits.t:R:127,37,877,506
+*42 src win pos:c:\tads\build\lib\adv3\input.t:R:124,34,868,511
+

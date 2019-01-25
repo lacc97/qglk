@@ -1,0 +1,313 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3tobj_files/filelist.xml">
+<title>The &quot;Object&quot; Intrinsic Class</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>17</o:Revision>
+  <o:TotalTime>67</o:TotalTime>
+  <o:Created>2001-02-02T08:10:00Z</o:Created>
+  <o:LastSaved>2003-07-02T02:23:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>868</o:Words>
+  <o:Characters>4951</o:Characters>
+  <o:Lines>41</o:Lines>
+  <o:Paragraphs>9</o:Paragraphs>
+  <o:CharactersWithSpaces>6080</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>The &quot;TadsObject&quot; Intrinsic Class</h3>
+
+<p class=MsoNormal>The objects and classes that you define in your program are
+of intrinsic class TadsObject.<span style="mso-spacerun: yes"> 
+</span>Everything that has “object” as its superclass is really a subclass of
+intrinsic class TadsObject.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class Item: object;</pre><pre>myObj: object;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Both Item and myObj are of intrinsic class TadsObject.</p>
+
+<h3>&quot;TadsObject&quot; Class Methods</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>TadsObject is a subclass of the root
+intrinsic class, Object, so all of the methods that Object defines are
+inherited by TadsObject instances as well.<span style="mso-spacerun: yes"> 
+</span>In addition to the Object methods, TadsObject provides its own methods,
+described below.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=createClone></a><b>createClone()
+- </b>creates a new object that is an identical copy of this object.<span
+style="mso-spacerun: yes">  </span>The new object will have the same
+superclasses as the original, and the identical set of properties defined in
+the original.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>No constructor is called in creating
+the new object, since the object is explicitly initialized by this method to
+have the exact property values of the original.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The clone is a &quot;shallow&quot;
+copy of the original, which means that the clone refers to all of the same
+objects as the original.<span style="mso-spacerun: yes">  </span>For example,
+if a property of the original points to a Vector, the corresponding property of
+the clone points to the same Vector, <i>not</i> a copy of the Vector.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>createInstance(…)</b> – creates a
+new instance of this object; that is, creates a new object whose superclass is
+the “self” object of this method.<span style="mso-spacerun: yes">  </span>This
+method’s arguments are passed directly to the constructor, if any, of the new
+object; this method doesn’t make any other use of the arguments.<span
+style="mso-spacerun: yes">  </span>The method creates the object, invokes the
+new object’s constructor, then returns the new object.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This method can be especially useful
+in static methods defined in base classes that are further subclassed, because
+it essentially allows a parameterized “new” operator.<span style="mso-spacerun:
+yes">  </span>For example, suppose we had a base class, Coin, which you
+subclass into several types: GoldCoin, SilverCoin, CopperCoin.<span
+style="mso-spacerun: yes">  </span>For each of these classes, you want to
+provide a method that creates a new instance of that kind of coin.<span
+style="mso-spacerun: yes">  </span>Using the “new” operator, you’d have to
+write a separate method in each subclass:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class Coin: object;</pre><pre>class GoldCoin: Coin</pre><pre><span style="mso-spacerun: yes">  </span>createCoin() { return new GoldCoin(); }</pre><pre>;</pre><pre>class SilverCoin: Coin</pre><pre><span style="mso-spacerun: yes">  </span>createCoin() { return new SilverCoin(); }</pre><pre>;</pre><pre>class CopperCoin: Coin</pre><pre><span style="mso-spacerun: yes">  </span>createCoin() { return new CopperCoin(); }</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This gets increasingly tedious as we
+add new subclasses.<span style="mso-spacerun: yes">  </span>What we’d really
+like to do is something like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class Coin: object</pre><pre><span style="mso-spacerun: yes">  </span>createCoin() { return new self(); } // illegal!</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This would let all the subclasses
+inherit this one implementation, which would create the appropriate kind of
+object depending on the subclass on which the method was invoked.<span
+style="mso-spacerun: yes">  </span>We can’t write exactly this code, though,
+because the “new” operator doesn’t allow a variable like “self” to be used as
+its argument.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>So, it’s createInstance() to the
+rescue.<span style="mso-spacerun: yes">  </span>This method lets us do exactly
+what we’d like: create an instance of the current class, writing the code only
+once in the base class.<span style="mso-spacerun: yes">  </span>Using
+createInstance(), we can rewrite the method to get the effect we want:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class Coin: object</pre><pre><span style="mso-spacerun: yes">  </span>createCoin() { return createInstance(); }</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=createInstanceOf></a><b>createInstanceOf(…)
+– </b>creates a new instance based on multiple superclasses.<span
+style="mso-spacerun: yes">  </span>This is a static (class-level) method, so
+you can call it directly on TadsObject.<span style="mso-spacerun: yes"> 
+</span>With no arguments, this simply creates a basic TadsObject instance; this
+is equivalent to TadsObject.createInstance().</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The arguments give the superclasses,
+in &quot;dominance&quot; order. <span style="mso-spacerun: yes"> </span>The
+superclasses appear in the argument list in the same order in which they'd
+appear in an object definition: the first argument corresponds to the leftmost
+superclass in an ordinary object definition.<span style="mso-spacerun: yes"> 
+</span>Each argument is either a class or a list.<span style="mso-spacerun:
+yes">  </span>If an argument is a list, the first element of the list must be a
+class, and the remainder of the elements are the arguments to pass to that
+class's constructor.<span style="mso-spacerun: yes">  </span>If an argument is
+simply a class (not a list), then the constructor for this superclass is not
+invoked at all.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>For example, suppose we had the
+following class definitions:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>class A: object</pre><pre><span style="mso-spacerun: yes">    </span>construct(a, b) { ... }</pre><pre><span style="mso-spacerun: yes">  </span>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>class B: object</pre><pre><span style="mso-spacerun: yes">    </span>construct(a, b, c) { ... }</pre><pre><span style="mso-spacerun: yes">  </span>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>class C: object</pre><pre><span style="mso-spacerun: yes">    </span>construct() { ... }</pre><pre><span style="mso-spacerun: yes">  </span>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>class D: A, B, C</pre><pre><span style="mso-spacerun: yes">    </span>construct(x, y)</pre><pre><span style="mso-spacerun: yes">    </span>{</pre><pre><span style="mso-spacerun: yes">      </span>inherited A(x, y);</pre><pre><span style="mso-spacerun: yes">      </span>inherited C();<br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></pre><pre><span style="mso-spacerun: yes">    </span>}</pre><pre><span style="mso-spacerun: yes">  </span>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now, suppose that we had never
+actually defined class D, but we want to create an instance dynamically as
+though it class D had been defined.<span style="mso-spacerun: yes">  </span>We
+could obtain this effect like so:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>local d = TadsObject.createInstanceOf([A, x, y], B, [C]);</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This creates a new instance with
+superclasses A, B, and C, in that dominance order.<span style="mso-spacerun:
+yes">  </span>During construction of the new object, we will inherit A's
+constructor, passing (x, y) as arguments, and we'll inherit C's constructor
+with no arguments.<span style="mso-spacerun: yes">  </span>Note that we pass a
+list containing C alone; this indicates that we do want to call the
+constructor, since the argument is passed as a list rather than as simply the
+object C, but that we have no arguments to send to C's constructor.<span
+style="mso-spacerun: yes">  </span>Note also that we don't invoke B's
+constructor at all, since B is specified without being wrapped in a list.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that if constructors are invoked
+at all, they can only be called in the same order in which they appear in the superclass
+list.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>createTransientInstance(…) – </b>this
+works like createInstance(), except that the new instance is <a
+href="t3obj.htm#transient">transient</a>.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>createTransientInstanceOf(…) – </b>works
+like createInstanceOf(), except that the new instance is transient.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>setSuperclassList(<i>lst</i>) – </b>sets
+the object's superclasses to the values in <i>lst</i>, which must be a list of objects.<span
+style="mso-spacerun: yes">  </span>The object's superclass list is replaced
+with the given superclass list.<span style="mso-spacerun: yes">  </span>The
+objects in <i>lst</i> must all be TadsObject objects, with one exception: <i>lst</i>
+is allowed to be [TadsObject] (that is, a single-element list containing the
+TadsObject class itself), in which case the object becomes a root TadsObject
+object.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

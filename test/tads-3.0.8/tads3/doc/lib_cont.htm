@@ -1,0 +1,910 @@
+<html>
+<title>TADS 3 Library - Containment and Senses</title>
+
+<h3>TADS 3 Library: Containment and Senses</h3>
+
+<p>
+<b>Revisions:</b>
+
+<p>
+<ul>
+
+<li>4/14/2000 - doorways and enterables; Openable and Lockable mix-ins;
+travel.
+
+<li>4/12/2000 - doors; open/closed state for connectors; transparency levels;
+detectability; sound and smell.
+
+<li>4/11/2000 - first version.
+</ul>
+
+<h3>Introduction</h3>
+
+<p>
+This is a preliminary proposal for the design of the containment and
+sense model in the TADS 3 library.  This model shares some of the
+attributes of the TADS 2 adv.t model, but adds to the adv.t model
+by differentiating the different senses.  Some of the important
+features of this design:
+
+<p>
+<ul>
+
+<li>Like the adv.t model, the relationship between a container and its
+contents is a feature of the container.  This means that a particular
+container cannot simultaneously have objects inside and on top, for
+example.  However, like the adv.t model, multiple types of containment
+for a single object can be simulated using sub-objects; unlike adv.t,
+we will try to provide some classes that make it easy to code such
+cases.
+
+<li>This model provides for multiple senses.  The adv.t model effectively
+provided two senses: sight and touch.  We extend this to add sound, smell,
+and taste, and further provide an extensibility framework that makes it
+easy to add new senses.
+
+<li>This model differentiates between scope and validity.  An object is
+"in scope" for an actor if the object is detectable to any of the actor's
+senses in such a way that the actor can identify the object.  An object
+is "valid" for a command if it meets a set of criteria defined for the
+command; most commands define these criteria in terms of one or more
+senses.
+
+<li>This model introduces a "materials" class.  While this would seem
+to add a frightening new degree of complexity, materials never actually
+need to be specified, and the behavior of the model when materials are
+not specified degenerates cleanly to the adv.t model.
+
+</ul>
+
+<p>
+I would like to emphasize that this model is a "straw man," and
+everything about it is preliminary and open to debate,
+radical changes, or wholesale replacement.  The names I've chosen are
+especially open to change, since I simply wanted to get something
+down on (electronic) paper as a concrete basis for further discussion.
+
+
+<h3>Materials</h3>
+
+<p>
+A material defines certain properties of an object separately from the
+object.  The adv.t model had no equivalent of a material.
+
+<p><b>It cannot be stressed strongly enough that the purpose of
+materials is <i>not</i> to add a whole new level of detail to
+adventure games.</b> I believe we should vigilantly suppress any
+urges we might feel to use materials to generate descriptions, react
+to "burning" or "breaking" or "hitting with axe," or anything else
+that might lead to a plethora of library-provided materials,
+mandatory use of materials for all objects, calls for multi-material
+objects represented using lists of materials that correspond to the
+canonically numbered faces of Platonic solids, or any other
+manifestations of a drift towards a 3D rendered world model.  I did
+not come up with materials in a moment of simulationist excess.
+
+<p>Rather, the purpose of materials is to serve as a mechanism to
+mediate senses and sense passing, and in particular to centralize all
+sense-passing definitions with a small set of regular classes.
+
+<p>Here's the problem that I think materials solve.  Suppose we didn't
+have materials, but instead defined different kinds of containers.  We'd
+have a transparent container, a cage-like container, a container made
+of fine-meshed screen, a container made of paper.  We'd want all of these
+kinds of containers because we'd want to make containers that passed
+different senses differently.  In each kind of container, we'd code
+the appropriate transparency for each sense.  Now, suppose that a game
+author decided that they need to add a telepathy sense that can detect
+objects through certain types of containers.  The author would have to
+go through all of the library container classes and modify each one with
+the new sense-specific transparency code.  This problem becomes worse
+when you consider connections, which have their own way of handling
+sense transparency.
+
+<p>Materials improve on this situation by centralizing the sense
+transparency code in a set of objects whose only function is to
+define this code.  Adding a new sense still requires modifying each
+material object type, but this is much easier than modifying the
+container types because of the regularity of material objects.  It is
+important that we keep the number of library-defined materials small,
+to reduce this workload for authors adding new senses.
+
+<p>
+The library-defined materials are:
+
+<p>
+<b>Adventium:</b>  This is the basic stuff of the universe.  All
+objects in the adv.t model were made of this material, because there
+was no way to specify any alternative material.  Adventium is opaque
+to all senses.
+
+<p>
+<b>Paper:</b> This material is opaque to sight (or perhaps transluscent),
+touch, and taste, but allows sound and smell to pass through.
+
+<p>
+<b>Glass:</b> This material is transparent to light, but opaque to
+all other senses.
+
+<p>
+<b>FineMesh:</b> This material is transparent to all senses except touch.
+This can be used for window screens, for example, or for chain link
+fences, or for cages with bars so close that an actor can't reach through
+them.
+
+<p>
+<b>CoarseMesh:</b> This material is transparent to all senses,
+including touch, but objects beyond a certain bulk cannot be moved
+through it.  This can be used for cages with bars spaced widely
+enough apart that an actor can reach through, but still too close to
+move large objects through.
+
+<h3>Senses</h3>
+
+<p>
+Senses are represented as objects of class Sense (which itself is a simple
+'object' class with no superclass).
+
+<p>
+The purpose of representing senses as objects is to allow for easy
+extensibility, so that game authors can add new custom senses to their
+games without having to make extensive changes to the library.
+
+<p>
+Senses interact with materials.  A sense object has a property,
+'transparentProp', that gives the property reference of the
+"transparency test" property.  This property is in turn a property
+of each material object, and gives the degree of transparency of
+the material with respect to the sense.
+
+<p>
+To add a new sense, a game author must merely do the following:
+
+<p>
+<ul>
+<li>Create a new instance of Sense for the new sense.
+<li>Make up the name of a transparency test property for the sense.
+<li>Set the transparencyProp property of the new sense object to a
+reference to the test property.
+<li>Modify the Material base class to add a default setting for the
+transparency property, giving the default transparency.
+of all materials to the new sense.
+<li>Modify each Material instance defined in the library and in the
+game to set a non-default value of the transparency property, as needed.
+</ul>
+
+<p>
+Note that all of the steps except the final step are extremely simple.
+The final step - which requires checking and possibly modifying all
+Material instances - is the one that will require a little thought,
+and the size of this step depends on how many materials are defined.
+However, the entire point of the Material system is to centralize this
+work in a small number of Material objects, and to make the work
+completely regular, in that the task is identical for each Material.
+The library should define only a small number of materials, and most
+games should not need to add more than one or two, so this part of
+the job should never become very complicated.
+
+<p>
+Note also that the final step should never become a compatibility
+problem as game authors move from one library version to the next.
+When a game author adds a new sense, they'll also have to check and
+possibly modify all of the materials.  When they upgrade to a new
+library version, it is possible that new materials will have been
+added.  However, a simple recompile won't be a problem - as long as
+the game author isn't using any of the new materials, it won't matter
+whether or not the game author gets around to modifying the new materials
+with the new sense information.  The only requirement for library authors
+is that we never change the default material of an existing class in
+a library version change - this will ensure that a game will never
+unexpectedly start using new materials by virtue only of a library
+upgrade and recompile.
+
+
+<h3>Transparency Levels</h3>
+
+<p>
+A material passes a sense with a specific transparency level.
+A material's transparency property for each sense returns one of these
+levels.
+
+<p>
+For simplicity, we do not use a continuum of transparency levels.
+Instead, we enumerate a small set of levels:
+
+<p>
+<ul>
+
+<li>Transparent - the material passes the sense without any interference.
+
+<li>Distant - the material passes the sense, but objects viewed through
+the material are at a distance and hence can't be seen in the same level
+of detail that they could if they were closer.
+
+<li>Obscured - the material passes the sense, but has an obscuring effect
+on the information passed through the material.  This might be used for
+something like looking through a dirty window, or listening through an
+apartment wall.
+
+<li>Opaque - the material doesn't pass the sense at all.
+
+</ul>
+
+<p>For most purposes, there will be no practical difference between
+distant and obscured.  However, we distinguish these in the model to
+allow game authors to make a distinction in specific descriptions,
+since there might be times when information that can be understood
+when sensed from a distance is too garbled when sensed through an
+obscuring material, or vice versa.
+
+<p> We define the "addition" operator on these transparency levels as
+follows.
+
+<p>
+<ul>
+
+<li>Transparent + X = X
+<li>Opaque + X = Opaque
+<li>Distant + X = Opaque
+<li>Obscured + X = Opaque
+</ul>
+
+<p>Note that addition is commutative (X + Y = Y + X), and the rules above
+are listed in order of precedence.  Hence, Transparent + Obscured = Obscured,
+since the first rule overrides the last.  Note also that, because we do
+not have gradations of distance or obscuredness, compounding the effects
+of distance or obscuredness lead simply to opaqueness; hence if we are
+standing outside of a dirty window looking into a room, and on the other
+side of the room is another dirty window, we can see what's in the room
+(obscured), but we can't see what's beyond the other window.
+
+<p>
+The transparency levels are used to determine what we can sense from a
+given vantage, and to adjust object descriptions accordingly.
+
+<p>
+Clearly, it would be asking too much to insist that a game author must
+provide a separate description for every object at every transparency
+level.  This is, in fact, the reason that this model limits itself to
+four discrete levels rather than, say, a 1 to 10 scale, or an even broader
+continuum.  A continuum would give the game author more freedom to fine-tune
+descriptions for different levels of transparency, but it also provides an
+author with no guidance; in effect this would leave it up to the author to
+devise a model.  It seems that we more than compensate for any loss of
+freedom in this model by clearly defining what each transparency level 
+means.
+
+<p>Even with only four levels of transparency, though, authors would
+still be overwhelmed if asked to provide a near, distant, and obscure
+description for every object.  This is the other reason we limit ourselves
+to a small set of levels in this model:  with this small set of levels, we
+can reasonably provide default behavior in the library that relieves the
+author of specifying individual messages for each viewing level for
+most objects.
+
+<p>The library will provide default messages by asking the author merely
+to specify a "size class" for each object.  Again, we limit ourselves to
+a small number of size classes, because we cannot make use of greater
+granularity in the library.  The library size classes are Large, Medium,
+and Small.  Note that these apply to visual size; it will also be
+necessary to have similar size classes for sound, such as Loud, Medium,
+Quiet, and odor, such as Strong, Medium, Weak.  Taste and touch should
+not need size classes because these senses do not operate at a distance.
+
+<p>The benefit of the size classes is that most objects will not need
+to use them.  The default size class - Medium - should give
+reasonable behavior for nearly all objects, and if an author simply
+doesn't want to code a game at this level of detail at all, the
+default Medium class should never produce jarring results.  In addition,
+it should always be easy for an author to decide what size class to use,
+since the rules are simple.
+
+<p>For each sense, every object will define a method that takes a 
+transparency level and produces a description of the object.  The purpose
+of this method is to produce the description that a player receives in
+response to examining the object using that sense.  In most cases,
+game authors will not code this method; it will be inherited from Thing,
+and will check the size class for the sense and the transparency level
+to select an appropriate description provided by the game author.  The
+author will in most cases only provide a short and long description
+(sdesc and ldesc), just as in the adv.t model.
+
+<p>
+A Large object (or the equivalent for sound and smell) can be sensed
+in detail from a distance and through obscuring materials.  This class
+is appropriate for a building, a large animal, or other objects that
+are so large that their details can be seen from a distance.  The
+default handling for this object is to display its ldesc, regardless
+of the transparency level.
+
+<p>
+A Medium object can be sensed in detail only at the "transparent" level.
+At the distant or opaque levels, the object produces a default description
+such as "you cannot see (or hear, etc) any detail from here."
+
+<p>
+A Small object can be sensed in detail only at the "transparent"
+level, and its <i>presence</i> cannot even be sensed from any other
+level.  Thus, the Small size class must actually be taken into
+account in scoping, since a Small object is not even in scope when a
+non-transparent boundary must be crossed to reach it.  Note that Small
+objects are meant to be used as sub-parts of Medium objects; because 
+a Medium object's detailed description cannot be seen through a
+non-transparent boundary, its parts cannot be described through the
+boundary (it is the detailed description of an object that normally
+mentions the object's sub-parts), and hence should not be in scope.
+
+<p>Size classes should be implemented as mix-in classes that are listed
+in the inheritance order <i>before</i> Thing or any subclass of Thing.
+Thing defines defaults appropriate for a Medium object in each sense.
+For each sense for which the object isn't a "medium," the game author
+can simply add the appropriate mix-in object.
+
+<p>Note that the author can still take control of the description
+mechanism when necessary.  The author must simply override the appropriate
+describe-at-level method to produce a different description.  For example,
+suppose the game has a dirty window with a book on the other side.  By
+default, viewing the book through the window would report "you can't
+see any detail from here."  If the author wanted instead to say something
+like "you can't make out the title, but it looks like there's a pentagram
+on the cover," this could be accomplished by overriding the method for
+the view-obscured case.
+
+
+<h3>Detectability</h3>
+
+<p>Each object defines a method, isDetectable(actor, sense, level).
+This method takes an actor, a sense, and a transparency level and
+returns true or nil to indicate whether or not the object is
+detectable in that sense from that transparency level.  This will be
+used by the scoping mechanism, description list generators, and the
+like.
+
+<p>Note that this method will never be called with the "opaque" level.
+Objects are never detectable to a sense when sensed through a barrier
+opaque to that sense, hence it will never be necessary to ask an 
+individual object whether or not it's detectable in this case.
+
+<p>The default Thing class will define a basic implementation of this
+method appropriate for Medium objects.  In addition, the various size
+class mix-in classes (Large, Loud, etc) will override this as appropriate.
+
+<p>The default rules will work like this:
+
+<ul>
+
+<li>For vision, an object is detectable or not according to the size and
+transparency rules.  A Large object is detectable at any transparency level;
+a Medium object is detectable at any level; and a Small object is
+detectable only at the "transparent" level.
+
+<li>For sound and smell, the default Thing class always returns nil.
+Default objects produce no sound or odor, so they do not make their
+presence known by these senses alone; hence they are not detectable by
+these senses.  The library will provide classes for "odor" and "sound"
+objects, which will return true for sound and smell according to the
+transparency level and whether the odor or sound is actually being
+emitted at the moment.
+
+<li>For touch, the default Thing class will always return nil, except
+that it will return true for any object in the actor's possession
+which the actor has ever seen or moved.  (Thus, the only items in the
+actor's possession that the actor cannot sense by touch are those
+that are inside other objects which the actor put into inventory
+directly without examining their contents.  We thus allow an actor to
+identify by touch anything they're carrying and have identified
+before, but we don't allow an actor to identify something for the
+first time by touch alone.)
+
+<li>For taste, the default Thing class will always return nil.
+
+</ul>
+
+<p>Note that, for taste and touch, in most cases it will make no
+sense to define materials that pass these senses at anything other
+than "transparent" or "opaque" levels.  Overriding methods will not
+normally have to worry about other levels for these senses.
+
+<p> Note that the isDetectable(actor, sense, level) method doesn't
+tell us whether something is <i>accessible</i> for that sense: we
+already know it's accessible if and only if there's a path to the
+object whose compounded transparency level is not "opaque."  The
+purpose of this method is to determine if an actor is passively aware
+of the object: in other words, if the object is somehow telegraphing
+its presence through some sense channel that (a) the actor can sense,
+and (b) allows the actor to identify the object.
+
+<p>For vision, this is easy, since it seems reasonable to assume that
+an actor is aware of everything within sight.
+
+<p>For sound and smell, objects by default make no noise and emit no
+odor, hence they cannot be detected this way.  However, if an object
+is making a sound or emitting an odor, it might or might not make
+sense for an actor to be able to identify the object by that sound or
+odor.  This is covered separately below.
+
+<h3>Sound and Smell</h3>
+
+<p>
+Sound and smell are different from vision in an important respect.
+If we can see something, we can identify it, at least to the degree
+that it makes sense for the game to describe the object to us.
+If we can hear or smell something, though, we might or might not
+be able to identify the source.  We must make provisions for this
+difference from vision.
+
+<p>
+Consider these cases:
+
+<p><ul>
+<li>We are in a room and smell a strong odor of decay.  It turns out
+that it's coming from a corpse in the next room, but we've never been
+to the other room and so we don't know what's causing the odor.
+
+<li>Later, we visit the room with the corpse.  Because it's not nailed
+down, we pick up the corpse and carry it with us for a while, eventually
+tiring of it and dropping it in another location.
+
+<li>Later still, we visit a room adjacent to the room where we dropped
+the corpse.  Here we can smell the strong odor of decay coming from
+the next room.  Because the odor is distinctive, we know it's coming
+from the corpse.
+
+</ul>
+
+<p>Clearly, unlike vision, an object cannot be considered in scope
+only because it is detectable by sound or smell.  If we don't know
+the source of the sound or smell, the object shouldn't be in scope;
+if the sound or odor is distinctive, we should be able to identify
+the object based on the sense, hence the emitting object should be in
+scope.  In either case, though, the sound or smell itself must be in
+scope.  How do we handle this dichotomy?
+
+<p>The approach that seems best to me is to use two objects: one
+for the source of the sound or odor, and a separate object for the
+sound or odor itself.
+
+<p>To do this, the library would provide an Audible class and 
+a Smellable class.  The Audible class would have a property,
+'mySound', giving the associated Sound object; the Smellable class
+would have a property, 'myOdor', giving the associated Odor object.
+Smellable and Audible would process "smell x" and "listen to x"
+commands, respectively.
+
+<p>The Sound/Odor object has an isOn property that specifies whether
+or not it is currently active.  This can be used for intermittent
+sounds and odors; for persistent ones, isOn would always be true.
+The object would return true for its isDetectable() method whenever
+isOn is true.
+
+<p>Audible and Smellable would have another property, 'distinctive',
+that specifies whether or not the associated sound/odor is enough for
+a player to identify the object.  (Or maybe this should be associated
+with the Smell/Odor object?)  If this property is true, <i>and</i>
+the object has been seen before (i.e., its isSeen property is true),
+then the Audible/Smellable's isDetectable() method defers to the
+associated Sound/Odor object.  The idea is that, if the sound/odor
+is distinctive to this object, then once the player has been able
+to identify the object iself (by virtue of having seen it), the
+player can from that point forward sense the presence of the object
+whenever they can sense the associated sound/odor.
+
+<p>The nice thing about this approach is that it seems to handle the
+scoping issues correctly.  Whenever a sound/odor is within range of
+our senses, the library will describe the sound/odor, and will let us
+refer to the sound/odor object itself: we can thus "smell odor of
+decay" or "listen to alarm sound."  In addition, if the sound/odor is
+distinctive and we've identified its source, the source will also be
+in scope, hence whenever we smell the odor of decay we can "smell
+corpse" and the like, as long as we have reason to know the corpse is
+the source of the odor.
+
+<p>For the game author, this is slightly more work than putting the
+description of the sound/odor in the source object itself, since it's
+necessary to set up a second object and point the first object to the
+second; but it shouldn't be a lot of extra work, since the sound/odor
+object itself should be extremely simple boilerplate.
+
+
+<h3>Containment Relationships</h3>
+
+<p>
+The relationship between an object and its container is defined by
+the container.  A given type of container has only one type of relationship
+with its contents.  This is the same as the adv.t model: an object can
+be a regular container (such as a box), or a surface (such as a countertop),
+but not both.  
+
+<p> The 'contents' property gives a list of the objects that are
+contained within an object.  <b>The 'contents property will
+<i>always</i> be a complete list of the contents of an object.</b>
+This is a big difference from the adv.t model, where an object's
+contents were not always complete; in particular, floating items
+always had to be considered separately, since they were never added
+to any contents lists.
+
+<p>
+The representation of an object's location varies by object type.
+The basic Thing class defines a single-location representation.
+Other mix-in classes can be used when defining an object, however, to
+change this behavior; these mix-in classes replace the methods related
+to the object's location representation, so must be inherited <i>before</i>
+Thing or any subclass of Thing in order to override the default location
+representation.  <b>This is important:</b> the representation of an object's
+location is entirely private to the object.  We will define an abstract
+interface to the methods that manipulate an object's location; all
+references to an object's location must be made through this abstract
+interface.  Using the abstract interface will ensure that we can define
+alternative location representations without having to scatter tests for
+the type of representation throughout the library or throughout a game.
+
+<p>
+Note that the mix-in classes derive simply from 'object', so
+these will create no confusion for multiple inheritance.  The mix-in
+classes will simply override the location representation and
+interface, and nothing else.
+
+<p><b>Thing:</b> The basic Thing class defines a default single-location
+representation.  The property 'location' gives the containing object.
+
+<p><b>Multi-Parent Items:</b> A multi-parent mix-in class provides
+for objects that exist in more than one location simultaneously.  These
+can be used for objects that span more than one location or container,
+such as ropes and ladders.  Moving one of these items to a new location
+will automatically remove it from all of its prior locations, but the
+mix-in class will also provide an extended interface that allows explicit
+addition or deletion of a location.
+
+<p><b>Multi-Parent Items with Automatic Initialization:</b>  A simple
+extension of the regular multi-parent mix-in class provides for objects
+whose initial locations are specified via a condition, rather than via
+an explicit list.  During pre-initialization, the library will initialize
+each of these objects by testing every Room object against the object's
+location condition, and adding the object to each location that passes
+the condition test.  Alternatively, the condition can be specified in
+terms of a particular object class, so that the object is automatically
+added to the contents of each instance of the given class (for example,
+we might want to define an object that appears in each OutsideRoom).
+
+<p><b>Dynamic Floating Items:</b> The most problematic part of the
+contents model has always been "floating" items, which are items that
+appear in more than one location, and whose presence in a given
+location can vary according to the state of the object, the state of
+the location, the state of an actor, or other factors.
+
+<p>In the adv.t model, most items that were defined as floating were
+actually quite static, so we have tried to reduce the number of true
+floating items that most games will require through the static
+multi-parent classes.  However, it's impossible to eliminate dynamic
+floating items entirely; there will always be cases where an object
+should be present according to specific conditions that can vary from
+turn to turn.
+
+<p>To satisfy the invariant that an object's contents are always listed
+in its 'contents' list, we will handle true dynamic floating items by
+moving them in or out of their containers during the initialization phase
+of each turn.  This might seem inefficient - we'll have to visit all such
+items at the start of every turn, and process their conditions.  However,
+this is actually a good deal more efficient than the adv.t approach, which
+required scanning all of the floating items for every scope/access check -
+these checks can occur several times in the course of processing a single
+command.  Hence, it seems much better to process dynamic floating items
+once per turn, since this not only should be less work overall, but allows
+us to impose our complete-contents-list invariant, which should
+substantially simplify certain aspects of scope and access computation.
+
+
+<h3>Container Types</h3>
+
+<p>
+We define the following types of containers.
+
+<p>
+<b>Thing:</b>  The basic Thing class, which is the root of all "physical"
+objects in a game, is a type of container.  It was perhaps not obvious, but
+this was the case in the adv.t model as well.  When a Thing contains
+an object, the contained object is effectively a "part" of the Thing:
+it moves along with the parent object, and is detectable to any sense
+to which the parent object is detectable.  Contents of a Thing are thus
+external features of the Thing, and act as though they were attached to
+the outside of the Thing.
+
+<p>Even though a Thing can contain things, because they act like parts
+of the Thing, it is not normally possible for the player to add or remove
+contents through commands.  For this reason, with the adv.t model, contents
+of a Thing were normally of class fixeditem to ensure they could not be
+removed from their container.  In the TADS 3 model, we will add a Part
+class for contents of a Thing.  A Part is for most purposes equivalent to
+an adv.t fixeditem, but we will distinguish this class, mostly to provide
+more customized error messages (such as "That's a part of
+&lt;&lt;its container&gt;&gt;" rather than "You can't have that").
+
+<p>Thing does not accept player commands to add or remove contents.
+
+<p>
+Because the contents of a Thing are normally fixed features of the object,
+a Thing does not normally produce a list of its contents in the course of
+displaying a full description; it is assumed that the custom descriptive
+text (the "ldesc") describes the contents to the extent the author
+wanted them described.
+
+<p>
+<b>Surface:</b>  An object that can have objects placed on top of it.
+Surfaces do not enclose their contents, so the contents of a surface
+are detectable to any sense to which the containing surface is detectable.
+
+<p>
+Surfaces allow a command such as "put object on surface" and "take object
+off of surface"; such commands differ only superficially from the
+equivalents for a container, since ultimately a Surface represents the
+containment relationship the same way that any other container does.
+
+<p>
+Surface also provides customized messages that describe its contents as
+being "on" it rather than "in" it.
+
+<p>
+<b>Container:</b>  A Container completely encloses its contents.  A
+Container can be either open or closed.  When it is open, a Container's
+contents are detectable to all senses to which the Container is
+detectable; an open Container 
+
+<p>When a Container is closed, its contents are detectable to a sense
+only to the degree that the material from which the Container is
+constructed is transparent to the sense.  The method
+canSenseContents(senseObject) calls the Container's material object's
+method canSenseThrough(senseObject) and returns the result.
+
+<p>As implied above, a Container has a property giving the material
+of which it is made.  By default, a Container is made of adventium,
+but the 'material' property can be set to a specific material for
+different effects.  Adventium is opaque to all senses, hence the
+default behavior of a Container is the same as in the adv.t model.
+
+<p>Even though a Container has an open/closed state, it doesn't accept
+player commands to open or close it.
+
+<p><b>OpenableContainer:</b> A combination of Openable and Container
+that the player can open and close using commands.
+
+<p><b>LockableContainer:</b> A combination of Lockable, Openable,
+and Container that the player can open and close as well as lock
+and unlock using commands.
+
+<p><b>KeyedContainer:</b> A combination of LockableWithKey, Openable,
+and Container that the player can open and close, as well as lock and
+unlock using a specified key, using commands.
+
+
+<h3>Openable and Lockable Objects</h3>
+
+<p>
+The library provides several "mix-in" classes that can be used to
+add a set of commands to an existing object.  We call them "mix-in"
+classes because they can be mixed in with other superclasses, via
+multiple inheritance, to mix the behavior of the multiple superclasses
+together.
+
+<p>
+Mix-in classes have an important features that makes them different
+from other classes in the library: these classes are based
+directly on "object" or on other mix-in classes, not on Thing or other
+basic library classes.  This makes it easy
+to combine mix-in classes with classes derived from Thing or other
+library classes: because mix-ins don't add all of the Thing methods,
+mix-ins don't create any conflict in the priority of methods inherited
+from other library classes.
+
+<p>
+<b>Openable:</b>  Provides "open" and "close" verb handling.  Override
+hooks allow derived classes and objects to provide custom messages in
+response to the verbs, to specify custom conditions to allow or
+disallow the verbs, and to receive notification of state changes so
+they can perform any special side effects.  Openable automatically
+handles default logic checks and action for "open" and "close."  In
+addition, the class is designed to interoperate with Lockable, in
+that it checks its locked/unlock status in the course of its default
+processing.
+
+<p>
+<b>Lockable:</b>  Provides "lock" and "unlock" verb handling.  Override
+hooks allow derived classes and objects to provide custom messages,
+conditions, and state change processing.  Note that Openable is designed
+to interopreate with Lockable.
+
+<p>
+<b>LockableWithKey:</b> A subclass of Lockable that specifies
+a set of objects that serve as a key for the lock.  This class accepts
+commands of the form "lock object with object" and "unlock object with
+object," where the indirect object must be in the list of valid keys
+specified for the instance.  An object based on LockableWithKey cannot
+be locked or unlocked without the key.
+
+
+<h3>Connections Between Rooms</h3>
+
+<p>In the adv.t model, the only way for an object to be "connected" to
+another was through containment; the model had no provision for
+allowing access (through scope or validation) to an object in one 
+top-level container (i.e., a room) by an actor in another.  This was
+a serious limitation, and authors routinely had to invent ad hoc
+approaches when a game situation called for connected rooms.  The
+one concession adv.t made was "nested rooms," which allowed for
+locations within other locations: chairs, beds, platforms, closets,
+cages.
+
+<p>The need for connected rooms arises in numerous situations.  Common
+examples (apart from the nested room examples above) include a window
+that looks into another room or out onto an outside location, a very
+large open area divided into several discrete locations, or two
+adjacent rooms where the passage between them provides visibility
+from one into the other.  Less common but still important situations
+include an actor talking on a phone to an actor in another room and
+a room visible through a closed-circuit television display.
+
+<p>The TADS 3 library model provides a Connector class that makes it
+easy to connect rooms.  The Room class has a 'connections' property
+that contains a list of the objects in the room that connect the room
+to other rooms.  During pre-initialization, the library will set up
+each room's 'connections' list much as it sets up 'contents' lists,
+and during execution the Room class will maintain its 'connections'
+list in parallel with its 'contents' list: each time an object is
+added to or removed from the 'contents' list, the object will also be
+added to or removed from the 'connections' list if the object is a
+connector.
+
+<p>A Connector has a material, just as a Container does, and the material
+serves the same purpose as it does for a container: whenever we must
+check to see if a sense can cross through the connector to reach the
+connected room, we will do so by checking the connector's material.
+
+<p>A Connector has an open/closed state, just as a Containe does, and
+the state serves the same purpose as it does for a container: when we
+check for a sense crossing through the connector, we allow the sense
+to pass freely if the connector is open, otherwise we check the material.
+A Connector must have an open/closed state to allow for doors, windows,
+and other connections that can be opened or closed.
+
+<p>A Connector will normally be a physical object in the rooms it 
+connects, so in most cases setting up a Connector is quite trivial:
+simply create a Connector subclass for the window, passageway, phone,
+or other object connecting the room, and put it in the connected locations.
+The pre-initialization code will automatically set up the containing rooms
+by placing the Connector object in the 'connections' lists for the rooms.
+Thus, coding a window is simply a matter of creating a Connector that is
+fixed in place, has the appropriate vocabulary words, and has a material
+type of Glass.
+
+<p>Some connectors will not show up as game objects; these can be
+coded simply by creating objects without any associated vocabulary.
+
+<p>Note that connectors don't have any directional information.  Thus,
+there's no need to specify that a window is in the west wall, for example.
+This information would add nothing to the model, since the model doesn't
+have any information about the relative locations of things within a room
+beyond containment relationships.  (The only command that would seem to
+be able to make use of such information would be something like "look west";
+this isn't a traditional "core" command, though, so it's not clear if it's
+worth complicating the model to support it.)
+
+<h3>Doors</h3>
+
+<p>A special situation involving room connections is doors; what makes
+a door special is that it can be opened and closed.
+
+<p>In the adv.t model, a single doorway usually was built out of two
+door objects.  This won't be necessary in most cases with the tads 3
+library, because a door can instead be placed in two locations to
+represent the two sides of the door.  However, the tads 3 model should
+still allow for two-sided doors, because there are times when a door's
+two sides behave differently; for example, a typical house's entry doors
+can be locked and unlocked without a key from the inside, but require a
+key from the outside.
+
+<p>One is tempted to define doors as a subclass of connectors, because
+they seem in some ways to serve a similar function.  However, I think
+this has too much potential for confusion, and that it would be better
+to model a door and its connector separately.  Note that it is often
+undesirable for a door to serve as a connector, because in many cases
+the game author won't want two rooms to have any sense connection even
+though there's a travel connection.  
+
+<p>Instead, each door will have an optional property that gives its
+associated Connection object.  This property will be nil by default,
+since we will usually only want doors to provide a travel function, not
+a connection function.  If the property is set, then the door will use
+it to keep the connector's open/closed state synchronized with that of
+the door.
+
+<p>The library provides several types of door-like classes.  Objects
+of these classes can be specified instead of Room objects in a Room's
+direction properties.
+
+<p><b>Doorway:</b>  A passageway between rooms.  A Doorway can't be
+opened or closed - it's simply a passageway.  This class accepts
+commands such as "enter x" and "go through x" to initiate travel
+through the passage.
+
+<p><b>Enterable:</b>  This is a mix-in class that is similar in function
+to a Doorway, but is more generic.  Enterable can be combined with other
+classes to provide an "enter" command for an object.  This can be used,
+for example, to implement an object representing a building.  The
+class provides an override hook that lets the object specify the
+location to which to travel when an actor applies the "enter" command
+to the object (in most cases, an Enterable isn't actually a location,
+but is simply a link to a location).
+
+<p><b>Building:</b> For convenience, the library defines the Building
+class.  This is simply a fixed item of the "large" size class that
+includes Enterable in its classes.
+
+<p><b>Door:</b>  A door that can be opened and closed, and also serves
+as a passage between rooms.  This class includes the Openable mix-in
+to provide "open" and "close" verbs.
+
+<p>A Door can optionally specify a
+"secondary" Door through a property object - a secondary door serves
+as the "other side" of this door.  A Door with an associated secondary
+object will automatically keep the secondary object's state synchronized
+with this door's state.  During initialization, the library scans all
+Door instances; for each Door with a secondary door, the library automatically
+sets the secondary door to point back to its primary; much as the primary
+door keeps the secondary door synchronized, the secondary door delegates
+all state change operations to the primary door for processing.
+
+<p><b>LockableDoor:</b> This class combines Door and Lockable to create
+a door that can be locked and unlocked.  This class automatically keeps
+an associated secondary door's locked/unlocked state synchronized.
+
+<p><b>KeyedDoor:</b> This class combines Door and LockableWithKey to
+create a door that can be locked and unlocked with a key.
+
+<p>Note that a linked primary/secondary pair of doors need not be of
+exactly the same type.  In particular, a KeyedDoor can be paired with
+a LockableDoor to create a typical house entry door that requires a
+key on the outside but not on the inside.  Similarly, a LockableDoor
+(or a KeyedDoor) could be paired with a regular Door to create a door
+that locks on one side but not the other.
+
+<p><i>Note: it might be necessary to distinguish between a door that
+exists in both of its connected locations, and a door that is part of
+a primary/secondary pair, because the two types of doors would have to
+determine their destination location differently.  In the case of a
+linked pair, one side's destination is simply the other side's location.
+In the case of a single door with multiple locations, the other side
+is the location (from the location list) that the actor isn't currently
+in.  It would be preferable to handle this in the class rather than
+with something like a propType() check on location, since these types
+of datatype checks create brittleness and are to be avoided.
+</i>
+
+<h3>Travel</h3>
+
+<p>In the adv.t model, when the player typed a direction command, the
+library checked to see if the object found in a directional property
+was marked as an "obstacle" (such as a door), and applied special
+handling if so.
+
+<p>The TADS 3 model dispenses with the type check.  Instead, the library
+simply requires that each object referenced by a Room's directional
+properties implement a method, enterInto(actor).  This method performs
+the necessary operations to process travel by the actor in a direction
+that named this object as its destination:
+
+<p><ul>
+<li>Room implements this method by causing the actor to travel to the room.
+
+<li>Door and the like implement this method by, first, checking to
+see that the travel is possible (executing implicit commands such as
+"open door" first, as appropriate), then delegating processing to the
+door's destination's enterInto(actor) method.
+
+<li>Any other objects (such as custom game objects) used as direction
+destinations must provide their own appropriate processing.
+
+</ul>
+
+<p>
+
+</html>
+

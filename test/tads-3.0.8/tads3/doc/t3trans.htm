@@ -1,0 +1,349 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3trans_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Merkin Muffley</o:LastAuthor>
+  <o:Revision>4</o:Revision>
+  <o:TotalTime>37</o:TotalTime>
+  <o:Created>2000-05-19T18:24:00Z</o:Created>
+  <o:LastSaved>2000-05-19T19:01:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>1032</o:Words>
+  <o:Characters>5885</o:Characters>
+  <o:Lines>49</o:Lines>
+  <o:Paragraphs>11</o:Paragraphs>
+  <o:CharactersWithSpaces>7227</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:.5in;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Translating Error Messages</h3>
+
+<p class=MsoNormal>The TADS 3 Compiler and Interpreter can display system error
+messages in any language.<span style="mso-spacerun: yes">  </span>By default, the
+programs use English messages, but this can be changed.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The compiler and interpreter use external message files to
+provide non-English messages.<span style="mso-spacerun: yes">  </span>(The
+English messages are built in to the programs, so no external message file is
+required for the English messages.<span style="mso-spacerun: yes">  </span>This
+ensures that a set of messages is always available, even when an external
+message file isn't installed.)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To configure the programs to use non-English messages, you
+must put messages files into the directory containing the compiler and
+interpreter executables.<span style="mso-spacerun: yes">  </span>These files
+always have the same name:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-tab-count:1'>                    </span>Interpreter:<span
+style='mso-tab-count:1'>              </span>T3_VM.msg</p>
+
+<p class=MsoNormal><span style='mso-tab-count:1'>                    </span>Compiler:<span
+style='mso-tab-count:1'>                 </span>t3make.msg</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Then the interpreter starts running, it looks for a file
+called &quot;T3_VM.msg&quot;; the interpreter looks in the directory containing
+the interpreter's executable file (its &quot;application&quot; file).<span
+style="mso-spacerun: yes">  </span>Similarly, the compiler looks for a file
+called &quot;t3make.msg&quot; in the directory containing its executable.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>If the programs do not find their respective message files,
+they simply use the built-in English messages.<span style="mso-spacerun: yes"> 
+</span>The programs do not display any error message when there is no external
+message file, since they assume that the user simply wishes to use the built-in
+English messages.</p>
+
+<h3>Creating a Message File</h3>
+
+<p class=MsoNormal>TADS's author is not sufficiently multilingual to create
+error message files in all of the languages in which uses might be
+interested.<span style="mso-spacerun: yes">  </span>So, instead of attempting to
+provide translations for the system messages, we have provided a tool that
+translators can use to create localized messages.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To create a translated message file, you start with a
+message source file, which uses a simple text format, and use a message
+compiler to create a &quot;.msg&quot; file that the TADS programs can load.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The format of the message source file is simple.<span
+style="mso-spacerun: yes">  </span>For each message, you list the message ID,
+which is a code number that the system uses internally to identify the message;
+a short message; and a long message.<span style="mso-spacerun: yes"> 
+</span>The short message is a brief, usually one-sentence version of the
+message, and the long message is a longer explanation.<span
+style="mso-spacerun: yes">  </span>The two versions are provided to allow the
+user to select the level of message detail; for example, the compiler by
+default displays short messages, but the &quot;-v&quot; (&quot;verbose&quot;) option
+lets the user select the long messages instead.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The message ID and the short message normally go on a single
+line, but you can put them on separate lines.<span style="mso-spacerun: yes"> 
+</span>The long message always starts on the next line after the short message,
+and goes on until the next blank line.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Messages are separated by one or more blank lines.<span
+style="mso-spacerun: yes">  </span>Comments are lines starting with two slashes
+(&quot;//&quot;), but comments cannot appear in the middle of a message, so a
+comment must always be preceded by a blank line (or appear at the start of the
+file).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Two special directives let you control compilation.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The #charset directive lets you specify the character set that
+the message file uses.<span style="mso-spacerun: yes">  </span>You <b>must </b>provide
+a #charset directive before the first message, because the message compiler
+must know what character set you're using.<span style="mso-spacerun: yes"> 
+</span>The message file is stored in Unicode format, like everything else in TADS
+3, so the compiler must know the source file character set in order to
+translate it properly.<span style="mso-spacerun: yes">  </span>The line looks
+like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>#charset &quot;cp437&quot;</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal>The character set name is in the same format that the
+compiler and interpreter use.<span style="mso-spacerun: yes">  </span>For
+Windows, this is always &quot;cp&quot; followed by the code page number.<span
+style="mso-spacerun: yes">  </span>For other platforms, check your release
+notes for details on local conventions.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The #include directive lets you include a header file.<span
+style="mso-spacerun: yes">  </span>Unlike the TADS compiler itself, you can
+only include files from the main file (included files cannot themselves include
+other files).<span style="mso-spacerun: yes">  </span>Furthermore, #include
+files have only one purpose: they define symbolic message ID's.<span
+style="mso-spacerun: yes">  </span>You should normally include the following
+file, depending on which type of message file you're creating:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-tab-count:1'>                    </span>Interpreter:<span
+style='mso-tab-count:1'>              </span>#include &quot;vmerrnum.h&quot;</p>
+
+<p class=MsoNormal><span style='mso-tab-count:1'>                    </span>Compiler:<span
+style='mso-tab-count:1'>                 </span>#include &quot;tcerrnum.h&quot;</p>
+
+<h3>Compiling</h3>
+
+<p class=MsoNormal>To compile a message file, you use the t3msgc tool.<span
+style="mso-spacerun: yes">  </span>If you're using a command-line operating
+system, you run the t3msgc program with two arguments: the first is your source
+file, and the second is the &quot;.msg&quot; file you wish to create.<span
+style="mso-spacerun: yes">  </span>For example, suppose you created a source
+file called &quot;vm_deu.txt&quot; with German messages for the interpreter,
+and you wish to compile it to create vm_deu.msg.<span style="mso-spacerun:
+yes">  </span>You'd use a command like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>t3msgc vm_deu.txt vm_deu.msg</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The compiler has one option: -strict, which displays a
+warning for every defined symbolic message ID that has no message.<span
+style="mso-spacerun: yes">  </span>You can use this option to ensure that you
+have defined a message for every symbolic ID (if you didn't do this, the interpreter
+or compiler would display a &quot;message not found&quot; error if it should
+ever have to display one of the messages you didn't defined).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>t3msgc –strict vm_deu.txt vm_deu.msg</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To install the message file so that the interpreter or
+compiler actually starts using it, simply copy it to the appropriate filename
+for the type of message file (&quot;t3_vm.msg&quot; or &quot;t3make.msg&quot;)
+and place it in the same directory as the interpreter or compiler executable.</p>
+
+<h3>Sample Message File</h3>
+
+<p class=MsoNormal>Here's an example of a message file.<span
+style="mso-spacerun: yes">  </span>This file only defines two messages, so a
+real message file would obviously be a lot longer, but this file has all of the
+essential elements and will compile properly.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre style='margin-left:.5in'>#charset &quot;cp1252&quot;<o:p></o:p></pre><pre
+style='margin-left:.5in'>#include &quot;vmerrnum.h&quot;<o:p></o:p></pre><pre
+style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre
+style='margin-left:.5in'>VMERR_IMAGE_NO_CODE image contains no code<o:p></o:p></pre><pre
+style='margin-left:.5in'>This image file contains no executable code.<span style="mso-spacerun: yes">  </span>This file<o:p></o:p></pre><pre
+style='margin-left:.5in'> might be corrupted.<o:p></o:p></pre><pre
+style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre
+style='margin-left:.5in'>VMERR_IMAGE_INCOMPAT_HDR_FMT <o:p></o:p></pre><pre
+style='margin-left:.5in'>incompatible image file format; method header too old<o:p></o:p></pre><pre
+style='margin-left:.5in'>This image file has an incompatible method header format.<o:p></o:p></pre><pre
+style='margin-left:.5in'> <span style="mso-spacerun: yes"> </span>This is an older image file version which this interpreter<o:p></o:p></pre><pre
+style='margin-left:.5in'> does not support.<o:p></o:p></pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The first line specifies the character set, which in this
+case is Windows code page 1252 (the Windows US/Western Europe code page).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The second line includes &quot;vmerrnum.h&quot;; this is an
+interpreter message file, so this is the appropriate header for this file.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Next, after the blank line, we have our first message.<span
+style="mso-spacerun: yes">  </span>The message ID is
+&quot;VMERR_IMAGE_NO_CODE&quot;, a symbolic message identifier that you will
+find in vmerrnum.h.<span style="mso-spacerun: yes">  </span>Immediately
+following the identifier on the same line is the short message text.<span
+style="mso-spacerun: yes">  </span>The next line begins the long message, which
+goes on for two lines.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that the second line of the long message starts with a
+space.<span style="mso-spacerun: yes">  </span>When the compiler reads your messages,
+it keeps all of the whitespace at the beginnings and ends of the long message
+lines, except that it removes any embedded newlines (line breaks).<span
+style="mso-spacerun: yes">  </span>In other words, the compiler strings
+together all of the lines of the long message into a single line of text; we
+must therefore explicitly put in any spacing we want between words across
+lines. <span style="mso-spacerun: yes"> </span>We could just as well have put
+the space at the end of the previous line, but it's much easier to see
+whitespace when it's at the beginning of a line, which is why we've done so
+here.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The second message follows the blank line after the first
+long message.<span style="mso-spacerun: yes">  </span>Messages are always
+separated by blank lines.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that we have chosen to put the identifier for the
+second message on one line, and the short message on the next line.<span
+style="mso-spacerun: yes">  </span>This is equivalent to putting both on one
+line, but in this case the short message is a bit lengthy, so it's easier to
+read when it's on a separate line from the message ID.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

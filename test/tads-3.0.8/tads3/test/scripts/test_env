@@ -1,0 +1,20 @@
+#!/bin/sh
+# Setup the test environment
+
+# go up to the main TADS 3 source directory
+cd ../..
+
+PATH=.:test/scripts:$PATH; export PATH
+
+# T3_DAT - Data files used in testing
+# T3_OUT - Our test output
+# T3_LOG - Pregenerated logfiles to diff our output against
+T3_DAT=test/data; export T3_DAT
+T3_OUT=test/out;  export T3_OUT
+T3_LOG=test/log;  export T3_LOG
+
+# Location of TADS 3 libraries and headers: for test purposes, point at
+# the source-tree files instead of the installed ones.
+T3_RESDIR=t3resource; export T3_RESDIR
+T3_INCDIR=t3include;  export T3_INCDIR
+T3_LIBDIR=t3library;  export T3_LIBDIR

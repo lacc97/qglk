@@ -1,0 +1,26 @@
+3.0.8 (Unix patch 1)
+====================
+
+  - Two new command-line tools have been added to the Tads 3 build;
+    "t3res" and "mkchrtab".  The first is used to embed resource files
+    into a Tads 3 game (like a "gameinfo.txt"), while the latter creates
+    character mapping table files.
+
+  - A bug that caused recent TADS 3 games to crash the interpreter when
+    trying to display a banner has been fixed.  Although this fix is not
+    specific to the Unix port (it existed in the base code), it's listed
+    here since it was a quite serious one.
+
+  - Fixed a bug where the screen was not updated properly when a game
+    was waiting for an input after showing a [More] prompt.  Thanks to
+    Dan Shiovitz for providing this bugfix.
+
+
+3.0.8
+=====
+
+  - When installing TADS 2 ("make install" in tads2/), the development
+    libraries will now also get installed.  For this purpose, the
+    DATADIR variable has been added in tads2/Makefile.  By default, it
+    points to PREFIX/share/tads2, where PREFIX is something like
+    /usr/local.

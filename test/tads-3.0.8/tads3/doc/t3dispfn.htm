@@ -1,0 +1,448 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3dispfn_files/filelist.xml">
+<title>Default Display Function</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>16</o:Revision>
+  <o:TotalTime>98</o:TotalTime>
+  <o:Created>2000-02-26T00:30:00Z</o:Created>
+  <o:LastSaved>2003-09-01T17:34:00Z</o:LastSaved>
+  <o:Pages>3</o:Pages>
+  <o:Words>1414</o:Words>
+  <o:Characters>8063</o:Characters>
+  <o:Lines>67</o:Lines>
+  <o:Paragraphs>16</o:Paragraphs>
+  <o:CharactersWithSpaces>9901</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1947928187;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1253025806 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'><a name=DefaultDisplayFunc>Default Display Function</a></h3>
+
+<p class=MsoNormal>The T3 VM does not have a built-in input/output system; as
+far as the VM is concerned, input/output operations are part of the host
+environment, and not part of the VM.<span style="mso-spacerun: yes">  </span>As
+a result, T3 doesn't know what to do with self-printing strings (strings
+enclosed in double quotes in a TADS program's source code) or embedded
+expressions (expressions contained in &lt;&lt; &gt;&gt; sequences within
+double-quoted strings).<span style="mso-spacerun: yes">  </span>To enable
+implicit display operations, the VM has a mechanism that lets the running
+program specify a function, defined in the program code, to call to display
+self-printing strings and embedded expressions.<span style="mso-spacerun:
+yes">  </span>This is the &quot;default display function.&quot;<span
+style="mso-spacerun: yes">  </span>The program can also define a method to be
+called on the active &quot;self&quot; object at the time a string is to be
+displayed; this is the &quot;default display method.&quot;</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The program can define a default display function and method
+simultaneously.<span style="mso-spacerun: yes">  </span>The VM chooses whether
+to call the method or the function on a case-by-case basis, each time a value
+is to be displayed:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>If all
+     of the following conditions are true, the VM calls the default display <i>method</i>:</li>
+ <ul style='margin-top:0in' type=circle>
+  <li class=MsoNormal style='mso-list:l0 level2 lfo3;tab-stops:list 1.0in'>A
+      default display method has been defined (via the t3SetSay() function)</li>
+  <li class=MsoNormal style='mso-list:l0 level2 lfo3;tab-stops:list 1.0in'>There
+      is a valid &quot;self&quot; object that is displaying the string or
+      embedded value</li>
+  <li class=MsoNormal style='mso-list:l0 level2 lfo3;tab-stops:list 1.0in'>The
+      &quot;self&quot; object defines or inherits the default display method</li>
+ </ul>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>If any
+     of the necessary conditions for invoking the default display method are
+     false, the VM invokes the default display function.<span
+     style="mso-spacerun: yes">  </span>If no default display function has been
+     defined (via the t3SetSay() function), the VM throws an error.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To set the default display function, call the t3SetSay()
+function in the <a href="t3t3.htm">&quot;t3vm&quot; function set</a>, passing a
+function pointer argument (this must be a program-defined function, not an
+intrinsic function).<span style="mso-spacerun: yes">  </span>To set the default
+display method, call t3SetSay() with a property pointer argument.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Most programs can simply set up the default display function
+and method once at program startup.<span style="mso-spacerun: yes"> 
+</span>However, some programs might wish to change the function from time to
+time.<span style="mso-spacerun: yes">  </span>For example, a program might wish
+to use special output filtering at some times but not others; this can be
+achieved by switching between a version of the display function that performs
+the filtering, and another version that displays unfiltered output.</p>
+
+<h3>Writing a Display Function</h3>
+
+<p class=MsoNormal>A default display function takes a single argument, which is
+the value to be displayed, and returns no value.<span style="mso-spacerun:
+yes">  </span>The simplest implementation is to simply pass the value to the
+tadsSay() function (in the <a href="t3tadsio.htm">&quot;tads-io&quot; function
+set</a>) to display the value on the console:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>myDispFunction(val)</pre><pre>{</pre><pre><span style="mso-spacerun: yes">  </span>tadsSay(val);</pre><pre>}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To establish myDispFunction() as the
+default display function, you'd write a line of code like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>t3SetSay(myDispFunction);</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You'd normally put the t3SetSay()
+call in your main() routine, since this would establish the display function
+during start-up.<span style="mso-spacerun: yes">  </span>Of course, you can also
+switch display functions at any time during program execution, which can be
+useful for certain special effects.<span style="mso-spacerun: yes">  </span>For
+example, if you wanted to display text in all capitals at certain times (such
+as when the player is in a particular location), you could switch to a
+capitalizing display function:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>dispAllCaps(val)</pre><pre>{</pre><pre> <span style="mso-spacerun: yes"> </span>tadsSay(val.toUpper());<br>
+}</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>// when entering all-caps room</pre><pre>t3SetSay(dispAllCaps);</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>// when leaving all-caps room</pre><pre>t3SetSay(myDispFunction);</pre>
+
+<h3 style='tab-stops:.5in'>Writing a Display Method</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The default display method works just
+like the default display function, but it's a method on an object or class
+rather than a function.<span style="mso-spacerun: yes">  </span>If you use a
+default display method, you will in most cases define one method in one of your
+classes that is near the root of your class hierarchy, so that most or all of
+your other objects and classes inherit the method.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Like the default display function,
+the default display method takes a single argument, which is a value to be
+displayed, and returns no value.<span style="mso-spacerun: yes">  </span>The
+method should simply display the value using whatever mechanism you wish.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class Item: object</pre><pre><span style="mso-spacerun: yes">  </span>myDispMethod(val) { tadsSay(val); }</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The benefit of using a default
+display method instead of (or in addition to) a display function is that the
+method can use properties of the &quot;self&quot; object to customize the
+display.<span style="mso-spacerun: yes">  </span>For example, suppose that you
+defined a class of objects that all have a color attribute, and you wanted to
+create a mechanism that lets you write generic messages describing instances of
+the class, while still customizing the color name in the messages.<span
+style="mso-spacerun: yes">  </span>You could do this by defining a substitution
+string – let's say it's &quot;COLOR&quot; – then looking for that string in
+display values and substituting the color attribute.<span style="mso-spacerun:
+yes">  </span>Here's some code that would accomplish this.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class ColorItem: Item</pre><pre><span style="mso-spacerun: yes">  </span>myDispMethod(val)</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>/* substitute color placeholder strings */</pre><pre><span style="mso-spacerun: yes">    </span>if (dataType(val) == TypeSString)</pre><pre><span style="mso-spacerun: yes">      </span>val = rexReplace('COLOR', val, colorName, ReplaceAll);</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* display the value */</pre><pre><span style="mso-spacerun: yes">    </span>tadsSay(val);</pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre><span style="mso-spacerun: yes">  </span>sdesc = &quot;COLOR item&quot;</pre><pre><span style="mso-spacerun: yes">  </span>ldesc = &quot;It's a COLOR item. &quot;</pre><pre>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>redItem: ColorItem colorName='red';</pre><pre>blueItem: ColorItem colorName='blue';</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The implementation of myDispMethod()
+in the ColorItem class, which is inherited by redItem and blueItem, checks the
+datatype of the value to be displayed.<span style="mso-spacerun: yes"> 
+</span>If the value is a string, the method performs a replacement on the
+string, substituting the string in the &quot;self&quot; object's colorName
+property for any instance of the text &quot;COLOR&quot; in the original string.</p>
+
+<h3 style='tab-stops:.5in'>How the VM Calls the Display Function</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The VM calls the current display
+method or function each time your program evaluates a double-quoted string, and
+each time the program evaluates an expression embedded in a double-quoted
+string with the &quot;&lt;&lt;<i>expr</i>&gt;&gt;&quot; syntax.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The argument to the display function
+can be of any type.<span style="mso-spacerun: yes">  </span>When you evaluate a
+double-quoted string, the VM calls the display function with a single-quoted
+string containing the same text as the double-quoted string.<span
+style="mso-spacerun: yes">  </span>However, when you evaluate an expression
+embedded in a double-quoted string using the &quot;&lt;&lt;<i>expr</i>&gt;&gt;&quot;
+syntax, the VM calls the display function with the result of evaluating the
+expression.<span style="mso-spacerun: yes">  </span>This value can be of any
+type.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the display function should
+generally display nothing when called with a nil argument.<span
+style="mso-spacerun: yes">  </span>This allows you to use expressions that have
+side effects, but which return no value, as embedded expressions.<span
+style="mso-spacerun: yes">  </span>We will see an example of this <a
+href="#nilArgExample">a little later</a>.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>By way of explanation, we <i>could </i>rewrite
+any double-quoted string in the program as a call to the display function with
+the string value as the argument.<span style="mso-spacerun: yes">  </span>So,
+we could rewrite this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>f1() { &quot;Hello!&quot;; }</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>f1() { myDispFunction('Hello!'); }</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Similarly, any time there is an embedded
+expression in a string, we could rewrite the entire string as a series of calls
+to the display function.<span style="mso-spacerun: yes">  </span>We could thus
+rewrite this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>f2() { &quot;Hello &lt;&lt;Me.nameString&gt;&gt;!<span style="mso-spacerun: yes">  </span>Your age is &lt;&lt;Me.age&gt;&gt;.&quot;; }</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>like so:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>f2()</pre><pre>{</pre><pre><span style="mso-spacerun: yes">  </span>myDispFunction('Hello ');</pre><pre><span style="mso-spacerun: yes">  </span>myDispFunction(Me.nameString);</pre><pre><span style="mso-spacerun: yes">  </span>myDispFunction('!<span style="mso-spacerun: yes">  </span>Your age is ');</pre><pre><span style="mso-spacerun: yes">  </span>myDispFunction(Me.age);</pre><pre><span style="mso-spacerun: yes">  </span>myDispFunction('.');<br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></pre><pre>}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When a default display method is in
+effect, and you display a string or embedded expression from an object that
+defines or inherits the display method, double-quoted strings are displayed by
+calls to the method.<span style="mso-spacerun: yes">  </span>For example,
+assume that we have a class named DispItem that defines the current default
+display method.<span style="mso-spacerun: yes">  </span>We could then rewrite
+this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>obj1: DispItem</pre><pre><span style="mso-spacerun: yes">  </span>sdesc = &quot;My name is &lt;&lt;nameString&gt;&gt;.&quot;</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>as this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>obj1: DispItem</pre><pre><span style="mso-spacerun: yes">  </span>sdesc</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>self.myDispMethod('My name is ');</pre><pre><span style="mso-spacerun: yes">    </span>self.myDispMethod(self.nameString);</pre><pre><span style="mso-spacerun: yes">    </span>self.myDispMethod('.');<br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When the VM calls the display method,
+&quot;self&quot; is the object that actually defines the property or method
+displaying the string.<span style="mso-spacerun: yes">  </span>This applies
+even for embedded expressions.<span style="mso-spacerun: yes">  </span>Consider
+this example:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><a name=nilArgExample></a>obj2: DispItem</pre><pre><span style="mso-spacerun: yes">  </span>sdesc = &quot;The other object is &lt;&lt;obj3.openDesc&gt;&gt;&quot;</pre><pre>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>obj3: DispItem</pre><pre><span style="mso-spacerun: yes">  </span>openDesc { isOpen ? &quot;open&quot; : &quot;closed&quot;; }</pre><pre><span style="mso-spacerun: yes">  </span>isOpen = true</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This is a bit complicated, because we
+are evaluating a double-quoted string which has an embedded expression, which
+in turn evaluates a double-quoted string in a different object.<span
+style="mso-spacerun: yes">  </span>So, what &quot;self&quot; object is in effect
+when we display &quot;open&quot; or &quot;closed&quot;?</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This is easier to answer if we use
+our rewriting rules.<span style="mso-spacerun: yes">  </span>We can rewrite the
+example like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>obj2: DispItem</pre><pre><span style="mso-spacerun: yes">  </span>sdesc </pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>self.myDispMethod('The other object is ');</pre><pre><span style="mso-spacerun: yes">    </span>self.myDispMethod(obj3.openDesc);</pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>obj3: DispItem</pre><pre><span style="mso-spacerun: yes">  </span>openDesc</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>isOpen ? self.myDispMethod('open') </pre><pre><span style="mso-spacerun: yes">           </span>: self.myDispMethod('closed');</pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre><span style="mso-spacerun: yes">  </span>isOpen = true</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>We can see that we start out in
+obj2.sdesc, and display the first fragment of the string (&quot;The other
+object is &quot;); &quot;self&quot; is clearly obj2 for this display method
+call.<span style="mso-spacerun: yes">  </span>We then evaluate obj3.openDesc
+(using the normal TADS order of evaluation rules, we must evaluate a function's
+arguments before we can call the function).<span style="mso-spacerun: yes"> 
+</span>So, we find ourselves in obj3.openDesc.<span style="mso-spacerun: yes"> 
+</span>This method chooses to display either &quot;open&quot; or
+&quot;closed&quot;, depending on its isOpen property value.<span
+style="mso-spacerun: yes">  </span>Once again, the rewrite makes it fairly
+obvious what's going on: we call myDispMethod to display &quot;open&quot; or
+&quot;closed&quot;, with &quot;self&quot; set to obj3.<span
+style="mso-spacerun: yes">  </span>This method returns no value, which means
+that its effective return value is nil.<span style="mso-spacerun: yes"> 
+</span>Finally, we return back to where we came from in obj2.sdesc, where we
+call myDisplayMethod() with the nil return value from obj3.openDesc, using obj2
+for the &quot;self&quot; object.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>It should be noted that the compiler
+does <i>not</i> actually make the transformations above; the actual compiled
+representation is a lot more compact than this, since the T3 machine code has
+dedicated instructions for displaying strings and expressions.<span
+style="mso-spacerun: yes">  </span>The effect, however, is the same.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

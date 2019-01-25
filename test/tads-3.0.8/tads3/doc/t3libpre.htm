@@ -1,0 +1,442 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3libpre_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>13</o:Revision>
+  <o:TotalTime>80</o:TotalTime>
+  <o:Created>2000-03-27T20:05:00Z</o:Created>
+  <o:LastSaved>2004-02-26T07:47:00Z</o:LastSaved>
+  <o:Pages>3</o:Pages>
+  <o:Words>1721</o:Words>
+  <o:Characters>9815</o:Characters>
+  <o:Lines>81</o:Lines>
+  <o:Paragraphs>19</o:Paragraphs>
+  <o:CharactersWithSpaces>12053</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Pre-Initialization</h3>
+
+<p class=MsoNormal>For a normal (non-debug) build, after you compile your
+program, but before the final &quot;image file&quot; containing the compiled
+program is created, TADS performs a process called
+&quot;pre-initialization.&quot;<span style="mso-spacerun: yes">  </span>During
+this process, you can set up the initial state of your objects.<span
+style="mso-spacerun: yes">  </span>After pre-initialization is completed, the
+compiler creates the final image file, storing all of the changes you made
+during pre-initialization.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that the compiler does <b>not</b> perform
+pre-initialization when you compile for debugging (by specifying the
+&quot;-d&quot; option to t3make, for example).<span style="mso-spacerun: yes"> 
+</span>Pre-initialization will still happen when you compile for debugging, so
+you don't have to worry about taking into account the debug or non-debug mode
+when writing your program; it's just that the pre-initialization step is
+deferred in debug mode until you actually run the program with the
+interpreter.<span style="mso-spacerun: yes">  </span>This is important because
+it gives you a chance to trace through your pre-initialization code using the
+debugger, which wouldn't be possible if this step were completed during
+compilation.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The advantage of performing initializations during the
+pre-initialization step is that pre-initialization happens only once, immediately
+after you compile your program.<span style="mso-spacerun: yes">  </span>This
+step is not repeated each time a user runs your program.<span
+style="mso-spacerun: yes">  </span>If you have to perform any complicated
+initialization steps that take a noticeable amount of time to run, you can hide
+this delay from the user by performing the steps during pre-initialization.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The <a href="t3start.htm">default start-up code</a> performs
+the pre-initialization step.<span style="mso-spacerun: yes">  </span>If you're
+not using the default start-up code, you must provide your own
+pre-initialization mechanism.</p>
+
+<h3>PreinitObject</h3>
+
+<p class=MsoNormal>During pre-initialization, the library scans the program for
+all instances of class PreinitObject, which is a simple class the library
+defines; PreinitObject is a &quot;mix-in&quot; class, which means that any
+class can inherit from PreinitObject as well as other classes without
+complications.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For each PreinitObject in the program, the library calls the
+object's execute() method.<span style="mso-spacerun: yes">  </span>Each class
+that inherits from PreinitObject should override execute() to specify its
+initialization code.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>By default, the order in which the library initializes
+PreinitObject instances is arbitrary.<span style="mso-spacerun: yes"> 
+</span>However, an object's initialization code might in some cases depend upon
+another object having been initialized first.<span style="mso-spacerun: yes"> 
+</span>In these cases, an object can define the execBeforeMe property to a list
+of the objects that must be initialized before it is; the library will ensure
+that all of the listed objects are initialized first.<span style="mso-spacerun:
+yes">  </span>In addition, an object can define the execAfterMe property list
+to a list of the objects that must be initialized <i>after </i>it is.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example, to define an object that cannot be initialized
+until after another object, called &quot;myLibInit&quot;, has been initialized,
+we would write this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>myInitObj: PreinitObject</pre><pre><span style="mso-spacerun: yes">  </span>execute() { /* my initialization code */ }</pre><pre><span style="mso-spacerun: yes">  </span>execBeforeMe = [myLibInit]</pre><pre>;</pre>
+
+<h3 style='tab-stops:.5in'><a name=init></a>InitObject</h3>
+
+<p class=MsoNormal>The library also defines a class called InitObject, which
+works the same way as PreinitObject, but is used during normal start-up rather
+than pre-initialization.<span style="mso-spacerun: yes">  </span>Just before
+the <a href="t3start.htm">default start-up code</a> calls your main() routine,
+it invokes the execute() method on each instance of InitObject.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>As with PreinitObject's, you can use the execBeforeMe and
+execAfterMe properties in your InitObject instances to control the order of
+initialization.</p>
+
+<h3 style='tab-stops:.5in'>Add-in Libraries</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The PreinitObject mechanism makes it
+easy to perform special initializations for add-in library modules.<span
+style="mso-spacerun: yes">  </span>Because the library scans all instances of
+PreinitObject, an add-in module will be automatically included in the pre-initialization
+process simply by virtue of being included in a build.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the best way for a library
+module to use PreinitObject is to define a special object whose only purpose is
+to be the main initialization object for the entire module.<span
+style="mso-spacerun: yes">  </span>This object's execute() method can perform
+the library-wide initialization.<span style="mso-spacerun: yes">  </span>The
+advantage of using a single initialization object for the library is that user
+code (as well as other add-in libraries) can more easily create dependencies on
+the library, where the order of initialization is important: you simply
+document the name of your library's initialization object so that users can add
+that object to their execBeforeMe and execAfterMe lists as needed.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that add-in libraries are free to
+perform global object scans themselves in the course of their own execute()
+implementations.<span style="mso-spacerun: yes">  </span>This allows an add-in
+library to add global functionality to all objects in the program, such as by
+setting up library-specific networks of derived information.</p>
+
+<h3 style='tab-stops:.5in'>Derived Information</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The most common type of task to
+perform during pre-initialization is setting up &quot;derived&quot; property
+settings.<span style="mso-spacerun: yes">  </span>A derived setting is one that
+can be determined entirely from some other information; the new setting thus
+doesn't actually contain any new information, but just stores the original
+information in a different format.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Derived settings might seem
+pointless: why would you want to store the same information twice?<span
+style="mso-spacerun: yes">  </span>Indeed, storing derived information is the
+source of a great many programming errors, since related pieces of information
+can get &quot;out of sync&quot; with one other if one is not careful to update
+all of the pieces every time any of the pieces changes.<span
+style="mso-spacerun: yes">  </span>Despite this, it's often difficult to find
+another way of doing something, so derived data show up all the time in
+practical programming situations.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>A good text-adventure example of
+derived information is the way object location information is stored.<span
+style="mso-spacerun: yes">  </span>The typical game programmer assigns a
+location to each object in the game; we might do this with a
+&quot;location&quot; property:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>book: Item</pre><pre><span style="mso-spacerun: yes">  </span>location = bookcase</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Clearly, if some code in your program
+were handed a reference to this &quot;book&quot; object, and you wanted to know
+the object that contained the book, you'd just evaluate the object's location
+property:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>objCont = obj.location;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now, what if you were handed a
+reference to the &quot;bookcase&quot; object, and you wanted to find out what
+objects the bookcase contains?</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>One solution would be to check each
+object that you think might appear in the bookcase:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>booklist = [];</pre><pre><span style="mso-spacerun: yes">  </span>if (book.location == bookcase) booklist += book;</pre><pre><span style="mso-spacerun: yes">  </span>if (bookEnd.location == bookcase) booklist += bookEnd;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Apart from being incredibly tedious,
+this is a terribly inflexible way to program.<span style="mso-spacerun: yes"> 
+</span>If you added one more object to your game, you'd have to add a line to
+this code.<span style="mso-spacerun: yes">  </span>And just imagine how bad it
+would be if you wanted to find out what the bookcase contains in more than one
+place in your program.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>A more flexible and less tedious
+solution would be to use the firstObj() and nextObj() functions to iterate over
+all of the objects in the game:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>booklist = [];</pre><pre><span style="mso-spacerun: yes">  </span>for (local obj = firstObj() ; obj != nil ; obj = nextObj(obj))</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>if (obj.location == bookcase)</pre><pre><span style="mso-spacerun: yes">      </span>booklist += obj.location;</pre><pre><span style="mso-spacerun: yes">  </span>}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You clearly wouldn't want to write
+that too many times, but it's not so bad to write it once and put it in a
+function.<span style="mso-spacerun: yes">  </span>Better yet, you could make
+this a method of a low-level class, and rather than asking whether the location
+is &quot;bookcase&quot; you could ask if it's &quot;self&quot;, and thus you'd
+have a method you could call on any object to produce a list of its contents.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The only problem with this approach
+is performance.<span style="mso-spacerun: yes">  </span>If we had to run
+through all of the objects in the game every time we wanted to know what's in a
+container, our game would become slower and slower as it grows.<span
+style="mso-spacerun: yes">  </span>It is reasonable to expect that we would
+want to know the contents of an object frequently, too, so this code would be a
+good candidate for optimization.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Performance is probably the primary
+reason that derived information shows up so frequently in real-world
+programming.<span style="mso-spacerun: yes">  </span>We will often construct a
+data structure that represents some information in a manner that is very
+efficient for some particular use, but is terrible for other uses – our
+&quot;location&quot; property above is a good example.<span
+style="mso-spacerun: yes">  </span>When we encounter another way that we will
+frequently use the same data, and this other way can't make efficient use of
+the original data structure, we often find that the best approach is to create
+another parallel data structure that contains the same information in a
+different form.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>So, how could we make it more
+efficient to find the contents of a container?<span style="mso-spacerun: yes"> 
+</span>The easiest way would be to store a &quot;contents&quot; list for each
+container.<span style="mso-spacerun: yes">  </span>So, if asked to list the contents
+of an object, we'd simply get its &quot;contents&quot; property, and we'd be
+done.<span style="mso-spacerun: yes">  </span>There'd be no need to look at any
+object's &quot;location&quot; property, since the &quot;contents&quot; property
+would give us all of the information we need.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>One problem with this approach is
+that it would make a lot of extra work if we had to type in both the
+&quot;location&quot; and the &quot;contents&quot; properties for every object:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>book: Item</pre><pre><span style="mso-spacerun: yes">  </span>location = bookcase</pre><pre>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>bookcase: Container, FixedItem</pre><pre><span style="mso-spacerun: yes">  </span>location = library</pre><pre><span style="mso-spacerun: yes">  </span>contents = [book, bookEnd]</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Not only would it be tedious to type
+in a &quot;contents&quot; list for every object, but it would be prone to
+errors, especially as we added objects to the game.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The solution we're coming to is
+probably obvious by this point.<span style="mso-spacerun: yes">  </span>Rather than
+forcing the programmer to type in both a &quot;location&quot; and a
+&quot;contents&quot; property, we could observe that both properties actually
+contain the same information in different forms, and hence we could
+automatically derive one from the other, and store the results.<span
+style="mso-spacerun: yes">  </span>The programmer would only have to type in
+one of them.<span style="mso-spacerun: yes">  </span>The easier of the two, for
+the programmer, would seem to be &quot;location&quot;, so let's make
+&quot;contents&quot; be the derived property.<span style="mso-spacerun: yes"> 
+</span>During program initialization, we'd go through all of the objects in the
+game and construct each objects &quot;contents&quot; list, using the same code
+we wrote earlier.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The difference between what we were
+doing earlier and what we're proposing now is that, this time, we plan to store
+the derived information.<span style="mso-spacerun: yes">  </span>Each time we
+construct a list of objects that an object contains, we'll store the list in
+the &quot;contents&quot; property for the object.<span style="mso-spacerun:
+yes">  </span>So, without adding any typing, we'll end up with the same
+&quot;contents&quot; declaration that we made manually for &quot;bookcase&quot;
+above.<span style="mso-spacerun: yes">  </span>We'll construct this contents
+list once, during program initialization, for every object in the game.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>There's another detail we must attend
+to: each time we change an object's location, we must at the same time change
+the &quot;contents&quot; property of its original container and of its new
+container.<span style="mso-spacerun: yes">  </span>The best way to do this is
+to define a method that moves an object to a new container, and updates all of
+the necessary properties.<span style="mso-spacerun: yes">  </span>We could call
+this method &quot;moveInto&quot;:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>moveInto(newLocation)</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>/* remove myself from the old location's contents */</pre><pre><span style="mso-spacerun: yes">    </span>if (location != nil)</pre><pre><span style="mso-spacerun: yes">      </span>location.contents -= self;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* add myself to the new location's contents */</pre><pre><span style="mso-spacerun: yes">    </span>if (newLocation != nil)</pre><pre><span style="mso-spacerun: yes">      </span>newLocation.contents += self;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* update my location property */</pre><pre><span style="mso-spacerun: yes">    </span>location = newLocation;</pre><pre><span style="mso-spacerun: yes">  </span>}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>As long as we're always careful to
+move objects by calling their moveInto() method, and we never update any
+object's &quot;location&quot; or &quot;contents&quot; properties directly, all
+of the properties will remain coordinated.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Many programmers who work with object-oriented
+languages develop a habit of using &quot;accessor&quot; and &quot;mutator&quot;
+methods when accessing an object's properties, rather than evaluating the
+object's properties directly.<span style="mso-spacerun: yes">  </span>An
+&quot;accessor&quot; is simply a method that returns the value of a property,
+and a &quot;mutator&quot; is a method that assigns a new value to a
+property.<span style="mso-spacerun: yes">  </span>The advantage of using
+accessors and mutators as a matter of course becomes clear when we consider our
+moveInto() example above: these methods help keep all of the internal
+book-keeping code for an object in one place, so that outside code doesn't have
+to worry about it.<span style="mso-spacerun: yes">  </span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

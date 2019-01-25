@@ -1,0 +1,1257 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3build_files/filelist.xml">
+<title>Compiling and Linking</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>33</o:Revision>
+  <o:TotalTime>328</o:TotalTime>
+  <o:Created>2000-02-26T00:27:00Z</o:Created>
+  <o:LastSaved>2004-09-11T23:08:00Z</o:LastSaved>
+  <o:Pages>8</o:Pages>
+  <o:Words>5412</o:Words>
+  <o:Characters>30854</o:Characters>
+  <o:Lines>257</o:Lines>
+  <o:Paragraphs>61</o:Paragraphs>
+  <o:CharactersWithSpaces>37890</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:ActiveWritingStyle Lang="EN-US" VendorID="64" DLLVersion="131077"
+   NLCheck="1">3</w:ActiveWritingStyle>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-font-kerning:0pt;}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:34307144;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1069327180 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:209458091;
+	mso-list-type:hybrid;
+	mso-list-template-ids:2002560614 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l2
+	{mso-list-id:564881234;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-260677260 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l3
+	{mso-list-id:1142305945;
+	mso-list-type:hybrid;
+	mso-list-template-ids:657065092 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l4
+	{mso-list-id:1390958465;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1265667026 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l5
+	{mso-list-id:1820266775;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1316469022 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l5:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'>Compiling and Linking</h3>
+
+<p class=MsoNormal>TADS 3 provides &quot;separate compilation,&quot; which
+means that you can arrange your program's source code into several modules,
+each of which is compiled separately from the others, then link together the
+compiled modules into a finished program.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Previous versions of TADS provided a related feature, called
+&quot;precompiled headers,&quot; that allowed you to compile part of your
+program's source code ahead of time.<span style="mso-spacerun: yes"> 
+</span>This wasn't nearly as powerful as TADS 3's true separate compilation,
+however: precompiled headers only let you pre-compile a single section of the
+code, which meant that any change to the single pre-compiled section required
+full recompilation.<span style="mso-spacerun: yes">  </span>TADS 3's true
+separate compilation lets you structure your code into as many separate files
+as you want, each of which can be independently compiled; you only need to
+recompile the sections you actually change.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The TADS 3 compiler includes a &quot;make&quot; facility,
+which automatically recompiles the source modules that you've changed since
+they were last compiled.<span style="mso-spacerun: yes">  </span>The TADS 3
+&quot;make&quot; facility is similar to the Unix &quot;make&quot; program, but
+is not programmable like the Unix version; instead, the TADS 3 version is
+pre-programmed with the relationships among source, object, and image files.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To build a program using TADS 3, you run the
+&quot;make&quot; command, <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>t3make</span></tt>, with <i>all</i> of
+the source modules listed as arguments.<span style="mso-spacerun: yes"> 
+</span>You do <i>not</i> need to use <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>#include</span></tt> to combine the
+source modules from a master source file as you did in previous versions;
+instead, the linker combines the modules together for you.<span
+style="mso-spacerun: yes">  </span>(You can still use <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#include</span></tt>
+to structure your program as a single logical module if you want, but if you do
+so you will not gain the advantages of separate compilation.)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>t3make</span></tt> first compiles each source file that has
+been modified since it was last compiled.<span style="mso-spacerun: yes"> 
+</span>The result of compiling a source module is an &quot;object file&quot;; a
+source file called &quot;<tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>mygame.t</span></tt>&quot; would have a corresponding object
+file called &quot;<tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>mygame.t3o</span></tt>&quot; – &quot;t3o&quot; stands for
+&quot;T3 Object.&quot;<span style="mso-spacerun: yes">  </span>If a source file
+or one of its included files has been modified since the corresponding object
+file was created, t3make compiles the source file; if the object file is up to
+date with the source, there's no need to recompile the source file, so t3make
+automatically skips it.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that the &quot;object&quot; in &quot;object file&quot;
+doesn't mean a code object, as in an instance of a class.<span
+style="mso-spacerun: yes">  </span>&quot;Object file&quot; is a term that most
+compiled languages use to refer to the output of the compiler, which is also
+the input to the linker.<span style="mso-spacerun: yes">  </span>An object file
+contains a version of the source program that has been translated into machine
+code, but which usually contains references to external symbols that must be
+resolved by the linker before the code becomes an executable program.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>After compiling all of the modified source files into object
+files, <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>t3make</span></tt>
+looks to see if the image file is up to date by checking to see if any object
+files are newer.<span style="mso-spacerun: yes">  </span>If at least one object
+file is newer than the image file, the image file must be re-linked.<span
+style="mso-spacerun: yes">  </span>(Thus, if any source files are compiled
+during this run of <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>t3make</span></tt>, the image will obviously have to be
+re-linked.)<span style="mso-spacerun: yes">  </span>If it is necessary to
+re-link, <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>t3make</span></tt>
+loads all of the object files, resolves their mutual external references, and
+creates an image file.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The biggest advantage of separate compilation is that
+loading an object file into the linker is usually much faster than compiling a
+source file.<span style="mso-spacerun: yes">  </span>If you're working on a
+large game, you will often make changes in only a few parts at a time, which
+means that only a small number of your source files might need to be compiled
+for each build.<span style="mso-spacerun: yes">  </span>This can often speed up
+building quite substantially.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>t3make</span></tt> command line looks like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>t3make –o mygame.t3 –Fo obj –Fy sym game1.t game2.t game3.t</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The -o option tells the linker the name of the image file;
+this is the T3 executable file that you run using the TADS 3 interpreter.<span
+style="mso-spacerun: yes">  </span>The -Fo option, if you include it, tells the
+compiler where to put object files; by default, they'll go in the same place as
+the source file, but if you want to store object files in a separate directory,
+which you might wish to do to keep your source directory uncluttered, you can
+use this option.<span style="mso-spacerun: yes">  </span>Similarly, the -Fy
+option tells the compiler where to put &quot;symbol&quot; files, which are
+another kind of generated file that the compiler creates; as with objects, you
+might want to keep these files in a separate directory from the source to avoid
+clutter.<span style="mso-spacerun: yes">  </span>(You don't otherwise need to
+worry about symbol files; they're purely for the compiler's use.)<span
+style="mso-spacerun: yes">  </span>Finally, you must list the source files that
+make up your game.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Compile command syntax</h1>
+
+<p class=MsoNormal>The general syntax of the t3make command is as follows:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><span style='mso-tab-count:1'>                    </span>t3make
+[<i>options</i>] <i>sources </i>[-res <i>resourceOptions</i>]</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The <i>options</i> are special keywords that all start with
+a dash (&quot;-&quot;) that control the way the compiler works; more on these
+in a moment.<span style="mso-spacerun: yes">  </span>The <i>sources</i> are the
+names of the source files and library files that go into the build.<span
+style="mso-spacerun: yes">  </span>The <i>resourceOptions</i> let you add
+multi-media resources into the final image file.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Options</h1>
+
+<p class=MsoNormal>Here's a list of the compiler options that you can specify:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-a –
+     recompile all source files, even if the corresponding object files are not
+     out of date.<span style="mso-spacerun: yes">  </span>You can use this
+     option to ensure that everything is rebuilt, regardless of whether
+     t3make's automatic dependency-tracking mechanism detects changes that
+     require recompilation; you can use this to ensure a full build when you
+     suspect that the compiler’s automatic dependency analysis is failing to
+     detect a necessary module recompilation.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-al –
+     re-link the image file, even if it's not out of date.<span
+     style="mso-spacerun: yes">  </span>This doesn't affect source file
+     compilation; before re-linking, t3make will recompile any source files
+     whose object files are out of date, as usual.<span style="mso-spacerun:
+     yes">  </span>This option ensures that t3make rebuilds the image file
+     whether or not any source files need to be compiled.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-c –
+     compile the source files, but do not link the image file.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-cs <i>name</i>
+     – set the default <a href="t3chars.htm">source file character set</a> to <i>name</i>.<span
+     style="mso-spacerun: yes">  </span>If you don't specify this option, the
+     compiler will use the local operating system settings; you might need to
+     override the local default if the source file was originally created on a
+     different type of computer.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-d –
+     compile for debugging; this includes symbolic information in the image
+     file that the source-level debugger needs in order to allow you to step
+     through your program and examine variables and other program data during
+     execution.<span style="mso-spacerun: yes">  </span>You normally will not
+     want to include debugging information in a released version of a program,
+     since it makes the image file larger and includes symbolic information
+     that you might not want end users to be able to see.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-errnum
+     – display the numeric error code for each warning and error message during
+     compilation.<span style="mso-spacerun: yes">  </span>Internally, the
+     compiler uses a number to identify each type of error; each error number
+     has a corresponding text message describing the error, which is what the
+     compiler shows by default.<span style="mso-spacerun: yes">  </span>In some
+     cases, it's useful to know the numeric code for an error; for example, you
+     might want to look up an error message in documentation that indexes the
+     errors by numeric code.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-f <i>file
+     </i>– read additional command-line options from the <a
+     href="#_Option_Files">project file</a> <i>file</i>.<span
+     style="mso-spacerun: yes">  </span>The options from the file are appended
+     after the options on the command line.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-v –
+     verbose mode.<span style="mso-spacerun: yes">  </span>Shows longer
+     explanations of errors that occur during compilation.<span
+     style="mso-spacerun: yes">  </span>If you do not understand an error
+     message, recompiling with verbose error messages might help.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-w0,
+     -w1, -w2 – set the warning level, which controls how cautious the compiler
+     will be in pointing out potential problems in your source code.<span
+     style="mso-spacerun: yes">  </span>By default, the warning level is 1,
+     which shows standard warnings but suppresses some of the less dire
+     warnings.<span style="mso-spacerun: yes">  </span>If you don't want to see
+     any warning messages, use -w0, which suppresses all warnings; you should
+     avoid using this because the warning messages point out potential problems
+     in your program that you should carefully examine.<span
+     style="mso-spacerun: yes">  </span>Warning level 2 shows some additional
+     &quot;pedantic&quot; warnings; these warnings point out things in your
+     code that are merely questionable.<span style="mso-spacerun: yes"> 
+     </span>You might want to compile your program at warning level 2
+     occasionally for extra checking, but you probably won't want to do this
+     every time, since you might decide it's safe to ignore some of the
+     pedantic warnings.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-w-<i>nnn</i>
+     – disable the warning message identified by the error number <i>nnn</i>.<span
+     style="mso-spacerun: yes">  </span>The compiler will not display any
+     warnings of the given type, and will not include any such warnings in the
+     summary error count.<span style="mso-spacerun: yes">  </span>This option
+     can <i>only</i> be used to disable warnings (and pedantic warnings);
+     attempting to disable errors of severity greater than warning will have no
+     effect.<span style="mso-spacerun: yes">  </span>This option can be
+     repeated to suppress multiple warnings.<span style="mso-spacerun: yes"> 
+     </span>To obtain the numeric code of a warning that the compiler is
+     generating during a compilation, use the &quot;-errnum&quot; option when
+     compiling the file.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-w+<i>nnn</i>
+     – re-enable the warning message identified by the error number <i>nnn</i>.<span
+     style="mso-spacerun: yes">  </span>This cancels the effect of a previous
+     -w-<i>nnn</i> option for the same error number on the same command
+     line.<span style="mso-spacerun: yes">  </span>By default, all warnings are
+     enabled, so the only reason to use this option is to enable an option
+     previously disabled on the same command line; this can be useful in some
+     cases with shell aliases or scripts that include -w-<i>nnn</i>
+     options.<span style="mso-spacerun: yes">  </span>Note in particular that
+     this option <b>cannot</b> be used to selectively enable specific
+     &quot;pedantic&quot; warnings without enabling pedantic mode in general;
+     pedantic warnings are entirely separate from ordinary warnings, and can
+     only be enabled as a group by enabling pedantic mode, with the -w2 option.<span
+     style="mso-spacerun: yes">  </span>If you want some pedantic warnings but
+     not others, you must enable pedantic mode and then use -w-<i>nnn</i> to
+     disable the pedantic warnings you don't want to see.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-I <i>directory</i>
+     – add <i>directory</i> to the list of places to look for <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#include</span></tt>
+     files.<span style="mso-spacerun: yes">  </span>The order in which you
+     specify the -I options is the same order the compiler uses to look for
+     included files.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-Fo <i>directory
+     </i>– set the object file directory.<span style="mso-spacerun: yes"> 
+     </span>You can use this option to tell the compiler to store the object
+     files in a different location than the directory containing the source files.<span
+     style="mso-spacerun: yes">  </span>By default, each object file is written
+     to the same directory that contains its source file.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-Fs <i>directory</i>
+     – add a directory to the source file search path.<span
+     style="mso-spacerun: yes">  </span>This option can appear multiple times
+     to add multiple directories to the search path.<span style="mso-spacerun:
+     yes">  </span>For each source file name listed on the compiler command
+     line (or in the .t3m file), the compiler first looks for the file in the
+     current working directory; if the file isn't found, the compiler looks for
+     the file in each directory specified with a -Fs option. <span
+     style="mso-spacerun: yes"> </span>The compiler searches the directories in
+     the order in which the -Fs options appear.<span style="mso-spacerun:
+     yes">  </span>The compiler does <i>not </i>search the -Fs directories for
+     files specified with &quot;absolute&quot; paths (the meaning of
+     &quot;absolute path&quot; varies by system; on Unix, this is a path starting
+     with a slash, and on Windows it's a path starting with a drive letter and
+     a backslash).</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-Fy <i>directory
+     </i>– set the symbol file directory.<span style="mso-spacerun: yes"> 
+     </span>You can use this option to tell the compiler to store the symbol
+     files in a different location than the directory containing the source
+     files.<span style="mso-spacerun: yes">  </span>By default, each symbol
+     file is written to the same directory that contains its source file.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-o <i>imageFile</i>
+     – set the name of the image file.<span style="mso-spacerun: yes"> 
+     </span>By default, the compiler will give the image file the same name as
+     the first listed source file, with the source file's &quot;.t&quot; suffix
+     (if any) removed and replaced by the suffix &quot;.t3&quot;.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-Os <i>stringFile</i>
+     – capture strings from all compiled source files into a text file called <i>stringFile.</i><span
+     style="mso-spacerun: yes">  </span>Any existing file of the same name will
+     be overwritten by the new string file.<span style="mso-spacerun: yes"> 
+     </span>If this option is used, all of the strings in the program are
+     captured to the given file, one string per line, with the enclosing quote
+     marks removed.<span style="mso-spacerun: yes">  </span>This option lets
+     you pull out all of the text in a program so that you can run it through a
+     spell checker, for example.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-P –
+     preprocess only.<span style="mso-spacerun: yes">  </span>The compiler
+     preprocesses each source file and writes the results to the standard
+     output.<span style="mso-spacerun: yes">  </span>No compilation or linking
+     is performed, and no symbol, object, or image files are created.<span
+     style="mso-spacerun: yes">  </span>This option is useful for debugging
+     macro definitions, because it allows you to see the fully expanded results
+     of each macro.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-pre –
+     explicitly run pre-initialization.<span style="mso-spacerun: yes"> 
+     </span>The compiler normally skips this step when building a debugging
+     version.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-nodef
+     – do not include the default modules in the build.<span
+     style="mso-spacerun: yes">  </span>Normally, the compiler will include the
+     default start-up module in the build if the build links an image
+     file.<span style="mso-spacerun: yes">  </span>If you want to use your own
+     start-up module instead, you can specify this option to prevent t3make
+     from including the default version in the link.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-nopre
+     – explicitly skip pre-initialization.<span style="mso-spacerun: yes"> 
+     </span>The compiler normally runs pre-initialization when building a
+     non-debugging version, but this option avoids this step.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-nobanner
+     – suppress the compiler version and copyright information banner.<span
+     style="mso-spacerun: yes">  </span>You might need to use this option when
+     you're capturing the output from a build to a file, and then processing
+     the file with a filter tool of some sort (for example, a tool that
+     extracts error messages from the build output); if the banner confuses the
+     filter tool, you can use this option to eliminate the banner display.]</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Source and library files</h1>
+
+<p class=MsoNormal>After the options, you list all of the source modules
+involved in the compilation.<span style="mso-spacerun: yes">  </span>Each
+source module can be a regular source file (a &quot;.t&quot; file), or it can
+be a &quot;library&quot; file, as explained <a href="#_Libraries">below</a>.<span
+style="mso-spacerun: yes">  </span>The compiler attempts to infer the type of
+each file by checking its filename suffix: if the suffix is &quot;.tl&quot;,
+the compiler assumes that the file is a library, otherwise it assumes it is a
+source file.<span style="mso-spacerun: yes">  </span>If you don't use the
+conventional filename suffixes for your source and library files, you must
+explicitly tell the compiler the type each file by prefixing each file with a
+&quot;-source&quot; or &quot;-lib&quot; specifier.<span style="mso-spacerun:
+yes">  </span>For example:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>t3make -o mygame.t3 -source game1.tads -lib mylib.tadslib</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Immediately following the name of a library, you can list
+one or more &quot;-x&quot; options to exclude modules that the library
+includes.<span style="mso-spacerun: yes">  </span>This is explained <a
+href="#libExclusions">below</a>.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The &quot;-source&quot; and &quot;-lib&quot; type specifiers
+are <i>not </i>actually options, even though they look like options (in that
+they start with a dash).<span style="mso-spacerun: yes">  </span>These
+specifiers can't be mixed in with the regular options; they can only appear in
+the module list portion of the command line, which follows all of the options.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The compiler treats the &quot;-&quot; prefix as special <i>everywhere</i>
+in the command line.<span style="mso-spacerun: yes">  </span>This means that if
+the name of one of your source files actually starts with &quot;-&quot;, you <i>must
+</i>put a &quot;-source&quot; specifier immediately before that filename, even
+if it ends with the conventional suffix, because otherwise the compiler would
+be confused into thinking the filename was meant as a type specifier.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style='font-family:"Times New Roman"'>Note that you can always use the &quot;-source&quot; and &quot;-lib&quot; specifiers, even when you don't need to.<span style="mso-spacerun: yes">  </span>If you're putting your build settings into a project makefile (a .t3m file), it's a good idea to use &quot;-source&quot; and &quot;-lib&quot; specifiers consistently for all of your sources, because it makes the project file easier to read.<span style="mso-spacerun: yes">  </span>Also, when you use one a &quot;-source&quot; or &quot;-lib&quot; specifier, you can omit the &quot;.t&quot; or &quot;.tl&quot; suffix from the filename, because the compiler will know to automatically add the appropriate suffix using the appropriate local OS conventions.<span style="mso-spacerun: yes">  </span>So using the specifier and omitting the suffix makes your project files more portable by eliminating any dependency on OS file naming conventions.<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<h1>Source Filename Uniqueness</h1>
+
+<p class=MsoNormal>All source files in a project must have unique &quot;root&quot;
+filenames.<span style="mso-spacerun: yes">  </span>(The root filename is the
+part of the filename that doesn't include any directory path prefix.)<span
+style="mso-spacerun: yes">  </span>This applies even to source files in
+libraries—a source file in one library can't have the same root filename as a
+source file in any other library, and it can't have the same root name as any
+source file included in the project's main source file list.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The reason that source filenames must be unique is that the
+compiler uses the source name to determine the name of the object (.t3o) and
+symbol (.t3s) files generated from the source file.<span style="mso-spacerun:
+yes">  </span>Since all of these generated files for a given project are
+usually placed into a single output directory, if two source modules had the
+same filename, they'd both correspond to the same object file, so one module's
+object file would overwrite the other with the same name.<span
+style="mso-spacerun: yes">  </span>To avoid this problem, the compiler requires
+that each source file's name is unique.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'>Resources</h1>
+
+<p class=MsoNormal style='tab-stops:.5in'>Following the list of source and
+library files, you can specify a list of multi-media resource files to bundle
+into the image file.<span style="mso-spacerun: yes">  </span>Bundling
+multi-media resources makes your game more self-contained, because it stores
+these resources directly in the .t3 file rather than as separate files; this
+means you have to provide only the .t3 file to people playing your game.<span
+style="mso-spacerun: yes">  </span>Bundling also provides some measure of
+protection for your graphics and sound effects files from casual perusal by
+users.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can specify the list of
+multi-media resources to bundle into your image file by placing the
+&quot;-res&quot; option after all of your source and library modules, then
+listing your multi-media resources.<span style="mso-spacerun: yes"> 
+</span>After the &quot;-res&quot; option, you can specify one or more resource
+item.<span style="mso-spacerun: yes">  </span>Each resource item can be one of
+the following:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'><i>filename
+     </i>– this simply adds the named file as a multi-media resource.<span
+     style="mso-spacerun: yes">  </span>The name of the resource is the same as
+     the name of the file, with any path separators converted from local file
+     system notation to URL-style notation.<span style="mso-spacerun: yes"> 
+     </span>For example, if you're using Windows, and you specify
+     &quot;graphics\title.jpg&quot;, the resource name will be
+     &quot;graphics/title.jpg&quot;.<span style="mso-spacerun: yes"> 
+     </span>Similarly, if you're using a Mac, and you specify
+     &quot;:graphics:title.jpg&quot;, the resource name will be
+     &quot;graphics/title.jpg&quot;.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'><i>filename=alias</i>
+     – this adds the named file as a multi-media resource, using <i>alias</i>
+     as the resource name.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'><i>dir</i>
+     – this adds all of the files with the given directory.<span
+     style="mso-spacerun: yes">  </span>Note that the syntax is exactly the
+     same as for an ordinary file; the compiler simply checks to see if the
+     name refers to a directory, and adds all files in the directory if
+     so.<span style="mso-spacerun: yes">  </span>If the &quot;-recurse&quot;
+     option is in effect, then the compiler adds all files in all
+     subdirectories of the given directory; if &quot;-norecurse&quot; is in
+     effect, then the compiler only includes the files directly in <i>dir</i>.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-recurse
+     – recurse into all subdirectories of any subsequent directory items.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>-norecurse
+     – do not recurse into subdirectories for subsequent directory items.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the &quot;resource
+name&quot; for a resource is the name by which the resource is known at
+run-time.<span style="mso-spacerun: yes">  </span>This is the name you use to
+access the resource from HTML; for example, it's the name you'd use in an
+&lt;IMG SRC=xxx&gt; tag.<span style="mso-spacerun: yes">  </span>You'd also use
+this name to access the resource from the File class.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>There are two special things to note
+about resource bundling.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>First, the compiler ignores the resource
+list when compiling for debugging.<span style="mso-spacerun: yes">  </span>When
+you're compiling for debugging, you usually don't intend to distribute the
+resulting image file; it's usually for your own use only.<span
+style="mso-spacerun: yes">  </span>Since you already have a copy of all of your
+resource files (after all, you need them in order to bundle them), and since
+you usually don't distribute a debugging image, there's no advantage to
+bundling the resources.<span style="mso-spacerun: yes">  </span>Plus, there's a
+disadvantage, which is that the bundling step adds time to the build; you
+usually want debug builds to finish as quickly as possible.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Second, the resources are added to
+the final image file <i>after</i> the pre-initialization phase has
+finished.<span style="mso-spacerun: yes">  </span>This means that you can
+include resources that are created during your pre-initialization phase, which
+is handy for things like the &quot;gameinfo.txt&quot; file (which the standard
+library builds automatically during pre-initialization).<span
+style="mso-spacerun: yes">  </span>This also means that resources you access
+during pre-initialization won't come from the image file, but this should be
+transparent to your program, since the resource loader automatically looks for
+the resource files in the file system anyway.</p>
+
+<h3 style='tab-stops:.5in'><a name="_Option_Files"></a><a name="_Libraries"></a>Libraries</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>It's often useful to take a set of
+source files and group them together as though they were a unit.<span
+style="mso-spacerun: yes">  </span>For example, the standard Adventure Library
+included with TADS consists of a number of separate source files; for the most
+part, you don't want to have to think about which individual files are involved
+- you just want to include the entire Adventure Library as a unit.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The compiler has a mechanism to
+simplify working with groups of files like this: you can create a separate,
+special kind of file that lists the regular source files that make up the
+group, and then include only this special listing file in your compilation.<span
+style="mso-spacerun: yes">  </span>The compiler automatically reads the list of
+files from the special file.<span style="mso-spacerun: yes">  </span>This
+special file is called a &quot;library file&quot; (not to be confused with the
+more generic usage of &quot;library&quot; that refers to a group of files the
+provide reusable source code, such as the Adventure Library - a library file is
+a specially formatted file that specifies a group of source files to include in
+a compilation).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>By convention, a library filename
+always has the suffix &quot;.tl&quot; (but note that the period might be
+replaced with another character on some platforms, and some platforms don't use
+filename suffixes at all).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'>Library Headers (#include files)<span
+style='font-weight:normal'><o:p></o:p></span></h1>
+
+<p class=MsoNormal style='tab-stops:.5in'>The compiler <i>automatically</i>
+adds each library’s directory to the include path.<span style="mso-spacerun:
+yes">  </span>If you’re distributing a library, this means that you can bundle
+all of your library’s files together into a single directory, and the user will
+only have to specify the path to your library’s install directory once, when
+listing the .tl file on the compiler command line.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'>Library Format</h1>
+
+<p class=MsoNormal style='tab-stops:.5in'>A library file is simply a text file
+that obeys a specific format.<span style="mso-spacerun: yes">  </span>A library
+file is formatted with one definition per line (blank lines are ignored, as are
+lines starting with the comment character &quot;#&quot;).<span
+style="mso-spacerun: yes">  </span>A definition has this format:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>keyword: value</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The &quot;keyword&quot; is a word
+specifying what kind of information the line contains, and the
+&quot;value&quot; is the text of the information defined.<span
+style="mso-spacerun: yes">  </span>The valid keywords are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo7;tab-stops:list .5in'><tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>name</span></tt>:
+     the value provides a human-readable name for the library.<span
+     style="mso-spacerun: yes">  </span>The compiler ignores this information,
+     but other tools can use this to provide a friendlier name in user
+     interface displays; for example, TADS Workbench displays this name for the
+     library in the Project window.</li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo7;tab-stops:list .5in'><tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>source</span></tt>:
+     specifies a source file to include in the compilation.</li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo7;tab-stops:list .5in'><tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>library</span></tt>:
+     specifies a sub-library file to include in the compilation.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In addition, certain directives can
+appear as simply keywords without associated values:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo10;tab-stops:list .5in'><tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>nodef</span></tt>:
+     this instructs the compiler that the library includes the standard modules
+     that the compiler would normally include by default, or replacements for
+     those standard modules.<span style="mso-spacerun: yes">  </span>When this
+     directive is present in a library, the compiler omits the standard modules
+     from the build, since the library explicitly includes its own
+     versions.<span style="mso-spacerun: yes">  </span>This directive has the
+     same effect as using the &quot;-nodef&quot; option on the compiler command
+     line or in a build configuration (.t3m) file.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'>Specifying Filenames</h1>
+
+<p class=MsoNormal style='tab-stops:.5in'>The values for the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>source</span></tt>
+and <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>library</span></tt>
+keywords are filenames, given in a portable format.<span style="mso-spacerun:
+yes">  </span>You <i>must not</i> specify a filename extension (such as
+&quot;.t&quot;) on these values, because the compiler adds the appropriate
+extension for the local platform automatically.<span style="mso-spacerun:
+yes">  </span>You <i>must</i> use slash (&quot;/&quot;) characters to indicate
+directory path separators; the compiler automatically converts the
+&quot;/&quot; characters to the appropriate local conventions.<span
+style="mso-spacerun: yes">  </span>If you specify any directory paths, you must
+specify <i>only</i> relative paths that are subdirectories of the folder
+containing the library; you are not allowed to specify absolute paths, and you
+are not allowed to use &quot;..&quot; or other OS-specific conventions to refer
+to parent directories.<span style="mso-spacerun: yes">  </span>If you follow
+all of these conventions, you will ensure that your library files will be
+portable to all operating systems, so that other people using different
+operating systems won't have to modify your library files for their local
+conventions.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When the compiler reads a library
+file, it converts each <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>source</span></tt> and <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>library</span></tt> value to local
+conventions.<span style="mso-spacerun: yes">  </span>The compiler makes the
+following changes to each name:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo13;tab-stops:list .5in'>First,
+     the compiler adds the appropriate filename suffix, following appropriate
+     local platform conventions.<span style="mso-spacerun: yes">  </span>For
+     most platforms, this means adding &quot;.t&quot; to a source file and
+     &quot;.tl&quot; to a library file.</li>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo13;tab-stops:list .5in'>Second,
+     the compiler converts any &quot;/&quot; characters in the name to appropriate
+     local conventions.<span style="mso-spacerun: yes">  </span>For example, on
+     the Macintosh, the compiler would convert &quot;files/test&quot; to
+     &quot;:files:test&quot;.</li>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo13;tab-stops:list .5in'>Third,
+     the compiler takes the directory path that was used to find the library
+     file itself, and applies that same directory path to the new
+     filename.<span style="mso-spacerun: yes">  </span>For example, if you're
+     using a Macintosh, and the library file's full path is &quot;Hard
+     Disk:TADS:Library:Adv.tl&quot;, and this library contains a <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>source</span></tt>
+     line with the value &quot;files/test&quot;, the compiler forms the full
+     path to the source file as &quot;Hard
+     Disk:TADS:Library:files:test.t&quot;.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'>Preprocessor Symbol (Macro) Substitution</h1>
+
+<p class=MsoNormal style='tab-stops:.5in'>Inside a library file, you can
+substitute the value of a preprocessor symbol defined with the -D option.<span
+style="mso-spacerun: yes">  </span>This allows you to create a library that
+selects different sub-sections that depend on -D settings; the standard adv3
+library, for example, uses this to select the language-specific library based
+on the setting of the LANGUAGE symbol.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To substitute the value of a
+preprocessor symbol, use the format &quot;$(NAME)&quot;, where NAME is the name
+of the preprocessor symbol to substitute.<span style="mso-spacerun: yes"> 
+</span>For example, to substitute the value of the LANGUAGE variable, put
+&quot;$(LANGUAGE)&quot; where you want the value to be substituted:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>library: $(LANGUAGE)/$(LANGUAGE).tl</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In this example, the LANGUAGE
+variable's value is substituted into this line of text twice.<span
+style="mso-spacerun: yes">  </span>If the command line contained the option
+&quot;-D LANGUAGE=en_us&quot;, then the compiler would read the line above as
+though it were written like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>library: en_us/en_us.tl</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The compiler substitutes all
+&quot;$(NAME)&quot; sequences before interpreting each line of text from the
+library file.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If a dollar sign appears in a library
+file, but isn't part of a complete &quot;$(NAME)&quot; sequence, the compiler
+displays an error message.<span style="mso-spacerun: yes">  </span>To use a
+dollar sign literally in a library file (for example, if you want to refer to a
+file that has a dollar sign in its name), write <i>two</i> dollar signs: the
+compiler converts each &quot;$$&quot; sequence to a single dollar sign.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Any symbols used in
+&quot;$(NAME)&quot; constructions <i>must</i> be defined with -D options, either
+on the command line or in the project (.t3m) file, <i>before</i> the library is
+listed in the command line or project file.<span style="mso-spacerun: yes"> 
+</span>The compiler displays an error message if any symbol is used in a
+library file but isn't defined with a -D option.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'>Example</h1>
+
+<p class=MsoNormal style='tab-stops:.5in'>Here's an example of a library file:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>name: Calculator Library<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>source: display<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>source: keypad<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>source: arith<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>source: sci<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>source: trig<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This library has the display name
+&quot;Calculator Library&quot;, and includes five source files: display.t,
+keypad.t, arith.t, sci.t, and trig.t.<span style="mso-spacerun: yes"> 
+</span>Assuming you called this library &quot;calc.tl&quot;, you would include
+the library in a compilation like so:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>t3make -d -lib calc.tl mygame.t</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'><a name=libExclusions></a><span style='font-weight:
+normal'>Because the library name ends in &quot;.tl&quot;, you don't need to
+include a &quot;-lib&quot; specifier before it - the compiler infers that the
+file is a library from the suffix.<span style="mso-spacerun: yes">  </span>(You
+always <i>can</i> include a specifier for any file, but you don't need to
+unless the file has a non-standard suffix for its type.)<o:p></o:p></span></h1>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'>Exclusions</h1>
+
+<p class=MsoNormal style='tab-stops:.5in'>Sometimes, a library includes
+non-essential files that you don't need in your program.<span
+style="mso-spacerun: yes">  </span>For example, a library might have some
+extended functionality that it includes for those programs that want it, but
+which can be omitted by programs that don't use it.<span style="mso-spacerun:
+yes">  </span>Including extraneous code is generally not harmful, but it does
+unnecessarily increase the size of your program's compiled image file and its
+run-time memory needs, so it's best to avoid adding code you're not using.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The obvious way of eliminating
+unneeded code would be to edit the library file itself to remove the modules
+you don't need.<span style="mso-spacerun: yes">  </span>This isn't ideal,
+though, because it would remove those modules from other projects you're
+working on that might need the extra code.<span style="mso-spacerun: yes"> 
+</span>To solve this problem, you could simply create a copy of the library
+file and remove the unneeded modules from it.<span style="mso-spacerun: yes"> 
+</span>This creates another problem, though: if you got the library file from
+someone else, and they later change the library by renaming a source file or
+adding or removing files, you'd have to make the same changes to your copy or
+copies of the library.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Fortunately, there's a way to exclude
+files from a library without changing the library itself.<span
+style="mso-spacerun: yes">  </span>When you include a library on the compiler
+command line, the compiler lets you list one or more files to exclude, using
+&quot;-x&quot; specifiers.<span style="mso-spacerun: yes">  </span>A
+&quot;-x&quot; specifier must be placed on the compiler command line
+immediately after the library to which it applies.<span style="mso-spacerun:
+yes">  </span>Each &quot;-x&quot; is followed by the name of a source module to
+exclude, using the name as it appears <i>in the library</i> - that is, using
+the portable name format, without an extension and with &quot;/&quot; as the
+path separator.<span style="mso-spacerun: yes">  </span>Simply use the exact
+text of the <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>source</span></tt> value as it appears in the library file.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that you cannot exclude an
+entire sub-library from a library.<span style="mso-spacerun: yes">  </span>If a
+library includes a sub-library, you must exclude the files from the sub-library
+individually.<span style="mso-spacerun: yes">  </span>To do so, treat the
+sub-library name as a path prefix, and place a &quot;/&quot; after the
+sub-library name, then add the filename as it appears in the sub-library.<span
+style="mso-spacerun: yes">  </span>For example, suppose that another library,
+desk.tl, includes the calc.tl library as a sub-library:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre># desk accessory library</pre><pre>name: Desk Accessory Library</pre><pre>library: pen</pre><pre>library: pencil</pre><pre>library: calc</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now, suppose you compile a program including
+the desk.tl library, but you want to exclude the trig.t module included in the
+calc.tl library.<span style="mso-spacerun: yes">  </span>To do this, you'd
+write a &quot;-x&quot; option like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>t3make desk.tl -x calc/trig</pre>
+
+<h3 style='tab-stops:.5in'>Project Files</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>If you take advantage of the separate
+compilation capability by dividing your program into several source files, you
+might find that your t3make command lines become quite lengthy.<span
+style="mso-spacerun: yes">  </span>This will be of no concern if you're using
+an integrated environment such as TADS Workbench, but could become inconvenient
+if you're building directly from a command shell.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To make things easier for
+command-line users, t3make can read build commands from a &quot;project
+file&quot; (also known as a &quot;makefile,&quot; after the Unix
+&quot;make&quot; utility, although TADS doesn't use the same command language as
+the Unix &quot;make&quot; tool).<span style="mso-spacerun: yes">  </span>A
+project file is simply a text file that contains the same information you'd
+normally put on the command line.<span style="mso-spacerun: yes">  </span>Each
+line of a project file can include one or more module names and options,
+separated by spaces.<span style="mso-spacerun: yes">  </span>Use a pound sign
+(&quot;#&quot;) to start a comment; everything after a pound sign is
+ignored.<span style="mso-spacerun: yes">  </span>If you want to use spaces or
+pound signs within a filename or option, enclose the entire option in double
+quotes; if you want to use a double quote mark within a quoted option, use two
+double quote marks.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Here's a sample project file.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>#</p>
+
+<pre># project file for calc</pre><pre>#</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre># source files</pre><pre>&quot;calc sources\calc.t&quot;</pre><pre>&quot;tok sources\tok.t&quot;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre># image file</pre><pre>-o &quot;exe\calc.t3o&quot;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To read options from a file, use the
+–f compiler option:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>t3make –f calc.t3m</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The options read from an options file
+are appended after the options on the command line, so you can mix options from
+a file and the command line.<span style="mso-spacerun: yes">  </span>For
+example, if you wanted to use the project file above to compile the program for
+debugging, you could enter a command like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>t3make –f calc.t3m -d</pre>
+
+<h3 style='tab-stops:.5in'>Default Project File</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>If you run t3make and do not specify
+any modules (in other words, your command line consists only of options), and
+you also don't include a –f option to specify a project file, the compiler
+looks for a default project file called &quot;makefile.t3m&quot; in the current
+directory.<span style="mso-spacerun: yes">  </span>If this file is present, the
+compiler reads the file as though you had specified it with the –f option.<span
+style="mso-spacerun: yes">  </span>This makes it very easy to build your
+program; if you put your build options in the file makefile.t3m, you can build
+simply by typing &quot;t3make&quot;.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The normal rules for project files
+apply to makefile.t3m, so you can specify additional options on the command
+line when building with the default project file.<span style="mso-spacerun:
+yes">  </span>For example, to build for debugging using the default project
+file, you would simply enter this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>t3make –d</pre>
+
+<h3 style='tab-stops:.5in'>Default Modules</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>TADS 3 includes a default source
+module called _main.t that contains some low-level support code that most
+programs need.<span style="mso-spacerun: yes">  </span>Because most programs
+will not have any reason to customize this module, the compiler automatically
+includes the module; this saves you a little work, because you don't have to
+add the module to your t3make command line explicitly.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>However, it is possible that you'll
+want to use a different version of the code in _main.t, in which case you will
+need to remove the default version from the build.<span style="mso-spacerun:
+yes">  </span>To do this, use the compiler's –nodef option.<span
+style="mso-spacerun: yes">  </span>This option tells the compiler not to
+include any default modules in the build; only the modules you explicitly list
+on the command line (or in a project file) are included in the build in this
+case.</p>
+
+<h3 style='tab-stops:.5in'><a name="_Dependency_Tracking"></a>Default Search
+Paths</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Include files: </b>The compiler
+automatically adds the default system header directory to the end of the
+include file search path.<span style="mso-spacerun: yes">  </span>In effect,
+the compiler adds a -I option, after all user-specified -I options, specifying
+the system header directory.<span style="mso-spacerun: yes">  </span>The
+location of the system header directory varies by system; on DOS and Windows,
+this is the directory containing the compiler.<span style="mso-spacerun: yes"> 
+</span>Refer to your system-specific release notes for details on other
+systems.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Source files:</b><span
+style="mso-spacerun: yes">  </span>The compiler automatically adds the default
+system library source directory to the end of the source file search path.<span
+style="mso-spacerun: yes">  </span>In effect, the compiler adds a -Fs option,
+after all user-specified -Fs options, specifying the system library source
+directory.<span style="mso-spacerun: yes">  </span>The location of this
+directory varies by system; on DOS and Windows, this is the compiler install
+directory.<span style="mso-spacerun: yes">  </span>Refer to your
+system-specific release notes for details on other systems.</p>
+
+<h3 style='tab-stops:.5in'>Dependency Tracking</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The t3make utility will compile a
+source file if it finds any of the following conditions:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>The
+     source file's corresponding object file does not exist.</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>The
+     source file has been modified more recently than its corresponding object
+     file, according to the file system timestamps associated with the files.</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>Any
+     header file included with the #include directive was modified more
+     recently than the object file, according to the system timestamps.<span
+     style="mso-spacerun: yes">  </span>The compiler stores a list of #include
+     files in the object file, so it doesn't have to scan the source file to
+     check the include files.</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>Any
+     –D, –U, or –I options, or the order of these options, is different on this
+     compilation than it was when the object file was created.<span
+     style="mso-spacerun: yes">  </span>The compiler stores information on
+     these options in the object file so that it can check the old options
+     against the new options.<span style="mso-spacerun: yes">   </span>Changes
+     to these options <i>could </i>affect the meaning of the source code, so
+     t3make makes the conservative assumption that it must recompile the source
+     code when these options change.</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>The
+     –d option was specified for this compilation but not the original one, or
+     vice versa.<span style="mso-spacerun: yes">  </span>Turning debugging on
+     or off necessitates recompilation.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In addition, t3make will re-link the image
+(.t3) file under any of these conditions:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>The
+     image file doesn’t already exist.</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>Any
+     source file requires recompilation.</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>Any
+     object file has been modified more recently than the image file, according
+     to the file system timestamps.</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo16;tab-stops:list .5in'>The
+     list of source files involved in the build is different than it was the
+     last time the image file was linked.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The dependency tracking mechanism
+isn't perfect, and it can be fooled under certain circumstances:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo20;tab-stops:list .5in'>The
+     #include file checking doesn't search the full include path, but simply
+     looks for each header file in the same place the compiler found the file
+     on the original compilation.<span style="mso-spacerun: yes">  </span>If
+     you create a new header file with the same name and put the new file in a
+     directory that is earlier on the include path than the directory that
+     contains the original header file, the compiler will miss it – the
+     compiler will just see that the original header file is still there and
+     hasn't been modified.<span style="mso-spacerun: yes">  </span>The source
+     file must now be recompiled, because the new version of the header file would
+     now be included, but the compiler won't recognize this.<span
+     style="mso-spacerun: yes">  </span>The reason the compiler misses this
+     case is that, each time a header file is included, the search path varies
+     depending on the file that included the header.<span style="mso-spacerun:
+     yes">  </span>The compiler doesn't store the full context of each
+     inclusion in the object file, so it can't reproduce the include path
+     search for each header file.<span style="mso-spacerun: yes"> 
+     </span>Because of this limitation of the dependency-tracking mechanism,
+     you should avoid &quot;overriding&quot; header files by placing multiple
+     files with the same name in different directories on the include path
+     (this is a confusing practice anyway, so it's just as well to avoid it).</li>
+</ul>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can force a full recompilation
+with the t3make –r option; you can use this option if you encounter any
+situations where you suspect that t3make is missing some dependency and
+therefore failing to notice a file that requires recompilation.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

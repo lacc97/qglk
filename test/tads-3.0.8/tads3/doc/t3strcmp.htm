@@ -1,0 +1,622 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3strcmp_files/filelist.xml">
+<title>Parsing Player Commands</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>14</o:Revision>
+  <o:TotalTime>322</o:TotalTime>
+  <o:Created>2002-09-07T20:36:00Z</o:Created>
+  <o:LastSaved>2002-09-14T19:15:00Z</o:LastSaved>
+  <o:Pages>3</o:Pages>
+  <o:Words>1870</o:Words>
+  <o:Characters>10664</o:Characters>
+  <o:Lines>88</o:Lines>
+  <o:Paragraphs>21</o:Paragraphs>
+  <o:CharactersWithSpaces>13096</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:553679495 -2147483648 8 0 66047 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-font-kerning:0pt;
+	font-weight:normal;
+	font-style:italic;}
+h2
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+h4
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	font-style:italic;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	background:navy;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:Tahoma;
+	mso-fareast-font-family:"Times New Roman";}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:228228549;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1725651618 67698691 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l1
+	{mso-list-id:479345639;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-2147025232 67698691 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l2
+	{mso-list-id:678391674;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-463325232 67698691 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l3
+	{mso-list-id:1426801368;
+	mso-list-type:hybrid;
+	mso-list-template-ids:898793372 67698691 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l4
+	{mso-list-id:2133136065;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1110624620 67698691 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'>The StringComparator Intrinsic Class</h3>
+
+<p class=MsoNormal>The <a href="t3dict.htm">Dictionary</a> intrinsic class
+allows the program to customize how strings in the dictionary are compared to
+input strings using a &quot;comparator&quot; object.<span style="mso-spacerun:
+yes">  </span>StringComparator provides an implementation of the comparator
+interface that's fast and efficient (since it's implemented natively in the
+interpreter).<span style="mso-spacerun: yes">  </span></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>StringComparator objects can be customized in several ways:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'>Case
+     sensitivity: you can control whether or not case is significant.<span
+     style="mso-spacerun: yes">  </span>In other words, you can specify whether
+     or not a lower-case letter in one string can match the corresponding
+     upper-case letter in another string.</li>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'>Truncation:
+     you can specify whether or not words can be shortened, and the minimum
+     length if so.<span style="mso-spacerun: yes">  </span>If truncation is
+     allowed, then an input word will match a reference (dictionary) word if
+     the input word is at least as long as the minimum truncation length, <i>and</i>
+     the input word matches the leading substring of the dictionary word of the
+     same length as the input word.<span style="mso-spacerun: yes"> 
+     </span>Hence, if the truncation length is 6, then &quot;flashl&quot;<span
+     style="mso-spacerun: yes">  </span>and &quot;flashlig&quot; will match
+     &quot;flashlight&quot; (although &quot;flashlamp&quot; will not, as it's
+     not a leading substring of &quot;flashlight&quot;).</li>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'>Character
+     equivalences: you can specify a set of equivalence mappings that allow a
+     given sequence of input characters to match one or more dictionary
+     characters.<span style="mso-spacerun: yes">  </span>This mechanism is
+     specifically designed to allow input strings to use approximations of
+     accented letters, ligatures, and other special characters, while still
+     retaining full information on the actual characters in the input
+     string.<span style="mso-spacerun: yes">  </span>See below for details.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>StringComparator objects are immutable once created, so you
+cannot change any of the comparison rules after creating one of these
+objects.<span style="mso-spacerun: yes">  </span>This is important, because it
+conforms to the Dictionary class's requirement that the comparison rules of a
+comparator must never change once a comparator is installed.<span
+style="mso-spacerun: yes">  </span>If you want to change a dictionary's
+comparison rules dynamically, simply create a new StringComparator (or a custom
+comparator object of your own) and install it in the dictionary.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>When using the StringComparator class, programs should
+#include the system header file &lt;strcomp.h&gt;.</p>
+
+<h3>Equivalence Mappings</h3>
+
+<p class=MsoNormal>The StringComparator class lets you specify that certain
+sequences of characters in an input string can match other characters in
+reference (dictionary) strings.<span style="mso-spacerun: yes">  </span>This is
+done through &quot;equivalence mappings,&quot; which specify characters that
+are considered equivalent for the purposes of matching strings.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Equivalence mappings are designed primarily to make things
+easier for authors and players in games written in languages using accented and
+other special characters.<span style="mso-spacerun: yes">  </span>Here are the
+specific cases that went into the StringComparator's design:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo6;tab-stops:list .5in'>A
+     player might want to run a German game on a computer localized for the US,
+     where it's not convenient to enter accented characters.<span
+     style="mso-spacerun: yes">  </span>The player might thus want to type
+     simply &quot;o&quot; instead of &quot;ö&quot; or &quot;u&quot; instead of
+     &quot;ü&quot;.</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo6;tab-stops:list .5in'>In
+     French, it's conventional to elide accents on capitalized letters, so we
+     might want &quot;Elan&quot; to match &quot;élan&quot; in the dictionary.</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo6;tab-stops:list .5in'>In
+     German, a pair of lower-case s's is usually, but not always, written with
+     the &quot;ess-zet&quot; or sharp-s ligature, &quot;ß&quot;.<span
+     style="mso-spacerun: yes">  </span>So, we might want the input
+     &quot;gross&quot; to match &quot;groß&quot; in the dictionary.</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo6;tab-stops:list .5in'>We
+     might want to allow writing &quot;æ&quot; as &quot;ae&quot;.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The simplest way to allow this sort of approximation would
+be to add a dictionary entry for each alternative spelling; so in a French
+game, if we put &quot;élan&quot; in the dictionary, we'd also include &quot;elan&quot;.<span
+style="mso-spacerun: yes">  </span>This approach has two disadvantages,
+though.<span style="mso-spacerun: yes">  </span>First, it's obviously a lot of
+extra work for the author.<span style="mso-spacerun: yes">  </span>Second, in
+cases where accents are significant in differentiating one word from another,
+which are common in languages that use accented letters, the extra words create
+ambiguity when two different objects have names that differ only in accents;
+this ambiguity is unavoidable if the accent elisions are to be allowed, but
+adding the words to the dictionary makes it impossible to turn off the accent
+ambiguity, which a player using a properly localized keyboard might want to do.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Equivalence mappings address these problems by allowing an
+author to enter only the exact form of a word into the dictionary, using all of
+the proper accents, but still match unaccented characters (or other
+approximations) in player input.<span style="mso-spacerun: yes">  </span>The
+dictionary is not affected by the approximations, so the dictionary retains
+full information on the correct form of each word; the input isn't affected,
+either, so we can tell whether the user typed an approximation or an exact
+match.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>A StringComparator object can define many equivalence
+mappings.<span style="mso-spacerun: yes">  </span>Each mapping defines an
+association between one &quot;reference character&quot; and a corresponding
+&quot;input string.&quot;<span style="mso-spacerun: yes">  </span>A reference
+character is a single character that can appear in reference strings; when a
+StringComparator is used with a Dictionary object, reference strings are simply
+the strings that are stored in the dictionary.<span style="mso-spacerun: yes"> 
+</span>An input string defines the character or characters that will be considered
+equivalent to the reference character when the input string appears in
+input.<span style="mso-spacerun: yes">  </span>Each mapping also defines two
+&quot;result flags&quot; values: one for an upper-case input string and one for
+a lower-case input string; these are bit flag values that are combined into a
+matchValues() result when the mapping is actually used.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example, in a French game, we might want to allow
+unaccented characters in input to match the corresponding accented characters
+in dictionary words.<span style="mso-spacerun: yes">  </span>To do this, we could
+provide a mapping of reference character &quot;à&quot; to &quot;a&quot;, from
+&quot;á&quot; to &quot;a&quot;, from &quot;â&quot; to &quot;a&quot;, from
+&quot;é&quot; to &quot;e&quot;, from &quot;è&quot; to &quot;e&quot;, and so on.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>There are two important constraints on the allowed mappings:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo9;tab-stops:list .5in'>Each
+     mapping's reference character must be a <b>single character</b>.</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo9;tab-stops:list .5in'>Each
+     reference character can have only <b>one mapping</b>.<span
+     style="mso-spacerun: yes">  </span>If the same reference character appears
+     in multiple mappings, only the last such mapping is used; all of the
+     others are ignored.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h4>Result Flags</h4>
+
+<p class=MsoNormal>The result flags values are used to convey information about
+the occurrence of an equivalence mapping to a matchValues() caller.<span
+style="mso-spacerun: yes">  </span>These are important because they provide a
+simple way for the caller to determine whether an input string matched its
+dictionary word exactly or using equivalence mappings; furthermore, since each
+mapping has its own separate result flags, these allow different mappings to
+indicate different results.<span style="mso-spacerun: yes">  </span>For
+example, in a German game, we might want to allow unaccented character to be
+used in input to match accented dictionary words, but count these as weaker
+matches than if the exact accents were used; we could do this by adding in a
+bit flag to each accented-to-unaccented equivalence mapping, and then test for
+that flag in the matchValues() result.<span style="mso-spacerun: yes"> 
+</span>However, we might want to consider &quot;ss&quot; as exactly equivalent
+to &quot;ß&quot;; to do this, we would use 0 as the equivalence's result flags,
+so that as far as the matchValues() caller is concerned, the a match from
+&quot;ss&quot; to &quot;ß&quot; is exact.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The result flags differentiate upper-case and lower-case
+input strings.<span style="mso-spacerun: yes">  </span>Each mapping has an
+upper-case result flags value, and a lower-case result flags value.<span
+style="mso-spacerun: yes">  </span>When an equivalence mapping is used to match
+a string, only one of the flags is used, based on the first character of the
+matching input string: if the first character is an upper-case letter, the
+upper-case result flags value is used; otherwise, the lower-case value is
+used.<span style="mso-spacerun: yes">  </span>(Note that this means that if a
+non-alphabetic character is the first character of the input string, the
+lower-case value is used.)<span style="mso-spacerun: yes">  </span>This
+distinction is meant to allow mappings to assign different strengths based on
+the case of the input.<span style="mso-spacerun: yes">  </span>This is useful
+in French, for example: accents are typically removed in French writing when a
+letter is capitalized, hence we would not want to flag an unaccented capital as
+a weak match for an accented letter, as we would for an unaccented minuscule.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>Important</b>: the StringComparator class reserves the
+low-order 8 bits of the result flags for its own use.<span style="mso-spacerun:
+yes">  </span>Therefore, any flags defined in equivalence mappings should use
+values 0x0100 and above.</p>
+
+<h3>Construction</h3>
+
+<p class=MsoNormal>To create a StringComparator, use the &quot;new&quot;
+operator:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>new StringComparator(<i>truncLen, caseSensitive, mappings</i>)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The parameters are:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo12;tab-stops:list .5in'><i>truncLen</i>
+     specifies the minimum truncation length.<span style="mso-spacerun: yes"> 
+     </span>This is the minimum length that an input string must have in order
+     to match a longer dictionary string.<span style="mso-spacerun: yes"> 
+     </span>For example, if you set the truncation length to 6, then
+     &quot;flashl&quot; will match &quot;flashlight,&quot; because &quot;flashl&quot;
+     meets the minimum length requirement and is a leading substring of
+     &quot;flashlight&quot;; however, &quot;flash&quot; will not match
+     &quot;flashlight,&quot; because, at five characters, it doesn't meet the
+     minimum length for truncated matches.<span style="mso-spacerun: yes"> 
+     </span>Specify 0 (zero) or nil if you do not want to allow truncated
+     matches at all.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo12;tab-stops:list .5in'><i>caseSensitive</i>
+     is a flag indicating whether or not the matches are to be sensitive to
+     case.<span style="mso-spacerun: yes">  </span>If this flag is true, then
+     matches are sensitive to case, which means that each character must match <b>exactly</b>.<span
+     style="mso-spacerun: yes">  </span>If this flag is nil, then matches are
+     insensitive to case, which means that an upper-case letter in one string
+     matches the corresponding lower-case letter in the other.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo12;tab-stops:list .5in'><i>mappings</i>
+     is a list giving the equivalence mappings.<span style="mso-spacerun:
+     yes">  </span>This is an empty list, or simply nil, if there are no
+     mappings.<span style="mso-spacerun: yes">  </span>Each mapping is a
+     sublist, with elements as follows:</li>
+</ul>
+
+<p class=MsoNormal style='margin-left:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-left:1.0in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>[<i>refChar, inputStr, upperCaseFlags,
+lowerCaseFlags</i>]</span></tt></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <ul style='margin-top:0in' type=circle>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo12;tab-stops:list 1.0in'><i>refChar</i>
+      is a one-character string giving the &quot;reference&quot;
+      character.<span style="mso-spacerun: yes">  </span>This is a character
+      from the reference string.</li>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo12;tab-stops:list 1.0in'><i>inputStr
+      </i><span style="mso-spacerun: yes"> </span>is a string of one or more
+      characters giving the &quot;input&quot; string that matches the reference
+      character.<span style="mso-spacerun: yes">  </span>When this sequence of
+      characters occurs in an input string, it will match <i>refChar</i> in the
+      reference string.</li>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo12;tab-stops:list 1.0in'><i>upperCaseFlags</i>
+      is an integer value to be OR'd into the result flags when this mapping is
+      used to match an upper-case letter in the input string.<span
+      style="mso-spacerun: yes">  </span>(When the input string is more than
+      one character long, then the case of the <b>first </b>letter matched is
+      used to select which set of flags to use.)</li>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo12;tab-stops:list 1.0in'><i>lowerCaseFlags</i>
+      is an integer value to be OR'd into the result flags when this mapping is
+      used to match a lower-case letter in the input string, or to match a
+      non-alphabetic character in the input string.</li>
+ </ul>
+</ul>
+
+<h3>StringComparator Methods</h3>
+
+<p class=MsoNormal>For more information on how the Dictionary class uses
+comparators, refer to the <a href="t3dict.htm">Dictionary documentation</a>.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In addition to the standard <a href="t3objcl.htm">Object</a>
+methods, StringComparator provides the following methods:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal><b>calcHash(<i>str</i>) – </b>calculate a hash value for the
+given string.<span style="mso-spacerun: yes">  </span>Returns an integer giving
+the hash value.<span style="mso-spacerun: yes">  </span>The hash calculation
+conforms to the requirement that, for two strings <i>s1</i> and <i>s2</i>, if
+matchValues(<i>s1</i>, <i>s2</i>) indicates a match, then calcHash(<i>s1</i>)
+will equal calcHash(<i>s2</i>).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>matchValues(<i>inputStr, refStr</i>) – </b>compares the
+two strings, and returns a non-zero integer if the two strings match, according
+to the rules defined when the StringComparator was constructed, or 0 (the
+integer zero) if the strings do not match.<span style="mso-spacerun: yes"> 
+</span><i>inputStr</i> is the &quot;input&quot; string, which typically will
+come from user input or a similar source; <i>refStr</i> is the
+&quot;reference&quot; string, which is the string against which the input is to
+be tested.<span style="mso-spacerun: yes">  </span>When used with a Dictionary,
+the reference string is the string stored in the dictionary.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The return value for a match will always be a non-zero
+integer.<span style="mso-spacerun: yes">  </span>This value is formed by
+combining, using bitwise OR, all of the applicable flags for the match,
+including the pre-defined flags and the result flags for all equivalence
+mappings used to make the match.<span style="mso-spacerun: yes">  </span>The
+following flag values are pre-defined:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo16;tab-stops:list .5in'>StrCompMatch
+     (0x0001) – this flag is set for all matching values, simply to ensure
+     that, even in the absence of any other flags, a non-zero value is returned
+     from matchValues().</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo16;tab-stops:list .5in'>StrCompCaseFold
+     (0x0002) – indicates that the match used &quot;case folding,&quot; which
+     is to say that one or more upper-case letters in the input matched
+     corresponding lower-case letters in the reference string, or vice
+     versa.<span style="mso-spacerun: yes">  </span>This flag can only be
+     returned when case-insensitive matches were selected in the constructor,
+     since a case-sensitive comparator will not match strings that differ in
+     case.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo16;tab-stops:list .5in'>StrCompTrunc
+     (0x0004) – the match was truncated; in other words, the input string was a
+     leading substring of the reference string, was shorter than the reference
+     string, and was at least the truncation length specified when the
+     comparator was created.<span style="mso-spacerun: yes">  </span>If
+     truncation was disabled when the comparator was created (by setting the
+     truncation length to zero or nil), this flag will never be returned,
+     because truncated matches will never be allowed.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that, in addition to the pre-defined flags listed
+above, StringComparator reserves all flag values from 0x0001 to 0x0080, to
+allow for future expansion; equivalence mappings should use flag values 0x0100
+and above.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

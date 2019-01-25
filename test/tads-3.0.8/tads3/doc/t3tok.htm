@@ -1,0 +1,409 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3tok_files/filelist.xml">
+<title>Tokenizing</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Unknown User</o:LastAuthor>
+  <o:Revision>13</o:Revision>
+  <o:TotalTime>29</o:TotalTime>
+  <o:Created>2000-02-26T00:48:00Z</o:Created>
+  <o:LastSaved>2001-12-01T23:47:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>1247</o:Words>
+  <o:Characters>7112</o:Characters>
+  <o:Lines>59</o:Lines>
+  <o:Paragraphs>14</o:Paragraphs>
+  <o:CharactersWithSpaces>8734</o:CharactersWithSpaces>
+  <o:Version>9.3821</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+h6
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:11.0pt;
+	font-family:"Times New Roman";}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:392702529;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1874592234 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:714431048;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1798874456 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Tokenizing</h3>
+
+<p class=MsoNormal>&quot;Tokenizing&quot; is the process of scanning a string
+of characters, such as a line of text that the user types at a command prompt,
+and converting the character string into a list of words and punctuation
+marks.<span style="mso-spacerun: yes">  </span>Each item in this list is called
+a &quot;token.&quot;<span style="mso-spacerun: yes">  </span>During parsing, we
+wish to deal with tokens, not directly with the original character string; it's
+much easier and faster to work with tokens.<span style="mso-spacerun: yes"> 
+</span>To parse a string, we must find word boundaries, skip whitespace, and
+find matching delimiters (such as quotes and parentheses); we do all of this
+work in advance, when we tokenize the string, so that we don't have to do it
+repeatedly while analyzing the syntax of the command.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>TADS 3 has no built-in tokenizer.<span style="mso-spacerun:
+yes">  </span>Instead, the standard library provides a class called
+&quot;Tokenizer&quot; that does this job.<span style="mso-spacerun: yes"> 
+</span>An author can create a custom tokenizer, if desired, but in most cases
+this shouldn't be necessary, because the standard Tokenizer class allows for
+fairly extensive customization with a declarative set of &quot;rules.&quot;</p>
+
+<h6>Calling the Tokenizer</h6>
+
+<p class=MsoNormal>To use the Tokenizer class, include the header file
+&quot;tok.h&quot; in your source code and link &quot;tok.t&quot; into your
+program.<span style="mso-spacerun: yes">  </span>To use the default rules
+defined in the class, simply use the class directly; to tokenize a string, make
+a call like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>local str, tokList;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>str = inputLine();</pre><pre><span style="mso-spacerun: yes">  </span>tokList = Tokenizer.tokenize(str);</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <tt><span style='font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>tokenize()</span></tt>
+method scans the string and converts it into a list of tokens.<span
+style="mso-spacerun: yes">  </span>The return value is a list consisting of one
+element per token.<span style="mso-spacerun: yes">  </span>Information about
+each token can be obtained using the following macros:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo4;tab-stops:list .5in'>getTokVal(<i>tok</i>)
+     returns the parsed value of the token.<span style="mso-spacerun: yes"> 
+     </span>This is usually a string corresponding to the text matched by the
+     regular expression, but can be another type if the token rule generated it
+     with some other value type.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo4;tab-stops:list .5in'>getTokType(<i>tok</i>)
+     returns the type of the token.<span style="mso-spacerun: yes"> 
+     </span>This is a token type enum value assigned by the rule that matched
+     the token.<span style="mso-spacerun: yes">  </span>The default Tokenizer
+     rules produce tokens of type tokPunct (punctuation marks), tokWord
+     (words), tokString (strings), and tokInt (integer numbers).</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo4;tab-stops:.5in'>getTokOrig(<i>tok</i>)
+     returns the original source text the token matched.<span
+     style="mso-spacerun: yes">  </span>This information is included because
+     some token rules perform conversions on the value; for example, dictionary
+     word tokens usually have their values converted to all upper-case or all
+     lower-case for convenience in string comparisons.<span
+     style="mso-spacerun: yes">  </span>The original text is included so that
+     the exact original token input can be easily reconstructed if needed.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The following code displays the
+parsed value of each token in a string:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>for (local i = 1, local cnt = tokList.length() ; i &lt;= cnt ; ++i)</pre><pre><span style="mso-spacerun: yes">    </span>&quot;[&lt;&lt;i&gt;&gt;] = &lt;&lt;getTokVal(tokList[i])&gt;&gt;\n&quot;;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>(For the curious, the actual
+representation of a token is a list containing three elements:<span
+style="mso-spacerun: yes">  </span>element 1 is the token value, element 2 is
+the token type, and element 3 is the original matched text.<span
+style="mso-spacerun: yes">  </span>For more readable code and greater
+flexibility in case of future changes to this format, you should always use the
+getTokXxx macros rather than referring to the list elements directly.)</p>
+
+<h6 style='tab-stops:.5in'>Customizing the Tokenizer</h6>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can customize the rules the
+Tokenizer class uses.<span style="mso-spacerun: yes">  </span>To do this,
+subclass Tokenizer and override the <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>rules_</span></tt> property.<span
+style="mso-spacerun: yes">  </span>This property's value must be a list of
+lists.<span style="mso-spacerun: yes">  </span>Each sublist consists of four
+elements:<span style="mso-spacerun: yes">  </span>a regular expression,
+specifying a pattern to match; a token type, which is the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>enum
+token</span></tt> value to assign to tokens matching the regular expression; a
+conversion rule, specifying how the token text to be stored in the result list
+is obtained; and a match method property pointer, which allows a programmatic
+check to determine whether or not the token matches the rule.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The conversion rule can be nil, a
+string, or a property pointer.<span style="mso-spacerun: yes">  </span>If the
+conversion rule is nil, then the token text stored in the result list will
+simply be the exact text of the input string that matches the regular
+expression.<span style="mso-spacerun: yes">  </span>If the rule is a string, it
+specifies a replacement string, using the same rules as <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>reReplace()</span></tt>,
+that is applied to the matching text; the result of the replacement is stored
+in the result list.<span style="mso-spacerun: yes">  </span>If the conversion
+rule is a property pointer, it specifies a property (of 'self', which is the
+Tokenizer object which is doing the work) to be evaluated to yield the value to
+be stored in the result list; this property is called as follows:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>self.(prop)(<i>txt, typ, results</i>)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In this argument list, <i>txt</i> is
+a string giving the text that was matched for the token; <i>typ</i> is the
+token type enum value from the rule list; and <i>results</i> is a Vector
+containing the token output list under construction.<span style="mso-spacerun:
+yes">  </span>This method simply adds any number of token entries to the
+results list by calling <i>results</i>.append().<span style="mso-spacerun:
+yes">  </span>The method need not add any tokens; the default tokenizer rule
+for whitespace, for example, uses a processor method called tokCvtSkip(), which
+doesn't do anything at all, which means that whitespace characters in the input
+result in no tokens in the results list.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The match method can be nil or a
+property pointer.<span style="mso-spacerun: yes">  </span>If it's nil, the
+regular expression solely determines what text matches the rule.<span
+style="mso-spacerun: yes">  </span>If the match method is a property pointer,
+though, the tokenizer calls the property (on 'self', the Tokenizer object which
+is doing the work) as follows:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>self.(prop)(<i>txt</i>)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This method can examine the text to determine
+if it's really a match for the rule; the method returns true if the text
+matches the rule, nil if not.<span style="mso-spacerun: yes">  </span>The match
+method can be used for more complex checks that cannot be performed with the
+regular expression pattern; for example, a match method can check to see if the
+token is a known dictionary word, so that a rule only matches known dictionary
+words.</p>
+
+<h6>Rule Processing Order</h6>
+
+<p class=MsoNormal style='tab-stops:.5in'>The rules are specified in order of
+priority.<span style="mso-spacerun: yes">  </span>The tokenizer starts with the
+first rule; if the first rule's regular expression matches (and the rule's
+match method, if present, returns true), the tokenizer uses the match and
+ignores all of the remaining rules.<span style="mso-spacerun: yes">  </span>If
+the first rule's regular expression does not match (or its match method returns
+nil), the tokenizer tries the second rule, and so on until it runs out of
+rules.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Each time the tokenizer finds a
+matching rule, it adds the result of applying the conversion rule to the result
+list, along with the token type specified by the rule.<span
+style="mso-spacerun: yes">  </span>The tokenizer then removes the matching text
+from the input string.<span style="mso-spacerun: yes">  </span>If that leaves
+the input string empty, the tokenizer returns the result list to the
+caller.<span style="mso-spacerun: yes">  </span>If the input string is not yet
+empty, the tokenizer starts over, searching from the first rule to find a match
+to the remainder of the string.<span style="mso-spacerun: yes">  </span>The
+tokenizer repeats this process until the input string is empty.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the tokenizer exhausts its list of
+rules, it throws a TokErrorNoMatch exception.<span style="mso-spacerun: yes"> 
+</span>This exception object has a property, <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>remainingStr_</span></tt>, which gives
+the text of the remainder of the string at the point at which the tokenizer
+could find no matching rule.</p>
+
+<h6 style='tab-stops:.5in'>Customization Example</h6>
+
+<p class=MsoNormal style='tab-stops:.5in'>Suppose we wished to build a simple
+four-function calculator, which reads arithmetic expressions typed by the user
+and displays the results.<span style="mso-spacerun: yes">  </span>For this calculator,
+we'd need to recognize two types of tokens: operators, and numbers.<span
+style="mso-spacerun: yes">  </span>There's already a tokInt type defined by the
+Tokenizer class, but we'd have to define our own token type for operators:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>enum token tokOp;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The default tokenizer rules won't
+work for the calculator because they don't accept all of the punctuation marks
+we'd need to use for operators (and besides, the default rules classify the
+punctuation marks they do recognize as type tokPunct, when we want tokOp
+tokens).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><br>
+We'll need the following token rules:</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>Whitespace,
+     which we want to ignore so that the user can use spaces freely to format
+     expressions.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>Integers,
+     which consist of a series of one or more digits.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>Operators,
+     which are the special punctuation marks that indicate arithmetic operations.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Here's how our subclass would look to
+implement these rules:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>CalcTokenizer: Tokenizer</pre><pre><span style="mso-spacerun: yes">  </span>rules_ =</pre><pre><span style="mso-spacerun: yes">  </span>[</pre><pre><span style="mso-spacerun: yes">    </span>/* skip whitespace */</pre><pre><span style="mso-spacerun: yes">    </span>['[ \t]+', nil, tokCvtSkip, nil],</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* integer numbers */</pre><pre><span style="mso-spacerun: yes">    </span>['[0-9]+', tokInt, nil, nil],</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* operators */</pre><pre><span style="mso-spacerun: yes">   </span><span style="mso-spacerun: yes"> </span>['[()+*-/]', tokOp, nil, nil]</pre><pre><span style="mso-spacerun: yes">  </span>]</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To tokenize using our customized
+rules, we'd simply call our subclasses tokenizer rather than the default
+tokenizer:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>tokList = CalcTokenizer.tokenize(str);</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

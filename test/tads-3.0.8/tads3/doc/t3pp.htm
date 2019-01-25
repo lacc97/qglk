@@ -1,0 +1,1075 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3pp_files/filelist.xml">
+<title>Preprocessor</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>27</o:Revision>
+  <o:TotalTime>289</o:TotalTime>
+  <o:Created>2000-02-26T00:14:00Z</o:Created>
+  <o:LastSaved>2004-05-20T05:54:00Z</o:LastSaved>
+  <o:Pages>7</o:Pages>
+  <o:Words>4026</o:Words>
+  <o:Characters>22951</o:Characters>
+  <o:Lines>191</o:Lines>
+  <o:Paragraphs>45</o:Paragraphs>
+  <o:CharactersWithSpaces>28185</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-font-kerning:0pt;}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:208424164;
+	mso-list-type:hybrid;
+	mso-list-template-ids:382756846 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:273559505;
+	mso-list-type:hybrid;
+	mso-list-template-ids:860787700 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l2
+	{mso-list-id:1194151892;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1885687792 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'>Preprocessor</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>TADS 3 provides a number of
+extensions to the TADS 2 preprocessor, for greater power and more compatibility
+with C and C++ preprocessors.</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#include</span></tt>
+     directive uses an improved searching algorithm, and allows URL-style portable
+     notation for relative paths (to subdirectories).</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#include</span></tt>
+     directive expands macros in its filename argument.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>You
+     can define macros with substitution parameters, including varying argument
+     lists.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#</span></tt>
+     (stringizing) and <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+     "Times New Roman"'>##</span></tt> (token pasting) operators are
+     supported.<span style="mso-spacerun: yes">  </span>In addition, the <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#@</span></tt>
+     (single-quote stringizing) operator is provided.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The
+     token pasting operator performs string concatenation when pasting string
+     tokens together.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>The <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#if</span></tt>
+     and <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#elif</span></tt>
+     directives are supported.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:.5in'>The <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#line</span></tt>
+     directive is supported.<b><o:p></o:p></b></li>
+</ul>
+
+<h3 style='tab-stops:.5in'>Include file searching</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <tt><span style='font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>#include</span></tt>
+directive uses an improved algorithm to search for included files; the new
+algorithm is essentially the same as that used by most C compilers.<span
+style="mso-spacerun: yes">  </span>For files whose names are specified in
+double quotes, the compiler first looks in the directory containing the
+including file, then in the directory containing the file that included the
+including file, and so on until it reaches the original source file; if none of
+these directories contain the file then the search proceeds as for
+angle-bracketed files.<span style="mso-spacerun: yes">  </span>For
+angle-bracketed files, the compiler searches in each directory specified in the
+include path (specified with the <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>t3make –I</span></tt> option), in the
+order specified by the user (i.e., in the order in which the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>-I</span></tt>
+options appear). <span style="mso-spacerun: yes"> </span>Finally, the compiler
+searches in the compiler directory itself.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the compiler automatically
+adds each library's directory to the include path.<span style="mso-spacerun:
+yes">  </span>That is, for each library (.tl) file in the build, the compiler adds
+the directory containing that library to the include path.<span
+style="mso-spacerun: yes">  </span>This applies to libraries directly included
+in the build via the &quot;-library&quot; directive, as well as to libraries
+included in the build by other libraries.<span style="mso-spacerun: yes"> 
+</span>The effect is exactly the same as including a <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>-I</span></tt>
+option for each library directory.</p>
+
+<h3 style='tab-stops:.5in'>URL-style relative paths in #include filenames</h3>
+
+<p class=MsoNormal>Filenames in #include directives can refer to relative paths
+(such as to subdirectories) using relative URL-style notation.<span
+style="mso-spacerun: yes">  </span>(A URL is a &quot;uniform resource
+locator,&quot; which is a World Wide Web standard mechanism for specifying
+names of things like files.)<span style="mso-spacerun: yes">  </span>In
+particular, you can use a forward slash, &quot;/&quot;, as the path separator
+character, regardless of your local system's filename conventions.<span
+style="mso-spacerun: yes">  </span>Even if you're running on Windows (which
+uses &quot;\&quot; as the path separator) or Macintosh (which uses
+&quot;:&quot; as the separator and has rather different rules than Unix-style
+systems), you can use &quot;/&quot; to specify relative paths, and your source
+will compile correctly on all systems.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example, suppose you're using a Macintosh, and you have
+your source files in a folder called &quot;My HD:My TADS Games:Caverns of
+Gloom&quot;.<span style="mso-spacerun: yes">  </span>Now, suppose you decide
+that you'd like to keep your include files in a subfolder of this folder called
+&quot;Include Files&quot;.<span style="mso-spacerun: yes">  </span>You <i>could</i>
+write your #include lines like so:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>#include &quot;:Include Files:defs.h&quot;<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>But if you did this, and then you gave a copy of your source
+code to a friend running Windows, your friend wouldn't be able to compile the
+code without changing that #include directive to match Windows path name
+conventions.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The solution to this problem is to use URL-style path
+names.<span style="mso-spacerun: yes">  </span>A URL-style path name works the
+same on every system, so your friend on Windows will be able to compile your
+code without changes if you use this notation.<span style="mso-spacerun: yes"> 
+</span>To use URL notation, use &quot;/&quot; as the path separator, and -
+regardless of local conventions - place slashes only <i>between</i> path
+elements, never at the beginning of the filename.<span style="mso-spacerun:
+yes">  </span>So, we'd rewrite the example above like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>#include &quot;Include Files/defs.h&quot;<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Even though this doesn't look a thing like a Mac path name,
+the Mac version of the TADS 3 compiler will happily find your file in the
+correct directory, because the Mac version knows how to convert URL-style path
+names to the correct Mac conventions, just like the Windows and Unix versions
+know how to convert URL-style names to their own local conventions.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The specific rules for parsing #include filenames are as
+follows:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list .5in'>For
+     &quot;local&quot; files - that is, filenames enclosed in &quot;double
+     quotes&quot; rather than in &lt;angle brackets&gt; - start looking for the
+     file in the directory containing the source file with the #include, then
+     in the directory that contains the file that included that file, then in
+     that includer's directory, and so forth until we run out of includers.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list .5in'>For
+     local files that we can't find using the first step above, and for all
+     non-local files (specified in &lt;angle brackets&gt;), look in each
+     directory on the include path.<span style="mso-spacerun: yes">  </span>The
+     include path is the set of directories specified with -I command-line
+     options, and is searched in the order in which the -I options appeared.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo6;tab-stops:list .5in'>If the
+     file still can't be found, and it appears to be an &quot;absolute&quot;
+     path using the local path naming conventions (which vary by system), try
+     again treating the name as an absolute path.<span style="mso-spacerun:
+     yes">  </span>An absolute path is one that fully specifies the location of
+     the file; on Unix, for example, this is a path starting with a
+     &quot;/&quot;, and on Windows it's a path starting with a drive specifier
+     (such as &quot;C:&quot;).</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For each of the first two steps above, the compiler tries
+twice in each directory it searches:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo9;tab-stops:list .5in'>First,
+     the compiler tries treating the filename as using URL-style syntax.<span
+     style="mso-spacerun: yes">  </span>This means that the compiler converts
+     all &quot;/&quot; characters to the local path separator characters, and
+     performs any other transformations required to make the name appear
+     relative.<span style="mso-spacerun: yes">  </span>So, on the Mac, the
+     compiler converts &quot;Include Files/defs.h&quot; to &quot;:Include
+     Files:defs.h&quot;, then tries looking for that file relative to the
+     current directory being searched.</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo9;tab-stops:list .5in'>Second,
+     if the first step fails to find a file, <i>and</i> the file does not use
+     an absolute path in the local naming conventions, the compiler tries to
+     treat the name as using local conventions.<span style="mso-spacerun:
+     yes">  </span>So, the compiler simply uses the local path name conventions
+     to look for the file in the current directory being searched.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For all of these rules, the compiler stops searching as soon
+as its finds an existing file.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that even though the compiler accepts local filenames,
+we strongly encourage using URL-style filenames for all #include files that
+specify paths, since this will ensure that your source code will compile
+without changes on other platforms.</p>
+
+<h3 style='tab-stops:.5in'>#include filename macro expansion</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <tt><span style='font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>#include</span></tt>
+directive expands any macros that appear in the filename, if the filename is
+not enclosed in quotes or angle brackets.<span style="mso-spacerun: yes"> 
+</span>The result of expanding any macros must yield a string delimited in
+quotes or angle brackets.<span style="mso-spacerun: yes">  </span>(This feature
+is obscure, but TADS 3 includes it for completeness of its ANSI C preprocessor
+compatibility.)</p>
+
+<h3>Preventing multiple inclusion: #pragma once, #pragma all_once</h3>
+
+<p class=MsoNormal>In most cases, you don't want to include the same header
+file more than once in the same source file, because including the same file
+several times can often cause compiler errors by repeating the same object or
+function definitions.<span style="mso-spacerun: yes">  </span>In many cases,
+avoiding multiple inclusion is trickier than just removing redundant #include
+directives from your source files; it often happens that the same header is
+#include'd in several other headers, so that first header would be included
+multiple times if more than one of those other headers were needed in the same
+source module.<span style="mso-spacerun: yes">  </span>You can sometimes solve
+the problem by carefully adjusting all of the headers so that each file is only
+included once, but it's often difficult to get this right, especially if you
+add other source files in the future.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>C/C++ programmers usually solve this problem by enclosing
+the entire contents of each header file in a protective series of #ifdef-type
+directives.<span style="mso-spacerun: yes">  </span>Each header file follows
+this pattern:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#ifndef MY_HEADER_NAME_H</pre><pre>#define MY_HEADER_NAME_H</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>// the rest of the contents of the header go here</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>#endif</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The idea is that, the first time this file is included, the
+preprocessor symbol MY_HEADER_NAME_H (which is usually based on the name of the
+header file: for myheader.h, we'd use MYHEADER_H) will be undefined, so the
+#ifndef (&quot;if not defined&quot;) would succeed.<span style="mso-spacerun:
+yes">  </span>Thus, everything between the #ifndef and the matching #endif
+would be compiled, including the #define for the same symbol.<span
+style="mso-spacerun: yes">  </span>If the same file is included again,
+MY_HEADER_NAME_H would be defined this time, because of the #define that got
+compiled the first time around; so the #ifndef would fail, so the compiler
+would skip everything up to the matching #endif.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The TADS 3 compiler provides a somewhat simpler and more
+direct way of protecting against multiple inclusion.<span style="mso-spacerun:
+yes">  </span>You can put this directive anywhere in a header file:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#pragma once</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This tells the compiler that the current file should only be
+included once for the current source module.<span style="mso-spacerun: yes"> 
+</span>If the same file is included again, the compiler simply ignores the
+redundant #include directive.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The #pragma once directive only affects the <i>current</i>
+header file.<span style="mso-spacerun: yes">  </span>There's a separate directive,
+#pragma all_once, than tells the compiler that <i>every</i> header file should
+be included only once.<span style="mso-spacerun: yes">  </span>Put #pragma
+all_once into your main source file before including the first header, and the
+compiler will ignore every redundant #include directive.</p>
+
+<h3>Macro substitution parameters<span style='font-weight:normal'><o:p></o:p></span></h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can now define substitution
+parameters in your macros.<span style="mso-spacerun: yes">  </span>These
+parameters, when they appear in the expansion text, are replaced during
+preprocessing with text specified in the macro's invocation.<span
+style="mso-spacerun: yes">  </span>For example, suppose we define this macro:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#define ERROR(msg)<span style="mso-spacerun: yes">  </span>tadsSay('An error occurred: ' + msg + '\n')</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now suppose we write this in our code
+somewhere:<tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>ERROR('invalid value');</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>During compilation, the preprocessor
+will expand this macro invocation, substituting the actual parameter value when
+<tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>msg</span></tt>
+appears in the replacement text.<span style="mso-spacerun: yes">  </span>The
+resulting expansion is:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>tadsSay('An error occurred: ' + 'invalid value' + '\n');</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>(It is worth pointing out that the
+compiler will subsequently compute the constant value of this string concatenation,
+so this will not result in any string concatenation at run-time.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The TADS 3 preprocessor uses the ANSI
+C rules for macro expansion with regards to recursive macro invocation and
+circular definitions.<span style="mso-spacerun: yes">  </span>These rules are
+complex and the need to know them arises quite infrequently, so it is not worth
+trying to explain them here; authors who are curious should refer to a good
+ANSI C programming book for the details.</p>
+
+<h3><a name=varargs></a>Macros with Variable Argument Lists</h3>
+
+<p class=MsoNormal>A macro can be defined to take a varying number of arguments,
+which is especially useful when the macro calls a function or method with a
+varying number of parameters.<span style="mso-spacerun: yes">  </span>Although
+the 1999 ANSI C specification includes a varying macro argument feature, the
+ANSI C version is quite limited, and TADS 3 diverges from the ANSI definition.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Defining a variable-argument macro</h1>
+
+<p class=MsoNormal>To define a macro with varying arguments, place an ellipsis
+(&quot;...&quot;) immediately after the last parameter in the macro's formal
+parameter list:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#define ERROR(msg, args...) displayError('Error:', msg, args)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The &quot;...&quot; after the last argument tells the
+preprocessor that the macro allows zero or more arguments in place of the last
+parameter, so the ERROR() macro defined above will accept one or more arguments.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Simple expansion with the variable list parameter</h1>
+
+<p class=MsoNormal>During expansion, the parameter name of the varying argument
+will be replaced by the entire varying part of the argument list, including the
+commas between adjacent arguments, but not including the comma before the first
+varying argument.<span style="mso-spacerun: yes">  </span>For example:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#define VAR(a, b...) { b }</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This macro will expand as follows:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>VAR(1)<span style="mso-spacerun: yes">       </span>-&gt; { }</pre><pre>VAR(1,2)<span style="mso-spacerun: yes">     </span>-&gt; { 2 }</pre><pre>VAR(1,2,3,4) -&gt; { 2,3,4 }</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Expansion with no variable arguments, and deleting the extra comma</h1>
+
+<p class=MsoNormal>If the varying part of the list contains zero arguments,
+note that it is replaced by nothing at all.<span style="mso-spacerun: yes"> 
+</span>In some cases, this can be problematic; for example, in the ERROR macro
+defined above, consider this expansion:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>ERROR('syntax error') -&gt; displayError('Error:', 'syntax error', )</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note the extra comma after the last argument to displayError
+– the comma is from the original expansion text in the macro definition, not
+from the parameter &quot;args&quot;, which is empty in this case because no
+varying arguments were supplied.<span style="mso-spacerun: yes">  </span>The
+extra comma will cause a syntax error when the function call is compiled, so
+the macro as written is not compatible with an empty varying argument list,
+even though the preprocessor will allow it.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To correct this problem, we can use a special bit of syntax;
+this is a horrible kludge, but the Gnu C preprocessor uses the same kludge, so
+at least it's not completely pulled out of thin air.<span style="mso-spacerun:
+yes">  </span>The token pasting operator (described in more detail <a
+href="#_Token_Pasting">below</a>), &quot;##&quot;, has a special meaning when
+it appears after a comma and before a varying argument macro parameter: when
+(and only when) the varying list is empty, the &quot;##&quot; operator <i>deletes
+</i>the preceding comma.<span style="mso-spacerun: yes">  </span>This only
+works with commas – if anything else precedes the &quot;##&quot; operator, the
+operator works as it would in normal (non-varying arguments) cases.<span
+style="mso-spacerun: yes">  </span>We can use this feature to rewrite the ERROR
+macro:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#define ERROR(msg, args...) displayError('Error:', msg, ## args)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Now when we expand this macro with no additional arguments,
+the extra comma is deleted:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>ERROR('syntax error') -&gt; displayError('Error:', 'syntax error')</pre><pre>ERROR('token error', 1) -&gt; displayError('Error:', 'token error', 1)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Iterative expansion with #foreach</h1>
+
+<p class=MsoNormal>The comma-deleting feature of the &quot;##&quot; operator is
+useful as far as it goes, but sometimes it's useful to construct more elaborate
+expansions from varying arguments.<span style="mso-spacerun: yes">  </span>For
+example, suppose we wanted to concatenate the arguments to the ERROR macro
+together – in other words, we'd like the expansion to look like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>ERROR('token error', 1, 2) -&gt; displayError('Error:' + 'token error' + 1 + 2)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This is clearly beyond the scope of what we've seen so
+far.<span style="mso-spacerun: yes">  </span>Fortunately, the TADS 3
+preprocessor has another feature that makes this sort of construction possible:
+the <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#foreach</span></tt>
+operator.<span style="mso-spacerun: yes">  </span>This operator must <i>immediately
+</i>follow – with no intervening spaces – the varying argument name, and must
+be immediately followed with a &quot;delimiter&quot; character.<span
+style="mso-spacerun: yes">  </span>Following the delimiter is the main
+iteration expansion, which ends at the next instance of the delimiter
+character.<span style="mso-spacerun: yes">  </span>Following the second
+delimiter is the &quot;interim&quot; expansion, which itself ends at the next
+instance of the delimiter.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You can choose any non-symbol character for the delimiter,
+as long as it doesn't appear in any of the expansion text – a non-symbol
+character is anything that can't appear in a symbol, specifically alphabetic
+characters, numerals, and underscores.<span style="mso-spacerun: yes"> 
+</span>The point of letting you choose your own delimiter is to allow you to
+use anything in the expansion text by choosing a delimiter that doesn't collide
+with the expansion.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that you should be careful if you choose a forward
+slash (&quot;/&quot;) as the delimiter – the preprocessor removes comments
+before processing macros, so if you have an empty section, the compiler will
+completely remove two consecutive slashes because it will think it indicates a
+comment.<span style="mso-spacerun: yes">  </span>You're probably better off
+avoiding using &quot;/&quot; as the delimiter.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This sounds a bit complicated, so let's see an example:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#define ERROR(msg, arg...) displayError('Error: ' + msg arg#foreach: +arg ::)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style='font-family:"Times New Roman"'>The first part of the macro is simple:<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>displayError('Error: ' + msg</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'>This part expands in the familiar way.<span style="mso-spacerun: yes">  </span>Now we come to this sequence:<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>arg#foreach: +arg ::<span
+style='font-family:"Times New Roman"'><o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'>Remember that the #foreach operator
+must appear immediately after the varying argument name, as we see here.<span
+style="mso-spacerun: yes">  </span>After the #foreach operator, we have the
+delimiter; in the case, we've chosen &quot;:&quot;, since we don't need any
+colons in our expansion text.<span style="mso-spacerun: yes">  </span>We could
+just as well have chosen any other character; all that matters is that we don't
+need the character anywhere in our expansion, since the next appearance of this
+character terminates the expansion.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>So, we have two sub-parts, delimited
+by colons.<span style="mso-spacerun: yes">  </span>The first subpart is &quot;
++arg &quot;, and the second subpart is empty.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The first subpart is the <i>main
+iteration </i>expansion.<span style="mso-spacerun: yes">  </span>The
+preprocessor expands this part once for each actual varying argument, expanding
+the varying argument name in this part to merely the current argument in the
+varying list.<span style="mso-spacerun: yes">  </span>In the rest of the macro,
+remember that the varying argument name expands to the full varying list; in a
+#foreach, though, the varying argument name expands merely to the single, current
+argument.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The second subpart is the <i>interim
+iteration</i> expansion.<span style="mso-spacerun: yes">  </span>The
+preprocessor expands this part once for each actual varying argument <i>except </i>for
+the last one.<span style="mso-spacerun: yes">  </span>This is why we call it
+the &quot;interim&quot; expansion – it is expanded between each iteration.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Let's look at how the macro expands.<span
+style="mso-spacerun: yes">  </span>Consider this invocation:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>ERROR('syntax error')</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'>In this case, we have no varying
+arguments at all, so the entire #foreach sequence – from the
+&quot;arg#foreach&quot; part to the final colon – is iterated zero times, and
+hence expands to nothing at all.<span style="mso-spacerun: yes">  </span>The expansion
+is thus:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>displayError('Error:' + 'syntax error' )</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that we don't have any problem
+handling the zero varying arguments, since the entire iteration simply occurs
+zero times in this case.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now consider what happens when we
+include some arguments:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>ERROR('token error', 1, 2)</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'>This time, the #foreach sequence is
+iterated twice.<span style="mso-spacerun: yes">  </span>The first time,
+&quot;arg&quot; expands to &quot;1&quot;, since that's the first varying
+argument, and the second time, &quot;arg&quot; expands to &quot;2&quot;.<span
+style="mso-spacerun: yes">  </span>The two iterations are expanded like this:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>+1</pre><pre><span style="mso-spacerun: yes">  </span>+2</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'>These are concatenated together, so
+the result looks like this:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>displayError('Error: ' + 'token error' +1 +2)</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'>The &quot;interim&quot; portion is
+useful for solving the same kinds of problems as the &quot;##&quot; comma
+deletion feature, but is more general.<span style="mso-spacerun: yes">  </span>Since
+the interim portion appears only between each adjacent pair of varying
+arguments, it is useful for building lists of zero or more arguments.<span
+style="mso-spacerun: yes">  </span>For example, suppose we want to write a
+macro that adds zero or more values:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>#define ADD(val...) val#foreach:val:+:</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'>If we call this with no arguments,
+the expansion will be empty, because we'll iterate the #foreach zero
+times.<span style="mso-spacerun: yes">  </span>If we call this one one
+argument, the result will simply be the argument: we'll iterate the #foreach one
+time, but we won't include the interim expansion at all, because we skip the
+interim expansion after the last argument.<span style="mso-spacerun: yes"> 
+</span>With two arguments, we'll expand the interim once, between the two.<span
+style="mso-spacerun: yes">  </span>Here are some sample expansions:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>ADD()<span style="mso-spacerun: yes">       </span>-&gt;</pre><pre><span style="mso-spacerun: yes">  </span>ADD(1)<span style="mso-spacerun: yes">      </span>-&gt; 1</pre><pre><span style="mso-spacerun: yes">  </span>ADD(1,2)<span style="mso-spacerun: yes">    </span>-&gt; 1+2</pre><pre><span style="mso-spacerun: yes">  </span>ADD(1,2,3)<span style="mso-spacerun: yes">  </span>-&gt; 1+2+3</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1 style='tab-stops:.5in'><a name=ifempty></a>Conditional expansion with
+#ifempty and #ifnempty<span style='font-weight:normal'><o:p></o:p></span></h1>
+
+<p class=MsoNormal>In some cases, it is necessary to include a block of text in
+a variable argument immediately expansion before or after the variable
+arguments, but only when the argument list is non-empty.<span
+style="mso-spacerun: yes">  </span>In other cases, it is necessary to provide
+some text instead of the variable arguments when the variable argument list is
+empty.<span style="mso-spacerun: yes">  </span>A pair of operators, #ifempty
+and #ifnempty, provide these types of conditional expansion.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The #ifempty and #ifnempty operators are similar in syntax
+to #foreach: these operators must appear in macro expansion text directly after
+the name of the variable argument formal parameter, with no intervening spaces,
+and the operator is immediately followed by a delimiter character.<span
+style="mso-spacerun: yes">  </span>After the delimiter comes the conditional
+expansion text, which is terminated by another copy of the delimiter character.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>#ifempty includes its expansion text in the macro's
+expansion only when the variable argument list is empty, and #ifnempty includes
+the text only when the variable argument list is non-empty.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example, suppose you want to define a macro that expands
+its variable arguments into a concatenated list, and then passes the
+concatenated list as the second argument to another function.<span
+style="mso-spacerun: yes">  </span>We might try defining this using #foreach:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>#define CALL_CONCAT(firstArg, args...) \</pre><pre><span style="mso-spacerun: yes">    </span>myFunc(firstArg, args#foreach#args#+#)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>However, this has a problem: if the varying argument part of
+the list is empty, we have an unnecessary comma in the expansion:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>CALL_CONCAT(test) -&gt; myFunc(test, )</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This is similar to the problem that we mentioned earlier in
+describing the &quot;##&quot; operator, but we can't use the &quot;##&quot;
+operator to delete the comma in this case, because the &quot;##&quot; comma deletion
+works only when the variable list argument appears directly after the &quot;,
+##&quot; sequence.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This is where the #ifempty and #ifnempty operators come
+in.<span style="mso-spacerun: yes">  </span>In this case, we want to include
+the comma after firstArg in the expansion only when the argument list isn't
+empty, so we can change the macro like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>#define CALL_CONCAT(firstArg, args...) \</pre><pre><span style="mso-spacerun: yes">    </span>myFunc(firstArg args#ifnempty#,# args#foreach#args#+#)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This does what we want: when the variable argument list is
+empty, the #ifnempty expansion text is omitted, so we have no extra comma; when
+we have one or more varying arguments, the #ifnempty expansion is included, so
+the comma is included in the expansion.</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<h1 style='tab-stops:.5in'>Getting the variable argument count with #argcount</h1>
+
+<p class=MsoNormal style='tab-stops:.5in'>There's one more feature for varying argument
+lists: you can obtain the number of varying arguments with the #argcount
+operator.<span style="mso-spacerun: yes">  </span>Like #foreach, the #argcount
+operator must appear immediately after the name of the varying parameter,
+without any spaces.<span style="mso-spacerun: yes">  </span>This operator
+expands to a token giving the number of arguments in the varying list.<span
+style="mso-spacerun: yes">  </span>For example:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>#define MAKELIST(ret, val...) ret = [val#argcount val#foreach#,val##]</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>MAKELIST(lst)<span style="mso-spacerun: yes">            </span>-&gt; lst = [0]</pre><pre><span style="mso-spacerun: yes">  </span>MAKELIST(lst, 'a')<span style="mso-spacerun: yes">       </span>-&gt; lst = [1,'a']</pre><pre><span style="mso-spacerun: yes">  </span>MAKELIST(lst, 'a', 'b')<span style="mso-spacerun: yes">  </span>-&gt; lst = [2,'a','b']</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that #argcount expands to the
+number of arguments in the varying part of the list only, and doesn't count any
+fixed arguments.</p>
+
+<h3 style='tab-stops:.5in'>Stringizing</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>It is sometimes useful to write a
+macro that uses the actual text of a substitution parameter as a string
+constant.<span style="mso-spacerun: yes">  </span>This can be accomplished
+using the &quot;stringizing&quot; operators.<span style="mso-spacerun: yes"> 
+</span>The <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>#</span></tt> operator, when it precedes the name of a macro
+formal parameter in macro expansion text, is replaced by the text of the actual
+argument value enclosed in double quotes.<span style="mso-spacerun: yes"> 
+</span>The <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>#@</span></tt> operator has a similar effect, but encloses
+the text in single quotes.<span style="mso-spacerun: yes">  </span>For example,
+suppose we wanted to write a debugging macro that displays the value of an
+arbitrary expression:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#define printval(val) tadsSay(#@val + ' = ' + toString(val))</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>We could use this macro in our code
+like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">    </span>printval(MyObject.codeNum);</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This would expand as follows:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">    </span>tadsSay('MyObject.codeNum' + ' = ' + toString(MyObject.codeNum));</pre>
+
+<h3 style='tab-stops:.5in'><a name="_Token_Pasting"></a>Token Pasting</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>In some cases, it is useful to be
+able to construct a new symbol out of different parts.<span
+style="mso-spacerun: yes">  </span>This can be accomplished with &quot;token
+pasting,&quot; which constructs a single token from what were originally
+several tokens.<span style="mso-spacerun: yes">  </span>The token pasting
+operator, <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>##</span></tt>,
+when it appears in a macro's expansion text, takes the text of the token to the
+left of the operator and the text of the token to the right of the operator and
+pastes them together to form a single token.<span style="mso-spacerun: yes"> 
+</span>If the token on either side is a formal parameter to the macro, the
+operator first expands the formal parameter, then performs pasting on the
+result.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>For example, suppose we wanted to
+construct a method call based on a partial method name:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#define callDo(verb, actor)<span style="mso-spacerun: yes">  </span>do##verb(actor)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>We could use the macro like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>dobj.callDo(Take, Me);</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This would expand into this text:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>dobj.doTake(Me);</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The preprocessor scans a pasted token
+for further expansion, so if the pasted token is itself another macro, the
+preprocessor expands that as well:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#define PASTE(a, b) a##b</pre><pre>#define FOOBAR 123</pre><pre>PASTE(FOO, BAR)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The macro above expands as
+follows.<span style="mso-spacerun: yes">  </span>First, the preprocessor
+expands the PASTE macro, pasting the two arguments together to yield the token
+FOOBAR.<span style="mso-spacerun: yes">  </span>The preprocessor then scans
+that and finds that it's another macro, so it expands it.<span
+style="mso-spacerun: yes">  </span>The final text is simply 123.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Token pasting only works within macro
+expansion text; the token pasting operator is ignored if it appears anywhere
+outside of a <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>#define</span></tt>.</p>
+
+<h3 style='tab-stops:.5in'>String Concatenation</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>When you use the ## operator to paste
+two tokens together, the preprocessor checks to see if both of the tokens being
+pasted together are strings of the same kind (i.e., they both have the same
+type of quotes).<span style="mso-spacerun: yes">  </span>If they are, the
+preprocessor combines the strings by removing the closing quote of the first
+string and the opening quote of the second string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If either operand of the ## operator
+is itself modified by the # operator, the preprocessor first applies the #
+operator or operators, and then applies the ## operator.<span
+style="mso-spacerun: yes">  </span>So, if you paste together two stringized
+parameters, the result is a single string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Here are some examples:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style="mso-spacerun:
+yes"> </span></p>
+
+<pre>#define PAREN_STR(a) &quot;(&quot; ## a &quot;)&quot;</pre><pre>#define CONCAT(a, b) a ## b</pre><pre>#define CONCAT_STR(a, b) #a ## #b</pre><pre>#define DEBUG_PRINT(a) &quot;value of &quot; ## #a ## &quot; = &lt;&lt;a&gt;&gt;&quot;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>1: PAREN_STR(&quot;parens&quot;)</pre><pre>2: CONCAT(&quot;abc&quot;, &quot;def&quot;)</pre><pre>3: CONCAT_STR(uvw, xyz)</pre><pre>4: DEBUG_PRINT(obj.prop[3])</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>After preprocessing, the file above
+would appear as follows:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>1: &quot;(parens)&quot;</pre><pre>2: &quot;abcdef&quot;</pre><pre>3: &quot;uvwxyz&quot;</pre><pre>4: &quot;value of obj.prop[3] = &lt;&lt;obj.prop[3]&gt;&gt;&quot;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that string concatenation is a
+TADS extension, and is not found in ANSI C preprocessors.<span
+style="mso-spacerun: yes">  </span>The C preprocessor doesn't provide a way of
+combining string tokens because the C language (not the preprocessor, but the
+language itself) has a different way of accomplishing the same thing: in C, two
+adjacent string tokens are always treated as a single string formed by
+concatenating the two strings together.<span style="mso-spacerun: yes"> 
+</span>The TADS language doesn't allow this kind of implicit string pasting,
+because (unlike in C) there are times when it is valid to use two or more
+adjacent string tokens, such as in dictionary property lists.<span
+style="mso-spacerun: yes">  </span>The TADS preprocessor therefore provides its
+own mechanism for concatenating string tokens.</p>
+
+<h3 style='tab-stops:.5in'>Conditionals: #if and #elif</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The TADS 3 preprocessor supports the
+C-style <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#if</span></tt>
+and <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#elif</span></tt>
+directives.<span style="mso-spacerun: yes">  </span>These directives let you specify
+sections of text to be compiled or omitted conditionally, based on the value of
+a constant expression.<span style="mso-spacerun: yes">  </span>(TADS 2
+supported conditional compilation, but only through the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#ifdef</span></tt>
+and <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#ifndef</span></tt>
+directives, which could only determine if a preprocessor symbol was defined or
+not.)<span style="mso-spacerun: yes">  </span>These new directives work the
+same as they do in ANSI C: the preprocessor expands macros in the argument and
+evaluates the result as a constant expression; a non-zero value is considered
+true.<span style="mso-spacerun: yes">  </span>Here's an example that checks the
+version of an included library header to make sure it's recent enough:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#include &quot;MyLib.h&quot;</pre><pre>#if MYLIB_VSN &lt; 5</pre><pre>#error &quot;This module requires MyLib version 5 or higher.&quot;</pre><pre>#endif</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>defined()</span></tt>
+preprocessor operator can be used within an expression in these directives to
+test to determine if a preprocessor symbol is defined.<span
+style="mso-spacerun: yes">  </span>This allows for tests of combinations of
+defined symbols:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#if defined(MSDOS) || defined(AMIGA) || defined(UNIX)</pre>
+
+<h3 style='tab-stops:.5in'>The #line Directive</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The preprocessor supports the C-style
+<tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#line</span></tt>
+directive, which lets you override the compiler's internal notion of the
+current source filename and line number.<span style="mso-spacerun: yes"> 
+</span>This feature is probably of little use to most game and library authors,
+since the compiler automatically keeps track of the actual filename and line
+number as it processes the source code.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <tt><span style='font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>#line</span></tt>
+directive will be of greatest interest to tool writers.<span
+style="mso-spacerun: yes">  </span>If you're writing a tool that adds an extra
+stage of preprocessing before the TADS 3 compiler sees the source code, you can
+use <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>#line</span></tt>
+to specify the original source location for generated code.<span
+style="mso-spacerun: yes">  </span>This will allow the compiler to generate
+error messages that relate back to the original source code, and will allow the
+debugger to display the original source code rather than the generated TADS
+code.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

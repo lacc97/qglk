@@ -1,0 +1,283 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3export_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Merkin Muffley</o:LastAuthor>
+  <o:Revision>6</o:Revision>
+  <o:TotalTime>35</o:TotalTime>
+  <o:Created>2001-02-18T23:54:00Z</o:Created>
+  <o:LastSaved>2001-04-08T05:40:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>659</o:Words>
+  <o:Characters>3757</o:Characters>
+  <o:Lines>31</o:Lines>
+  <o:Paragraphs>7</o:Paragraphs>
+  <o:CharactersWithSpaces>4613</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Exported Symbols</h3>
+
+<p class=MsoNormal>This section will be of interest only to writers of
+low-level libraries, such as replacements for the &quot;_main.t&quot; startup
+module.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In order to provide maximum flexibility, the T3 Virtual
+Machine is designed to let the running program define as much of its own
+behavior as practical.<span style="mso-spacerun: yes">  </span>As a result, the
+VM sometimes relies on the program to perform an operation on behalf of the VM,
+so that the operation doesn't have to be hard-coded into the VM.<span
+style="mso-spacerun: yes">  </span>The VM accesses the program-defined code to
+perform these operations using &quot;exports.&quot;<span style="mso-spacerun:
+yes">  </span>An export is simply a symbol that the program defines and which
+the VM wishes to access.<span style="mso-spacerun: yes">  </span>The program exports
+a symbol to tell the VM that a particular object or property performs an
+operation that is special to the VM.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example, when a run-time error occurs, the VM throws an
+exception, which means the VM must create an exception object to represent the
+error condition.<span style="mso-spacerun: yes">  </span>The VM does not have
+its own built-in exception class, because there's no practical need for such a
+class to be implemented in native code.<span style="mso-spacerun: yes"> 
+</span>Instead, the VM depends upon the program to define the object class that
+represents run-time errors, and uses an exported symbol to determine which
+class this is.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>An exported symbol has two parts: an externally visible
+name, and the associated meaning.<span style="mso-spacerun: yes">  </span>The
+meaning is an object or property value, and the external name is the name by
+which the VM knows the symbol.<span style="mso-spacerun: yes">  </span>Since
+the purpose of this mechanism is to allow the VM to ask the program to provide
+values for certain things, the external names are defined by the VM.</p>
+
+<h3>The <tt><span style='font-size:10.0pt;font-family:"Courier New";mso-bidi-font-family:
+Arial'>export</span></tt> Statement</h3>
+
+<p class=MsoNormal>To export a symbol, you use the <tt><span style='font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>export</span></tt>
+statement.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>export <i>symbol </i>[ '<i>external_name</i>' ] ;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <i>symbol </i>is the object or
+property name you wish to export.<span style="mso-spacerun: yes">  </span>The <i>external_name</i>,
+if present, gives the name by which the VM knows the entity.<span
+style="mso-spacerun: yes">  </span>If the <i>external_name</i> is not present,
+the symbol name is used as the external name.<span style="mso-spacerun: yes"> 
+</span>For example:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>export RuntimeError;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This statement exports the RuntimeError
+object defined in the program, using 'RuntimeError' as the external name as
+well.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The statement allows you to specify
+an external name so that you can use a different name for the entity within the
+program.<span style="mso-spacerun: yes">  </span>If you provide an external
+name in the statement, the VM doesn't care that your program uses a different
+name internally.<span style="mso-spacerun: yes">  </span>Some libraries have
+their own naming conventions, so they might want not want to use the VM-defined
+symbol names internally.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>An <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>export</span></tt> statement can appear
+anywhere a top-level statement (such as an object or function definition)
+can.<span style="mso-spacerun: yes">  </span>It doesn't matter if an export
+comes before or after the actual definition of the object or property it
+exports; all of the exports are resolved during linking, so where they appear
+within the source code is unimportant.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>A given internal symbol can be
+exported multiple times with different external names; if you do this, the VM
+will use the same entity for each different purpose it associates with an
+external name.<span style="mso-spacerun: yes">  </span>A given external name
+can only be associated with a single internal entity, though – it is an error
+to export multiple objects or properties with the same external name.</p>
+
+<h3 style='tab-stops:.5in'>VM Symbols</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The VM looks for the external names
+listed below to be exported by the program.<span style="mso-spacerun: yes"> 
+</span>(The VM also looks for the symbols supplied automatically by the
+compiler, as explained below, but library code only provides the ones listed
+here.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>'RuntimeError' – the exception class
+for run-time error exceptions.<span style="mso-spacerun: yes">  </span>The
+_main.t startup module provides an exported definition for this object.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>'exceptionMessage' – the property to
+which to assign an explanatory message string in a run-time error exception
+object.<span style="mso-spacerun: yes">  </span>The _main.t startup module
+provides an exported definition for this property.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>'propNotDefined' – a method which the
+VM invokes when a call is made to an <a href="t3undef.htm">undefined property</a>.<span
+style="mso-spacerun: yes">  </span>This method is invoked with the original
+property ID as the first argument, and the original argument list as the
+remaining arguments.</p>
+
+<h3 style='tab-stops:.5in'>Compiler-Supplied Exports</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The compiler automatically provides a
+number of exports.<span style="mso-spacerun: yes">  </span>Libraries do not
+need to provide exports for these; they are listed here only for completeness.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>'Constructor' – the property invoked
+to construct new object.<span style="mso-spacerun: yes">  </span>The compiler
+exports the <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>construct</span></tt> property for this symbol.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>'Destructor' – the property invoked
+to finalize an object during garbage collection.<span style="mso-spacerun:
+yes">  </span>The compiler exports the <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>finalize</span></tt> property for this
+symbol.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>'LastProp' – the highest property ID
+value allocated by the compiler.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>'ObjectCallProp' – a property
+assigned for invocation of anonymous function pointers.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

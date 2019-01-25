@@ -1,0 +1,209 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3iter_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Unknown User</o:LastAuthor>
+  <o:Revision>6</o:Revision>
+  <o:TotalTime>11</o:TotalTime>
+  <o:Created>2000-04-22T22:42:00Z</o:Created>
+  <o:LastSaved>2002-02-17T07:18:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>416</o:Words>
+  <o:Characters>2376</o:Characters>
+  <o:Lines>19</o:Lines>
+  <o:Paragraphs>4</o:Paragraphs>
+  <o:CharactersWithSpaces>2917</o:CharactersWithSpaces>
+  <o:Version>9.3821</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1201358773;
+	mso-list-type:hybrid;
+	mso-list-template-ids:2103852214 67698691 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>The Iterator Intrinsic Class</h3>
+
+<p class=MsoNormal>An Iterator is an object that allows you to visit each
+element of a <a href="t3coll.htm">Collection</a> using a consistent interface
+for all types of collections.<span style="mso-spacerun: yes">  </span>You can
+never instantiate an Iterator directly (in other words, you can't use the
+&quot;new&quot; operator to create an Iterator); instead, you create an Iterator
+by calling a Collection object's createIterator() method, which creates an
+iterator customized for that specific type of collection.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>When you create an Iterator via a Collection's
+createIterator() method, the Iterator refers to a &quot;snapshot&quot; of the
+collection, and is initialized so that the first call to getNext() will return
+the first element of the collection.<span style="mso-spacerun: yes"> 
+</span>The Iterator uses a snapshot of the collection to ensure that changes
+made to the collection after creating the Iterator do not affect the iteration.</p>
+
+<h3>Iterator Methods</h3>
+
+<p class=MsoNormal><b>getCurKey() – </b>returns the key for the current item in
+the iteration.<span style="mso-spacerun: yes">  </span>For List and Vector
+objects, this returns the index of the current value; for LookupTable objects,
+this returns the key.<span style="mso-spacerun: yes">  </span>Throws an error
+(index out of range) if the iteration has not been started yet (getNext() has
+not yet been called) or has moved past the last item.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>getCurVal() – </b>returns the value of the current item
+in the iteration (this is the same value that the most recent call to getNext()
+returned).<span style="mso-spacerun: yes">  </span>Throws an error (index out
+of range) if the iteration has not been started yet or has moved past the last
+item.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>getNext() – </b>returns the next element of the
+collection.<span style="mso-spacerun: yes">  </span>The order in which the
+iterator returns the collection's elements varies by the collection type:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>For
+     List objects, the elements of the list are returned in order of the index
+     values; the first item returned is the item at index 1, the second is the
+     item at index 2, and so forth.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>For
+     LookupTable objects, the elements are returned in an arbitrary order that
+     depends on the internal arrangement of the table’s elements.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>For
+     Vector objects, the elements are returned in order of index values.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Each time you call getNext(), the iterator updates its
+internal state to refer to the next element of the collection, so the next call
+will return the next item.<span style="mso-spacerun: yes">  </span>When you
+first create an Iterator (by calling a Collection object's createIterator()
+method), the Iterator is initialized so that the first call to getNext() will
+return the first element of the collection.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>After all of the collection's elements have been exhausted,
+calling getNext() will cause an error (OUT_OF_BOUNDS) to be thrown.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>isNextAvailable() – </b>returns true if calling getNext()
+will yield a valid item, nil if not.<span style="mso-spacerun: yes"> 
+</span>You can call this prior to calling getNext() to ensure that getNext()
+will not throw an error.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>resetIterator() –</b> resets the iteration to its first
+element.<span style="mso-spacerun: yes">  </span>After calling this method, the
+next call to getNext() will yield the first element of the collection.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

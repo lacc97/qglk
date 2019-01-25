@@ -1,0 +1,700 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3tgen_files/filelist.xml">
+<title>Intrinsic Functions: &quot;tads-gen&quot; Function Set</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>40</o:Revision>
+  <o:TotalTime>216</o:TotalTime>
+  <o:Created>2000-02-26T00:04:00Z</o:Created>
+  <o:LastSaved>2003-05-24T23:04:00Z</o:LastSaved>
+  <o:Pages>3</o:Pages>
+  <o:Words>2063</o:Words>
+  <o:Characters>11762</o:Characters>
+  <o:Lines>98</o:Lines>
+  <o:Paragraphs>23</o:Paragraphs>
+  <o:CharactersWithSpaces>14444</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-font-kerning:0pt;
+	font-weight:normal;
+	font-style:italic;}
+h2
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+h4
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	font-style:italic;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:43919044;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1342688612 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:775564428;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1953530820 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l2
+	{mso-list-id:1251500011;
+	mso-list-type:hybrid;
+	mso-list-template-ids:781476140 67698691 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l3
+	{mso-list-id:1825275031;
+	mso-list-type:hybrid;
+	mso-list-template-ids:618191664 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l3:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'>Intrinsic Functions: &quot;tads-gen&quot; Function
+Set</h3>
+
+<p class=MsoNormal>The &quot;tads-gen&quot; function set provides general
+utility and data manipulation functions.<span style="mso-spacerun: yes"> 
+</span>These functions have no user interface component.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To use the &quot;tads-gen&quot; function set in a program,
+#include &quot;tadsgen.h&quot;, or simply #include &quot;tads.h&quot; (which
+includes both &quot;tadsio.h&quot; and &quot;tadsgen.h&quot; for the full set
+of TADS intrinsics.)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=dataType></a><b>dataType(<i>val</i>)</b>
+– returns the datatype of the given value.<span style="mso-spacerun: yes"> 
+</span>The return value is one of the same <a href="t3type.htm">TypeXxx values</a>.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=firstobj><b>firstObj(<i>cls</i>?,
+<i>flags</i>?)</b> </a>– returns the first object of class <i>cls</i>, or the
+first object in the entire program if <i>cls</i> is not specified.<span
+style="mso-spacerun: yes">  </span>This is used to start iterating over the set
+of all instances of a given class; use <a href="#nextobj">nextObj()</a> to
+continue the iteration..<span style="mso-spacerun: yes">  </span>The order in
+which objects are enumerated by firstObj() and nextObj() is arbitrary, but each
+object will be returned exactly once.<span style="mso-spacerun: yes"> 
+</span>Returns nil if there are no objects of the given class.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the <i>flags</i> argument is
+specified, it can a combination (with the '|' operator) of the following bit
+flags:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:.5in'>ObjInstances
+     – the function returns only instances, not &quot;class&quot; objects.<span
+     style="mso-spacerun: yes">  </span>This is the default.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:.5in'>ObjClasses
+     – the function returns only objects originally defined as &quot;class&quot;
+     objects.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:.5in'>ObjAll –
+     this is defined for convenience as (ObjInstances | ObjClasses).</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style='font-family:"Times New Roman"'>If the <i>flags</i> argument is omitted, only instances are enumerated, as though ObjInstances had been specified.<o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>getArg(<i>idx</i>)</b> – retrieve
+the given argument to the current function.<span style="mso-spacerun: yes"> 
+</span>The first argument is at index 1.<span style="mso-spacerun: yes"> 
+</span>The index must be in the range 1 to <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>argcount</span></tt>, or the function
+throws a run-time error (BAD_VAL_BIF).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=getFuncParams></a><b>getFuncParams(<i>funcptr</i>)
+– </b>returns information on the parameters taken by the given function.<span
+style="mso-spacerun: yes">  </span>The return value is a list with three
+elements:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-tab-count:1'>                    </span>returnValue[1]
+is the <i>minimum </i>number of arguments taken by the function;</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-tab-count:1'>                    </span>returnValue[2]
+is the number of additional <i>optional </i>arguments taken by the function;</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-tab-count:1'>                    </span>returnValue[3]
+is true if the function accepts any number of additional arguments, nil if not.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The second element gives the number
+of optional arguments; this element is always zero, because there is no way for
+a function to specify optional arguments.<span style="mso-spacerun: yes"> 
+</span>This element is included in the list specifically so that the list uses
+the same format as the <a href="t3objcl.htm#getPropParams">Object.getPropParams()</a>
+method.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the third element is true, it
+indicates that the function was defined with the &quot;...&quot; varying
+argument list notation.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=getMethodDefiner></a><b>getMethodDefiner()
+– </b>returns the object that defines the currently executing method.<span
+style="mso-spacerun: yes">  </span>The definer is the object that actually
+contains the method definition in the source code, so it is not necessarily the
+current &quot;self&quot; object. </p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>getTime(<i>timeType</i>?)</b> –
+returns the current system time, according to <i>timeType</i>.<span
+style="mso-spacerun: yes">  </span>If <i>timeType</i> is not specified,
+GetTimeDateAndTime is the default.<span style="mso-spacerun: yes">  </span>The
+valid <i>timeType</i> values are:</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo6;tab-stops:list .5in'>GetTimeDateAndTime
+     – returns the current system date and time as a list with the following
+     elements: [year, month, month_day, week_day, year_day, hour, minute,
+     second, timer].<span style="mso-spacerun: yes">  </span></li>
+ <ul style='margin-top:0in' type=circle>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      year is the AD year number (the full four-digit number – happily this
+      product released in 2000 is Y2K compliant)</li>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      month is the month number (January = 1, February = 2, etc.)</li>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      month_day is the day of the month (on March 13, this returns 13)</li>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      week_day is the day of the week (Sunday = 1, Monday = 2, etc.)</li>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      year_day is the day of the year (January 1 = 1, January 2 = 2, etc.)</li>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      hour is the hour of the day on a 24-hour clock (2:00 PM returns 14)</li>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      minute is the minute of the hour (2:35 PM returns 35)</li>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      second is the second of the minute (2:35:12 PM returns 12)</li>
+  <li class=MsoNormal style='mso-list:l3 level2 lfo6;tab-stops:list 1.0in'>The
+      timer is the number of seconds since January 1, 1970.</li>
+ </ul>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo6;tab-stops:list .5in'>GetTimeTicks
+     – returns the number of milliseconds since some arbitrary zero point.<span
+     style="mso-spacerun: yes">  </span>The precision of the timer varies by
+     system, so the fact that the return value is represented with millisecond
+     precision doesn't necessarily mean that the system is actually capable of
+     measuring time differences that precisely.<span style="mso-spacerun:
+     yes">  </span>The zero point is chosen as the time of the first call
+     during a VM session, which reduces the likelihood that the program will
+     ever encounter a timer rollover (i.e., the point at which the timer
+     exceeds the 31-bit precision of the integer return value and thus resets
+     back to zero), which occurs after about 23 days of continuous execution.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style="mso-spacerun:
+yes"> </span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=makeString></a><b>makeString(<i>val,
+repeatCount</i>?) – </b>construct a string by repeating the given value the
+given number of times.<span style="mso-spacerun: yes">  </span>The result of
+the function depends on the data type of <i>val</i>:</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo9;tab-stops:.5in'>If <i>val</i>
+     is a string, the return value is the given number of copies of the string
+     appended one after the other.<span style="mso-spacerun: yes">  </span>For
+     example, makeString('abc', 3) = 'abcabcabc'.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo9;tab-stops:.5in'>If <i>val</i>
+     is a list, the list must contain integers.<span style="mso-spacerun:
+     yes">  </span>Each integer in the list gives a Unicode character
+     value.<span style="mso-spacerun: yes">  </span>The function constructs a
+     string with the same number of characters as the list has elements, and
+     with each character of the string having the Unicode code point of the
+     corresponding integer in the list.<span style="mso-spacerun: yes"> 
+     </span>This string is then repeated the given number of times. <span
+     style="mso-spacerun: yes"> </span>For example, makeString([65,66,67]) =
+     'ABC'.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo9;tab-stops:.5in'>If <i>val</i>
+     is an integer, the function returns a string consisting of the single
+     Unicode character whose code point is given by the integer, repeated the
+     specified number of times.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo9;tab-stops:.5in'>Other types
+     are invalid.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'>If <i>repeatCount </i>is not
+specified, the default value is 1.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=nextobj><b>max(<i>val1, …</i>)
+– </b>returns the least argument value.<span style="mso-spacerun: yes"> 
+</span>The values must be of comparable types.</a></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:nextobj'><span
+style="mso-spacerun: yes"> </span></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:nextobj'><b>min(<i>val1,
+…</i>) – </b>returns the greatest argument value.<span style="mso-spacerun:
+yes">  </span>The values must be of types that can be compared with one
+another, or the function throws an error.</span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:nextobj'><span
+style="mso-spacerun: yes"> </span></span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:nextobj'><b>nextObj(<i>obj</i>,
+<i>cls</i>?, <i>flags</i>?)</b> </span>– get the next object after <i>obj</i>
+of class <i>cls</i>.<span style="mso-spacerun: yes">  </span>If <i>cls</i> is
+not specified, returns the next object of any type.<span style="mso-spacerun:
+yes">  </span>Returns nil if <i>obj</i> is the last object of class <i>cls</i>.<span
+style="mso-spacerun: yes">  </span>This is used (with <a href="#firstobj">firstObj()</a>)
+to iterate over all objects of a given class, or over all objects.<span
+style="mso-spacerun: yes">    </span>The order in which these functions
+enumerate objects is arbitrary, but each object will be returned exactly
+once.<span style="mso-spacerun: yes">  </span>The <i>flags</i> argument has the
+same meaning as it does in <a href="#firstobj">firstObj()</a>.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>rand(<i>x</i>, ...)</b> – returns
+a pseudo-random number or randomly selects a value from a set of values.<span
+style="mso-spacerun: yes">  </span>With a single integer argument, rand()
+generates a random integer from 0 to one less than the given value, inclusive,
+and returns the integer value; for example, rand(10) returns a value from 0 to
+9.<span style="mso-spacerun: yes">  </span>With a single list argument, rand()
+randomly selects one of the list elements and returns it.<span
+style="mso-spacerun: yes">  </span>With two or more arguments, rand() randomly
+selects one of the argument values and returns it; note, however, that <i>all</i>
+of the arguments are evaluated (and hence any side effects of those evaluations
+will occur).<span style="mso-spacerun: yes">  </span>In all cases, rand()
+chooses a number over the range uniformly, which means that each value in the
+desired range has equal probability.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>randomize()</b> – seeds the
+pseudo-random number generator with a value obtained in a system-dependent
+manner (in most cases, the seed value is based on the system clock).<span
+style="mso-spacerun: yes">  </span>If randomize() is never called, the random
+number generator will return the same sequence of numbers every time a program
+is run; when testing a program, this is often useful, since it means that the program's
+results are repeatable.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>restartGame()</b> – resets all
+objects (except <a href="t3obj.htm#transient">transient</a> objects) to their
+initial state, as they were when the program was just loaded.<span
+style="mso-spacerun: yes">  </span>Transient objects are not affected.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=restoreGame></a><b>restoreGame(<i>filename</i>)</b>
+– restore the saved state from the given file.<span style="mso-spacerun: yes"> 
+</span>All objects, except <a href="t3obj.htm#transient">transient</a> objects,
+are restored to the state they had when the state was saved to the given file.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If an error occurs, the function
+throws a run-time error.<span style="mso-spacerun: yes">  </span>The errno_
+property of the RuntimeError exception object gives a VM error code describing
+the problem; the possible errors are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo12;tab-stops:list .5in'>1201
+     – the file does not contain a saved state (it has some other type of data)</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo12;tab-stops:list .5in'>1202
+     – the state was saved by a different program, or by a different version of
+     the same program</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo12;tab-stops:list .5in'>1207
+     – the file is corrupted</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=rexGroup><b>rexGroup</b></a><b>(<i>group_num</i>)</b>
+– returns information on the group match for the last regular expression search
+or match.<span style="mso-spacerun: yes">  </span><i>group_num</i> is the
+number of the parenthesized group for which to retrieve the information; the
+first parenthesized expression in the most recent search expression is number
+1.<span style="mso-spacerun: yes">  </span>Returns nil if there is no such
+group or no match for the group.<span style="mso-spacerun: yes">  </span>If
+there's a match for the group, returns a three-element list: the character
+index of the group match within the original source string; the length of the
+group match; and the matching string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=rexMatch></a><b>rexMatch(<i>pat,
+str, index</i>?)</b> – tests <i>str</i> to see if the substring starting at
+index <i>index</i> matches the given regular expression <i>pat</i>, which can
+be given as a string using regular expression syntax, or as a <a
+href="t3rexpat.htm">RexPattern</a> object.<span style="mso-spacerun: yes"> 
+</span>If the leading substring of <i>str</i> matches the regular expression,
+the function returns the number of characters of the matching substring; if
+there is no match, the function returns nil.<span style="mso-spacerun: yes"> 
+</span>This does not search for a match, but merely determines if <i>str</i>
+matches the expression in its leading substring.<span style="mso-spacerun:
+yes">  </span>Note that a regular expression can successfully match zero
+characters, so a return value of zero is distinct from a return value of nil:
+zero indicates a match of zero characters, and nil indicates no match.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If <i>index</i> is given, it
+indicates the starting index for the match; index 1 indicates the first
+character in the string, and is the default if <i>index</i> is omitted.<span
+style="mso-spacerun: yes">  </span>This can be used to match a substring of <i>str</i>
+to the pattern without actually creating a separate substring value.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Refer to the <a href="t3regex.htm">regular
+expressions section</a> for details on how to construct a pattern string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=rexReplace></a><b>rexReplace(<i>pat,
+str, replacement, flags, index</i>?)</b> – replace one or more matches for the
+regular expression <i>pat</i> within <i>str</i>, starting at the character <i>index.</i>
+<span style="mso-spacerun: yes"> </span>Each match is replaced with the string <i>replacement</i>.<span
+style="mso-spacerun: yes">  </span>The return value is the resulting string
+with the substitutions applied.<span style="mso-spacerun: yes">  </span>The
+pattern <i>pat </i>can be given as a string using regular expression syntax, or
+as a <a href="t3rexpat.htm">RexPattern</a> object.<span style="mso-spacerun:
+yes">  </span>The <i>flags</i> value specifies whether to replace multiple
+occurrences or not: ReplaceOnce specifies that only the first match is to be
+replaced, and ReplaceAll specifies that all matches are to be replaced.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If <i>index</i> is given,
+replacements start with the first instance of the pattern at or after the
+character index position.<span style="mso-spacerun: yes">  </span>The first
+character is at index 1.<span style="mso-spacerun: yes">  </span>If <i>index</i>
+is omitted, the search starts at the first character.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <i>replacement</i> string is
+substituted for the original matching text of each match (or of the first match
+if ReplaceOnce is specified).<span style="mso-spacerun: yes">  </span>The
+original substring that matches the regular expression <i>pat</i> is removed
+from the string, and <i>replacement</i> is inserted at the same position.<span
+style="mso-spacerun: yes">  </span>The replacement text can include the special
+sequences '%1' through '%9' to indicate that the text that matches the
+corresponding parenthesized group in the regular expression should be
+substituted at that point.<span style="mso-spacerun: yes">  </span>'%1' is
+replaced by the original matching text of the first parenthesized expression,
+'%2' by the second group's matching text, and so on.<span style="mso-spacerun:
+yes">  </span>In addition, '%*' is replaced by the match for the entire regular
+expression.<span style="mso-spacerun: yes">  </span>(To substitute a single
+percent sign, you must use '%%', because of the special meaning of the percent
+sign in the replacement string.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Refer to the <a href="t3regex.htm">regular
+expressions section</a> for details on how to construct a pattern string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=rexSearch></a><b>rexSearch(<i>pat,
+str, index</i>?)</b> – searches for the regular expression <i>pat</i> in the
+string <i>str</i>, starting at the character position <i>index.</i><span
+style="mso-spacerun: yes">  </span>The pattern <i>pat </i>can be given as a
+string using regular expression syntax, or as a <a href="t3rexpat.htm">RexPattern</a>
+object.<span style="mso-spacerun: yes">  </span></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If <i>index</i> is given, it gives
+the starting character position in <i>str</i> for the search.<span
+style="mso-spacerun: yes">  </span>The first character is at index 1.<span
+style="mso-spacerun: yes">  </span>If <i>index</i> is omitted, the search
+starts with the first character.<span style="mso-spacerun: yes">  </span>The <i>index</i>
+value can be used to search for repeated instances of the pattern, by telling the
+function to ignore matches before the given point in the string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the function finds a match, it
+returns a list with three elements: the index within <i>str </i>of the first
+character of the matching substring (the first character in the string is at
+index 1); the length of the matching substring; and a string giving the
+matching substring. <span style="mso-spacerun: yes"> </span>If there is no match,
+the function returns nil.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Refer to the <a href="t3regex.htm">regular
+expressions section</a> for details on how to construct a pattern string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=saveGame></a><b>saveGame(<i>filename</i>)</b>
+– saves the state of all objects (except <a href="t3obj.htm#transient">transient</a>
+objects) to the given file.<span style="mso-spacerun: yes">  </span>If an error
+occurs, the function throws a run-time error to indicate the problem.<span
+style="mso-spacerun: yes">  </span>The saved state can later be restored using
+restoreGame().</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>savepoint()</b> – establish an
+undo savepoint.<span style="mso-spacerun: yes">  </span>Multiple savepoints can
+be established to mark multiple points in time.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>toInteger(<i>str</i>, <i>radix</i>?)</b>
+– convert the given string value to an integer.<span style="mso-spacerun:
+yes">  </span>If the <i>radix</i> value is specified, the conversion uses the
+given radix; only 8 (octal), 10 (decimal), and 16 (hexadecimal) are
+allowed.<span style="mso-spacerun: yes">  </span>If no <i>radix</i> is
+specified, the default is 10 (decimal).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the string contains the text 'nil'
+or 'true', the return values are nil and true, respectively.<span
+style="mso-spacerun: yes">  </span>Otherwise, the function skips any leading
+spaces in the string, then tries to parse a number in the given radix.<span
+style="mso-spacerun: yes">  </span>If the radix is 10, and the string (after
+leading spaces) starts with a dash, the function skips the dash and treats the
+number as negative; if the radix is 10, and the string starts with a plus sign,
+the function skips the plus sign.<span style="mso-spacerun: yes">  </span>The
+function then scans all following consecutive numerals in the given radix and
+returns the resulting integer value.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>toString(<i>val</i>,<i> radix</i>?)</b>
+– convert the given value to a string.<span style="mso-spacerun: yes"> 
+</span>If the value is an integer, and <i>radix</i> is specified, the value is
+converted using the given radix (2 for binary, 8 for octal, 10 for decimal, or
+16 for hexadecimal; other radix values below 37 are allowed as well, but these
+are the most common).<span style="mso-spacerun: yes">  </span>A decimal
+conversion is done using a signed interpretation of the number, so a negative
+value will be preceded by a dash in the result string; the number is treated as
+unsigned for any other radix.<span style="mso-spacerun: yes">  </span>If <i>radix</i>
+is not specified, the default radix is 10 (decimal).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the value is anything other than
+an integer, the <i>radix</i> value is ignored.<span style="mso-spacerun: yes"> 
+</span>If the value is a string, it is returned unchanged.<span
+style="mso-spacerun: yes">  </span>If the value is nil or true, the strings
+'nil' and 'true', respectively, are returned.<span style="mso-spacerun: yes"> 
+</span>For any other type, the function throws a run-time error (NO_STR_CONV).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>undo()</b> – undo changes to the
+most recent savepoint, as established with the savepoint() function.<span
+style="mso-spacerun: yes">  </span>Returns true if successful, nil if no more
+undo information is available.<span style="mso-spacerun: yes">  </span>This can
+be called repeatedly; each call undoes changes to the next most recent
+savepoint.<span style="mso-spacerun: yes">  </span>All changes affecting object
+state since the last savepoint are undone by this operation, except that <a
+href="t3obj.htm#transient">transient</a> objects are not affected.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,183 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3rexpat_files/filelist.xml">
+<title>The &quot;Object&quot; Intrinsic Class</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>4</o:Revision>
+  <o:TotalTime>52</o:TotalTime>
+  <o:Created>2002-08-28T05:26:00Z</o:Created>
+  <o:LastSaved>2002-08-28T05:31:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>479</o:Words>
+  <o:Characters>2732</o:Characters>
+  <o:Lines>22</o:Lines>
+  <o:Paragraphs>5</o:Paragraphs>
+  <o:CharactersWithSpaces>3355</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>The “RexPattern” Intrinsic Class</h3>
+
+<p class=MsoNormal>A RexPattern object stores the internal representation,
+known as the “compiled” version, of a <a href="t3regex.htm">regular expression</a>
+pattern.<span style="mso-spacerun: yes">  </span>The internal details of the
+compiled representation aren’t important, and the program can’t access the
+compiled data directly.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Every time the program performs a search involving a regular
+expression (using the <a href="t3tgen.htm#rexMatch">rexMatch</a>, <a
+href="t3tgen.htm#rexSearch">rexSearch</a>, or <a href="t3tgen.htm#rexReplace">rexReplace</a>
+functions), the system must work with the compiled form of the search
+pattern.<span style="mso-spacerun: yes">  </span>The simplest way to call these
+functions is to pass them a string giving the search pattern, but when the
+program does this, the system must compile the string, which converts the
+string to the internal representation.<span style="mso-spacerun: yes"> 
+</span>This compilation process is relatively time-consuming; typically, compiling
+the pattern takes about half the time involved in performing a regular
+expression search.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The purpose of the RexPattern class is to let the program
+perform this compilation work just once for a given pattern string, and then
+re-use the same compiled representation every time the program searches for the
+pattern.<span style="mso-spacerun: yes">  </span>If a given pattern is used
+repeatedly, this can improve the program’s efficiency by avoiding repeated
+compilation of the same pattern string.</p>
+
+<h3>RexPattern Creation</h3>
+
+<p class=MsoNormal>Creating a RexPattern object is simple: just use the “new”
+operator to create the object, giving the pattern string as the argument:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>local pat = new RexPattern('a.*b');</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This creates the pattern object and compiles the pattern
+string.<span style="mso-spacerun: yes">  </span>You can now use the object in
+the regular expression search and match functions (rexMatch, rexSearch,
+rexReplace) in place of the pattern string.<span style="mso-spacerun: yes"> 
+</span>The functions will behave exactly as though you had used the original
+pattern string, except that they will run somewhat more quickly, because they
+won’t need to compile the string.</p>
+
+<h3>Methods</h3>
+
+<p class=MsoNormal>The class provides the standard <a href="t3objcl.htm">Object</a>
+intrinsic class methods, plus the following:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>getPatternString() </b>– returns the original string used
+to create the object (i.e., the string passed as the argument in the “new”
+expression that created the object).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

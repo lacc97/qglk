@@ -267,13 +267,24 @@ set(TADS2_SOURCES
 add_executable(tads2-qglk
         ${TADS2_SOURCES}
 )
-    target_compile_definitions(tads2-qglk PRIVATE "-DOSANSI -DGLKUNIX -DGLK")
+    target_compile_definitions(tads2-qglk PRIVATE
+        OSANSI
+        GLKUNIX
+        GLK
+        memicmp=strncasecmp
+    )
     target_include_directories(tads2-qglk PRIVATE tads-3.0.8/tads2/ tads-3.0.8/tads2/glk ../src/)
     target_link_libraries(tads2-qglk qglk)
 
 add_executable(tads2-glkterm
         ${TADS2_SOURCES}
 )
-    target_compile_definitions(tads2-glkterm PRIVATE "-DOSANSI -DGLKTERM -DGLKUNIX -DGLK")
+    target_compile_definitions(tads2-glkterm PRIVATE
+        OSANSI
+        GLKTERM
+        GLKUNIX
+        GLK
+        memicmp=strncasecmp
+    )
     target_include_directories(tads2-glkterm PRIVATE tads-3.0.8/tads2/ tads-3.0.8/tads2/glk ../src/)
     target_link_libraries(tads2-glkterm glkterm)

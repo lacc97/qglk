@@ -1,0 +1,432 @@
+================================ VERSION 3.0 =================================
+
+================================ VERSION 3.1 =================================
+
+---------
+
+Add static File.deleteFile(filename), to delete a file from disk.
+This operation should require WRITE privileges (as determined by the
+file safety level setting) for the given file.
+
+---------
+
+Add a version of saveGame() and restoreGame() that use a ByteArray as
+the saved state medium.  save() would create and return a new
+ByteArray object containing the saved state (which must, of course,
+exclude the new ByteArray itself); restore() would take a ByteArray
+object and restore its contents as the current game state.
+
+For interface purposes, we could simply let saveGame() without an
+argument return a ByteArray, and restoreGame() could take a ByteArray
+as its argument.  Alternatively, saveGame() could take a pre-created
+ByteArray as its argument, and we'd fill in that ByteArray with the
+saved state (but we'd somehow have to make sure that this ByteArray
+was excluded from the saved state).
+
+(Implementation note: this is fairly straightforward, but some work.
+We first have to refactor CVmFileSave::save() and restore() to take
+CVmStream objects instead of CVmFile objects; this is fairly simple,
+but requires changes down through the whole save/restore stacks, which
+touch a lot of objects.  Then, where we currently call save/restore
+with CVmFile objects, wrap the CVmFile in a CVmFileStream and make the
+same call.  Finally, we'd have to create a new CVmStream subclass that
+operates on ByteArray objects, which should be a fairly easy mapping.
+It'd be worth making sure that changing CVmFile to CVmStream in
+save/restore doesn't balloon up the executable too much - this would
+introduce a ton of new virtual calls, because all of the CVmStream
+methods are virtual while the corresponding CVmFile methods are
+non-virtual.  It'd also be worth measuring any degradation in
+save/restore performance from all the new virtual calls.)
+
+---------
+
+Workbench: add a "ZIP source files" command that creates a .zip file
+containing all project source files and all necessary directories to
+compile.  The idea is that this file can be unzipped on another machine,
+and the project can then be built there without any further fuss.
+
+---------
+
+Store ALL objects as potential future pronoun antecedents when
+processing a multi-object command.  For example, when executing UNLOCK
+DOOR WITH KEY, store *both* the door and the key as potential
+antecedents for 'it'.  On using 'it' in a future command, look at all
+of the possible antecedents, and choose the most logical one -
+essentially treat the set of possible antecedents as though it were
+the set of matching objects for an indefinite noun phrase.  If there's
+more than one equally logical choice, choose one arbitrarily, the same
+way we would if the player typed TAKE ANY BOOK:
+
+>unlock door with key
+Unlocked.
+
+>drop it
+Dropped.           // refers to the key, since the door is illogical for DROP
+
+...but if the next command were this instead:
+
+>open it
+Opened.            // refers to the door, since the key is illogical for OPEN
+
+...and if it were this instead:
+
+>x it
+(the door)             // both door and key are equally logical, so choose
+It's a massive...      // one arbitrarily, and report the choice
+
+---------
+
+Debugger: display the current method (the top of the stack trace) in
+the status line.
+
+---------
+
+Debugger: add an option to skip over library code when stepping.  This
+could be a mode, or it could be a new 'step' command (alongside 'step
+in', 'step over', 'step out').  This would make it easier to isolate a
+bug in game code, and it would also clarify the control flow through
+the sequence of game-provided entrypoints.
+
+The main question in implementing this is how exactly to define
+'library' code for the purposes of this new form of stepping.  Library
+code could be defined as anything from a .tl file, or as any source
+file under the system directory tree, or as files designated as such
+manually (with a right-click on a file in the project tree, say).
+
+---------
+
+Can we rephrase the UNDO command results so that they reflect the logical
+command rather than the actual text typed in?  Something like:
+
+ >undo
+ Taking back: attack the troll with the sword
+
+(For commands involving multiple objects, this could get cumbersome, since
+we probably wouldn't be able to easily reconstruct the original ALL or
+plural usage, but would instead list all of the objects.)
+
+---------
+
+Maybe use <.Q> rather than <Q> in msg_neu and en_us, to allow customization
+of quote styles.
+
+---------
+
+Add a global compiler options setting to workbench?
+
+---------
+
+Add a general "warning check" mechanism to the library.  This would
+be an add-on module that would encapsulate a bunch of checks for
+common pitfalls, using reflection mechanisms to display warnings.
+Authors could optionally compile with this module from time to time
+to check for common errors.  This would only be of interest to
+authors during development, of course - it would always be removed
+for the final build for release.  (This came up in the context of
+checking for default Container objects when using the liquid add-on
+library.  It would be nice to have a generic mechanism, or at least
+some coding patterns to follow, that would simplify adding this kind
+of warning check.)
+
+---------
+
+For ResolvedTopic, it might be nice to ask for disambiguation for
+in-scope objects if there are more than one, especially if this were
+parameterized.
+
+---------
+
+Menu-based conversation framework
+
+---------
+
+For travel, add a check to see if the actor fits through the passage.
+This should ideally be implemented using a precondition that would
+check the actor's bulk to ensure it's below a maximum.  The actor
+would have a chance to reduce its bulk via a tryReducingBulk call,
+perhaps - this would let the actor do something obvious like close
+an umbrella.
+
+---------
+
+For travel, add a check for excessive encumbering bulk or weight.
+This could be used for things like climbing ropes or walking across a
+rickety bridge.  For excessive encumbrance, the actor could use the
+standard tryMakingRoomToHold mechanism to reduce held bulk.  For
+excessive weight, this is probably just a connector-specific check
+and message on failure, so there might not be much we can do in the
+library other than make sure the framework is in place.
+
+---------
+
+Weapons (attack with)
+
+---------
+
+flammability as a mix-in (for paper, wood, and the like)
+
+---------
+
+Liquids and bottles
+
+---------
+
+Drinkables (special kind of liquid)
+
+---------
+
+Probably need a variation of objHeld for liquids that lets us specify
+that we need to be holding the container of the liquid (for 'pour',
+for example).  containerHeld?  Or, we could do like we do with keys
+on keyrings, and consider a liquid within a container being held to
+be itself held.
+
+---------
+
+If we have a bucket or some other container filled with liquid, and
+we try to put another item into the bucket, we should run a special
+check for wetting the item.  The default should probably just be to
+say "you don't want to get that wet" and refuse the command.
+Similarly, "fill bucket" when the bucket contains non-liquid objects
+should run the same checks.
+
+---------
+
+Burning and liquids: wetting a burning item with a non-flammable
+liquid should extinguish the flame.
+
+---------
+
+Burning and liquids: provide a flammable liquid class.  This should
+consume the liquid at a particular rate while burning.  The basic
+flammable fuel consumption mechanism should be used here if possible.
+
+---------
+
+Provide an extensible "chemistry" framework for combining different
+kinds of liquids.
+
+Perhaps we could define an object to represent the operation of
+combining each pair of liquid classes - this class doesn't represent
+the mixture, but rather the operation of mixing.  So, for example, we
+define an object for the operation of mixing water and liquid
+nitrogen.
+
+Each of mixing object must define a method that is called when its
+pair of liquids are mixed; this method encapsulates the action of
+mixing the liquids.  Use a global lookup table of these objects,
+keyed by liquid class pairs; when we want to mix two liquids, we look
+up the pair of liquid classes to be mixed and find the mixer object,
+then call its mixer method. 
+
+---------
+
+Putting a container with liquid into another container in inventory
+should have some conditions attached.  First, an openable liquid
+container should be closed whenever moving it into a sub-container
+(so a bottle of water should be closed before putting it in your
+backpack) to avoid spilling.  Second, a container that can't be
+closed should probably not be allowed to be moved to a sub-container.
+Third, taking or otherwise moving any item should probably be
+disallowed if the item contains an open container of liquid.
+
+---------
+
+Pouring a liquid onto the floor, into a container that isn't set up
+as a container for liquids, onto a surface, or onto an arbitrary
+object should all do something reasonable.  It's unclear what to do
+in general; the easiest thing would be for the liquid evaporate
+immediately, but that's not all that realistic.  Pouring liquid onto
+an arbitrary object should probably call the object's
+notify-getting-wet method, just as though the object were in a
+container being filled (although we might want to differentiate
+between submerging and dousing, maybe just via a flag to the
+notify-getting-wet method), but then something needs to happen to the
+liquid, even if the thing that happens is simply evaporation.
+
+---------
+
+Leaky containers: when a leaky container has liquid added, it should
+set up a daemon to cause it to leak slowly.  The liquid leaking out
+should do whatever liquid does when poured into the leaky object's
+enclosing location.
+
+---------
+
+Absorbent materials: these should retain a quantity of liquid as
+though they were a liquid container, allowing the absorbed liquid to
+be recovered by squeezing the object.
+
+---------
+
+Ropes, to the extent they can be generalized
+
+---------
+
+In two-object actions (including topic and literal actions), when
+both objects are missing, we might want to consider some alternative
+way to specify which object we ask for first.  This might vary
+by language, so it might be better to have an action property that
+specifies which goes first when both are missing.  Or maybe this is
+the same as resolution order, or opposite of the resolution order,
+or something.
+
+---------
+
+OBJECTS command - list all portable objects that have been seen, and
+the last location where they were seen
+
+---------
+
+It seems like it should be possible to talk to an actor in situations
+when the actor is audible only, such as in the dark.  But how do we
+initiate contact if we don't see the actor?
+
+1 - broadcast a greeting:  
+
+>hello
+Bob says, "Is that you?  I can't see anything."
+
+2 - try talking to a specific actor:  
+
+>bob, hello
+
+This doesn't seem very good because we need to have a way of knowing
+Bob is present in order to talk to him.
+
+3 - the actor hears you come in and says he's present:
+
+>n
+In the Dark
+It's pitch black.
+
+In the darkness, you hear Bob.  "Is that you?" he asks.
+
+---------
+
+Add new syntax:
+
+  x.delegated y.prop(args)
+
+This syntax explicitly targets 'y' with self as 'x'.  This differs from
+the regular 'delegated y.prop()' in that the latter can only set 'self'
+in the delgatee to 'self' in the delegating method.
+
+Or, perhaps we could take this one step further, by allowing the
+target object, self, *and* defining object to be independently specified.
+Something like
+
+  x.delegated y.inherited z.prop(args)
+
+
+This would set self to x, target object to y, and defining object to
+z, then try to find the method in z.  If the method doesn't exist in
+z, we should probably throw an error rather than try to inherit from
+there, since this is so fully specified already.
+
+We would need a new opcode for each case.  The first would require an
+opcode with the new self, the target object, and the target property
+as operands; the second would require those operands plus another for
+the defining object.  We could have two variations of each opcode
+(one with a fixed property ID and the other with a property pointer
+operand from the stack), or we could presume that the operands would
+be rarely used and define only the property pointer version (it would
+be less efficient for cases with a static property ID, but if the
+opcode is rarely used, this extra cost shouldn't be important).
+
+---------
+
+Add a Set intrinsic class?  (For unordered lists, optimized for inclusion
+testing: essentially a LookupTable with only the keys.)
+
+---------
+
+Soft linking:
+
+   local x = ifdef(obj);  // if obj is linked in, return obj, else nil
+
+   replace ifdef obj ...  // same as a new object def if obj isn't linked in
+
+   modify ifdef obj ...   // ignored if obj isn't linked in
+
+---------
+
+List methods: add compare funcs to more methods:
+   - intersect
+   - getUnique
+   - appendUnique
+
+likewise:
+   - Array.getUnique
+   - Array.appendUnique
+   - Vector.getUnique
+   - Vector.appendUnique
+
+---------
+
+Compiler: equivalent property list syntax: 
+
+  a, b = foo
+  c, d(x) { bar }
+
+---------
+
+Add items that are by themselves ambiguous?  This might be interesting
+for things like PO Boxes:
+
+>look in box
+Which box do you mean, the cardboard box, or a mail box?
+
+>mail box
+Which mail box do you mean?  They're numbered from 23000 to 23999.
+
+>23001
+Box 23001 seems to be locked.
+
+This could be accomplished with an isAmbiguous flag in the object,
+which would be similar in effect to isEquivalent.  Whenever the object
+shows up in a list with multiple objects, we use an indefinite article
+with it, as though it were one of a bunch of equivalent items.  When
+the object shows up by itself, we ask a single-object disambig
+question, perhaps by calling a method on the object itself -
+disambigPrompt?
+
+Ultimately, matchName() and matchNameDisambig() would be responsible
+for coming up with a specific object based on the noun phrase.
+
+---------
+
+repeated messages: gather up and group defaults?
+
+---------
+
+Sound defaults.  Add a background sound resource property to each
+object.  On each turn, the library scans for all objects in hearing
+range and plays the associated background sound for each one.  Could
+have near/far/obscured versions, or maybe simply adjust the volume,
+or whatever.
+
+---------
+
+Graphics defaults.  Add a graphic resource property to each room and
+item.  On "look" and "examine", display the associated graphic as
+part of the default room/item description.  It would be especially
+nice to have a choice of presentation styles, maybe even including a
+Legend-style split-screen interface (but that might be more
+appropriate as an add-on; even so, it would be good to keep it in
+mind so that the necessary hooks are there for creating a
+Legend-style presentation add-on).
+
+---------
+
+Add a music soundtrack scheme that simplifies management of background
+music.
+
+---------
+
+Look into formally structuring things into try/check method pairs
+(checkHolding/tryHolding, etc), to make precondition implementation
+more consistent and clear.  This would apply most to the
+preconditions.
+
+

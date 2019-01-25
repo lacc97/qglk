@@ -1,0 +1,414 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3objcl_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>23</o:Revision>
+  <o:TotalTime>56</o:TotalTime>
+  <o:Created>2000-03-25T20:42:00Z</o:Created>
+  <o:LastSaved>2003-08-16T18:22:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>1146</o:Words>
+  <o:Characters>6536</o:Characters>
+  <o:Lines>54</o:Lines>
+  <o:Paragraphs>13</o:Paragraphs>
+  <o:CharactersWithSpaces>8026</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:633565553;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1728127736 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:633943682;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1865492616 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>The &quot;Object&quot; Intrinsic Class</h3>
+
+<p class=MsoNormal>Every object in a running program, including objects your
+program defines via &quot;object&quot; and &quot;class&quot; definitions and
+instances of intrinsic classes, ultimately derives from the intrinsic class
+&quot;Object.&quot;</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You can never instantiate Object directly, since this is an
+&quot;abstract&quot; class.<span style="mso-spacerun: yes">  </span>However,
+since every object is a subclass of Object, every object in the system inherits
+the methods defined by Object.</p>
+
+<h3>&quot;Object&quot; Class Methods</h3>
+
+<p class=MsoNormal>The Object class defines a number of methods that can be
+used with any object.<span style="mso-spacerun: yes">  </span>Most of these
+methods are related to the the relationships between objects and classes.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=getSuperclassList></a><b>getSuperclassList()</b>
+– returns a list containing the immediate superclasses of the object.<span
+style="mso-spacerun: yes">  </span>The list contains only the object's direct
+superclasses, which are the superclasses that were explicitly listed in the
+object's declaration for static objects, or the class used with the
+&quot;new&quot; operator for dynamic objects.<span style="mso-spacerun: yes"> 
+</span>This function returns an empty list for an object with no
+superclass.<span style="mso-spacerun: yes">  </span>For an object with more
+than one direct superclass, the list contains the superclasses in the same
+order in which they were specified in the object's declaration.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>For example, consider these
+definitions:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class A: object;</pre><pre>class B: object;</pre><pre>class C: B;</pre><pre>myObj: C, A;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The result of
+myObj.getSuperclassList() will be the list [C, A].<span style="mso-spacerun:
+yes">  </span>Note that class B is not included in the list, because it is not
+a <i>direct </i>superclass of myObj, but is a superclass only indirectly
+through class C.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=ofKind></a><a
+name=getPropList></a><b>getPropList() – </b>returns a list of the properties
+directly defined by this object.<span style="mso-spacerun: yes">  </span>Each
+entry in the list is a property pointer value.<span style="mso-spacerun: yes"> 
+</span>The returned list contains only properties <i>directly </i>defined by
+the object; inherited properties are not included, but may be obtained by
+explicitly traversing the superclass list and calling this method on each
+superclass.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=getPropParams></a><b>getPropParams(<i>prop</i>)
+– </b>returns information on the parameters taken by the given property or
+method of this object.<span style="mso-spacerun: yes">  </span>The return value
+is a list with three elements:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-tab-count:1'>                    </span>returnValue[1]
+is the <i>minimum </i>number of arguments taken by the method;</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-tab-count:1'>                    </span>returnValue[2]
+is the number of additional <i>optional </i>arguments taken by the method;</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-tab-count:1'>                    </span>returnValue[3]
+is true if the method accepts any number of additional arguments, nil if not.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The second element gives the number
+of optional arguments; only intrinsic methods will ever yield a non-zero value
+for this element, because regular methods cannot specify optional
+arguments.<span style="mso-spacerun: yes">  </span>For example, the substring()
+method of the String intrinsic class can take either one or two arguments, so
+its return list is [1, 1, nil], indicating that the function takes a minimum of
+one argument, can take one additional optional argument, but does not take an
+unlimited varying argument list after those arguments.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the third element is true, it
+indicates that the method was defined with the &quot;...&quot; varying argument
+list notation.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the property is not defined for
+the object, the method returns [0, 0, nil], because it is valid to invoke the
+property with no arguments in this case.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>isClass() – </b>returns true if
+the object was declared as a &quot;class&quot;, nil otherwise.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>isTransient() – </b>returns true
+if the object is transient, nil otherwise.<span style="mso-spacerun: yes"> 
+</span>A transient object is one that was created with &quot;new transient <i>classname</i>&quot;,
+or with a class-specific method that creates transient instances (such as
+TadsObject.createTransientInstance() or TadsObject.createTransientInstanceOf()).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>ofKind(<i>cls</i>) – </b>determines
+if the object is an instance of the class <i>cls</i>, or an instance of any
+subclass of <i>cls</i>.<span style="mso-spacerun: yes">  </span>Returns true if
+so, nil if not.<span style="mso-spacerun: yes">  </span>This method always
+returns true if <i>cls</i> is Object, since every object ultimately derives
+from the Object intrinsic class.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=propDefined></a><b>propDefined(<i>prop</i>,<i>
+flags</i>?)</b> – determines if the object defines or inherits the property <i>prop</i>
+(a property pointer value – specify this by applying an ampersand
+(&quot;&amp;&quot;) to a property name), according to the <i>flags</i>
+value.<span style="mso-spacerun: yes">  </span>If <i>flags</i> is not
+specified, a default value of PropDefAny is used.<span style="mso-spacerun:
+yes">  </span>The valid <i>flags</i> values are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>PropDefAny
+     – the function returns true if the object defines or inherits the
+     property.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>PropDefDirectly
+     – the function returns true only if the object directly defines the
+     property; if it inherits the property from a superclass, the function
+     returns nil.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>PropDefInherits
+     – the function returns true only if the object inherits the property from
+     a superclass; if it defines the property directly, the function returns
+     nil.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>PropDefGetClass
+     – the function returns the superclass object from which the property is
+     inherited, or this object if the object defines the property
+     directly.<span style="mso-spacerun: yes">  </span>If the object doesn't
+     define or inherit the property, the function returns nil.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b>propInherited(<i>prop, origTargetObj, definingObj, flags?</i>)
+– </b>determines if the object inherits the property <i>prop</i> (a property
+pointer value).<span style="mso-spacerun: yes">  </span><i>origTargetObj </i>is
+the &quot;original target object,&quot; which is the object on which the method
+was <i>originally</i> invoked; that is, it's the object on the left-hand side
+of the &quot;.&quot; operator in the expression that originally invoked the
+method.<span style="mso-spacerun: yes">  </span><i>definingObj</i> is the
+&quot;defining object,&quot; which is the object defining the method which will
+be inheriting the superclass implementation.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The return value depends on the value of the <i>flags</i>
+argument:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo6;tab-stops:list .5in'>PropDefAny
+     – the function returns true if the object inherits the property.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo6;tab-stops:list .5in'>PropDefGetClass
+     – the function returns the class object from which the property is
+     inherited, or nil if the property is not inherited.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This method is most useful for determining if the currently
+active method will invoke an inherited version of the method if it uses the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+operator; this is done by passing <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>targetprop</span></tt> for the <i>prop</i>
+parameter, <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>targetobj</span></tt> for the <i>origTargetObj</i>
+parameter, and <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>definingobj</span></tt> for the <i>definingObj</i>
+parameter.<span style="mso-spacerun: yes">  </span>When a class is designed as
+a &quot;mix in&quot; (which means that the class is designed to be used with
+multiple inheritance as one of several base classes, and adds some isolated
+functionality that is &quot;mixed&quot; with the functionality of the other
+base classes), it sometimes useful to be able to check to see if the method is
+inherited from any other base classes involved in multiple inheritance.<span
+style="mso-spacerun: yes">  </span>This method allows the caller to determine
+exactly what <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>inherited</span></tt> will do.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that the inheritance order is deterministic (i.e., it
+will always be the same for a given situation), and that it depends on the full
+class tree of the original target object.<span style="mso-spacerun: yes"> 
+</span>For example, suppose we have a set of class definitions like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>class A: object<span style="mso-spacerun: yes">  </span>x() { &quot;A.x\n&quot;; inherited(); }</pre><pre><span style="mso-spacerun: yes">  </span>class B: object<span style="mso-spacerun: yes">  </span>x() { &quot;B.x\n&quot;; inherited(); }<br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></pre><pre><span style="mso-spacerun: yes">  </span>class C: B, A<span style="mso-spacerun: yes">    </span>x() { &quot;C.x\n&quot;; inherited(); }</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Now suppose we run some code like so:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>new B().x();</pre><pre><span style="mso-spacerun: yes">  </span>new C().x();</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The first line will simply display &quot;B.x&quot;.<span
+style="mso-spacerun: yes">  </span>B inherits directly from TadsObject, so when
+B.x() calls inherited(), it will find no definition of x() in any base class
+(since TadsObject doesn't define it), so inherited() will do nothing.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The second line, however, will display this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>C.x</pre><pre><span style="mso-spacerun: yes">  </span>B.x</pre><pre><span style="mso-spacerun: yes">  </span>A.x</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>So, even though the call to inherited() in B.x() went
+straight to TadsObject when B.x() was invoked from the first line above, the same
+call to inherited() in B.x() proceeds to A.x() when invoked from the second
+line above.<span style="mso-spacerun: yes">  </span>The difference is that C
+inherits from both B and A.<span style="mso-spacerun: yes">  </span>B is the
+first superclass, so the call to inherited() in C.x() proceeds to B.x().<span
+style="mso-spacerun: yes">  </span>But C <i>also</i> inherits from A, and the
+superclass order is defined so that A comes after B in C's superclass
+list.<span style="mso-spacerun: yes">  </span>So, the call to inherited() in
+B.x() proceeds to A.x() this time, since that's the next superclass in
+inheritance order for the original target object.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name="prop_type"><b>propType(<i>prop</i>)</b>
+</a>– returns the datatype of the given property of the given object, or nil if
+the object does not define or inherit the property.<span style="mso-spacerun:
+yes">  </span>This function does <i>not</i> evaluate the property, but merely
+determines its type.<span style="mso-spacerun: yes">  </span>The return value
+is one of the <a href="t3type.htm">TYPE_xxx values</a>.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,418 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3cset_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>25</o:Revision>
+  <o:TotalTime>98</o:TotalTime>
+  <o:Created>2001-06-08T06:39:00Z</o:Created>
+  <o:LastSaved>2003-05-10T18:49:00Z</o:LastSaved>
+  <o:Pages>3</o:Pages>
+  <o:Words>1553</o:Words>
+  <o:Characters>8853</o:Characters>
+  <o:Lines>73</o:Lines>
+  <o:Paragraphs>17</o:Paragraphs>
+  <o:CharactersWithSpaces>10872</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:781992230;
+	mso-list-type:hybrid;
+	mso-list-template-ids:884527458 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:890654319;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-2014961696 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>The CharacterSet Intrinsic Class</h3>
+
+<p class=MsoNormal>TADS 3 uses the Unicode character set to represent all
+strings internally.<span style="mso-spacerun: yes">  </span>Unicode is an
+international standard that was designed to be capable of representing, in a
+single character set, characters from every natural language in use throughout
+the world.<span style="mso-spacerun: yes">  </span>Since most computers use
+other character sets for the display, keyboard, and file system, though, it is
+often necessary to translate strings between the Unicode characters that TADS
+uses internally and the coding systems.<span style="mso-spacerun: yes"> 
+</span>In almost all cases, TADS performs this translation automatically; when
+you display a string, for example, TADS translates the string to the display
+character set, and when you read a string from the keyboard, TADS translates
+the local character encoding to Unicode in the returned string.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In some cases, though, it's useful to be able to translate
+characters to and from Unicode, or from one local character set to another,
+under explicit program control.<span style="mso-spacerun: yes">  </span>For
+these situations, TADS provides the CharacterSet intrinsic class.<span
+style="mso-spacerun: yes">  </span>This class encapsulates a &quot;character
+mapping,&quot; which defines the correspondences between local character codes
+and Unicode character codes.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To create a CharacterSet object, you use the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>new</span></tt>
+operator, specifying the name of the character set you want to translate to or
+from:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>local cs = new CharacterSet('us-ascii');</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The CharacterSet object can then be
+used to specify the encoding to use for explicit character translations.<span
+style="mso-spacerun: yes">  </span>You can use a CharacterSet in these
+situations:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     can specify the encoding of a text file you are reading or writing, by
+     passing the CharacterSet to the <tt><span style='font-family:"Courier New";
+     mso-bidi-font-family:"Times New Roman"'><a href="t3tadsio.htm#fileOpen">fileOpen()</a></span></tt>
+     function.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     can specify the interpretation of raw bytes in a ByteArray by passing the
+     CharacterSet to the <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+     "Times New Roman"'><a href="t3bytarr.htm#mapToString">mapToString</a></span></tt>
+     method.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     can specify how to encode a string into raw bytes by passing the
+     CharacterSet to the <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+     "Times New Roman"'><a href="t3str.htm#mapToByteArray">mapToByteArray</a></span></tt>
+     method of a string.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In addition, CharacterSet provides a
+few methods that let you get information about the character mapping it
+describes.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note: when using the CharacterSet
+class, you should #include the system header file &quot;charset.h&quot;.</p>
+
+<h3 style='tab-stops:.5in'>Built-In And External Character Mappings</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>TADS 3 has several pre-defined character
+mappings built in to the system:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo6;tab-stops:list .5in'>'US-ASCII'
+     – the 7-bit ASCII character set.<span style="mso-spacerun: yes"> 
+     </span>This &quot;least common denominator&quot; character set is
+     available on practically every modern computer.<span style="mso-spacerun:
+     yes">  </span>Most computers extend this set by adding an additional set
+     of accented letters and punctuation, but the extended sets vary by
+     operating system and localization.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo6;tab-stops:list .5in'>'ISO-8859-1'
+     – the ISO 8859-1 character set, also known as ISO Latin-1.<span
+     style="mso-spacerun: yes">  </span>This is an 8-bit character set that
+     contains the ASCII characters plus a set of punctuation and accented
+     letters for Western European languages.<span style="mso-spacerun: yes"> 
+     </span>This character set is not supported on all computers, but it has
+     become widely supported because of its status as the default character set
+     for HTTP.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo6;tab-stops:list .5in'>'UTF-8'
+     – the Unicode UTF-8 encoding.<span style="mso-spacerun: yes">  </span>This
+     encoding represents each 16-bit Unicode character as one, two, or three
+     bytes; it is designed to be especially compact when coding strings that
+     consist mostly of the ASCII subset of Unicode.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo6;tab-stops:list .5in'>'UTF-16BE'
+     – the 16-bit Unicode character set, in &quot;big endian&quot;
+     representation: this means that each 16-bit character is encoded in a pair
+     of 8-bit bytes, with the more significant byte first.</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo6;tab-stops:list .5in'>'UTF-16LE'
+     – the 16-bit Unicode character set, in &quot;little endian&quot;
+     representation: : this means that each 16-bit character is encoded in a
+     pair of 8-bit bytes, with the more significant byte first.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The character sets above are
+available on every TADS 3 interpreter.<span style="mso-spacerun: yes"> 
+</span>In addition, TADS has a mechanism that allows new character set
+definitions to be added with external mapping files – see the <a
+href="t3cmap.htm">Character Mapping documentation</a> for details.<span
+style="mso-spacerun: yes">  </span>You can use any character set for which an
+external mapping file exists on the local system, simply by using the mapping
+name in the CharacterSet constructor.<span style="mso-spacerun: yes"> 
+</span>(However, don't use the &quot;.tcm&quot; or other filename suffix – just
+use the plain mapping name.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The standard TADS 3 distribution
+includes a full suite of external character mapping files, including all of the
+8-bit Windows, MS-DOS, and Macintosh code pages, and the ISO Latin-1 through Latin-10
+character sets.<span style="mso-spacerun: yes">  </span>This standard suite is
+normally included with all distributions on all TADS 3 platforms, but
+individual platforms may add or delete some of these standard encodings, so it's
+best not to assume that a mapping is present just because it's in the standard
+suite.<span style="mso-spacerun: yes">  </span>You can check at run-time to see
+if a given mapping is available using the isMappingKnown() method.</p>
+
+<h3 style='tab-stops:.5in'>Unknown Character Mappings</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can create a CharacterSet object
+that refers to a character mapping that doesn't exist on the local system.<span
+style="mso-spacerun: yes">  </span>This is legal and will not cause any errors
+at the time you create the object; however, if you try to use the object to
+perform any character mapping, an exception – UnknownCharSetException – will be
+thrown.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can check to see if a character
+mapping is known by calling the isMappingKnown() method after creating the
+CharacterSet object.<span style="mso-spacerun: yes">  </span>If this method
+returns true, the character set is known and you can use it to perform
+character mapping.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>It is legal to create a CharacterSet
+referring to an unknown mapping because it would otherwise be impossible to
+save the state of a program that contains a CharacterSet object and then
+restore the state on another computer without the same character mappings.</p>
+
+<h3 style='tab-stops:.5in'>CharacterSet Methods</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>getName() – </b>returns a string
+giving the name of the character set.<span style="mso-spacerun: yes"> 
+</span>This is the same as the name that was used to create the character set
+object.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>isMappable(<i>val</i>) – </b>returns
+true if the character or characters <i>val</i>, which can be given as an
+integer (giving a Unicode character value) or a string of characters, can be
+mapped to characters in the character set, nil if not.<span
+style="mso-spacerun: yes">  </span>If <i>val</i> is a string, the method
+returns true only if <i>all</i> of the characters in the string can be mapped.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that it is legal to map a string
+even if it contains unmappable characters, because the mapping process will
+simply map any unmappable characters to the &quot;default&quot; character
+defined in the character mapping.<span style="mso-spacerun: yes">  </span>The
+default character varies by character set – it's part of the Unicode-to-local
+mapping definition – but it usually indicates visually that a character is
+missing; in some character sets it looks like an empty rectangle, and in others
+it's simply a question mark.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>isMappingKnown() – </b>returns
+true if the character set has a known mapping, nil if not.<span
+style="mso-spacerun: yes">  </span>If this returns nil, any attempts to map
+characters using the object will throw a CharacterSetUnknownException.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>IsRoundTripMappable(<i>val</i>) – </b>returns
+true if the character or characters <i>val</i>, which can be given as an
+integer (giving a Unicode character value) or a string of characters, can be
+mapped to the local character set and then back to Unicode again with no loss
+of information.<span style="mso-spacerun: yes">  </span>In other words, if
+converting <i>val</i> to the local character set and then converting it back to
+Unicode yields the original set of characters in <i>val</i>, then <i>val</i>
+has a round-trip mapping.<span style="mso-spacerun: yes">  </span>The existence
+of a round-trip mapping generally means that the characters in <i>val</i> have
+an exact representation in the local character set, as opposed to an
+approximation.<span style="mso-spacerun: yes">  </span>Approximations require
+either multiple local characters being used to represent a single local
+character, or a visually similar glyph being used as a graphical
+approximation.<span style="mso-spacerun: yes">  </span>In the case of a mapping
+to multiple local characters, a round-trip mapping is inherently impossible
+because the string of multiple local characters will always map back to
+multiple Unicode characters, hence mapping to local and back will not yield the
+original string.<span style="mso-spacerun: yes">  </span>Graphical
+approximations are usually achieved by mapping an accented Unicode character to
+an unaccented local character (such as a mapping from an &quot;a&quot; with an
+acute accent to a plain, unaccented &quot;a&quot;); these usually don't have
+round-trip mappings because the unaccented local character usually maps back to
+the unaccented Unicode character.</p>
+
+<h3 style='tab-stops:.5in'>Examples</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Example 1:</b><span
+style="mso-spacerun: yes">  </span><b>Using a CharacterSet to determine if the
+local machine is capable of displaying Cyrillic characters.<o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<pre><span style='font-family:"Times New Roman"'>If you're writing a game in Russian, you would probably want to make sure the player's computer is capable of displaying Cyrillic characters – if it weren't, the player probably wouldn't be able to read most of the text in your game.<span style="mso-spacerun: yes">  </span>You can do this by creating a CharacterSet object for the local system's display character set, and then testing a string of characters for mappability with the isMappable() method.<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>#include &lt;tads.h&gt;<br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></pre><pre><span style="mso-spacerun: yes">  </span>#include &lt;charset.h&gt;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>testCyrillic(args)</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>/* get the local display character set */</pre><pre><span style="mso-spacerun: yes">    </span>local cs = new CharacterSet(getCharacterSet(CharsetDisplay));</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/*</pre><pre><span style="mso-spacerun: yes">     </span>*<span style="mso-spacerun: yes">  </span>Check a few representative Cyrillic alphabetic characters</pre><pre><span style="mso-spacerun: yes">     </span>*<span style="mso-spacerun: yes">  </span>(see <a
+href="http://charts.unicode.org/Web/U0400.html">http://charts.unicode.org/Web/U0400.html</a>)</pre><pre><span style="mso-spacerun: yes">     </span>*/</pre><pre><span style="mso-spacerun: yes">    </span>if (cs.isMappable('\u0410\u0411\u041a\u042f\0430\0431\u044f'))</pre><pre><span style="mso-spacerun: yes">      </span>&quot;Warning: This game uses Cyrillic characters.<span style="mso-spacerun: yes">  </span>Your system</pre><pre><span style="mso-spacerun: yes">      </span>does not appear to be localized for Russian, so the text</pre><pre><span style="mso-spacerun: yes">      </span>in this game might not display properly.<span style="mso-spacerun: yes">  </span>You might need</pre><pre><span style="mso-spacerun: yes">      </span>to adjust your system localization settings to display</pre><pre><span style="mso-spacerun: yes">      </span>Cyrillic characters before you can play this game.<span style="mso-spacerun: yes">  </span>If</pre><pre><span style="mso-spacerun: yes">      </span>you change your localization settings, please close and</pre><pre><span style="mso-spacerun: yes">      </span>then re-start the game to ensure the new settings are used.&quot;;</pre><pre><span style="mso-spacerun: yes">  </span>}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Example 2:<span
+style="mso-spacerun: yes">  </span>Translating a file from one character set to
+another.</b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This isn't a very typical situation
+for most games, but suppose you wanted to write a program that reads a text
+file that was saved in one character set and save it in a different character
+set – say, translate the file from the Macintosh Roman character set to ISO
+Latin-1.<span style="mso-spacerun: yes">  </span>To do this, you would need a
+Mac Roman mapping definition on your computer, because this isn't one of the
+built-in character sets; assuming we had this mapping file (let's say it's
+called &quot;MacRoman.tcm&quot;), we could perform the translation quite easily
+using the text file functions.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>#include &lt;tads.h&gt;<br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></pre><pre><span style="mso-spacerun: yes">  </span>translate(inFileName, outFileName)</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>local inFile, outFile;</pre><pre><span style="mso-spacerun: yes">    </span>local csMac, csISO;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* create the character set objects */</pre><pre><span style="mso-spacerun: yes">    </span>csMac = new CharacterSet('MacRoman');</pre><pre><span style="mso-spacerun: yes">    </span>csISO = new CharacterSet('iso-8859-1');</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* open the files */</pre><pre><span style="mso-spacerun: yes">    </span>inFile = fileOpen(inFileName, 'rt', csMac);</pre><pre><span style="mso-spacerun: yes">    </span>outFile = fileOpen(outFileName, 'wt', csISO);</pre><pre><span style="mso-spacerun: yes">    </span>if (inFile == nil || outFile == nil)</pre><pre><span style="mso-spacerun: yes">    </span>{</pre><pre><span style="mso-spacerun: yes">      </span>&quot;Error: cannot open files.\n&quot;;</pre><pre><span style="mso-spacerun: yes">      </span>return;</pre><pre><span style="mso-spacerun: yes">    </span>}</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* read text and write it back out */</pre><pre><span style="mso-spacerun: yes">    </span>for (;;)</pre><pre><span style="mso-spacerun: yes">    </span>{</pre><pre><span style="mso-spacerun: yes">      </span>local txt;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">      </span>/* read a line of input; stop if at end of file */</pre><pre><span style="mso-spacerun: yes">      </span>txt = fileRead(inFile);</pre><pre><span style="mso-spacerun: yes">      </span>if (txt == nil)</pre><pre><span style="mso-spacerun: yes">        </span>break;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">      </span>/* write it out */</pre><pre><span style="mso-spacerun: yes">      </span>fileWrite(outFile, txt);</pre><pre><span style="mso-spacerun: yes">    </span>}</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* close the files */</pre><pre><span style="mso-spacerun: yes">    </span>fileClose(inFile);</pre><pre><span style="mso-spacerun: yes">    </span>fileClose(outFile);</pre><pre><span style="mso-spacerun: yes">  </span>}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that creating CharacterSet objects
+isn't really necessary in this example, since we could have more simply passed
+the name of the character set directly to fileOpen().</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

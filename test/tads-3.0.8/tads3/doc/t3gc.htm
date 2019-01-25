@@ -1,0 +1,291 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3gc_files/filelist.xml">
+<title>Automatic Garbage Collection and Finalization</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>12</o:Revision>
+  <o:TotalTime>18</o:TotalTime>
+  <o:Created>2000-02-26T00:25:00Z</o:Created>
+  <o:LastSaved>2004-01-28T06:13:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>991</o:Words>
+  <o:Characters>5652</o:Characters>
+  <o:Lines>47</o:Lines>
+  <o:Paragraphs>11</o:Paragraphs>
+  <o:CharactersWithSpaces>6941</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'>Automatic Garbage Collection and Finalization</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>Past versions of TADS required the
+game program to manage dynamically created objects; in particular, the program
+had to keep track of objects and explicitly delete them when they were no
+longer needed.<span style="mso-spacerun: yes">  </span>TADS 3 eliminates this
+requirement by providing automatic garbage collection.<span
+style="mso-spacerun: yes">  </span>The T3 VM automatically keeps track of which
+objects can still be used and which have become inaccessible, and from time to
+time deletes the inaccessible objects, making the memory they were using
+available for re-use.<span style="mso-spacerun: yes">  </span>(We refer to
+inaccessible objects as &quot;garbage,&quot; because they're just taking up
+memory without being of any further use to the program, and we refer to the
+process of recognizing and deleting these inaccessible objects as &quot;garbage
+collection.&quot;)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>For the most part, the garbage collector
+is invisible, so you can ignore it when writing your program.<span
+style="mso-spacerun: yes">  </span>However, in some cases you might wish to be
+notified when the garbage collector is about to delete one of your
+objects.<span style="mso-spacerun: yes">  </span>When you want such
+notification, you can use a &quot;finalizer.&quot;</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>A finalizer is a special method,
+whose name is always <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>finalize()</span></tt>; this method takes no arguments.<span
+style="mso-spacerun: yes">  </span>When the garbage collector determines that
+an object has become unreachable, it checks to see if the object has a <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>finalize()</span></tt>
+method.<span style="mso-spacerun: yes">  </span>If the object does <i>not</i>
+have a <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>finalize()</span></tt>
+method, the garbage collector can simply delete the object at any subsequent
+time.<span style="mso-spacerun: yes">  </span>If the object does have a <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>finalize()</span></tt>
+method, the garbage collector marks the object as &quot;finalizable.&quot;<span
+style="mso-spacerun: yes">  </span>Once an object is marked finalizable, the
+garbage collector can call the object's <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>finalize()</span></tt> method at any
+subsequent time.<span style="mso-spacerun: yes">  </span>Once this method
+returns, the garbage collector marks the object as &quot;finalized.&quot;<span
+style="mso-spacerun: yes">  </span>Once the object is marked as finalized, the
+garbage collector re-considers the object's reachability; at any subsequent
+time that the garbage collector determines that the object is unreachable, the collector
+can delete the object.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the garbage collector must
+determine that an object with a <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>finalize()</span></tt> method is
+unreachable <i>twice</i> before it can actually delete the object: the object
+must become unreachable once before the <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>finalize()</span></tt> method can be
+called, and then must either remain unreachable or once again become
+unreachable before it can be deleted.<span style="mso-spacerun: yes"> 
+</span>The reason for the second reachability check is that the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>finalize()</span></tt>
+method could potentially make the object reachable again.<span
+style="mso-spacerun: yes">  </span>Consider this example:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">    </span>MyGlobals: object</pre><pre><span style="mso-spacerun: yes">        </span>finalizedList = []</pre><pre><span style="mso-spacerun: yes">    </span>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>class MyClass: object</pre><pre><span style="mso-spacerun: yes">        </span>finalize()</pre><pre><span style="mso-spacerun: yes">        </span>{</pre><pre><span style="mso-spacerun: yes">            </span>MyGlobals.finalizedList += self;</pre><pre><span style="mso-spacerun: yes">        </span>}</pre><pre><span style="mso-spacerun: yes">    </span>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When an instance of <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>MyClass</span></tt>
+becomes unreachable, the garbage collector will at some point call the
+instance's <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>finalize()</span></tt> method, which adds a reference to the
+instance to <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>MyGlobals.finalizedList</span></tt>.<span
+style="mso-spacerun: yes">  </span>Since <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>MyGlobals</span></tt> is a named
+object, it's always reachable, hence anything that <tt><span style='font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>MyGlobals.finalizedList</span></tt>
+refers to is reachable – this means that the instance being finalized once again
+becomes reachable.<span style="mso-spacerun: yes">  </span>So, the garbage
+collector cannot actually delete this object until the references is removed
+from <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>MyGlobals.finalizedList</span></tt>,
+at which point the instance once again becomes unreachable (assuming it hasn't
+been referenced anywhere else in the meantime).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The garbage collector calls an
+object's finalizer only once, even if the object becomes reachable again while
+it's being finalized.<span style="mso-spacerun: yes">  </span>The single
+finalizer call is enforced by the state transitions: an object is initially
+unfinalized; after the garbage collector first notices that it is unreachable
+it becomes finalizable; after the garbage collector calls the finalizer the
+object becomes finalized.<span style="mso-spacerun: yes">  </span>Once an
+object is finalized, it is deleted as soon as the collector notices that the
+object is unreachable.<span style="mso-spacerun: yes">  </span>The garbage
+collector can only call the finalizer on a finalizable object, and once the
+finalizer is called the object becomes finalized; it cannot return to the
+finalizable state from the finalized state.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the garbage collector does
+not run continuously, but only at certain times; exactly when the collector
+will run is unpredictable, because it depends on what memory operations the
+program performs, but it's also not usually important, since the program can
+largely ignore the collector's operation.<span style="mso-spacerun: yes"> 
+</span>Because of the unpredictable timing of garbage collection, the timeline
+descriptions above are intentionally a little vague; the only thing that's
+certain is the order of events, not their exact timing.<span
+style="mso-spacerun: yes">  </span>So, an object might be finalized very
+quickly after it becomes unreachable, or it might sit in memory for a long time
+before the garbage collector gets around to finalizing the object.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note also that you can explicitly
+invoke the garbage collector with the <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>t3RunGC()</span></tt> function in the <a
+href="t3t3.htm">&quot;t3vm&quot; function set</a>.</p>
+
+<h3>Implementation Details</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>For those interested in academic
+details, the T3 VM implementation in TADS 3 uses a synchronous
+&quot;tracing&quot; garbage collector.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>A tracing collector traverses the
+entire set of accessible objects, starting with the &quot;root set.&quot;<span
+style="mso-spacerun: yes">  </span>The root set is the set of objects that are
+directly reachable to the program, such as local variables and static objects
+defined in the source code.<span style="mso-spacerun: yes">  </span>The garbage
+collector marks each root set object as reachable, then marks as reachable each
+object to which a root set object refers, then marks as reachable each object
+to which those objects refer, and so on.<span style="mso-spacerun: yes"> 
+</span>This process continues until the collector has marked every object that
+can be reached directly or indirectly through references from root set
+objects.<span style="mso-spacerun: yes">  </span>Any objects not marked during
+this tracing process are unreachable, and hence can be deleted.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The TADS 3 collector is synchronous,
+which means that the VM must suspend its other operations to run the garbage
+collector.<span style="mso-spacerun: yes">  </span>However, on systems that
+support background threads, the TADS 3 implementation can run garbage
+collection in the background while certain types of user interface activities,
+such as reading a command line, are taking place; these operations have no
+interaction with the memory manager, hence they can proceed simultaneously with
+garbage collection.<span style="mso-spacerun: yes">  </span>(Non-blocking
+garbage collectors have become rather trendy in recent programming language
+systems, but a blocking collector seemed appropriate for TADS 3.<span
+style="mso-spacerun: yes">  </span>Non-blocking collectors add considerable
+complexity to the entire memory management system, and the experience of most
+system designers has been that synchronous collectors usually have higher overall
+throughput, perhaps owing to their greater simplicity.<span
+style="mso-spacerun: yes">  </span>The primary advantage of non-blocking
+collectors is that they tend to spread out their work more evenly in time,
+making them more suitable for real-time systems; this didn't seem a strong
+enough justification for TADS 3.)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

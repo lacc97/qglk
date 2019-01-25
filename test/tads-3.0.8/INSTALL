@@ -1,0 +1,56 @@
+These are the unified TADS 2/3 sources for Unix and Unix derivatives.
+Eventually, compiling and installing them will be as easy as 1-2-3
+(read: "configure, make, make install"), but we're not to that point
+yet.  For now, this is the procedure to follow:
+
+    - Go into the tads2/ directory.
+
+    - Follow the instructions in tads2/Makefile to configure it for
+      your system.
+
+    - Type "make".
+
+    - Type "make install" to install the binaries under /usr/local/bin
+      and the TADS 2 development libraries under /usr/local/share/tads2
+      (or whatever directories you specify as BINDIR and DATADIR).  If
+      you're only interested in the TADS 3 programs, you can skip this
+      step.
+      
+    - If you want to build the Glk version of the TADS 2 interpreter,
+      go into the tads2/glk/ directory, edit the Makefile, and type
+      "make".  There's no "make install"; simply copy the generated
+      executable wherever you want (you might want to rename it first,
+      or change the name in tads2/glk/Makefile, in order to not
+      overwrite the normal TADS 2 interpreter).  Note that you'll need
+      a version of the Glk library suitable for your system in order to
+      create the Glk interpreter.  A Glk library is not included in
+      this package.
+      
+    - If you're only interested in TADS 2, stop here. :-)
+
+    - Go to the tads3/ directory.
+
+    - Follow the instructions in tads3/Makefile to configure it for
+      your system.  If you want to build debuggable binaries (necessary
+      for "make test"), uncomment CFLAGS_DEBUG.
+
+    - Type "make".
+
+    - If you'd like to test TADS 3, type "make test" (useful if you're
+      hacking around in the sources and want to verify that you didn't
+      screw up).
+
+    - Type "make install" to install the binaries and libraries in
+      the locations you specified in the Makefile.
+
+    - If you like, try out the TADS 3 sample game by going into
+      tads3/samples and typing "t3make -f sample" followed by
+      "t3run sample".
+
+The primary point to remember is that you must first compile in tads2/
+before you can compile in tads3/ (TADS 3 uses parts of TADS 2).
+
+GNU make is recommended.
+
+Suzanne Skinner
+2002/Sep/29

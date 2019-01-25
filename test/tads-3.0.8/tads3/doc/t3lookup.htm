@@ -1,0 +1,432 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3lookup_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>77</o:Revision>
+  <o:TotalTime>272</o:TotalTime>
+  <o:Created>2001-02-13T02:44:00Z</o:Created>
+  <o:LastSaved>2004-02-08T03:49:00Z</o:LastSaved>
+  <o:Pages>3</o:Pages>
+  <o:Words>1502</o:Words>
+  <o:Characters>8564</o:Characters>
+  <o:Lines>71</o:Lines>
+  <o:Paragraphs>17</o:Paragraphs>
+  <o:CharactersWithSpaces>10517</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:ActiveWritingStyle Lang="EN-US" VendorID="64" DLLVersion="131077"
+   NLCheck="1">3</w:ActiveWritingStyle>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>The LookupTable Intrinsic Class</h3>
+
+<p class=MsoNormal>A LookupTable is an unordered collection of values; each
+value indexed by a &quot;key,&quot; which is a value of any type that's used to
+look up a value stored in the collection.<span style="mso-spacerun: yes"> 
+</span>In effect, this class provides what some programming languages call an
+associative array, because it allows a value to be associated with an arbitrary
+key, and then efficiently found given the same key.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To use lookup tables, you must define the LookupTable
+intrinsic class in your source code.<span style="mso-spacerun: yes"> 
+</span>The easiest way to do this is to include the system header file
+&quot;lookup.h&quot;, which is included with the compiler.</p>
+
+<h3>Creating a LookupTable</h3>
+
+<p class=MsoNormal>You create a lookup table with the &quot;new&quot; operator:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>local tab = new LookupTable();</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You can optionally specify two parameters to fine-tune the
+table's efficiency: the &quot;bucket count,&quot; and the initial
+capacity.<span style="mso-spacerun: yes">  </span>When you create a LookupTable
+with no arguments as shown above, the object uses default values for these
+parameters; the default values will always work, but you might be able to
+improve a table's performance by overriding the default values, especially if
+the table will contain an especially large or small number of entries.<span
+style="mso-spacerun: yes">  </span>Note that it is never<i> necessary </i>to
+specify the parameters, since a lookup table will always work properly with the
+defaults; the only thing the parameters do is tune the object's performance.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>// override the default creation parameters</pre><pre><span style="mso-spacerun: yes">  </span>// use 256 hash slots and an initial capacity of 1024 entries</pre><pre><span style="mso-spacerun: yes">  </span>local tab = new LookupTable(256, 1024);</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The first parameter, the bucket count, specifies the size of
+the hash table that the object uses to organize the keys.<span
+style="mso-spacerun: yes">  </span>Refer to the section <a href="#HowItWorks">How
+a LookupTable Works</a>, below, for details on what the bucket count means and
+how to select this value.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that the bucket count is fixed over the life of the
+object.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The second parameter, the initial capacity, is purely
+advisory.<span style="mso-spacerun: yes">  </span>This parameter sets the
+amount of memory the table initially allocates so that it can accommodate the
+given number of stored values.<span style="mso-spacerun: yes">  </span>If you
+eventually add more values to the table than the initial entry count, the
+object will automatically expand to accommodate more entries.<span
+style="mso-spacerun: yes">  </span>For maximum efficiency, you should choose a
+value that's about the same as the number of entries you ultimately expect;
+this will ensure that you don't use excessive memory by allocating many more
+initial slots than you end up using, while at the same time avoiding repeated
+expansion of the table.</p>
+
+<h3 style='tab-stops:.5in'>Storing and Retrieving Values</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>You use a lookup table as though it
+were a list or Vector, except that you can use any value as an index.<span
+style="mso-spacerun: yes">  </span>For example, we could use a lookup table to
+associate objects with strings:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>symtab['book'] = book;</pre><pre><span style="mso-spacerun: yes">  </span>symtab['ball'] = ball;</pre><pre><span style="mso-spacerun: yes">  </span>symtab['table'] = table;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now, if we want to look up the object
+associated with one of these words, we simply index the lookup table:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>str = 'ball';</pre><pre><span style="mso-spacerun: yes">  </span>obj = symtab[str];</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If you store a value in the lookup
+table, and a value was already stored at the same key, the old value at the key
+is discarded and replaced by the new value.<span style="mso-spacerun: yes"> 
+</span>If you look up a key, but the key was never stored in the table, the
+result is nil.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>A LookupTable matches key values the
+same way the &quot;==&quot; operator does.</p>
+
+<h3 style='tab-stops:.5in'>LookupTable Iterations</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>LookupTable is a subclass of <a
+href="t3coll.htm">Collection</a>, so you can use the createIterator() method to
+create an <a href="t3iter.htm">Iterator</a> to iterate over the elements of the
+lookup table.<span style="mso-spacerun: yes">  </span>The Iterator that a
+LookupTable creates is called a LookupTableIterator; it visits the values
+stored in the table in an arbitrary order.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Because a LookupTable is a
+Collection, you can use the <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>foreach</span></tt> statement to
+iterate over its values.</p>
+
+<h3 style='tab-stops:.5in'>LookupTable Methods</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>LookupTable is a subclass of
+Collection, and thus includes all <a href="t3coll.htm">Collection methods</a>.<span
+style="mso-spacerun: yes">  </span>In addition, LookupTable defines the methods
+listed below.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>applyAll(<i>func</i>) – </b>for
+each element in the table, invokes the function <i>func(key, value)</i>, and
+then changes the element's value to the return value of <i>func</i>.<span
+style="mso-spacerun: yes">  </span>This allows you to modify all of the values
+in the table according to the given function.<span style="mso-spacerun: yes"> 
+</span>The keys are not changed.<span style="mso-spacerun: yes">  </span>The
+entries are visited in arbitrary order.<span style="mso-spacerun: yes"> 
+</span>No return value.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>forEach(<i>func</i>) – </b>for
+each element in the table, invokes the function <i>func</i>(<i>value</i>).<span
+style="mso-spacerun: yes">  </span>Any return value from <i>func</i> is
+ignored; the values and keys stored in the table are not changed.<span
+style="mso-spacerun: yes">  </span>The entries are visited in arbitrary
+order.<span style="mso-spacerun: yes">  </span>No return value.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>forEachAssoc(<i>func</i>) – </b>for
+each element in the table, invokes the function <i>func</i>(<i>key, value</i>).<span
+style="mso-spacerun: yes">  </span>Any return value from <i>func</i> is
+ignored; the values and keys stored in the table are not changed.<span
+style="mso-spacerun: yes">  </span>The entries are visited in arbitrary
+order.<span style="mso-spacerun: yes">  </span>This argument is the same as
+forEach(), except that this method provides the callback with the key in
+addition to the value for each element.<span style="mso-spacerun: yes"> 
+</span>No return value.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>getBucketCount() – </b>returns the
+number of &quot;hash buckets&quot; in the table.<span style="mso-spacerun:
+yes">  </span>Since the number of buckets is fixed over the life of the object,
+this simply returns the bucket count that was specified when the object was
+created.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>getEntryCount() – </b>returns the
+number of key/value entries in the table.<span style="mso-spacerun: yes"> 
+</span>This returns the number of entries actually stored in the table, which
+is unrelated to the initial capacity that was specified when the object was
+created.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>isKeyPresent(<i>key</i>) – </b>checks
+to see if an entry with the given key is present in the table.<span
+style="mso-spacerun: yes">  </span>Returns true if the key is present, nil if
+not.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>keysToList()</b> – returns a list
+consisting of all of the keys in the table.<span style="mso-spacerun: yes"> 
+</span>The order of the keys is arbitrary, so callers must not assume any
+particular ordering.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>removeElement(<i>key</i>) – </b>removes
+the element with the given key, if any.<span style="mso-spacerun: yes"> 
+</span>If there is no element with the given key in the table, this makes no change
+to the table and simply returns nil.<span style="mso-spacerun: yes">  </span>If
+an element is found, the element is removed, and the value associated with the
+key (before the removal) is returned.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>valsToList() – </b>returns a list
+consisting of all of the values in the table.<span style="mso-spacerun: yes"> 
+</span>The order of the values is arbitrary.</p>
+
+<h3><a name=HowItWorks></a>The WeakRefLookupTable Intrinsic Class</h3>
+
+<p class=MsoNormal>WeakRefLookupTable is a subclass of LookupTable.<span
+style="mso-spacerun: yes">  </span>It behaves the same as the regular
+LookupTable class, and has the same methods; the only difference is that the values
+in a weak-reference table are only &quot;weakly&quot; referenced.<span
+style="mso-spacerun: yes">  </span>(The <i>keys</i> are still &quot;strongly&quot;
+referenced; only the <i>values</i> are weak references.)</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>A weak reference is a reference that prevents the <a
+href="t3gc.htm">garbage collector</a> from removing the referenced object from
+memory.<span style="mso-spacerun: yes">  </span>On each scan of memory, the
+garbage collector deletes each object it finds that is not referenced at all, <i>and</i>
+each object that is referenced exclusively through weak references.<span
+style="mso-spacerun: yes">  </span>This means that if an object is referenced
+only as a value stored in a WeakRefLookupTable, the garbage collector can
+delete the object.<span style="mso-spacerun: yes">  </span>Whenever the garbage
+collector deletes an object that is stored as a value in a WeakRefLookupTable,
+the WeakRefLookupTable automatically deletes that key/value pair.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>(Weak references have their uses, especially in situations
+where you want to create a secondary access path to a set of objects for
+performance reasons, such as an index or a cache.<span style="mso-spacerun:
+yes">  </span>These cases are relatively rare, though, so don't feel that you
+need to go out of your way to find places to use this intrinsic class.<span
+style="mso-spacerun: yes">  </span>If you can't think of a reason to use this
+class, just ignore it and use the base LookupTable class.)</p>
+
+<h3>How a LookupTable Works</h3>
+
+<p class=MsoNormal>A LookupTable is internally implemented as a &quot;hash
+table,&quot; which is programming jargon for a particular way of organizing a
+set of values for efficient retrieval.<span style="mso-spacerun: yes"> 
+</span>For the most part, there is no practical need for you to know anything
+about this internal organization, because it's largely invisible when you're
+using the class.<span style="mso-spacerun: yes">  </span>However, the class
+lets you optionally specify some parameters at creation time that can affect
+its efficiency, so we'll briefly explain how hash tables work to help you
+understand how to select these parameters.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>A hash table operates by computing a <i>hash value</i> for
+each key.<span style="mso-spacerun: yes">  </span>A hash value is an integer
+calculated from the key value, and once calculated, the hash value is used to
+select a bucket to store the key.<span style="mso-spacerun: yes">  </span>Since
+the hash value selects a bucket, the range of the hash is determined by the
+number of buckets: if we have ten buckets, we calculate a hash value from 1 to
+10 for each key.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Ideally, each distinct key value would end up in its own
+bucket, but this obviously cannot be the case: the number of buckets we have is
+finite, and almost always smaller than the number of possible key values.<span
+style="mso-spacerun: yes">  </span>Even if we consider only strings as possible
+keys, we can clearly create more unique values than buckets, no matter how many
+buckets we use; and then we have lists and all the other types to hash as
+well.<span style="mso-spacerun: yes">  </span>Therefore, a hash table must be
+able to cope with &quot;hash collisions,&quot; where two distinct key values
+have the same hash value.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Hash tables handle collisions by using the hash value merely
+as a first-order approximation to finding the key; once we compute the hash
+value, and thus know the bucket, we must look at each key stored in that bucket
+to find the particular key we're seeking.<span style="mso-spacerun: yes"> 
+</span>If we have <i>N</i> entries stored in a hash table, and <i>M</i> hash
+buckets, we will have <i>N/M </i>values, on average, stored in each
+bucket.<span style="mso-spacerun: yes">  </span>The more buckets we have, the
+fewer values we'll have in each bucket, so the faster lookups will be.<span
+style="mso-spacerun: yes">  </span>On the other hand, once the number of buckets
+is as large as the number of values stored, adding more buckets becomes less
+helpful.<span style="mso-spacerun: yes">  </span>In addition, the greater the
+number of buckets, the more memory the hash table consumes, so we trade speed
+for greater memory usage.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that it isn't possible in general to guarantee that a
+hash table will have no collisions, no matter how many buckets you use; if lots
+of the keys you store all happen to hash to the same value, you still have many
+keys in one bucket.<span style="mso-spacerun: yes">  </span>Fortunately, in
+practice, most sets of keys end up distributing fairly evenly.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>When you create a LookupTable object, you can specify the
+number of buckets in the object's hash table.<span style="mso-spacerun: yes"> 
+</span>If you have some idea of how much data the table might contain, this
+lets you set up a LookupTable to make it more likely that there will be an
+efficient distribution of hash values while not using excessive memory.<span
+style="mso-spacerun: yes">  </span>In particular, you should choose the number
+of buckets so that it is a reasonably high fraction of the number of values you
+expect, although just how high a fraction depends on the total number of
+entries as well.<span style="mso-spacerun: yes">  </span>For example, if you
+expect only ten or twenty values to be stored in the table, you should probably
+use a bucket count of about the same number; if you expect a thousand values,
+six or seven hundred buckets might be reasonable.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

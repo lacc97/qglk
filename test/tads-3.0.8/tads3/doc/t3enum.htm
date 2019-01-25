@@ -1,0 +1,232 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3enum_files/filelist.xml">
+<title>Enumerators</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Merkin Muffley</o:LastAuthor>
+  <o:Revision>1</o:Revision>
+  <o:TotalTime>0</o:TotalTime>
+  <o:Created>2000-02-26T00:27:00Z</o:Created>
+  <o:LastSaved>2000-02-26T00:27:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>497</o:Words>
+  <o:Characters>2838</o:Characters>
+  <o:Lines>23</o:Lines>
+  <o:Paragraphs>5</o:Paragraphs>
+  <o:CharactersWithSpaces>3485</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:734209132;
+	mso-list-type:hybrid;
+	mso-list-template-ids:332824010 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'>Enumerators</h3>
+
+<p class=MsoNormal>TADS 3 adds a new datatype called
+&quot;enumerator.&quot;<span style="mso-spacerun: yes">  </span>An enumerator
+is simply a named, constant data value.<span style="mso-spacerun: yes"> 
+</span>Enumerators are similar to the C and C++ &quot;enum&quot; type, but have
+some important differences:</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo1;tab-stops:list .5in'>C enum
+     values are grouped into sets; each set of enum values is effectively a
+     separate datatype.<span style="mso-spacerun: yes">  </span>TADS
+     enumerators are global constants that are not grouped into sets, and
+     defining an enumerator does not create a new datatype.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo1;tab-stops:list .5in'>In C,
+     an enum value is really just a named integer constant, and can be
+     converted to and from its underlying integer value (an enum value can be
+     cast to &quot;int&quot;, for example, and used in arithmetic).<span
+     style="mso-spacerun: yes">  </span>In TADS, enumerator values cannot be
+     converted to or from integers or any other type.</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To define an enumerator, use the &quot;enum&quot;
+statement.<span style="mso-spacerun: yes">  </span>This is a top-level
+statement that appears outside of functions and object definitions.<span
+style="mso-spacerun: yes">  </span>After the &quot;enum&quot; keyword, simply
+list the enumerator names you wish to define, separating multiple names with
+commas and ending the list with a semicolon.<span style="mso-spacerun: yes"> 
+</span>For example:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>enum apple, orange, pear;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>If you're familiar with C or C++, note that there is no name
+for the group of symbols.<span style="mso-spacerun: yes">  </span>In fact,
+defining these symbols together in a single <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>enum</span></tt> statement is merely a
+convenience and does not establish any grouping or relation among these three
+symbols; there is no difference between defining these symbols as a group and
+defining them with three separate statements.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Enumerator names are global symbols, so they must co-exist
+with object, function, and property names.<span style="mso-spacerun: yes"> 
+</span>An enumerator cannot have the same name as any other global symbol.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You can use an enumerator anywhere a value is required,
+although an enumerator cannot be used where a value of another datatype (such
+as an integer) is required.<span style="mso-spacerun: yes">  </span>So, you can
+assign an enumerator value to a property or a local variable, store it in a
+list, or compare it to another value.<span style="mso-spacerun: yes"> 
+</span>You cannot use an enumerator value in arithmetic expressions.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>local x = apple;</pre><pre>switch(lst[i])</pre><pre>{</pre><pre>case apple:</pre><pre><span style="mso-spacerun: yes">    </span>&quot;It's red.&quot;;</pre><pre><span style="mso-spacerun: yes">    </span>break;</pre><pre>case orange:</pre><pre><span style="mso-spacerun: yes">    </span>&quot;It's orange.&quot;;</pre><pre><span style="mso-spacerun: yes">    </span>break;</pre><pre>case pear:</pre><pre><span style="mso-spacerun: yes">   </span><span style="mso-spacerun: yes"> </span>&quot;It's green.&quot;;</pre><pre><span style="mso-spacerun: yes">    </span>break;<br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></pre><pre>}</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Enumerators have advantages and disadvantages relative to
+the primary alternative, which is preprocessor symbols created with the #define
+directive.<span style="mso-spacerun: yes">  </span>With preprocessor symbols,
+you can specify an integer or other type of value that is used to represent the
+constant; this allows you to use the constant in calculations and other places
+where it might be convenient to treat the constant as having an underlying
+value of some kind.<span style="mso-spacerun: yes">  </span>Because you define
+an explicit value for a preprocessor constant, you can be certain that these
+values will be stable from one compilation to the next (assuming <i>you </i>don't
+change the definitions), so you can write them to external files that are
+independent of any version of your program.<span style="mso-spacerun: yes"> 
+</span>Enumerators, on the other hand, save you the trouble of specifying a
+unique value for each constant; in addition, the debugger shows you the
+symbolic name of an enumerator value, whereas it can only show you the
+underlying value of a preprocessor constant.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>A special type of enumerator defines &quot;token&quot;
+enumerators.<span style="mso-spacerun: yes">  </span>A token enumerator differs
+from a regular enumerator only in that a token enumerator can be used in a <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>grammar</span></tt>
+statement's match list.<span style="mso-spacerun: yes">  </span>A token
+enumerator is declared by adding the word &quot;token&quot; after the
+&quot;enum&quot; keyword in the definition:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>enum token dictWord, unknownWord, punctuation;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1352 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3tadsio_files/filelist.xml">
+<title>Intrinsic Functions: &quot;tads-io&quot; Function Set</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>68</o:Revision>
+  <o:TotalTime>540</o:TotalTime>
+  <o:Created>2000-02-26T00:06:00Z</o:Created>
+  <o:LastSaved>2004-07-17T18:55:00Z</o:LastSaved>
+  <o:Pages>8</o:Pages>
+  <o:Words>5425</o:Words>
+  <o:Characters>30923</o:Characters>
+  <o:Lines>257</o:Lines>
+  <o:Paragraphs>61</o:Paragraphs>
+  <o:CharactersWithSpaces>37975</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:164904116;
+	mso-list-type:hybrid;
+	mso-list-template-ids:289034788 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:704327088;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-606187274 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l2
+	{mso-list-id:716662263;
+	mso-list-type:hybrid;
+	mso-list-template-ids:401797768 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l3
+	{mso-list-id:853568120;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1361952516 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l4
+	{mso-list-id:968629857;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1485504444 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l5
+	{mso-list-id:1077870692;
+	mso-list-type:hybrid;
+	mso-list-template-ids:910739148 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l5:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l6
+	{mso-list-id:1233154436;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1111940830 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l6:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l7
+	{mso-list-id:1358507321;
+	mso-list-type:hybrid;
+	mso-list-template-ids:558773546 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l7:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l8
+	{mso-list-id:1379816135;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1266671258 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l8:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l9
+	{mso-list-id:1427310338;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-36261790 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l9:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l10
+	{mso-list-id:1896577224;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1487618380 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l10:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l11
+	{mso-list-id:2025981284;
+	mso-list-type:hybrid;
+	mso-list-template-ids:503194136 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l11:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'>Intrinsic Functions: &quot;tads-io&quot; F<a
+name=FnsetTADSIO></a>unction Set</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The &quot;tads-io&quot; function set
+provides access to the user interface provided by the TADS 3 Interpreter host
+applications, as well as file input/output functions.<span style="mso-spacerun:
+yes">  </span>The &quot;tads-io&quot; function set is available only in T3
+implementations that are hosted within a TADS 3 Interpreter environment, so a
+program that uses this function set will only run in a TADS Interpreter.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The &quot;tads-io&quot; function set
+is separate from the &quot;tads-gen&quot; function set to allow programmers to
+choose an alternative input/output and user interface function set, if desired,
+while still using the more general &quot;tads-gen&quot; functions.<span
+style="mso-spacerun: yes">  </span>Most programs will probably want to use the
+&quot;tads-gen&quot; set because of the many data conversion and manipulation
+functions it contains, even if they're using an alternative user interface.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To use the &quot;tads-io&quot;
+function set in a program, #include &quot;tadsio.h&quot;, or simply #include
+&quot;tads.h&quot; (which includes both &quot;tadsio.h&quot; and
+&quot;tadsgen.h&quot; for the full set of TADS intrinsics).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Banner functions </b>– refer to
+the <a href="t3banner.htm">Banner API</a> documentation for information on the
+banner functions, which allow the program to divide the display into several
+independent subwindows.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>clearScreen()</b> – clear the main
+console window, if possible.<span style="mso-spacerun: yes">  </span>The actual
+effect of this function varies by system; some interpreters clear the window,
+some display enough newlines to scroll any existing text off the top of the window,
+and some ignore the call completely.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=fileOpen></a><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>flushOutput() - </b>immediately
+flushes text to the output.<span style="mso-spacerun: yes">  </span>When you
+display output using tadsSay(), the text you write isn't necessarily displayed
+immediately, because the output formatter generally buffers text internally;
+the exact details of the output formatter's internal buffering vary by
+platform.<span style="mso-spacerun: yes">  </span>The flushOutput() function
+tells the output formatter to display any buffered text immediately.<span
+style="mso-spacerun: yes">  </span>It is never necessary to call this function,
+because the formatter automatically flushes its buffers before waiting for user
+input.<span style="mso-spacerun: yes">  </span>It is, however, sometimes
+desirable to be able to display buffered output explicitly; for example, if
+your program is going to perform some computation that will take a while, you
+might want to ensure that the user sees a &quot;please wait&quot; message
+before the long-running computation begins.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><br>
+This function takes no arguments and returns no value.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>getLocalCharSet(<i>which</i>) – </b>returns
+a string giving the name of the active local character set selected by <i>which</i>,
+which can have one of the following values:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l9 level1 lfo3;tab-stops:list .5in'>CharsetDisplay
+     – returns the name of the character set displayed on the monitor and read
+     from the keyboard.<span style="mso-spacerun: yes">  </span>If the
+     interpreter was started with an explicit character set option (the
+     &quot;-cs&quot; option in the command-line interpreter, for example), the
+     character set name so specified is returned; otherwise, the local default
+     display character set name is returned.</li>
+ <li class=MsoNormal style='mso-list:l9 level1 lfo3;tab-stops:list .5in'>CharsetFileName
+     – returns the name of the character set used in the file system for
+     filenames.<span style="mso-spacerun: yes">  </span>In some cases, this
+     might differ from the display character set; for example, a system might
+     have a global file system character set used by all applications, but
+     allow individual terminal or window sessions to use separate character
+     sets for the user interface.</li>
+ <li class=MsoNormal style='mso-list:l9 level1 lfo3;tab-stops:list .5in'>CharsetFileCont
+     – returns the name of the character set <i>typically</i> used for the
+     contents of text files on the local system.<span style="mso-spacerun:
+     yes">  </span>Note that this is only a default; a particular file could be
+     in any character set, determined at the time the file was created.<span
+     style="mso-spacerun: yes">  </span>However, on most systems, there's a
+     character set that's used by convention for most text files.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style='font-family:"Times New Roman"'>If <i>which</i> is not one of the above values, the function returns nil.<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'>The character set name returned can be used to create a <a
+href="t3cset.htm">CharacterSet</a> object to perform character-to-byte and byte-to-character mappings.<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>inputDialog(<i>icon, prompt,
+buttons, defaultButton, cancelButton</i>)</b> – display a dialog and wait for
+the user to respond.<span style="mso-spacerun: yes">  </span>This works the
+same as TADS 2's inputdialog() function, but note that the names of the
+constants have been changed.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <i>icon</i> constants are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo6;tab-stops:list .5in'>InDlgIconNone
+     – no icon</li>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo6;tab-stops:list .5in'>InDlgIconWarning
+     – “warning” icon; indicates a possible problem but not a serious error</li>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo6;tab-stops:list .5in'>InDlgIconInfo
+     – “information” icon; indicates that the message is for information only,
+     and doesn’t indicate an error or warning</li>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo6;tab-stops:list .5in'>InDlgIconQuestion
+     – “question” icon; indicates that the program is requesting information
+     from the user</li>
+ <li class=MsoNormal style='mso-list:l4 level1 lfo6;tab-stops:list .5in'>InDlgIconError
+     – “error” icon; indicates that an error has occurred</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <i>buttons</i> constants are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l10 level1 lfo9;tab-stops:.5in'>InDlgOk –
+     show only an “OK” button</li>
+ <li class=MsoNormal style='mso-list:l10 level1 lfo9;tab-stops:.5in'>InDlgOkCancel
+     – show “OK” and “Cancel” buttons</li>
+ <li class=MsoNormal style='mso-list:l10 level1 lfo9;tab-stops:.5in'>InDlgYesNo
+     – show “Yes” and “No” buttons</li>
+ <li class=MsoNormal style='mso-list:l10 level1 lfo9;tab-stops:.5in'>InDlgYesNoCancel
+     – show “Yes”, “No”, and “Cancel” buttons</li>
+</ul>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The button label constants are:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo12;tab-stops:list .5in'>InDlgLblOk
+     – “OK” button</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo12;tab-stops:list .5in'>InDlgLblCancel
+     – “Cancel”</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo12;tab-stops:list .5in'>InDlgLblYes
+     – “Yes”</li>
+ <li class=MsoNormal style='mso-list:l3 level1 lfo12;tab-stops:list .5in'>InDlgLblNo
+     – “No”</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>inputEvent(<i>timeout</i>?)</b> –
+wait for an event, with the optional timeout, in milliseconds.<span
+style="mso-spacerun: yes">  </span>If the <i>timeout</i> value is missing or
+nil, there is no timeout, so the function waits indefinitely for an event.<span
+style="mso-spacerun: yes">  </span>Uses the same result code as TADS 2's
+inputevent() function, but note that the names of the constants have changed:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo15;tab-stops:.5in'>InEvtKey –
+     keystroke event (the second element of the return value is the key code)</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo15;tab-stops:.5in'>InEvtTimeout
+     – timeout expired</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo15;tab-stops:.5in'>InEvtHref
+     – hyperlink event (the second element of the return value is the hyperlink
+     target “HREF” text)</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo15;tab-stops:.5in'>InEvtEof –
+     end of file; indicates that the program is terminating or no longer has
+     access to the user interface</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo15;tab-stops:.5in'>InEvtLine
+     – command line entered (used only for inputLineTimeout; the second element
+     of the return value is the text entered)</li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo15;tab-stops:.5in'>InEvtEndQuietScript
+     – quiet script mode terminated (used only for inputLineTimeout)</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>inputFile(<i>prompt, dialogType,
+fileType, flags</i>)</b> – display a file selector dialog and wait for the user
+to respond.<span style="mso-spacerun: yes">  </span>This works the same as TADS
+2's askfile() function, except that the <i>flags</i> argument is now mandatory,
+the ASKFILE_EXT_RESULT flag is no longer used, and the list-style extended
+return value is <i>always</i> used (this is why ASKFILE_EXT_RESULT was deleted:
+the extended results format is now the only option).<span style="mso-spacerun:
+yes">  </span>Note also that the names of the constants have changed.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The constants for <i>dialogType</i>
+are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l7 level1 lfo18;tab-stops:list .5in'>InFileOpen
+     – “open” dialog: selects an existing file</li>
+ <li class=MsoNormal style='mso-list:l7 level1 lfo18;tab-stops:list .5in'>InFileSave
+     – “save” dialog: selects a name for a file to be created</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The constants for <i>fileType</i>
+are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l6 level1 lfo21;tab-stops:.5in'>FileTypeLog
+     – log (transcript) file</li>
+ <li class=MsoNormal style='mso-list:l6 level1 lfo21;tab-stops:.5in'>FileTypeData
+     – TADS 2 private binary data format</li>
+ <li class=MsoNormal style='mso-list:l6 level1 lfo21;tab-stops:.5in'>FileTypeCmd
+     – command input file</li>
+ <li class=MsoNormal style='mso-list:l6 level1 lfo21;tab-stops:.5in'>FileTypeText
+     – text</li>
+ <li class=MsoNormal style='mso-list:l6 level1 lfo21;tab-stops:.5in'>FileTypeBin
+     – unknown binary data</li>
+ <li class=MsoNormal style='mso-list:l6 level1 lfo21;tab-stops:.5in'>FileTypeUnknown
+     – unknown type</li>
+ <li class=MsoNormal style='mso-list:l6 level1 lfo21;tab-stops:.5in'>FileTypeT3Image
+     – TADS 3 image file (i.e., a compiled TADS 3 program, a .t3 file)</li>
+ <li class=MsoNormal style='mso-list:l6 level1 lfo21;tab-stops:.5in'>FileTypeT3Save
+     – TADS 3 saved state file</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The returned status codes are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l11 level1 lfo24;tab-stops:list .5in'>InFileSuccess
+     – success</li>
+ <li class=MsoNormal style='mso-list:l11 level1 lfo24;tab-stops:list .5in'>InFileFailure
+     – failure: the dialog could not be displayed for some reason (for example,
+     there’s not enough memory available to load the dialog’s UI resources)</li>
+ <li class=MsoNormal style='mso-list:l11 level1 lfo24;tab-stops:list .5in'>InFileCancel
+     – the user explicitly canceled the dialog, indicating that whatever action
+     was in progress that needed a filename should be aborted</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>There are no flags currently defined,
+so <i>flags</i> should always be set to zero for compatibility with any flags added
+in the future.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The return value is a list.<span
+style="mso-spacerun: yes">  </span>The first element is always the integer
+result code.<span style="mso-spacerun: yes">  </span>If a filename was
+successfully obtained, the second element is the filename string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>inputKey()</b> – read a keystroke
+from the user.<span style="mso-spacerun: yes">  </span>Waits for the user to
+press a key, then returns a string with the key the user pressed.<span
+style="mso-spacerun: yes">  </span>This function uses the same result codes as
+the TADS 2 inputkey() function.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>inputLine()</b> – read a line of
+text input from the user.<span style="mso-spacerun: yes">  </span>Returns the
+text of the input as a string.<span style="mso-spacerun: yes">  </span>(The
+returned string will not contain a newline character.)<span
+style="mso-spacerun: yes">  </span>Returns nil if the console is at
+end-of-file, which usually indicates that the user has closed the interpreter
+application.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=inputLineTimeout></a><b>inputLineCancel(<i>reset</i>)
+– </b>cancels an editing session interrupted by a timeout.<span
+style="mso-spacerun: yes">  </span>This function <b>must</b> be called after
+inputLineTimeout() returns the InEvtTimeout event code if any display input or
+output is to be performed before another call to inputLineTimeout().<span
+style="mso-spacerun: yes">  </span>This function terminates the editing
+session, making any changes to the visual display that would have occurred if
+the user had terminated the command entry by pressing the Return key or some
+equivalent action.<span style="mso-spacerun: yes">  </span>For example, this
+function changes the display by starting a new line of text after the line that
+was being edited.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <i>reset</i> argument indicates
+whether or not inputLineTimeout() should forget the editing state that was in
+effect when the timeout occurred.<span style="mso-spacerun: yes">  </span>If <i>reset</i>
+is true, then the next call to inputLineTimeout() will start with a blank input
+line; if <i>reset</i> is nil, then the next call to inputLineTimeout() will
+re-display the line of text that was under construction when the timeout
+occurred, and will restore the editing state (cursor position, selected text
+range, and so on) that was in effect.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>inputLineTimeout(<i>timeout</i>?)
+– </b>read a line of text input from the user, with an optional timeout given
+in milliseconds.<span style="mso-spacerun: yes">  </span>See the section on <a
+href="#_Real-Time_Input">real-time input</a> below for examples of how to use
+this function.<span style="mso-spacerun: yes">  </span>If <i>timeout</i> is missing
+or is nil, there is no time limit on the input.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This function might not be
+implemented on every platform, because some platforms do not have the necessary
+operating system features to support it.<span style="mso-spacerun: yes"> 
+</span>If a platform does not support the timeout feature, this function will
+return InEvtNotimeout immediately upon invocation if <i>timeout</i> is given as
+a non-nil value.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The return value is a list, the first
+element of which gives an event code (from the same set of codes that
+inputEvent() returns); the meaning of any additional elements varies according
+to the event code.<span style="mso-spacerun: yes">  </span>The possible event
+codes are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo27;tab-stops:list .5in'>InEvtEof
+     – end of file reading the input.<span style="mso-spacerun: yes"> 
+     </span>This indicates that the application is being terminated or that an
+     error occurred reading the keyboard.<span style="mso-spacerun: yes"> 
+     </span>The result list has no additional elements.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo27;tab-stops:list .5in'>InEvtLine
+     – a line of input was successfully read from the keyboard.<span
+     style="mso-spacerun: yes">  </span>This event is returned when the user
+     expressly enters the line of text by pressing the Return key or performing
+     some other action that terminates the editing, such as clicking on a
+     hyperlink or selecting a command from a menu.<span style="mso-spacerun:
+     yes">  </span>When this event code is returned, the second element of the
+     result list contains a string giving the text entered.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo27;tab-stops:list .5in'>InEvtTimeout
+     – the timeout interval expired before the user finished editing the line
+     of text.<span style="mso-spacerun: yes">  </span>The second element of the
+     result list is a string giving the line of text under construction.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo27;tab-stops:list .5in'>InEvtNotimeout
+     - indicates that the timeout feature is not supported on the local
+     system.<span style="mso-spacerun: yes">  </span>The timeout feature is not
+     universally supported.<span style="mso-spacerun: yes">  </span>The caller
+     will have to use inputLine() in this case; real-time input interruptions
+     will not be available.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo27;tab-stops:list .5in'>InEvtEndQuietScript
+     – indicates that the input reader had been returning text from a
+     &quot;quiet&quot; input script file, such as a script being read using the
+     &quot;-i&quot; option of the command-line interpreter.<span
+     style="mso-spacerun: yes">  </span>When a script is read in
+     &quot;quiet&quot; mode, the interpreter suppresses all text display while
+     the script is being processed, so no input or output is displayed on the
+     console.<span style="mso-spacerun: yes">  </span>The interpreter returns a
+     specific event for this case because any prompting text previously
+     displayed for this input line will not have been shown, since the quiet
+     mode will have suppressed the prompt text along with any other output;
+     this event allows the caller to re-display the prompt now that script
+     input has ended and regular keyboard input will be resumed, so that the
+     user will see prompt text and thus know that the interpreter is waiting
+     for new input.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When this function returns the
+InEvtTimeout event code, the caller <b>must not</b> perform any display input
+or output operations until after calling inputLineCancel(), with the single
+exception that the caller can call inputLineTimeout() again with no intervening
+call to inputLineCancel().</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>After a timeout occurs, if inputLineTimeout()
+is called again with no intervening call to inputLineCancel(), then
+inputLineTimeout() resumes editing the interrupted command line.<span
+style="mso-spacerun: yes">  </span>In this case, there is no visible effect of
+the timeout; from the user’s perspective, the timeout never occurred.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If a timeout occurs and
+inputLineCancel(nil) is subsequently called, then inputLineTimeout() is called
+again, the new call to inputLineTimeout() re-displays the command line as it
+was at the time of interruption, and then allows the user to resume editing
+where they left off.<span style="mso-spacerun: yes">  </span>In this case,
+there is a visible change to the display, in that the command line is
+re-displayed; however, all of the editing state (cursor position, selected text
+range, history recall position, and so on) is duplicated from the previous
+editing session.<span style="mso-spacerun: yes">  </span>So, although the user
+will see that editing was interrupted, the user can continue editing the
+command line exactly where they left off.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When this function is called without
+the <i>timeout</i> argument, or with nil as the <i>timeout</i> value, it is
+similar to inputLine(), in that it allows the user to edit a line of text, with
+no upper limit on how long to wait until the user finishes.<span
+style="mso-spacerun: yes">  </span>However, this function differs from
+inputLine() in one important respect: if the preceding call to inputLineTimeout()
+ended with the timeout expiring, and no intervening call to
+inputLineCancel(true) was made since the timeout occurred, this function will
+resume editing of the interrupted command line.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>logConsoleClose(<i>handle</i>) – </b>closes
+the given console.<span style="mso-spacerun: yes">  </span>This function closes
+the operating system file, so no further text can be written to the console
+after this function is called.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>logConsoleCreate(<i>filename,
+charset, width</i>) – </b>creates a &quot;log console.&quot;<span
+style="mso-spacerun: yes">  </span>A log console is a special system object
+that behaves much like the main game window, except that all of the text
+written to a log console is captured in a text file rather than being
+displayed.<span style="mso-spacerun: yes">  </span><i>filename</i> is the name
+of the file to write; any existing file with the same name will be
+overwritten.<span style="mso-spacerun: yes">  </span><i>charset</i> is either a
+<a href="t3cset.htm">CharacterSet</a> object or a string giving the name of a
+character set; the text in the log file will be written in the selected
+character set.<span style="mso-spacerun: yes">  </span><i>width</i> is the
+maximum width, in text columns, for the text written to the file; the console
+will automatically word-wrap the written text to this width.<span
+style="mso-spacerun: yes">  </span>The return value is a &quot;handle,&quot;
+which identifies the new console in calls to other logConsoleXxx functions; if
+the return value is nil, the system was unable to create the console.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In most cases, the character set
+should simply be given as getLocalCharSet(CharsetDisplay).<span
+style="mso-spacerun: yes">  </span>This will ensure that the text in the file
+uses the same character set as the local system default for displaying text on the
+screen.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the given file cannot be created
+(because the name is invalid, for example, or because there's no space on
+disk), a FileCreationException is thrown.<span style="mso-spacerun: yes"> 
+</span>The &quot;file safety&quot; level must allow the operation, otherwise a
+FileSafetyException is thrown.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Log consoles are in some ways similar
+to text files based on the <a href="t3file.htm">File intrinsic class</a>.<span
+style="mso-spacerun: yes">  </span>The difference is that text written to a
+File object is written character-for-character exactly as you specify.<span
+style="mso-spacerun: yes">  </span>In contrast, the text written to a log
+console is processed the same way as text displayed to the player: HTML markups
+are processed (although, in a log console, only the text-only subset of HTML
+can be used, regardless of the kind of interpreter being used), the text is
+word-wrapped (to the fixed width given when the log console is created), excess
+whitespace is removed, and so on.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Log consoles are also similar to the
+log files created with setLogFile().<span style="mso-spacerun: yes"> 
+</span>The only difference is that setLogFile() can only capture text that is <i>also</i>
+displayed to the main game window; a log console has no display component at
+all, so you can use a log console to capture text exclusively to a file,
+without also showing it to the user.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>logConsoleSay(<i>handle, ...</i>)
+– </b>writes the given arguments to the given log console.<span
+style="mso-spacerun: yes">  </span>This behaves just like say(), but writes the
+text to the given log console instead of to the main game window.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>morePrompt()</b> – display the
+MORE prompt on the main console window, and wait for the user to respond.<span
+style="mso-spacerun: yes">  </span>This can be used when you want to pause
+execution and wait for the user to acknowledge some output before proceeding.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>resExists(<i>resname</i>)</b> –
+check to see if the given resource can be found.<span style="mso-spacerun:
+yes">  </span>Returns true if the resource is present, nil if not.<span
+style="mso-spacerun: yes">  </span>For HTML TADS 3, this looks for an HTML
+resource; text-only TADS 3 interpreters always return nil for this function,
+since they don't use multi-media resources at all.<span style="mso-spacerun:
+yes">  </span>The resource name should be specified as a URL-style name.<span
+style="mso-spacerun: yes">  </span>The interpreter will look for the resource
+using the same searching rules that it uses for normal resource loading; the
+HTML interpreter will thus look for the resource bundled into the image file,
+in any external resource files (<i>image</i>.3r0 through <i>image</i>.3r9), and
+finally in an external file whose name is derived from the URL according to
+local system conventions.</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>setLogFile(<i>fname, logType</i>?)</b>
+– turn on logging of the console output to a file whose name is given by <i>fname</i>.<span
+style="mso-spacerun: yes">  </span>If <i>fname</i> is nil, this turns off the
+specified type of logging, if it's currently in effect.<span
+style="mso-spacerun: yes">  </span>The <i>logType</i> argument specifies the
+type of logging to perform:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l8 level1 lfo30;tab-stops:list .5in'>LogTypeTranscript
+     – create a transcript.<span style="mso-spacerun: yes">  </span>All of the
+     text displayed to the main console (including text read via command line
+     input) is copied to the file.<span style="mso-spacerun: yes">  </span>Any
+     HTML markups are processed before the text is written to the file; note,
+     though, that the text-only HTML subset is used, regardless of what kind of
+     interpreter is running.<span style="mso-spacerun: yes">  </span>This is
+     the default log type if the <i>logType</i> parameter is omitted.</li>
+ <li class=MsoNormal style='mso-list:l8 level1 lfo30;tab-stops:.5in'>LogTypeCommand
+     – create a command log.<span style="mso-spacerun: yes">  </span>Only the
+     input commands are copied to the log file.<span style="mso-spacerun:
+     yes">  </span>This creates a command script input log suitable for later
+     replay (such as with setScriptFile).</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>setScriptFile(<i>filename, flags</i>?)</b>
+– start reading commands from the script file, or, if <i>filename</i> is nil,
+close any current script file.<span style="mso-spacerun: yes">  </span>The
+optional <i>flags</i> value lets you specify how to read the script file:</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo33;tab-stops:list .5in'>ScriptFileQuiet
+     – do not display any output while reading the script file.<span
+     style="mso-spacerun: yes">  </span>If this flag isn't set, the input lines
+     read from the script file and the resulting output will be displayed as
+     though the user had typed the lines of text at the keyboard.</li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo33;tab-stops:list .5in'>ScriptFileNonstop
+     – turn off the MORE prompt while reading the script file; output will
+     scroll by without any user intervention.<span style="mso-spacerun: yes"> 
+     </span>If this flag isn't used, the MORE prompt will be displayed each
+     time the screen fills up with text, and the user will have to acknowledge
+     the prompt before more output will be displayed.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the <i>flags</i> argument isn't
+specified, a default value of zero will be used, so none of the flags will be
+set.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When the end of the file is reached,
+the interpreter will automatically close the file and return to normal keyboard
+input, so calling this function with <i>filename</i> set to nil isn't necessary
+unless you want to stop reading the script file early.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>statusMode(<i>mode</i>)</b> – set
+the status line mode.<span style="mso-spacerun: yes">  </span>This can be used
+to control the status line in non-HTML mode and for text-only (non-HTML)
+interpreters.<span style="mso-spacerun: yes">  </span>The status mode controls
+where text is displayed.<span style="mso-spacerun: yes">  </span>In status mode
+StatModeNormal, text is displayed in the main text area.<span
+style="mso-spacerun: yes">  </span>In status mode StatModeStatus, text is
+displayed to the left portion of the status line.<span style="mso-spacerun:
+yes">  </span>Other status modes are not currently used; any text written to
+the console in other status modes is not displayed anywhere.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To write to the status line in
+non-HTML mode and on text-only interpreters, set the status mode to
+StatModeStatus, write the status line text as though it were ordinary display
+output, and set the status mode back to StatModeNormal:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>statusMode(StatModeStatus);</pre><pre><span style="mso-spacerun: yes">   </span>&quot;Loud Room&quot;;</pre><pre><span style="mso-spacerun: yes">   </span>statusMode(StatModeNormal);</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>statusRight(<i>txt</i>)</b> –
+write the text string <i>txt</i> to the right half of the status line.<span
+style="mso-spacerun: yes">  </span>This can be used to control the right
+portion of the status line in non-HTML mode and on text-only interpreters.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>systemInfo(<i>infoType</i>, ...)</b>
+– retrieve information about the TADS 3 application environment.<span
+style="mso-spacerun: yes">  </span>This function works the same way it did in
+TADS 2.<span style="mso-spacerun: yes">  </span>The <i>infoType</i> constants
+are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoInterpClass
+     – get the interpreter “class,” which indicates the broad capabilities of
+     the interpreter. <span style="mso-spacerun: yes"> </span>The following
+     classes are defined:</li>
+</ul>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo36;
+tab-stops:.5in list 1.0in'><![if !supportLists]><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]>SysInfoIClassText – character-mode text-only
+interpreter, such as Unix TADS or MS-DOS TADS.<span style="mso-spacerun: yes"> 
+</span>These interpreters use a single, fixed-pitch font, cannot display any
+graphics, and support only the text-only HTML subset.</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo36;
+tab-stops:.5in list 1.0in'><![if !supportLists]><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]>SysInfoIClassTextGUI – GUI text-only interpreter, such
+as WinTADS or MacTADS.<span style="mso-spacerun: yes">  </span>These
+interpreters behave essentially the same as character-mode interpreters, but
+run on graphical operating systems and thus might use proportional fonts,
+boldface text, and so on.<span style="mso-spacerun: yes">  </span>These
+interpreters cannot display graphics explicitly, but might use some graphics
+automatically (for drawing window borders, for example).<span
+style="mso-spacerun: yes">  </span>These support only the text-only HTML
+subset.</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo36;
+tab-stops:.5in list 1.0in'><![if !supportLists]><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]>SysInfoIClassHTML – a full HTML interpreter running on
+a graphical platform, such as HTML TADS for Windows, or HyperTADS for
+Macintosh.<span style="mso-spacerun: yes">  </span>These interpreters can use
+multiple fonts of varying sizes, including proportional fonts, can display
+graphics and play sounds, and recognize the full HTML TADS markup language.</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoVersion
+     – get the system version information</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoOsName
+     – get the OS name</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoJpeg
+     – can the renderer display JPEG images?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoPng
+     – can the renderer display PNG images?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoWav
+     – can the system play WAVE sounds?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoMidi
+     – can the system play MIDI sounds?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoWavMidiOvl
+     – can the system play WAVE and MIDI sounds simultaneously?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoWavOvl
+     – can the system play multiple WAVE sounds simultaneously?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoPrefImages
+     – do the user’s preferences allow images to be displayed?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoPrefSounds
+     – do the user’s preferences allow sound effects to be played?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoPrefMusic
+     – do the user’s preferences allow music to be played?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoPrefLinks
+     – do the user’s preferences allow hyperlinks to be displayed distinctively
+     (i.e., not as ordinary text, but using a special style to indicate that
+     they’re links)?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoMpeg
+     – can the system play MPEG sounds of any kind?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoMpeg1
+     – can the system play MPEG layer 1 (MP1) sounds?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoMpeg2
+     – can the system play MPEG layer 2 (MP2) sounds?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoMpeg3
+     – can the system play MPEG layer 3 (MP3) sounds?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoLinksHttp
+     – can the system follow hyperlinks that use the “http:” scheme?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoLinksFtp
+     – can the system follow hyperlinks that use the “ftp:” scheme?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoLinksNews
+     – can the system follow hyperlinks that use the “news:” scheme?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoLinksMailto
+     – can the system follow hyperlinks that use the “mailto:” scheme?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoLinksTelnet
+     – can the system follow hyperlinks that use the “telnet:” scheme?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:.5in'>SysInfoPngTrans
+     – can the system properly display transparent PNG’s overlayed on their
+     backgrounds?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:list .5in'>SysInfoPngAlpha
+     – can the system use alpha-channel (partial transparency) blending in
+     PNG’s?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:list .5in'>SysInfoOgg
+     – can the system play Ogg Vorbis sounds?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:list .5in'>SysInfoMng
+     – can the system display MNG images?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:list .5in'>SysInfoMngTrans
+     – can the system properly display transparent MNG’s overlayed on their
+     backgrounds?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:list .5in'>SysInfoMngAlpha
+     – can the system use alpha-channel (partial transparency) blending in
+     MNG’s?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:list .5in'>SysInfoHilite
+     – can the system render highlighted text (text in &lt;B&gt; tags)
+     distinctively?</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:list .5in'>SysInfoTextColors
+     – does the system provide control text colors (via &lt;FONT&gt;
+     tags)?<span style="mso-spacerun: yes">  </span>Returns one of the
+     following codes indicating the level of support provided:</li>
+ <ul style='margin-top:0in' type=circle>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo36;tab-stops:list 1.0in'>nil
+      – the SysInfoTextColors code is not recognized by the system</li>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo36;tab-stops:list 1.0in'>SysInfoTxcNone
+      – no text color control is provided; &lt;FONT COLOR&gt; is ignored</li>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo36;tab-stops:list 1.0in'>SysInfoTxcParam
+      – some or all of the parameterized color names (BGCOLOR, TEXT, STATUSBG,
+      STATUSTEXT, etc.) can be used with &lt;FONT COLOR&gt;, but specific
+      colors will be ignored</li>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo36;tab-stops:list 1.0in'>SysInfoTxcAnsiFg
+      – the ANSI colors (black, white, red, green, blue, yellow, cyan, magenta)
+      can be used as foreground colors, but background colors cannot be set</li>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo36;tab-stops:list 1.0in'>SysInfoTxcAnsiFgBg
+      – the ANSI colors can be used as foreground and background colors.</li>
+  <li class=MsoNormal style='mso-list:l1 level2 lfo36;tab-stops:list 1.0in'>SysInfoTxcRGB
+      – any RGB color can be used for foreground and background colors.<span
+      style="mso-spacerun: yes">  </span>(This is the code normally returned by
+      the HTML interpreters.<span style="mso-spacerun: yes">  </span>This
+      doesn’t necessarily indicate that the user is running in a 24-bit graphic
+      mode; it simply indicates that the system accepts arbitrary RGB colors
+      and will display them with the best fidelity possible.)</li>
+ </ul>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo36;tab-stops:list .5in'>SysInfoBanners
+     – does the system support the <a href="t3banner.htm">banner window API</a>?</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=tadsSay></a><b>tadsSay(<i>val</i>,
+...)</b> – display one or more values.<span style="mso-spacerun: yes"> 
+</span>Each value is displayed on the console, starting with the first
+argument; the displayed values are not separated by any spaces or other
+delimiters.<span style="mso-spacerun: yes">  </span>Each value can be a string,
+an integer (in which case its decimal representation is displayed), or nil, in
+which case nothing is displayed.<span style="mso-spacerun: yes">  </span>The function
+throws a run-time error (BAD_TYPE_BIF) for any other type.<span
+style="mso-spacerun: yes">  </span>No return value.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>timeDelay(<i>delay_ms</i>)</b> –
+pause execution for the given number of milliseconds.<span style="mso-spacerun:
+yes">  </span>Note that the precision of system timers varies, so the actual
+delay might differ from the exact time specified on some systems according to
+the available hardware timer precision.</p>
+
+<h3><a name="_Real-Time_Input"></a>Real-Time Input</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>A real-time event is an event that
+occurs at a particular point in time; for example, an event programmed to occur
+at 9:00 PM is a real-time event, because it’s scheduled according to time in
+the real world.<span style="mso-spacerun: yes">  </span>It is more typical to
+schedule a real-time event to occur after some number of seconds or minutes has
+elapsed than to schedule one for a particular time on the clock on the wall,
+but elapsed-time events are also real-time events, because they depend on the
+passage of time in the real world.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In most programs (such as adventure
+games) that take their input from a command line, reading a command line from
+the user stops everything until the user finishes entering the command (by
+pressing Return, or something similar).<span style="mso-spacerun: yes"> 
+</span>This is known as a “blocking” operation, because the operation blocks
+the program’s progress until the command line is finished: the program simply
+waits as long as it takes for the user to type the command line and press the
+Return key.<span style="mso-spacerun: yes">  </span>For this reason,
+command-line programs don’t usually incorporate real-time events, and most
+programs with real-time events don’t use command lines.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>TADS 3 has the ability to mix
+command-line input and real-time events, thanks to the inputLineTimeout()
+function.<span style="mso-spacerun: yes">  </span>This function works a lot
+like the ordinary inputLine() function, which reads a line of text from the
+keyboard and returns a string containing the text, but inputLineTimeout() has
+the additional feature of letting you specify a time limit, called a
+“timeout.”<span style="mso-spacerun: yes">  </span>A timeout is simply a
+maximum real-time interval; when the interval expires, inputLineTimeout()
+returns, even if the user hasn’t finished editing the command line.<span
+style="mso-spacerun: yes">  </span>The function returns information that lets
+you tell whether or not the user finished editing the command before the
+timeout expired.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>At the simplest level, you could
+imagine a game that imposes a time limit for typing certain commands.<span
+style="mso-spacerun: yes">  </span>For example, a sadistic game designer might want
+to design a traditional adventure game maze, with the novel twist that the
+player has to move out of each room within ten seconds of real time or face
+some penalty, such as being moved back to the start of the maze.<span
+style="mso-spacerun: yes">  </span>To do this, you could use inputLineTimeout()
+with a timeout value of 10000 (ten thousand milliseconds equals ten seconds),
+imposing the penalty if the function ever returns with a timeout.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This type of use of
+inputLineTimeout() would not win many admirers, but fortunately it’s not at all
+the scenario for which this function was designed.<span style="mso-spacerun:
+yes">  </span>In fact, the key feature of the function is that it not only
+allows you to interrupt a command line, but also allows you to <i>resume</i> an
+interrupted command line.<span style="mso-spacerun: yes">  </span>This is
+crucial: because you can resume an interrupted command line, you can write your
+program so that it continues to process events in real time, even while the
+user is editing a command; the user’s editing and your real-time events can
+proceed in parallel, with neither blocking the other.<b><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>There are three possible ways to use
+inputLineTimeout().</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Scenario 1: Limited-Time Input.</b><span
+style="mso-spacerun: yes">  </span>This is the real-time-maze scenario
+described above, where the program solicits command-line input from the user,
+but only allows the user a limited amount of time to complete the input.<span
+style="mso-spacerun: yes">  </span>In this scenario, when the time limit
+expires, the user’s chance to enter a command has ended: the program does not
+allow the user to resume editing the command later.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This is the simplest scenario,
+because the program unconditionally cancels the input when it times out.<span
+style="mso-spacerun: yes">  </span>To do this, you simply call the function
+inputLineCancel() when a timeout occurs.<span style="mso-spacerun: yes"> 
+</span>Here’s how this looks:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>/* read a command, with a 10-second time limit */</pre><pre><span style="mso-spacerun: yes">  </span>local result = inputLineTimeout(10000);</pre><pre><span style="mso-spacerun: yes">  </span>if (result[1] == InEvtTimeout)</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>/* timed out - cancel input and forget the buffer */</pre><pre><span style="mso-spacerun: yes">    </span>inputLineCancel(true);</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/*</pre><pre><span style="mso-spacerun: yes">     </span>*<span style="mso-spacerun: yes">  </span>gloat about defeating the user with our clever time</pre><pre><span style="mso-spacerun: yes">     </span>*<span style="mso-spacerun: yes">  </span>limit ruse, using the spelling enjoyed by usenet</pre><pre><span style="mso-spacerun: yes">     </span>*<span style="mso-spacerun: yes">  </span>posters everywhere</pre><pre><span style="mso-spacerun: yes">     </span>*/</pre><pre><span style="mso-spacerun: yes">    </span>&quot;Ha, ha!<span style="mso-spacerun: yes">  </span>You LOOSE!&quot;;</pre><pre><span style="mso-spacerun: yes">    </span>// etc</pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre><span style="mso-spacerun: yes">  </span>else</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>/* darn, they were fast enough */</pre><pre><span style="mso-spacerun: yes">    </span>// move to the new location, etc</pre><pre><span style="mso-spacerun: yes">  </span>}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Scenario 2: Internal Computation
+Only, with Resumed Editing.</b><span style="mso-spacerun: yes">  </span>Sometimes
+you'll want to perform some operation at a particular time, but the operation
+won't perform any display operations.<span style="mso-spacerun: yes"> 
+</span>For example, suppose you're writing a detective game, and you have one
+character in the game who moves around according to a real-time schedule.<span
+style="mso-spacerun: yes">  </span>When you're about to read an input line, you
+can check the character's schedule, calculate the delay until the character's
+next move, and then use that delay as the timeout value for inputLineTimeout().</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If inputLineTimeout() returns a
+timeout event, you'd move your character according to the schedule.<span
+style="mso-spacerun: yes">  </span>Now, suppose the character isn't in sight of
+the player character at any point during the scheduled travel.<span
+style="mso-spacerun: yes">  </span>In this case, you wouldn't want to display
+anything about the character's travel: everything happens behind the
+scenes.<span style="mso-spacerun: yes">  </span>So, you need to perform the
+event in real time, so that the character moves to its new location on
+schedule, but as far as the player is concerned, nothing happened.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In this case, you'd simply call
+inputLineTimeout() again after moving the character.<span style="mso-spacerun:
+yes">  </span>The function would pick up where it left off, with absolutely no
+effects visible to the player.<span style="mso-spacerun: yes">  </span>Nothing
+on the display changes in this case, so the player simply thinks they've been editing
+the same command all along.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The code for this is easy, as long as
+we take for granted that we know when the character's next move occurs.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>/* show the initial prompt */</pre><pre><span style="mso-spacerun: yes">  </span>&quot;&gt;&quot;;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>/* keep looping forever */</pre><pre><span style="mso-spacerun: yes">  </span>for (;;)</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>local delay;</pre><pre><span style="mso-spacerun: yes">    </span>local result;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* calculate the interval until the next travel */</pre><pre><span style="mso-spacerun: yes">    </span>delay = actor.nextMoveTime - getTime(GetTimeTicks);</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* ask for input, waiting no longer than the timeout */</pre><pre><span style="mso-spacerun: yes">    </span>evt = inputLineTimeout(delay);</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">    </span>/* if we timed out, move the character */</pre><pre><span style="mso-spacerun: yes">    </span>if (result[1] == InEvtTimeout)</pre><pre><span style="mso-spacerun: yes">    </span>{</pre><pre><span style="mso-spacerun: yes">      </span>/* time to go */</pre><pre><span style="mso-spacerun: yes">      </span>actor.performNextTravel();</pre><pre><span style="mso-spacerun: yes">    </span>}</pre><pre><span style="mso-spacerun: yes">    </span>else</pre><pre><span style="mso-spacerun: yes">    </span>{</pre><pre><span style="mso-spacerun: yes">      </span>/* they entered a command - handle it */</pre><pre><span style="mso-spacerun: yes">      </span>processCommand(result[2]);</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">      </span>/* show the prompt again */</pre><pre><span style="mso-spacerun: yes">      </span>&quot;&gt;&quot;;<br
+style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></pre><pre><span style="mso-spacerun: yes">  </span><span style="mso-spacerun: yes">  </span>}</pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'>Note that it's legal to update banner windows during interrupted input.<span style="mso-spacerun: yes">  </span>You could use code just like the example above, substituting banner window displays for the &quot;performNextTravel&quot; call.<span style="mso-spacerun: yes">  </span>For example, you could keep a running real-time clock in a banner window, updating it at each input timeout.<span style="mso-spacerun: yes">  </span>As long as you're not updating the <i>main</i> window, where the input editing session is taking place, it's not necessary to cancel input editing (as described in the next scenario).<o:p></o:p></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Scenario 3: Interruption with a
+Displayed Message, then Resumed Editing.</b><span style="mso-spacerun: yes"> 
+</span>This is the most complex situation, but in many ways the most
+interesting.<span style="mso-spacerun: yes">  </span>In this scenario, we want
+to tell the user about something that happened during the real-time event, but
+we still want to let the user go back to editing the command line after we
+finish processing the event.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Our detective example above fits this
+scenario when the traveling actor <i>is</i> in sight of the player character,
+because in this case we want to tell the user that the traveling actor has
+departed or arrived.<span style="mso-spacerun: yes">  </span>Once we've
+described the departure or arrival, though, we want to let the user continue
+editing the command, because the interruption doesn't necessarily change what
+they would have typed, and (unlike Scenario 1) doesn't take away the user's
+chance to type a command.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In this situation, we must use the
+inputLineCancel() function, passing nil as the <i>reset</i> argument.<span
+style="mso-spacerun: yes">  </span>This function tells the system that we are
+not processing Scenario 2; in particular, it tells the system that it will not
+be able to pretend that the interruption never happened.<span
+style="mso-spacerun: yes">  </span>The reason we must differentiate this case
+from Scenario 2 is that when inputLineTimeout() returns with a timeout, the
+system optimistically keeps everything on the screen and in memory in a state
+where it <i>could</i> resume editing the same command later.<span
+style="mso-spacerun: yes">  </span>This means that any display operations -
+even something as simple as displaying a string of text - would leave things
+terribly confused, because the system is holding everything ready for more command
+line editing.<span style="mso-spacerun: yes">  </span>To tell the system that
+we wish to give up our right to resume editing with complete transparency, and
+in exchange receive the right to perform other display operations, we use
+inputLineCancel(nil).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that we use nil for <i>reset</i>
+argument to inputLineCancel() in this scenario.<span style="mso-spacerun:
+yes">  </span>This is because we wish to resume editing the command line
+later.<span style="mso-spacerun: yes">  </span>This might seem confusing - if
+we want to resume editing the command later, why are we canceling in the first
+place?<span style="mso-spacerun: yes">  </span>The solution to this seeming
+contradiction is that <i>canceling</i> and <i>resetting</i> are not the same
+thing.<span style="mso-spacerun: yes">  </span>Canceling, which is what
+inputLineCancel() does regardless of the <i>reset</i> argument, simply tells
+the system to give up hope for <i>transparently </i>resuming editing.<span
+style="mso-spacerun: yes">  </span>Resetting, which only occurs when the <i>reset</i>
+argument to inputLineCancel() is true, tells the system to throw away <i>all</i>
+information about editing.<span style="mso-spacerun: yes">  </span>So, when you
+cancel without resetting, you tell the system that you won't transparently
+resume editing, but that you still wish to resume editing later, albeit not
+transparently.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Here's what this looks like to the
+user.<span style="mso-spacerun: yes">  </span>First, here's the way the screen
+looks when the user is first presented with the command line:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>What do you, the detective, want to do
+next?<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>&gt;|<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>(That vertical bar, &quot;|&quot;, is
+meant to represent the cursor, where text the user types is inserted.)<span
+style="mso-spacerun: yes">  </span>Now, the user starts typing a command, and
+the screen looks like this after a bit:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>What do you, the detective, want to do
+next?<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>&gt;look at the v|<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now, at this point, our timeout
+expires, and we discover that it's time to move Miss Marmalade into the same
+room where the player character is located.<span style="mso-spacerun: yes"> 
+</span>We call inputLineCancel(nil) to tell the system that we wish to perform
+some output operations in lieu of resuming editing transparently, then we add
+our displayed messages.<span style="mso-spacerun: yes">  </span>Finally, we
+call inputLineTimeout() again to resume editing.<span style="mso-spacerun:
+yes">  </span>Here's what the user sees:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>What do you, the detective, want to do
+next?<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>&gt;look at the v<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>Miss Marmalade enters from the north.<span
+style="mso-spacerun: yes">  </span>She pretends<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>not to see you, busying herself with
+rummaging for<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>something in her purse.<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>&gt;look at the v|<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Notice that the partially-constructed
+command line now appears <i>twice</i> on the screen - once before the
+interruption, and again after.<span style="mso-spacerun: yes">  </span>The
+first copy is no longer the active command line; it's left on screen only to
+maintain continuity, so that the user isn't startled by the text suddenly
+disappearing.<span style="mso-spacerun: yes">  </span>After this, we see the
+text displayed during the real-time interruption, and finally we see the new
+command line, where we've reinstated the text the user has entered so far, as
+well as the original cursor position.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This is what we mean by
+non-transparent resumption of editing.<span style="mso-spacerun: yes"> 
+</span>The resumption isn't transparent, in that the user can plainly see on the
+screen that the editing was interrupted.<span style="mso-spacerun: yes"> 
+</span>We are nonetheless resuming the editing.<span style="mso-spacerun:
+yes">  </span>If the user had their eyes closed, they could keep editing the
+command without knowing that we interrupted them, because the cursor position
+and all other editing state is the same as it was before the interruption; the
+only thing that has changed is that more text is on the screen than when we
+started.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The code for this case is almost
+exactly the same as the example code in Scenario 2, with two changes.<span
+style="mso-spacerun: yes">  </span>First, we must call inputLineCancel(nil)
+before we display the message about Miss Marmalde moving; we'd put this call
+just before the call to actor.performNextTravel().<span style="mso-spacerun:
+yes">  </span>Second, we'd have to re-display the &quot;&gt;&quot; prompt before
+we resume editing the command; we could do this before the call to
+inputLineTimeout().<span style="mso-spacerun: yes">  </span>Note that the adv3
+library's input/output managers handle all of this for you automatically, as
+long as you always go through the inputManager methods to read timed input: if
+you're using the inputManager methods, you'll never have to worry about whether
+or not you display anything during an editing interruption.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

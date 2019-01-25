@@ -1,0 +1,383 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3icext_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>8</o:Revision>
+  <o:TotalTime>38</o:TotalTime>
+  <o:Created>2000-03-30T23:34:00Z</o:Created>
+  <o:LastSaved>2003-01-12T07:16:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>849</o:Words>
+  <o:Characters>4844</o:Characters>
+  <o:Lines>40</o:Lines>
+  <o:Paragraphs>9</o:Paragraphs>
+  <o:CharactersWithSpaces>5948</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:317807418;
+	mso-list-type:hybrid;
+	mso-list-template-ids:445520486 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Extending Intrinsic Classes</h3>
+
+<p class=MsoNormal>You can extend an intrinsic class's programmatic interface
+by adding new methods and static (class-level) properties.<span
+style="mso-spacerun: yes">  </span>This capability allows you to add new
+functionality to an intrinsic class, and then access the new functionality
+using the same syntax that you would use to access native features of the
+class.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>To add a method to an intrinsic class, use the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>modify</span></tt>
+statement.<span style="mso-spacerun: yes">  </span>The <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>modify</span></tt>
+syntax for intrinsic classes is almost exactly the same as it is for regular
+objects:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>modify <i>intrinsic_class_name</i></pre><pre><span style="mso-spacerun: yes">   </span><i>method1</i> ( <i>args </i>) { <i>method1_code </i>}</pre><pre><span style="mso-spacerun: yes">   </span><i>method2 ...<o:p></o:p></i></pre><pre>;<b><o:p></o:p></b></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When you modify an intrinsic class,
+the intrinsic class <i>must </i>be defined before the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>modify</span></tt>
+statement.<span style="mso-spacerun: yes">  </span>In most cases, this simply means
+that you must include the system header file that defines the intrinsic class
+before the <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>modify</span></tt> statement and in the same source module.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The following example adds a base-2
+logarithm function to the BigNumber intrinsic class.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>#include &lt;bignum.h&gt;<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>modify BigNumber<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes"> 
+</span>log2()<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes"> 
+</span>{<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
+</span>/*<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">    
+</span>*<span style="mso-spacerun: yes">   </span>cache ln(2) – use slightly
+greater precision than we<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">    
+</span>*<span style="mso-spacerun: yes">   </span>actually need, to avoid
+rounding error<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">    
+</span>*/<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
+</span>if (BigNumber.cacheLn2_ == nil<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">       
+</span>|| BigNumber.cacheLn2_.getPrecision() &lt; getPrecision() + 3)<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
+</span>{<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">     
+</span>BigNumber.cacheLn2_ = <o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">       
+</span>new BigNumber(2, getPrecision() + 3).logE();<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
+</span>}<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
+</span>/*<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">    
+</span>*<span style="mso-spacerun: yes">   </span>Calculate ln(self), then
+divide by ln(2) to get the<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">    
+</span>*<span style="mso-spacerun: yes">   </span>result (note that ln-base-B
+of x for any B is equal to<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">    
+</span>*<span style="mso-spacerun: yes">   </span>ln(x)/ln(B)).<span
+style="mso-spacerun: yes">  </span>Reduce the precision of the result back<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">    
+</span>*<span style="mso-spacerun: yes">   </span>to our own precision before
+returning.<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">    
+</span>*/<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
+</span>return (self.setPrecision(getPrecision() + 3).logE()<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun:
+yes">            </span>/ BigNumber.cacheLn2_).setPrecision(getPrecision());<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes"> 
+</span>}<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes"> 
+</span>// our caches ln(2) value – we don't have any value initially<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes"> 
+</span>cacheLn2_ = nil<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>;<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This example illustrates several
+aspects of intrinsic class extensions.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>First, note that we can refer to
+&quot;self&quot; within the method we add to the class.<span
+style="mso-spacerun: yes">  </span>We're modifying BigNumber, so
+&quot;self&quot; is always a BigNumber object; we can thus refer to its
+methods, such as getPrecision() and setPrecision(), and we can also use the
+value in arithmetic.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Second, note that we can add a data
+property to the class.<span style="mso-spacerun: yes">  </span>In the example,
+we add a property called cacheLn2, which contains a cached value of the natural
+logarithm of 2.<span style="mso-spacerun: yes">  </span>(In the example, we
+have chosen to cache the value rather than recalculate it each time we call the
+ln2() method as a performance optimization; calculating ln(2) is fairly
+expensive, so it makes sense to save the value when we first calculate it, and
+re-use the same value rather than calculating it on each new call to the
+method.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note, though, that we can only add <i>class-level
+</i>properties to the class.<span style="mso-spacerun: yes">  </span>We <i>cannot
+</i>add instance properties.<span style="mso-spacerun: yes">  </span>In other
+words, we can only add a property to BigNumber itself, not to each individual
+BigNumber value.<span style="mso-spacerun: yes">  </span>So, we cannot write
+something like this within an intrinsic class extension method:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>self.val1 = 5;<span style="mso-spacerun: yes">  </span>// ILLEGAL!</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The statement above is illegal in an
+intrinsic class extension method because it attempts to store a property value
+with the object itself, rather than with the intrinsic class.</p>
+
+<h3 style='tab-stops:.5in'>Restrictions</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>There are some restrictions on
+modifying intrinsic classes:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     cannot add properties to instances of an intrinsic class (you can,
+     however, add class-level properties).</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     cannot modify an intrinsic method of an intrinsic class, whether defined
+     directly on the class or inherited from its intrinsic superclass</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     cannot use <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+     "Times New Roman"'>replace</span></tt> with an intrinsic class.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     cannot subclass an intrinsic class.</li>
+</ul>
+
+<h3 style='tab-stops:.5in'>Using Aggregation</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>There might be times when the
+intrinsic class extension mechanism is too restricted for a particular
+application you have in mind.<span style="mso-spacerun: yes">  </span>In
+particular, you might sometimes find it necessary to add new properties to
+individual instances of a class; since you can't do this by extending an
+intrinsic class, you will have to find an alternative approach in such cases.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>One approach that you might consider
+is <i>aggregation</i>.<span style="mso-spacerun: yes">  </span>Aggregation is a
+common technique in object-oriented programming in which you create a
+&quot;wrapper&quot; object that contains an instance of a class you want to
+extend.<span style="mso-spacerun: yes">  </span>In other words, rather than
+subclassing, you create a new, independent class, and store an instance of the
+class you wish to extend as a property of the new class.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style='font-family:"Times New Roman"'>For example, suppose you wanted to create a complex number class.<span style="mso-spacerun: yes">  </span>(A complex number is a mathematical construct consisting of two components, a &quot;real&quot; part and an &quot;imaginary&quot; part, each of which is an independent real number.)<span style="mso-spacerun: yes">  </span>You can't do this by extending BigNumber, since there's no way to store the two separate numbers making up a complex value.<span style="mso-spacerun: yes">  </span>Instead, you could use aggregation.<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'>To create a complex number class using aggregation, we would start with something like this:<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre>class Complex: object</pre><pre><span style="mso-spacerun: yes">  </span>construct(r, i) { r_ = r; i_ = i; }</pre><pre><span style="mso-spacerun: yes">  </span>r_ = nil // the real part</pre><pre><span style="mso-spacerun: yes">  </span>i_ = nil // the imaginary part</pre><pre>;</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'>Here, the properties r_ and i_ are simply BigNumber values.<span style="mso-spacerun: yes">  </span>We have thus aggregated two BigNumber values into this new class that we call Complex.<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'>The biggest disadvantage of using aggregation, especially for something like a mathematical class, is that TADS provides no way of defining operators (such as &quot;+&quot; or &quot;*&quot;) on classes.<span style="mso-spacerun: yes">  </span>So, it's impossible to create a Complex class that we can use as though it were an ordinary value in additions or multiplications.<span style="mso-spacerun: yes">  </span>However, we can easily use explicit method calls instead:<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre>// adding to Complex's class definition</pre><pre><span style="mso-spacerun: yes">  </span>add(v) { return new Complex(r_ + v.r_, i_ + v.i_); }</pre><pre><span style="mso-spacerun: yes">  </span>sub(v) { return new Complex(r_ - v.r_, i_ - v.i_); }</pre><pre>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>// perform some arithmetic on some complex values</pre><pre><span style="mso-spacerun: yes">  </span>local a, b, c;</pre><pre><span style="mso-spacerun: yes">  </span>a = new Complex(1.0, 2.0);</pre><pre><span style="mso-spacerun: yes">  </span>b = new Complex(-3.1, -2.0);</pre><pre><span style="mso-spacerun: yes">  </span>c = a.add(b);</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'>It's not quite as syntactically spare as normal arithmetic, but it's not too much worse, and the meaning is clear enough.<o:p></o:p></span></pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre></div>
+
+</body>
+
+</html>

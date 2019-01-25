@@ -1,0 +1,3336 @@
+TADS 2.2.1.0
+Unix Patchlevel 1
+18-Oct-96
+
+Mike Roberts has made source code to TADS generally available, so I have
+merged my Unix changes into the general source distribution as of this
+version.
+
+This version also includes a bug fix:
+
+Fixed a bug in the command parser that caused commands ending with numbers
+(e.g., "footnote 1", "undo 5") to confuse the parser. 
+
+Also disabled swapping by default, since Unix machines will do better using
+their virtual memory.  To force swapping, use the -t+ option.
+
+See tadsver.dos for changes from 2.2.0.5 to 2.2.1.0 that apply to all
+systems, and see tadsv240.txt for changes from 2.2.3 through 2.4.0.
+Refer to tadsver.htm for the most recent changes.
+
+
+TADS 2.2.0.5
+Unix Patchlevel 1
+22-Nov-94 
+
+Fixed a bug that caused window sizes > 135 to crash the run-time.
+Increased default buffer sizes.  The defaults that the compiler reports are
+actually wrong.  You probably won't have to make any buffers bigger unless
+you've got a *really* huge game.
+
+See the general 2.2 changes below; there are many important new features.
+
+TADS 2.1.2.2
+Unix Patchlevel 2
+17-Feb-94
+
+Unix pacakges now include the standard documentation.
+
+Fixed a bug that caused commands like
+
+>X, give me the Y
+
+to crash the run-time.
+
+
+TADS 2.1.2.2
+Unix Patchlevel 1
+29-Jan-94
+
+Unix-specific changes applied to latest TADS source.  Unix versions 2.1.0.0
+pl2 through pl4 were never released, so please read the notes for those as
+well -- this is the first release version that incorporates those changes.
+
+The window-resizing code seems to have been broken.  Resizing the window
+sends the run-time into space.  I'm looking into it.  For now, don't change
+the window size while playing.
+
+adv.t and std.t have been updated to 2.1.2.2 as well.
+
+
+TADS 2.1.0.0
+Unix Patchlevel 4
+16-Nov-93
+
+Changed the runtime and compiler so that the heapsize is always set to the
+maximum.  An explicit -mh setting will override this.  Note that you cannot
+make the heap bigger than 64K, since TADS has to run under DOS in real
+mode, where data structures can only be 64K or smaller.
+
+
+TADS 2.1.0.0
+Unix Patchlevel 3
+25-Oct-93
+
+The adv.t and std.t files have been updated to 2.1.0.0.  The ones in the
+earlier archives were actually the 2.0.13 ones.  (Doh!)
+
+Now tadsr tries to save the game to file "fatal#####.sav" when it gets a
+fatal signal, where ##### is the process ID.  Sometimes this file will be
+unuseable; other times it'll work fine -- it depends on where the signal
+occurs during execution.
+
+Two environment variables now affect the behavior of the runtime:
+
+	TADSSAVE: directory for save files
+        TADSGAME: directory for game files
+
+These pathnames will be prepended to any save or game file that does not
+already have a slash in it.  For example, if
+
+    	TADSGAME=~you/games
+
+and you type
+
+ 	tadsr foo
+
+the run-time will look for the file ~you/games/foo.gam.  Note that if you
+want to prevent this, you have to explictly put a ./ in the filename, or
+unset the TADSGAME environment variable.  The same goes for TADSSAVE.
+
+Since some windowing systems clear the screen when the end-of-visual
+terminal code is sent out, tadsr now waits for a keypress before it
+terminates.  There is no way to disable this -- the run-time now ignores
+the -p flag entirely.  You can always see usage (and game endings) now,
+however, which is a plus!
+
+The Emacs-style command line editing now handles ^D (delete character after
+cursor) and ^K (delete to end of line).
+
+Since most Unix boxes have loads of real memory and even more virtual
+memory, I increased the size of the scrollback buffer eightfold.  It's now
+256K.  This should be enough for marathon play sessions.
+
+There are some known problems with the compiler -- core dumps on at least
+one big game, and core dumps when dealing with precompiled headers and
+modify/replace in another case.  I haven't been able to track these down,
+but they aren't restricted to one architecture.
+
+One thing that's been reported as a bug but isn't: If you have the margin
+bell on in your xterm you'll get lots of rings as TADS updates the screen.
+The solution: turn off the margin bell!
+
+
+TADS 2.1.0.0
+Unix Patchlevel 2
+
+Output handling has been improved again.  Terminal settings are restored
+properly upon suspend (^Z) or resume.  I improved a few other things that I
+don't remember now.  :)
+
+
+TADS 2.1.0.0
+Unix Patchlevel 1
+
+The programs should now be quite stable on all supported platforms.
+Term handling has been vastly improved, so that the run-time should be
+comfortable over a 2400 baud connection.  The compiler now avoids
+all the screen handling stuff and just uses stdio for all output.
+
+Starting with this release, Unix versions will be given patchlevel
+numbers in addition to the standard High Energy version number.
+There's one patch number of the general Unix sources, and another for
+the specific platform the binaries were compiled for.
+
+General Unix notes:
+
+The .GAM files are now 100% portable across platforms.  You can compile
+a game on a PC clone or Mac and then run the resulting .GAM directly
+under Unix (and vice versa).  Kudos to High Energy for that!
+
+There is no maketrx program for the Unix versions.  Now that TADS is
+running on a much wider range of machines, creating binaries specific
+to a particular machine seems rather foolish, so I have not kept
+support for doing that in the this port.
+
+The TADS run-time uses termcap routines for all output.  You will
+therefore need to run it on a terminal with window scrolling capability
+(i.e., most modern terminals).  If you find that the programs don't
+work properly with your terminal, please let me know -- termcap hacking
+is very error-prone, so I may have made a mistake in there somewhere.
+Before assuming that the problem is with the TADS run-time, however,
+try other programs on your system that use termcap, like vi.  (Emacs
+has its own term handling code, so it's not a good test.)
+
+There a few things special to the Unix versions:
+
+	o (Limited) Emacs-style command line editing:
+
+		^F	ahead one character
+		^B	back one character
+		^A	beginning of line
+		^E	end of line
+		^P	previous command in command list
+		^N	next command in command list
+		^K	kill to end of line
+		^D	delete character after cursor
+
+	o ESC enters scrollback mode (instead of F1).  Scrollback control
+	  keys are listed on the top line.
+
+	o Press ^L at any time to redraw the entire screen (if you
+	  get a burst of line noise, for example)
+
+	o Press ^Z (or whatever your SIGTSTP key is) to suspend the 
+	  run-time.
+
+	o tadsr recognizes SIGWINCH so that you can resize your
+	  terminal window.  Text above the current line won't be
+	  reformatted when you do this, but all subsequent text
+	  will be formatted to fill the screen.  
+
+	  NOTE: Resize doesn't work in an OpenWindows cmdtool.
+
+The output handling is still not absoultely optimal, but it's probably
+as good as it's going to get since the machine-independent TADS source
+imposes certain requirements on the behavior of the windowing functions.
+
+Finally, please report bugs directly to the person listed as the
+maintainer for the port in the banner, not to High Energy.  That person
+is the only one (besides, perhaps, me) who's going to be fixing any
+problems specific to the Unix ports.
+
+Dave Baggett
+dmb@ai.mit.edu
+
+*-----------------------------------------------------------------------------*
+General TADS notes (From the DOS version)
+*-----------------------------------------------------------------------------*
+ 
+This file contains a list of changes that have been made to TADS
+since the initial 2.0 release.  Most of the changes are fixes to
+bugs, so they don't change the documented behavior, but a few, as
+explained below, add new functionality to TADS.  Releases are
+listed with the most recent release first; each release incorporates
+all new features and bug fixes of each prior release unless
+otherwise stated.
+
+2.2.0  10/30/94  new features, enhancements, bug fixes
+
+  - TADS now has support for reading and writing files.  This new
+    feature is intended to let you save information independently
+    of the game-saving mechanism, which allows you to transfer
+    information between sessions of a game, or even between two
+    different games.  The TADS file operations are not designed
+    as general-purpose file system operations; in particular,
+    these new functions don't have any provisions for creating or
+    reading formatted files, or for exchanging information with
+    programs other than TADS games.
+
+    To open a file, use the fopen() function.  This function takes
+    two arguments:  a single-quoted string giving the name of the
+    file to open, using local file system conventions, and a "mode."
+    (For  maximum portability, you should avoid using volume names,
+    directories, folders, or other path information in filenames.)
+    The mode argument is one of these single-quoted string values:
+
+        r    open file for reading; file must already exist
+        r+   open file for reading and writing; the file is
+             created if it doesn't already exist
+        w    create a new file for writing; the file is deleted
+             if it already exists
+        w+   create a new file for reading and writing; the file
+             is deleted if it already exists
+
+    The return value of fopen() is a "file handle"; this is simply
+    a number that you you to perform subsequent operations on the
+    file.   For example, this opens a new file called TEST.OUT for
+    writing:
+
+        fnum := fopen('test.out', 'w');
+
+    To close an open file, use fclose():
+
+        fclose(fnum);
+
+    Note that the TADS runtime allows only a limited number of
+    files (currently 10) to be open simultaneously, so you should
+    close a file when you're done with it.
+
+    To write to a file, use fwrite().  This function takes a file
+    handle, and a value to write; the value can be a string, a number,
+    or true.  The value can't be nil (this is because the fread() function
+    returns nil to indicate failure; if you could write nil to a file,
+    there would be no way to distinguish reading a valid nil from an
+    error condition).  fwrite() stores the value, along with information
+    on its type.
+
+    The fwrite() function returns nil on success, true on failure.  If
+    the function returns true, it usually means that the disk is full.
+
+       if (fwrite(fnum, 'string value!')
+           or fwrite(fnum, 123))
+           "Error writing file!";
+
+    If the file is open for reading, you can read from the file with
+    the fread() function.  This function takes a file handle, and it
+    returns a value it reads from the file.  The value returned is
+    of the same type as the value originally written at this position
+    in the file with fwrite().  If this function returns nil, it
+    indicates that an error occurred; this usually means that no more
+    information is in the file (you've read past the end of the file).
+
+       res := fread(fnum);
+       say(res);
+
+    You can get the current byte position in the file with the ftell()
+    function:
+
+       "The current seek position is << ftell(fnum) >>. ";
+
+    The ftell() function returns a number giving the byte position
+    that will be read or written by the next file operation.
+
+    You can set the file position with fseek() and fseekeof().  The
+    fseek() function moves the file position to a particular byte
+    position, relative to the beginning of the file.  For example,
+    this seeks to the very beginning of a file:
+
+       fseek(fnum, 0);
+
+    The fseekeof() function positions the file at its end:
+
+       fseekeof(fnum);
+
+    Note that you must be careful with fseek().  You should only seek
+    to positions that you obtained with the ftell() function; other
+    positions may be in the middle of a string or a number in the
+    file, so seeking to an arbitrary location and writing could
+    render the file unusable by partially overwriting existing data.
+
+  - You can now "capture" displayed text to a string.  This new feature
+    allows you to examine and manipulate text displays, no matter how they
+    are generated.  To activate capturing, use the new built-in function
+    outcapture():
+
+        stat := outcapture(true);
+
+    This starts capturing text.  The return value is a status code that
+    you use in the subsequent call to end capturing; you don't need to do
+    anything with this status code except pass it to outcapture() when
+    you're finished capturing output.
+
+    While capturing is in effect, everything that your game attempts to
+    display -- through double-quoted strings or through the say() built-in
+    function -- is hidden from the user and instead stored in a string.
+    Once outcapture(true) is called, no text will be displayed to the
+    user until you call this function:
+
+        str := outcapture(stat);
+
+    The second outcapture() call turns off capturing, and returns a string
+    that contains all of the text that was generated since the corresponding
+    outcapture(true).
+
+    Note that the system automatically turns off capturing any time it
+    prompts the user for information.  The system turns off capturing
+    when it starts a new command, or when it needs to prompt the user
+    for information during a command, such as for disambiguation or to
+    request a missing direct or indirect object.  When the system turns
+    off output capturing, it clears the capture buffer, so any subsequent
+    call to outcapture(stat) will return an empty string.  You can capture
+    text only over the course of a single command line.
+
+    The outcapture() function can be useful if you want to save some
+    text for later.  It's also useful if you want to be able to examine
+    the text that would be generated by a method such as sdesc or ldesc.
+    Since these methods directly display text, you can't directly obtain
+    a string representation of their values; using outcapture(), however,
+    you can let them "display" their values into a string that you can
+    then examine.
+
+    Note that the status value returned from outcapture(true) allows you
+    to nest calls to outcapture().  Since the outcapture(stat) call
+    restores the capturing status that was in effect on the corresponding
+    call to outcapture(true), you don't have to worry when using outcapture()
+    about whether any of the methods you're calling are also using it.
+
+  - TADS now allows you to create and delete objects dynamically
+    at run-time.  This is done through two new operators:  "new"
+    and "delete".
+
+    To create a new object, use this syntax:
+
+        x := new bookItem;
+
+    This dynamically creates a new object whose superclass is bookItem.
+    When this statement is executed, the runtime creates a new object,
+    assigns its superclass to be bookItem, and executes the "construct"
+    method in the new object; this method can perform any creation-time
+    setup that's desired.  The default thing.construct in adv.t simply
+    moves the new object into its location -- this is necessary so that
+    the "contents" list of the location is updated to include the new
+    object.
+
+    A new object inherits all of the vocabulary of its superclass.
+
+    To destroy an object you have created, use this syntax:
+
+        delete x;
+
+    This first calls the "destruct" method of the object to notify it
+    that it is about to be deleted, then destroys the object.  Further
+    references to the object are illegal, since its memory has been
+    released (and thus may be given to another object).  The default
+    thing.destruct in adv.t moves the object into nil, which removes it
+    from its container's "contents" list -- this is necessary so that
+    the reference to the object in that list is removed.
+
+    Only objects created with "new" can be destroyed with "delete".
+    Objects that are defined statically in your game's source file
+    cannot be deleted at run-time.
+
+    Object creation and deletion works correctly with the UNDO
+    mechanism.  If the player uses UNDO after a move that created an
+    object, the object will be destroyed; likewise, if a player uses
+    UNDO after a turn that deletes an object, the object will be
+    re-created with the same property values it had prior to deletion.
+    Similarly, dynamically-created objects are preserved across SAVE
+    and RESTORE operations.
+
+    Note that TADS does not perform any garbage collection on
+    dynamically-created objects.  The system is not capable of
+    determining whether an object is accessible or not.  Hence, if
+    you lose track of any objects you create with "new", they will
+    remain in memory forever -- they will even be saved along with
+    saved games and restored when the games are restored.  You must
+    be careful to keep track of all objects you create to avoid
+    filling all available memory (and the swap file) with unreachable
+    objects.
+
+  - It is now possible to dynamically add to and delete from the
+    vocabulary words of an object.  You can also get the vocabulary
+    words of an object at run-time.
+
+    To add to an object's vocabulary, use the new "addword" built-in
+    function.  This function takes three arguments:  an object, a
+    vocabulary property pointer, and a word to add.  For example,
+    to add 'red' as an adjective to the object myBook, you would
+    do this:
+
+        addword(myBook, &adjective, 'red');
+
+    To delete the same word, you would write a similar call to the
+    new built-in function "delword":
+
+        delword(myBook, &adjective, 'red');
+
+    You can add to and delete from the words of any object, including
+    both static objects (explicitly defined in your source code) and
+    dynamically-created objects (created with the "new" operator).
+
+    Changes made by addword and delword are tracked correctly by the
+    UNDO mechanism, and are saved and restored along with saved games.
+
+    To get the words belonging to an object, use the new "getwords"
+    built-in function.  This function takes two arguments:  an object,
+    and a property pointer; it returns a list of (single-quoted)
+    strings, which are the vocabulary words for the object.  For
+    example, assume we define myBook as follows:
+
+        myBook:  item
+            sdesc = "small red book"
+            adjective = 'small' 'red' 'tiny'
+            noun = 'book'
+            location = room2
+        ;
+
+    Also assume we haven't made any calls to addword() or delword() for
+    myBook.  In this case,
+
+        getwords(myBook, &adjective)
+
+    would return this list:
+
+        ['small' 'red' 'tiny']
+
+    Note that the order of the words in the list is not predictable,
+    so you shouldn't expect the words to be in the same order as they
+    were when you defined them in the source file, or in the same
+    order as they were added with addword().
+
+  - We've added a new function that lets you get information on a verb.
+    The new function is verbinfo().  This function lets you get the
+    verification and action properties for a verb.  The new function
+    takes one or two arguments:  the first is the deepverb object whose
+    information you want to retrieve; the optional second argument is
+    a preposition object.  If you call verbinfo() with only the verb
+    argument, it returns the verification and action properties that
+    are defined with the doAction definition for the verb.  If you
+    also include the preposition argument, it returns the properties
+    that are defined with the ioAction definition for that preposition.
+
+    The value returned by this function is a list.  If you call verbinfo()
+    with only the deepverb argument, the list has two elements:
+
+      [1]   direct object verification property pointer (verDoXxxx)
+      [2]   direct object action property pointer (doXxxx)
+
+    If you call verbinfo() with both the verb and preposition arguments,
+    the return value is a list with four elements:
+
+      [1]   direct object verification property pointer (verDoXxxx)
+      [2]   indirect object verification property pointer (verIoXxxx)
+      [3]   indirect object action property pointer (ioXxxx)
+      [4]   true if ioAction has [disambigDobjFirst] flag, nil otherwise
+
+    In either case, if no matching doAction or ioAction definition
+    exists for the verb, this function returns nil.
+
+    Note that it is possible that additional flags (similar to
+    disambigDobjFirst) may be added in the future; the returned list
+    may be expanded to include information on any such added flags.
+    So, for compatibility with future versions, we recommend that you
+    don't write conditional code based on the length of the list.
+    The lists will never shrink, but they may expand.
+
+    For the removeVerb object defined in adv.t, you would get these
+    results:
+
+      verbinfo(removeVerb)
+        = [&verDoUnwear &doUnwear]
+
+      verbinfo(removeVerb, fromPrep)
+        = [&verDoRemoveFrom &verIoRemoveFrom &ioRemoveFrom nil]
+
+  - The ability to create new objects at run-time leads to some
+    interesting problems involving indistinguishable objects.  Although
+    you should generally use addword (see below) to make your newly-created
+    objects distinguishable from one another, this will not always be
+    desirable; for example, if you create new gold pieces that serve
+    as currency, you will probably not want them to be uniquely named.
+
+    To support indistinguishable objects, especially those created
+    dynamically at run-time, the system now has a property that you
+    can set to indicate to the parser that an object does not need to
+    be distinguished from others of the same class.  The new property
+    is "isEquivalent".  When isEquivalent returns true for an object,
+    all other objects with the same immediate superclass are considered
+    interchangeable by the parser.  When a player uses one of these
+    objects in a command, the parser will simply pick one arbitrarily
+    and use it, without asking the player which one.
+
+    If a player uses a noun that is ambiguous with multiple equivalent
+    items and one or more other items, the parser will need to
+    disambiguate the objects as usual.  In such cases, the parser's
+    question will list the distinguishable items only once.  For
+    example, assume we have five gold coins that are all equivalent
+    (in other words, they all have isEquivalent set to true, and they
+    all are immediate subclasses of the same class).  Assume further
+    that a silver coin and a bronze coin are also present in the room.
+
+       Treasure Room
+           You see a bronze coin, five gold coins, and a silver
+       coin here.
+
+       >get coin
+       Which coin do you mean, the bronze coin, a gold coin, or
+       the silver coin?
+
+    Note that the objects which appear only once are listed with "the"
+    (using the thedesc property), while the indistinguishable objects
+    are listed only once, with "a" (using the adesc property).
+
+  - The new property pluraldesc has been added to thing in adv.t.
+    The definition in thing simply adds an "s" to the end of the
+    sdesc property.  This new property is used by listcont(obj)
+    when multiple equivalent objects are present in a list; see the
+    information on the changes to listcont(obj) for details.
+
+  - The adv.t functions listcont(obj) and itemcnt(list) have been
+    changed to support indistinguishable objects.  To support this
+    new functionality, the new functions isIndistinguishable(obj1, obj2)
+    and sayPrefixCount(cnt), and the new property pluraldesc, have
+    been added to adv.t.
+
+    isIndistinguishable(obj1, obj2) returns true if the two objects
+    obj1 and obj2 are equivalent for the purposes of listing.  The
+    two objects are considered equivalent if both have the same
+    first superclass (the return value of the new built-in function
+    firstsc(obj)), either they are both being worn or neither is
+    worn, and either both are lit lightsources or neither is.  This
+    function doesn't test the isEquivalent property of either object,
+    since it's assumed that it will only be called if an object has
+    already been found whose isEquivalent property is set.
+
+    sayPrefixCount(cnt) displays a number.  If the parameter cnt is
+    a small number (from one to twenty), the spelled-out number will
+    be displayed (for example, "five" will displayed if cnt = 5).  If
+    the count is larger, the number will be displayed as digits ("35"
+    will be displayed if cnt = 35).  This function is used by
+    listcont(obj) to show the number of equivalent items when more
+    than one equivalent item is being listed.
+
+    itemcnt(list) now returns the number of distinguishable items in
+    the list that are to be listed.  For each item in the list whose
+    isEquivalent property is true, itemcnt(list) checks each other
+    item in the list, and counts each set of equivalent items only once.
+    Hence, if a list consists entirely of equivalent items, itemcnt(list)
+    will return at most 1 (it will return 0 if none of the items are
+    listable).
+
+    listcont(obj) will list each set of indistinguishable items in the
+    contents list only once, and will show the number of each such item.
+    To display the number, the new function sayPrefixCount(cnt) is
+    used.  For example, if a room contains a silver coin, a bronze coin,
+    and five gold coins (all with the isListed property set to true),
+    listcont(room) will display this:
+
+       a silver coin, a bronze coin, and five gold coins
+
+  - A new built-in function has been added to make it possible to
+    implement the functionality of the new listcont method.  The new
+    function, firstsc(obj), returns the first immediate superclass of
+    the given object (or nil if the object has no superclass).  This
+    function, along with the isEquivalent property, can be used to
+    determine if two objects should be considered indistinguishable.
+
+  - A new special word has been added:  ANY, which is equivalent to
+    EITHER.  These words are at the end of the original specialWords
+    list; for compatibility with past versions, a specialWords list
+    that omits this position is still legal, and indicates that the
+    default ('any' = 'either') should be used for this slot.
+
+    This special word slot is used by the parser during disambiguation.
+    Whenever the parser asks the player to choose an object from a list
+    of ambiguous objects, it will accept ANY:
+
+        >take coin
+        Which coin do you mean, the silver coin, the bronze coin, or
+        the gold coin?
+
+        >any
+        silver coin:  Taken.
+
+    When ANY is used in these cases, the parser will simply pick one
+    of the objects arbitrarily.  Note that it displays the chosen
+    object in the same manner as it would if multiple objects were
+    being used.
+
+    In addition, the parser will accept noun phrases that start with
+    ANY to indicate that any object matching the given noun phrase is
+    acceptable; the parser will choose one of the objects arbitrarily
+    in these cases.  For example:
+
+        >take any coin
+        silver coin:  Taken.
+
+        >look at any of the coins
+        bronze coin:  It's a valuable 1964 Tadsmid, worth over
+        .0004 cents on today's scrap bronze market.
+
+    The player can also specify the number of items to take.  When
+    a number of items is specified, it must be applied to a plural
+    noun phrase, and it means the same thing as "any," except that
+    the parser (arbitrarily) chooses the given number of items rather
+    than just one.  For example:
+
+	>look at 3 coins
+	>look at any 3 coins
+	>look at 3 of the coins
+	>look at any 3 of the coins
+
+    As a special case, a count of "1" can be used with a singular
+    noun phrase.  It means the same thing as "any."
+
+        >look at 1 coin
+
+  - A new convenience feature, similar to doSynonym and ioSynonym but
+    somewhat easier to use, has been added.  You can now specify that
+    a method in one object should instead be sent to another object.
+    An example:
+
+        desk: fixeditem
+            noun = 'desk'
+            sdesc = "desk"
+            location = office
+            doOpen -> deskDrawer
+            doClose -> deskDrawer
+        ;
+
+    This specifies that doOpen, verDoOpen, doClose, and verDoClose
+    calls should be sent to the deskDrawer object when received by
+    the desk.  Note that this should only be used for standard verb
+    handler methods, because it redirects both the method indicated
+    and its verXoVerb equivalent.
+
+  - The parser calls a new method, multisdesc, when displaying the
+    name of an object that's part of a list of objects.  Previously,
+    the parser simply used sdesc in these cases.  The default adv.t
+    definition of thing.multisdesc simply calls the object's sdesc.
+    This new method is intended to allow you greater control over
+    the display in situations like this:
+
+      >get all
+      book:  Taken.
+      rug:  That's much too heavy to carry.
+
+    The object names listed before the colons are now displayed
+    with multisdesc.
+
+    For compatibility with old games, if an object being listed does
+    not define or inherit a multisdesc property, its sdesc is used
+    instead.  This ensures that games compiled with previous versions
+    of adv.t will continue working properly.
+
+  - A new user-defined function that the parser calls has been added.
+    This new function is called preparseCmd(), and is similar to
+    preparse().  Whereas preparse() is called once for an entire
+    command line, and is called with the original, unfiltered text
+    of the player's command line, preparseCmd() is called separately
+    for each command on a command line if more then one command is
+    entered.  Furthermore, preparseCmd() is called after the command
+    has been "tokenized" (broken into individual words).  Whereas the
+    argument to preparse() is a string with the entire command line,
+    the argument to preparseCmd() is a list, each entry of which is
+    a (single-quoted) string giving an individual word.  Using the new
+    function, you can exert much greater control over how a command
+    is parsed, including rewriting a command entirely.
+
+    preparseCmd() is called immediately before Me.roomCheck() is called
+    for the command.  This call is made prior to any disambiguation or
+    object defaulting.
+
+    If preparseCmd() returns nil, the command is abandoned (but no
+    error message is displayed), and no fuses or daemons are run.  If
+    the function returns true, the command proceeds as normal.  Any
+    remaining commands on the same line are executed regardless of the
+    return value from preparseCmd().  (If you need to cancel the entire
+    rest of the command line, one approach would be to set a property
+    in the global object to indicate to preparseCmd() that all commands
+    are to be ignored; preparseCmd() would always check this property
+    before doing anything else, and return nil if it were set.  You
+    could clear this property in preparse() so that commands always
+    start off enabled.)
+
+    In addition, preparseCmd() can return a list of (single-quoted)
+    strings, in which case the parser starts over parsing the list
+    instead of the original command.  The list is limited to a maximum
+    of 128 characters, with one additional character of overhead per
+    word -- in other words, you can't make the new command longer
+    than the original command, which is limited to the same maximum
+    when entered by the player in the first place.  However, you can
+    otherwise rewrite the command entirely.  If you want to include
+    any special words in the new command, use the conventions described
+    below (for example, if you want to include 'and' in the new command,
+    use ',' instead).  After the new command inserted by preparseCmd()
+    has been processed, the parser will resume processing any remaining
+    commands on the player's original command line.
+
+    The new command list returned by preparseCmd() can contain multiple
+    commands.  Simply separate the commands with commas (',') in your
+    list.
+
+    If preparseCmd() returns a list, preparseCmd() will be invoked on
+    the new command.  However, preparseCmd() is not allowed to return
+    another new command in these cases -- if it does, the parser will
+    assume that preparseCmd() is looping, and will generate an error.
+
+    Several new parseError codes have been added to respond to error
+    conditions that can arise from preparseCmd():
+
+        32  Internal game error: preparseCmd returned an invalid list
+        33  Internal game error: preparseCmd command too long
+        34  Internal gmae error: preparseCmd loop
+
+    The sample implementation of preparseCmd() below simply lists all
+    of the words in the current command and displays a newline, then
+    allows the command to proceed as usual.
+
+        #pragma C+
+        preparseCmd: function(cmd)
+	{
+	    local i, tot;
+	
+	    for (i = 1, tot = length(cmd) ; i <= tot ; ++i)
+	        "<<cmd[i]>> ";
+	    "\n";
+	    
+            return true;
+	}
+
+    Note that the parser performs conversions of the special words.
+    These conversions will show up in the list as follows:
+
+        "and"   becomes  ","
+        "all"   becomes  "A"
+        "but"   becomes  "X"
+        "it"    becomes  "I"
+        "them"  becomes  "T"
+        "him"   becomes  "M"
+        "her"   becomes  "R"
+        "any"   becomes  "Y"
+
+    Here are some examples using the preparseCmd() function above.
+    (The actual response of the commands has been removed -- only the
+    text displayed by preparseCmd() is shown.)
+
+        >look at all
+        look at A
+
+        >examine him; take everything except the box and the book and go north
+        examine M
+        take A X the box , the book
+        go north
+
+    preparseCmd() is called even for commands that the parser doesn't
+    understand.  This allows you to rewrite commands that TADS wouldn't
+    normally understand and put them into a format that's acceptable to
+    the parser.  For example, the preparseCmd() example below will
+    take sentences of the form "tell <actor> to <command>", and convert
+    them to the normal TADS syntax, "<actor>, <command>".
+        
+        #pragma C+
+        preparseCmd: function(cmd)
+	{
+	    local i, tot, to_loc, actor, the_rest;
+
+            tot = length(cmd);
+
+	    /* check to see if it starts with "tell" */
+	    if (tot > 3 && cmd[1] == 'tell')
+	    {
+	        /* see if there's a word "to" */
+		for (i = 1, tot = length(cmd) ; i <= tot ; ++i)
+		{
+		    if (cmd[i] == 'to')
+		        to_loc = i;
+		}
+
+		/* if there's a "to", convert the command */
+		if (to_loc != nil && to_loc > 2)
+		{
+		    /* find the parts before and after the 'to' */
+		    for (i = 2, actor = [] ; i < to_loc ; ++i)
+		        actor += cmd[i];
+		    for (the_rest = [], i = to_loc + 1 ; i <= tot ; ++i)
+		        the_rest += cmd[i];
+
+		    /* convert it to "actor, command" */
+		    return actor + ',' + the_rest;
+		}
+	    }
+
+            /* otherwise, process the command as normal */
+            return true;
+        }
+
+    When the parser doesn't know how to handle a sentence, it calls
+    preparseCmd with the entire rest of the command (which will include
+    everything before the next THEN or period), and processing is the
+    same as in any other case.  If preparseCmd() returns nil in this
+    case, the command is cancelled as usual without any further
+    processing by the parser.  If preparseCmd() returns true when the
+    sentence is not recognized by TADS, the parser will display the
+    usual message (parseError code 18, "I don't understand that
+    sentence").  If preparseCmd() returns a list of strings, the
+    command is replaced with the list, and the parser starts over
+    processing the new command.
+
+  - Several new parseError codes have been added.
+
+    In order to produce better messages when actors are involved,
+    the system now attempts to figure out whether an object in a
+    command refers to an actor, and if so, to determine whether the
+    actor should be called "him" or "her".  Previously, this
+    one-size-fits-all message was generated:
+
+       What do you want to <verb> it <prep>?
+
+    for example:
+
+       >hit bill
+       What do you want to hit it with?
+
+    Although it's not always possible to determine which object
+    should be used in these cases (because disambiguation will not
+    be possible until the indirect object is known), the system will
+    make its best guess.  To do so, it looks at all of the objects
+    that might be involved, based on the vocabulary.  If the player
+    appears to mean multiple objects, " them " will be used -- this
+    is message number 144 for parseError:
+
+       >throw ball and bat
+       What do you want to throw them at?        <- message 144
+                                ------
+
+    If only one object appears to be intended, the parser will try
+    to figure out whether the object is male, female, or neuter,
+    using the isHim and isHer properties (these properties are not
+    new; they have been around since before TADS 2.0).  If all of
+    the objects that match a single noun phrase have isHim and
+    not isHer, " him " will be used -- this is parseError message
+    number 145:
+
+      >hit bill
+      What do you want to hit him with?          <- message 145
+                             -----
+
+    If they all have isHer and not isHim, " her " will be used
+    (message number 146):
+
+      >hit jill
+      What do you want to hit her with?          <- message 146
+                             -----
+
+    If both are set, the system equivocates with " them ", message
+    number 147 (note that this is the same default text as message
+    144, but it's distinguished as a separate message number in
+    case a game author wants a more suitable word in this case,
+    especially in a non-English language):
+
+      >hit hermaphrodite
+      What do you want to hit them with?         <- message 147
+                             ------
+
+    If not all of the objects involved have isHim and/or isHer
+    set, the system uses "it" (message 141) as in previous versions.
+
+    Another change to the processing for this message involves
+    actors.  If an actor is specified in the command, the system
+    now builds a replacement for message 140.  First, message
+    148 is displayed, which has the default text "What do you want ".
+    Then, the actor's thedesc is invoked to display the actor's
+    name.  Finally, message 149 (default text " to ") is displayed,
+    and the rest of the message is built as before.
+
+      >guard, throw ball
+      What do you want the guard to throw it at?
+      -----------------         ----
+         message 148             149
+
+  - The functionality of the parseAskobj function has been extended
+    so that you can generate the same sort of message that the parser
+    now generates when a missing object is needed for a command directed
+    to an actor.  To provide the new functionality, the parser now calls
+    a function called parseAskobjActor.  This function is exactly the
+    same as parseAskobj, except that it takes the actor as the first
+    parameter, the verb as the second parameter, and the preposition
+    as an optional third parameter (which is only present when asking
+    for an indirect object).
+
+    If your game defines parseAskobjActor, the system ignores parseAskobj
+    and calls the new function instead.  If parseAskobjActor is not defined,
+    but parseAskobj is defined, the system calls parseAskobj as it did in
+    past versions.  If neither function is defined, the system generates
+    the message itself as described above.  You should use parseAskobjActor
+    rather than parseAskobj for new games, since it gives you more
+    information.
+
+    Here's an example of parseAskobjActor, which generates roughly the
+    same message as the system would (but it doesn't do any of the checking
+    of isHim and isHer to determine which pronoun to use -- this function
+    simply uses "it").
+
+	parseAskobjActor: function(a, v, ...)
+	{
+	    if (argcount == 3)
+	    {
+	        "What do you want ";
+                if (a <> Me) a.thedesc;
+		" to <<v.sdesc>> it <<getarg(3).sdesc>>?";
+	    }
+	    else
+	    {
+		"What do you want ";
+	        if (a <> Me) a.thedesc;
+		" to <<v.sdesc>>?";
+	    }
+	}
+
+  - The parser has been changed slightly to allow a command to specify
+    an actor in any command within a single line containing multiple
+    commands.  Previously, if an actor was to be specified, the actor
+    had to be specified at the very beginning of the command.  This
+    restriction has been removed, which allows commands like this:
+
+      >joe, north.  bob, south.  bill, east, take book, west.
+
+    Note that, as in past versions, once an actor is specified, the
+    actor remains in effect for subsequent commands.  Since you could
+    only specify one actor for an entire command line in past versions,
+    this meant that the actor was used for every command on the line;
+    with this new version, an actor remains in effect until another
+    actor is specified.  So, in the command above, "north" is directed
+    to Joe, "south" is directed to Bob, and "east, take book, west"
+    is directed to Bill.
+
+  - The maximum number of notifiers has been increased to 200.  The
+    maximum number of daemons and fuses has been increased to 100 each.
+
+  - The maximum number of ambiguous words matching a particular
+    vocabulary word has been increased to 200.  This should relieve
+    problems that some people have reported with the error message
+    "The word 'foo' refers to too many objects".
+
+  - The compiler now supports most of the remaining C operators:
+
+        a % b      - returns the remainder of dividing a by b
+        a %= b     - sets a to a % b
+        a != b     - equivalent to a <> b
+        !a         - equivalent to (not a)
+        a & b      - bitwise AND
+        a &= b     - sets a to the bitwise AND of a and b
+        a | b      - bitwise OR
+        a |= b     - sets a to the bitwise OR of a and b
+        a && b     - equivalent to (a and b)
+        a || b     - equivalent to (a or b)
+        a ^ b      - bitwise XOR of a and b
+        a ^= b     - sets a to the bitwise XOR of a and b
+        ~a         - bitwise negation of a
+        a << b     - a shifted left by b bits
+        a <<= b    - shifts a left by b bits
+        a >> b     - a shifted right by b bits
+        a >>= b    - shifts a right by b bits
+
+    Note a slight complication involving the >> operator:  you can't
+    use this operator from within an embedded string expression, because
+    it would be confused by the parser for the end of the expression.
+    It doesn't help to use parentheses, since the embedded string
+    processing is essentially a textual substitution mechanism which
+    happens without knowledge of the expression context (and is thus
+    unaware of parenthesization).  For example, this would be illegal:
+
+       myprop = "x divided by 128 is << (x >> 7) >>!"     // wrong
+
+    You would have to code this instead as:
+
+       myprop = { "x divided by 128 is "; x >> 7; "!"; }  // right
+
+    Another slight complication arises from the use of the & operator
+    in lists.  Since TADS allows list elements to appear without any
+    separating punctuation (except whitespace), you can have a list
+    that looks like this:
+
+       mylist = [&sdesc &adesc &thedesc]
+
+    This construct is still legal, and is still interpreted with the
+    "&" operators as unary operators, not bitwise AND operators.
+    However, the parser now warns when such a definition is used; see
+    the description of the new warning TADS-357 below for details.
+
+  - The compiler will generate a new warning when it detects a unary
+    operator within a list that could also be interpreted as a binary
+    operator.  For example, in this list,
+
+       list2 = [5 -2 -6 -7]
+
+    the "-" operators could be interpreted either as unary negation
+    operators, which would result in a list with four elements (the
+    numbers 5, -2, -6, and -7), or as binary subtraction operators,
+    which would result in a list with only one element (the number
+    -10).  This same problem arises with the operators "+" and "&",
+    since these also have a unary and binary interpretation which
+    depends on context.
+
+    In these cases, the compiler interprets the operators as unary
+    operators, and issues a warning to let you know that the usage
+    was ambiguous.  The warning is TADS-357:
+
+      TADS-357: warning: operator '-' intepreted as unary in list
+
+    Note that this is a change from the previous version for the '+'
+    and '-' operators.  If your game depends on building lists from
+    calculated numeric constants, you will need to change your code;
+    we don't expect that any games actually depend on the old behavior.
+
+    If you really do want the operators in these cases interpreted
+    as binary operators, use parentheses:
+
+       list2 = [(5 -2 -6 -7)]
+
+    The parentheses tell the compiler that the expression is to be
+    interpreted as a single list element.
+
+    If you want the unary interpretation, and you want to suppress
+    the warning, use commas between the list elements:
+
+       list2 = [5, -2, -6, -7]
+
+    This doesn't change the interpretation, but it does suppress the
+    warning, because it removes the ambiguity:  when the commas are
+    present, there is no way the '-' operators could be interpreted
+    as binary operators.
+
+    You can suppress the TADS-357 warning if you wish using a new -v
+    suboption.  Specify -v-abin in your compiler options to turn off
+    the warning ("abin" is short for "ambiguous binary operator", which
+    is the meaning of the warning).  You may want to suppress this
+    warning when compiling code written prior to this version of TADS,
+    since the warning is generated in case you wanted the new meaning
+    of the & operator.
+
+  - A new compiler command-line option has been added:  -C, a toggle
+    option, which turns on and off C-language operator compilation.
+    By default, C operator mode is off (-C-), which makes the compiler
+    use the normal TADS operators.  Specifying -C+ turns on C operator
+    mode; specifying -C- disables C operator mode.
+
+    When C-language operator mode is in effect, two operators are
+    affected:  the assignment operator becomes '=', and the equality
+    comparison operator becomes '=='.  With normal TADS operator mode
+    in effect, assignment is ':=' and equality is '='.  If you are
+    a C programmer, and you're unhappy with the slight variation in
+    operator notation between TADS and C, you can use -C+ to make TADS
+    behave more like a real language.  Thanks to the #pragma C options
+    (see below), C operator mode has no effect on your choice of
+    header files -- you can use the same old adv.t and other header
+    files unchanged, and still use C-style operators in your code.
+
+  - A new preprocessor command has been added:  #pragma.  This special
+    directive can be used to specify certain compiler options from
+    within your source code.  Currently, the only #pragma option available
+    is the C operator mode option.  Use #pragma C+ to turn on C operator
+    mode, and #pragma C- to turn it off.
+
+    The #pragma C+ and #pragma C- settings are local to a particular
+    file.  If a file is included by another file, the #pragma C settings
+    specified in the included file will be in effect only until the end
+    of the included file; the including file's #pragma C settings that
+    were in effect before including the other file will be restored at
+    the end of the included file.  adv.t and std.t now start with a
+    #pragma C- command -- this allows adv.t and std.t to be included
+    from a file with C-style operators (and thus a #pragma C+ or
+    command-line C operator mode setting).  Since the enclosing file's
+    #pragma C option will be restored after the inclusion, files with
+    different operator modes can be freely intermixed with #include, as
+    long as each included file specifies its desired mode with a
+    #pragma C directive.
+
+  - The precedence of the comparison operators has been changed to
+    be the same as that used by C.  Previously, all of the comparison
+    operators were at the same precedence; starting with this version,
+    == and <> (and thus !=) are at the same level of precedence, and
+    associate left to right as before, but <, >, <=, and >= are one
+    level higher in precedence.  The following type of expression will
+    be affected:
+
+          a > 1 <> b > 1
+
+    Previously, this grouped as:
+
+          (((a > 1) <> b) > 1   // obsolete
+
+    This now groups as:
+
+          (a > 1) <> (b > 1)    // current behavior
+
+    This shouldn't affect any existing code, since the old interpretation
+    should always have resulted in an error (because a truth value, true
+    or nil, can not be compared in magnitude to a number or other type).
+
+  - Limited conditional compilation and preprocessor text substitution
+    (#define) support has been added to the compiler.  The following
+    preprocessor directives are now available:
+
+      #define symbol value
+      #undef symbol
+      #ifdef symbol
+      #ifndef symbol
+      #else
+      #endif
+
+    #define is used to assign a value to a preprocessor symbol.  The
+    "value" is simply text that will be substituted verbatim for the
+    symbol whenever it occurs in your file (other than within quoted
+    strings).  For example:
+
+      #define TEST say('hello from TEST!')
+
+      myfunc: function
+      {
+         TEST;
+      }
+
+    The symbol TEST is replaced with its definition, so the function
+    myfunc() displays "hello from TEST!" when called.
+
+    Preprocessor symbols defined with #define are in a separate
+    namespace from all other symbols in your program.  Unlike a
+    standard C preprocessor, no arguments are allowed in #define
+    macros.
+
+    #undef deletes a previously #define'd symbol.  You can #undef
+    the special symbols defined automatically by the compiler if
+    you wish (see below).
+
+    #ifdef tests to see if a preprocessor symbol is defined.  If it
+    is, the lines following the #ifdef line, and up to the corresponding
+    #else or #endif, are included; otherwise, they are ignored.
+
+    #ifndef is the opposite of #ifdef:  #ifndef tests to see if the
+    symbol is NOT defined.  If the symbol is undefined, the lines
+    following the #ifndef line up to the corresponding #else or
+    #endif are included; otherwise, they are ignored.
+
+    #else indicates that the lines between the #else and #endif are
+    to be included if an only if the corresponding #ifdef (or #ifndef)
+    failed.  #else is optional.  At most one #else is allowed per
+    conditional.
+
+    #endif terminates a conditional block.  Exactly one #endif must appear
+    for each conditional (#ifdef or #ifndef).
+
+    You can use #ifdef to compile certain parts of your code
+    conditionally.  For example, if you want to include a verb only
+    for your debugging version of a game, but you want to remove it
+    from the final version, you could do something like this:
+
+      #ifdef __DEBUG
+      magicVerb:  deepverb
+         verb = 'xyzzy'
+         action(actor) =
+         {
+         }
+      ;
+      #endif
+
+    Note that __DEBUG is especially handy for this sort of thing,
+    because the compiler automatically defines this symbol when
+    debugging (-ds) is turned no (see below).
+
+  - The compiler automatically defines several preprocessor symbols.
+    These symbols can be used or tested within your code as needed.
+
+    __TADS_VERSION_MAJOR is defined to a number indicating the major
+    version number of the compiler (in the present system, 2).
+
+    __TADS_VERSION_MINOR is defined to a number indicating the minor
+    version number (in the present system, 2).
+
+    __TADS_SYSTEM is defined to a string (single-quoted) identifying
+    the operating system the compiler is running on.  In addition, the
+    same identifier contained in the string is defined as a preprocessor
+    symbol itself (its value is always 1; it is intended that it will
+    be tested with #ifdef, and not otherwise used).  For example, if
+    __TADS_SYSTEM is 'MSDOS', the symbol MSDOS will be defined to 1.
+    If __TADS_SYSTEM is 'Macintosh', the symbol Macintosh will be
+    defined to 1.
+
+    __DEBUG is defined to 1 if debugging is turned on for this
+    compilation (with the -ds compiler option).  Otherwise, this symbol
+    is not automatically defined.  You can test the existence of __DEBUG
+    with #ifdef to conditionally include code only when you are compiling
+    for debugging.  This might be useful if you want to include certain
+    commands only in the debugging version of your game, and want to
+    remove them when you actually deliver the game to players.
+
+    If this set of symbols were entered manually with #define statements,
+    the definitions might look like this:
+
+      #define __TADS_VERSION_MAJOR  2
+      #define __TADS_VERSION_MINOR  2
+      #define __TADS_SYSTEM         'MSDOS'
+      #define MSDOS
+
+    __DATE__ is defined as a single-quoted string giving the system date
+    when the compilation began, in the format "Jan 01 1980".
+
+    __TIME__ is defined as a single-quoted string giving the system time
+    when the compilation began, in a 24-hour format, "13:40:50".
+
+    __FILE__ is defined as a single-quoted string giving the file being
+    scanned at the point where the __FILE__ macro is encountered.  Each
+    time you use __FILE__, it will have the correct value for that point
+    in your source code.
+
+    __LINE__ is defined as a number giving the line number at the point
+    where the __LINE__ macro is encountered.  Each time you use __LINE__,
+    it will have the correct value for that point in your source code.
+
+  - The compiler has two new options that give you further control
+    over preprocessor symbols.  The -D option allows you to define
+    a preprocessor symbol from the command line.  For example, to
+    define TEST to 5 from the command line, you could do this:
+
+      tc -i/tads/include -DTEST=5 mygame.t
+
+    Note that if you omit the equals sign, the default definition
+    of the symbol will be 1:
+
+      tc -i/tads/include -DTEST mygame.t
+
+    This defines TEST to 1.
+
+    The -U option undefines a predefined symbol.  You can use this to
+    undefine one of the symbols automatically defined by the compiler.
+    You can also use it to undefine a symbol defined in a precompiled
+    header, if you're loading one; -U is applied after the precompiled
+    header is loaded, so it will undefine symbols loaded from the file.
+    For example, to compile for debugging, but leave __DEBUG undefined,
+    you could do this:
+
+      tc -ds -U__DEBUG mygame.t
+
+    The -U option is applied after all -D options, so you can also use
+    it to undefine a symbol placed earlier on the command line.  This
+    may be useful if you are using a configuation file (CONFIG.TC)
+    that contains -D options for symbols you sometimes want to undefine.
+
+  - The compiler has a new preprocessor directive, #error, which allows
+    you to generate your own error during compilation.  If a #error
+    directive is encountered, any text after the #error is displayed
+    as a compiler error; an occurrence of #error is counted as an actual
+    compilation error, so compilation will fail if #error is encountered.
+    For example:
+
+       #ifndef TEST
+       # error TEST is not defined!
+       #endif
+
+    If the preprocessor symbol TEST is not defined at the point when
+    this sequence is encountered, the compiler will display an error:
+
+      mygame.t(181): error TADS-124: TEST is not defined!
+
+  - The runtime has a new debugging feature that may help you track
+    down problems with word definitions.  You can make the player
+    command parser generate a number of status messages as it analyzes
+    a player's command; these messages provide information on how the
+    parser is interpreting the words in the command.
+
+    To activate this new debug mode, use the debugTrace function with
+    these arguments:
+
+       debugTrace(1, true);
+
+    To turn the debug mode off, call with nil instead of true.  This
+    debugTrace function is always available, even when running under
+    the normal runtime; the function returns no value when called with
+    these arguments.
+
+  - The built-in function incturn() has been extended to allow you
+    to run a series of turns all at once.  You can now specify a numeric
+    argument to incturn(); the argument gives the number of turns that
+    should pass.  An argument of 1 causes incturn() to behave as usual.
+
+    When an argument higher than 1 is given to incturn(), the function
+    runs all of the fuses that are set to burn down within the number
+    of turns specified, but not after that number of turns.  Note that
+    the normal incturn() has never actually executed any fuses, but
+    simply burns down all fuses by one more turn.
+
+    For example, if you call incturn(2), the system will first run
+    any fuses that are set to burn down after 1 turn, then will shorten
+    all remaining fuses by one more turn.
+
+  - A new built-in function, skipturn(), has been added.  This new
+    function takes a numeric argument specifying the number of turns
+    to skip; it must be at least 1.  skipturn(n) is similar to incturn(n),
+    except that it does not run any of the fuses that burn down during
+    the 'n' turns -- instead, it simply removes them without running
+    them.
+
+  - A new built-in function allows you to force capitalization off --
+    this function, nocaps(), is the opposite of caps().  If you call
+    caps() then call nocaps(), the next character is lower-case; if
+    you call nocaps() then caps(), the next character is capitalized.
+
+    Along with nocaps(), the special sequence \v has been added.  Using
+    this sequence in a displayed string is equivalent to calling
+    nocaps(); this sequence is analogous to \^, which is equivalent
+    to calling caps().
+
+  - A new built-in function has been added to clear the screen:
+    clearscreen(), which takes no arguments and has no return value,
+    simply clears the screen.  This routine may do nothing on some
+    platforms; for example, in -plain mode on DOS, clearscreen() has
+    no effect.
+
+  - The parser is now capable of disambiguating direct objects before
+    indirect objects.  By default, everything works as it always has --
+    in a two-object command, the indirect object is disambiguated first,
+    and then the direct object is disambiguated in the presence of the
+    known indirect object.
+
+    It is now possible, however, to specify that the reverse should be
+    done.  To do this, you use a new special flags syntax when defining
+    your verb:
+
+       tellVerb: deepverb
+          verb = 'tell'
+          desc = "tell"
+          ioAction(aboutPrep) = [disambigDobjFirst] 'TellAbout'
+       ;
+
+    The new special flags are placed in square brackets between the
+    equals sign and the property template for the verb definition.
+    The flags currently accepted are:
+
+       disambigDobjFirst
+       disambigIobjFirst
+
+    Note that disambigIobjFirst is provided for completeness only; it
+    is never needed, because it is the default setting.
+
+    When the disambigDobjFirst flag is specified, it means that the
+    command should have its direct object disambiguated before its
+    indirect object.
+
+    When the disambiguation order is reversed, the normal argument
+    lists for verDoTellAbout and verIoTellAbout are interchanged.
+    For our example, the prototypes for the verifier methods become:
+
+       verDoTellAbout(actor)
+       verIoTellAbout(actor, dobj)
+
+    Normally, verIoVerb would not receive the direct object as an
+    argument, because the direct object would not be known at the time
+    of the verIoVerb call; and verDoVerb would receive the indirect
+    object as an argument, because it would be known by the time the
+    direct object was being tested.  When the disambiguation order is
+    reversed, however, so are the prototypes to these functions.
+
+    The actual action method, ioTellAbout(actor, dobj), remains
+    unchanged.  All other methods also remain the same.
+
+    When the direct object is disambiguated first, the player is not
+    allowed to use multiple direct objects (or multiple indirect objects)
+    in the command.  If the player tries to do so, the new parseError
+    message number 28 is displayed:
+
+       >tell bob and bill about gun
+       You can't use multiple objects with this command.
+
+  - Note that a .GAM file format change was required to support the
+    extra information needed for the disambigDobjFirst flag.  The TADS
+    file format is now format "C".  The compiler is still capable of
+    producing formats A or B, in case you need to generate .GAM files
+    that can be played with versions prior to 2.2; however, if you
+    use a format prior to C, you will not be allowed to use the
+    disambigDobjFirst flag (or any other similar flags that may be
+    added in the future).
+
+  - Two new methods have been added to disambiguate actors.  Previously,
+    the system validated and disambiguated an actor by pretending that
+    you were attempting to take the actor -- takeVerb.validDo and the
+    actor's verDoTake were used to validate and disambiguate the actor,
+    when all you wanted to do was speak to him.  This did not always
+    produce satisfactory results, and in particular did not allow for
+    such situations as talking over a radio to an actor in another room.
+    To provide better control over actor validation and disambiguation,
+    the system for testing actors has been enhanced.
+
+    First, to validate an actor, the system now uses the method
+    validActor in the actor object itself.  This method takes no
+    arguments; it returns true if the object is valid as an actor in
+    a command, nil otherwise.  This method is called before the verb
+    or any of the objects involved in the sentence are known.  Its
+    function is not to determine whether the actor wants to receive
+    the command, or even if the object can be used as an actor
+    (actorAction is the place to do both of these tests), but rather
+    simply to determine if the object can be addressed by the player
+    at all.  This method should return true if the actor is accessible
+    by voice command (or whatever other means you want to provide for
+    giving commands) to the player.  The default thing.validActor in
+    adv.t returns true if the object is reachable by Me, which provides
+    roughly the same behavior as the old takeVerb-based mechanism.
+
+    Second, to disambiguate an actor, the new preferredActor method
+    has been added.  This method is called if an actor is ambiguous.
+    As with validActor, it doesn't take any arguments, and it returns
+    true if the object is "preferred" as an actor, nil otherwise.  If
+    exactly one ambiguous object's preferredActor method returns true,
+    the parser will use that object as the actor without further
+    questioning the player; otherwise, the system will ask the player
+    to disambiguate the noun as normal.  In adv.t, movableActor defines
+    preferredActor = true.
+
+    An example of how these might be used:
+
+       Sleeping Compartment
+          You are in a sleeping compartment on a moving train.
+       A pair of bunks is along each wall.
+          There is a copper wire here.
+          The train conductor is standing in the doorway, asking for
+       your ticket.
+
+       >look at conductor
+       Which conductor do you mean, the copper wire, or the train
+       conductor?
+
+       >copper
+       It's a piece of wire, about a foot long.
+
+       >conductor, where is ivan?
+       "Your ticket, please," is all the conductor has to say.
+
+    In this sequence, when the command is addressed to "conductor", the
+    parser matches both the copper wire and the train conductor.  It
+    checks validActor in each of them -- both return true, since both
+    are accessible to the player.  (As described above, even though the
+    copper wire couldn't possibly be an actor, it is valid as an actor
+    at this point -- it's not until its actorAction that we will decide
+    that there's no point in talking to it.)
+
+    So, the parser has an ambiguous actor.  The parser tries to
+    disambiguate the actor by testing preferredActor in each object.
+    The copper wire's preferredActor returns nil; the train conductor's,
+    however, returns true, because the conductor is a movableActor
+    object.  The parser now has only one object, and thus doesn't
+    need to ask the player for further information.
+
+    For compatibility with games compiled with previous versions of
+    adv.t, the parser will continue to use the old mechanism (involving
+    the takeVerb) if validActor is not defined in your game.  Each time
+    an actor is used, the parser checks to see if the first object in
+    the list of possible actor objects has a validActor method defined;
+    if not, the parser uses the old mechanism.  If you use the new adv.t,
+    all objects will at least inherit a validActor method (from thing),
+    so testing for the presence of this method in any object lets the
+    parser determine if the new mechanism can be used with the game.
+
+  - A new parseError message has been added:  number 27, whose default
+    text is "You can't repeat that command."  This message is displayed
+    when the player types AGAIN, but the parser can't repeat the command;
+    this is the case if one of the objects involved in the command is
+    no longer accessible.
+
+  - A new parseError message has been added, related to validActor
+    (see above).  This new message, number 31, is used when none of
+    the objects matching the vocabulary for an actor in a player's
+    command can be used as an actor.  The default text of this message
+    is "You can't talk to that."  For example, if there is no object
+    matching the vocabulary "guard" whose validActor method returns
+    true, but an object named "guard" is visible to the player, the
+    message is used:
+
+      Security Room
+          You are inside a small cubicle.  A thick, laser-proof
+      (as you now know from your ill-fated attempt) glass door
+      (closed) is to the north.  Through the door you can see
+      a guard standing watch.
+
+      >guard, open door
+      You can't talk to that.
+
+    This message is used for actors in place of the standard cantReach
+    processing done for direct and indirect objects under these conditions.
+
+  - A new parseError code, number 29, has been added.  The default
+    message is "I think you left something out after 'any of'", and
+    is used when the player uses "any of" in a sentence, but doesn't
+    follow it with anything.
+
+  - Using the same word as both a plural and a noun works much better
+    now.  The parser will first attempt to use such a word as a plural;
+    if no objects match the plural usage, the parser will try to use
+    the word as a noun instead.
+
+  - "of" can now be used as a preposition.  In previous versions of
+    the run-time, "of" was exclusively a special word that was embedded
+    in noun phrases (such as "pile of paper").  The runtime will still
+    allow "of" to be used in noun phrases as before, but it also will
+    treat "of" as an ordinary word when, based on the context, it does
+    not appear to be part of a noun phrase.
+
+    The parser will still attempt to treat "of" as part of a noun
+    phrase whenever it matches an object.  For example, if you have
+    an object with nouns matching "pile of paper", then the following
+    interpretations will apply:
+
+        accuse bob of murder   ->  dobj = bob, iobj = murder, prep = of
+        accuse pile of paper   ->  dobj = pile of paper
+
+    Note that ofPrep, defining "of" as a preposition, has been added
+    to adv.t.
+
+  - All of the system verbs that use "abort" have been modified
+    slightly in adv.t to make it easier to augment their behavior
+    with the 'modify' statement.  All of the processing other than
+    the "abort" has been moved out of the doVerb (or action) method
+    in each case, and put into a new method.  For example, saveVerb's
+    action routine now looks like this:
+
+        action( actor ) =
+        {
+	    self.saveGame(actor);
+	    abort;
+	}
+
+    The new method saveVerb.saveGame(actor) now performs all of the
+    processing that the action(actor) method previously performed.
+
+    The benefit of this change is that you can now modify the
+    saveGame(actor) method, and inherit the original behavior,
+    without having to worry about an "abort" interfering with the
+    order of operations.  For example:
+
+        modify restoreVerb
+            restoreGame(actor) =
+            {
+                // restore the game as usual - check for success
+                if (inherited.restoreGame(actor))
+                {
+                    // re-randomize the puzzle
+		    "The carnival hawker flashes a mischevious
+		    smile at you.  \"There's no use trying to
+		    guess the answer,\" he says.  \"I changed
+		    around the shells while you were busy
+		    restoring!\"";
+		    puzzle.answer := rand(100);
+                }
+            }
+        ;
+
+
+  - The format mask fmtMe has been added.  You can now use %me% in
+    messages to refer to the actor.  For basicMe, fmtMe is set to
+    the message "me"; for other actors, it is set to the actor's
+    thedesc.  In adv.t, thing.ldesc has been changed to use %me%:
+    "It looks like an ordinary <<sdesc>> to %me%."  This makes the
+    default sentence somewhat more adaptable if you ask another
+    actor to describe something:
+
+        >guard, look at the card
+        It looks like an ordinary card to the guard.
+
+  - AGAIN, WAIT, and SLEEP are now darkVerb's in adv.t.
+
+  - A new verb, breakVerb, has been added to adv.t.  The vocabulary
+    words for this verb are 'break', 'destroy', and 'ruin', and it
+    provides a single-object command "break <direct-object>".  The
+    thing class has been adjusted so that verDoBreak(actor) validates
+    breaking any object, but doBreak(actor) simply displays "You'll have
+    to tell me how to do that."  If you want to make a breakable object,
+    simply override doBreak(actor) so that it breaks the object (you may
+    also want to override verDoBreak(actor) so that it doesn't allow a
+    broken object to be broken again).
+
+  - "there" has been added a synonym for "it" in the specialWords list
+    in adv.t.  This allows sentences like this:
+
+        >get box.  put ball in there.
+
+  - lightsource now has a doTurnnon method in adv.t.  This method will
+    show the room's description if the room becomes lit as a result
+    of turning on the lightsource.  Note that lightsource, by default,
+    has no verDoTurnon, so you can't turn a generic light source on
+    and off.  However, if you add switchItem to the superclass list of
+    a lightsource object, you will have a light source that you can
+    turn on and off, and which will have this new behavior.  Note that
+    you should put lightsource in the superclass list prior to
+    switchItem, so that lightsource.doTurnon overrides switchItem.doTurnon:
+
+        flashlight:  lightsource, switchItem
+            sdesc = "flashlight"
+            noun = 'flashlight' 'light'
+            adjective = 'flash'
+            location = tunnel
+        ;
+
+  - verIoGiveTo and ioGiveTo have been added to movableActor in adv.t.
+    verIoGiveTo rejects the command if the actor is the same as the
+    indirect object, otherwise the command is accepted.  ioGiveTo
+    always rejects the offer.  In addition, ioGiveTo has been added
+    to basicMe; the method always accepts anything from another actor,
+    because this method will only be called in response to commands
+    such as:
+
+        >guard, give me the key
+
+  - A small problem with thing.isVisible in adv.t has been fixed.  If
+    the vantage is inside the object, and the object's contents are
+    visible, isVisible returns true.  This is is needed in certain
+    situations involving nested rooms.
+
+  - moveableActor.travelTo(room) in adv.t has been corrected so
+    that it does nothing when room = nil, which is the case when the
+    actor can't travel in the desired direction.  Previously, the
+    "noexit" message would be displayed, but then the actor would
+    be moved into a nil location.
+
+  - moveableActor now has a roomCheck method in adv.t.  The method
+    is the same as basicMe's roomCheck method; its omission in
+    previous versions was an oversight.
+
+  - The showcontcont function in adv.t has been corrected so that
+    the isqsurface flag is checked correctly.
+
+  - A new class, seethruItem, has been added to adv.t.  This class is
+    intended for objects such as windows or magnifying glasses which
+    the player can look through.  Each object of this class should
+    define an appropriate thrudesc method, which displays what the
+    player sees when looking through this object.
+
+    Note that a seethruItem is not the same as a transparentItem.
+    The class transparentItem is intended for objects, such as glass
+    bottles, whose contents are visible, whereas seethruItem is intended
+    for objects that are not containers but which the player can look
+    through.
+
+  - The compiler now sets an error code on exit.  If you are using
+    a MAKE utility or other program-building tool, you can use the
+    exit code.  On success, the compiler uses exit code 0; if any
+    errors occurred, a non-zero exit code is used.
+
+  - The compiler no longer creates a .GAM file if errors occurred
+    during compilation.  If a .GAM file of the same name exists
+    prior to a compilation, and errors occur, the original .GAM
+    file is unaffected (it is not deleted or overwritten).  Although
+    the compiler previously produced a .GAM file even when an error
+    occurred, this .GAM file was not generally usable; to avoid
+    confusion, the compiler no longer produces a .GAM file at all
+    when an error occurs.
+
+  - The compiler performs more checking for invalid -m parameters.
+    When -m parameters are entered that exceed the compiler's internal
+    limits, it will report an error and abort the compilation.  The
+    affected options are -mp, -ml, and -ms.  The runtime similarly
+    checks its parameters more carefully now.
+
+  - The DOS runtime no longer displays anything on the status line at
+    startup.  It initializes both the left portion (which normally is
+    used to display the location) and the right portion (which is
+    normally used to display the score and turn count) to empty
+    strings.  To ensure that a score is properly displayed at the
+    start of the first turn, we added a call to scoreStatus(0, 0) in
+    the "init" function defined in std.t.
+
+  - The DOS runtime now has a plain ASCII mode.  In this mode, the
+    runtime uses only DOS character input and output functions,
+    performs no highlighting or cursor positioning, and does not
+    display a status line.  Command editing and screen scrollback
+    are also disabled (although normal DOS keyboard editing can be
+    used, and any loaded command editor, such as DOSKEY, will be
+    active).  This mode is intended for people with a special need
+    to use direct DOS character I/O, such as persons using a voice
+    synthesizer.  To invoke this mode, specify -plain in the runtime
+    command options:
+
+          tr -plain mygame
+
+    Note that .EXE files produced by MAKETRX can be used in this
+    manner as well; simply specify -plain with the game program:
+
+          deep -plain
+
+  - The DOS runtime now uses the control-left-arrow and
+    control-right-arrow to move the cursor left and right by one
+    word in the command editor.  This behavior is consistent with
+    most other DOS command editors.
+
+  - $$ABEND can now be used after a question from the parser, such
+    as during disambiguation and when OOPS is permitted.
+
+  - The runtime handles hyphenation better.  Multiple hyphens will
+    no longer be split across lines -- so if you use two hyphens
+    together for a dash, both hyphens will always be grouped on one
+    line.  Furthermore, the runtime formatter will never put a dash
+    at the very start of a line; if a line must be split at a dash,
+    the formatter will put the dash at the end of the line, then
+    break the line, and will back up and split at the previous word
+    if necessary.
+
+  - The runtime will now properly convert "\" sequences in askfile()
+    prompts properly.  If you use a \n, \t, \', \", or \\ sequence
+    in a prompt to askfile(), the sequence will be displayed as the
+    appropriate character.  (For the DOS runtime, this only matters
+    in -plain mode, because the DOS file selector in the normal full-
+    screen mode doesn't use the prompt string.)
+
+  - The DOS runtime's file selector dialog incorrectly interpreted
+    the Alt keys for disks in the last version -- Alt-B selected the A
+    drive, Alt-C selected the B drive, and so forth.  This has been
+    corrected.
+
+  - The MAKETRX command now takes an additional argument that lets
+    you specify the run-time command options that should be used when
+    the game is executed.  MAKETRX still accepts the original command
+    formats; using one of the old-style command formats will not bind
+    any command options into the resulting .EXE file.
+
+    To specify command options for your game executable, you must
+    first create a file.  Use the same format as CONFIG.TR -- simply
+    enter your options into the file as you would on the TR command
+    line; separate options by newlines or spaces.  For example, to
+    specify a minimal cache size and a swap file of SWAP.DAT, you
+    could make your CONFIG.TR file look like this:
+
+        -m0 -tf swap.dat
+
+    Once you've created a file with your command options, specify
+    that file to MAKETRX by using it as the first parameter on the
+    command line, prefixed with an "at" sign (@):
+
+        maketrx @config.tr mygame
+
+    The @config option can be used with any of the original command
+    formats for MAKETRX.  Once the config file is bound into your
+    executable, its options will be used every time a player runs
+    your game's .EXE file.  Note that you may want to avoid specifying
+    anything specific to your system, such as drives or directories,
+    since that may prevent the game from working properly on someone
+    else's system.
+
+  - The new sentence parsing for the form VERB PREP IOBJ DOBJ
+    (introduced in 2.1.1) causes a subtle problem:  if you create
+    an object with an adjective that is also a preposition, the
+    system attempts to interpret sentences with a single-word verb
+    that refers to the object as VERB PREP IOBJ.  The result is
+    this:
+
+       >push off button
+       What do you want to push?
+
+    This is because the parser is interpreting the sentence as
+    "push something off button", and needs to know the "something".
+    This problem has been corrected.  Now, the parser will check this
+    type of case to see if the preposition can also be used as an
+    adjective, and if so, checks to see if a noun (possibly preceded
+    by one or more adjectives) follows; if this test is met, the word
+    will be interpreted as an adjective, as it should be.
+
+  - The parser now correctly distinguishes between cases involving
+    a word that is defined as both a preposition and an adjective.
+    The parser previously did not accept sentences such as this:
+
+      >enter south wall
+
+    when 'south' was defined as an adjective.  Because 'south' was
+    also defined as a preposition (in adv.t), the parser attempted
+    to interpret this sentence as though 'enter south' were a verb
+    (in the same manner as 'pick up' or 'put down').  The parser
+    now checks to make sure that 'enter south' is a valid combination
+    verb; if it's not, and 'south' is also defined as another part of
+    speech, the parser assumes that 'enter' is the verb, and treats
+    'south' as an adjective.
+
+  - The parser previously asked to disambiguate a direct object twice
+    if askio(prep) was used.  For example:
+
+       >unlock door
+       Which door do you mean, the large door, or the small door?
+
+       >large
+       What do you want to unlock it with?
+
+       >key
+       Which key do you mean, the silver key, or the gold key?
+
+       >gold
+       Which door do you mean, the large door, or the small door?
+
+       >large
+       The door unlocks with a satisfying click.
+
+    This has been corrected -- the parser now only asks once about
+    the door.
+
+  - The parser did not previously accept a word during disambiguation
+    if the word was defined as both a noun and an adjective.  For
+    example, if you've defined objects "violet paper", "violet banana",
+    and "paper towel", and the parser asked you this:
+
+       >x violet
+       Which violet do you mean, the violet paper, or the violet banana?
+
+    then you couldn't respond with "paper".  This has been corrected.
+
+  - The inputkey() function now clears the "more" line counter.  So,
+    when inputkey() is called, a "more" prompt will not show up until
+    another screenful of text has been displayed.
+
+  - "local" statements that occur out of context (i.e., as other than
+    the first statements after an open brace) now generate better
+    diagnostics.
+
+  - Dividing by zero is now flagged as a run-time error.
+
+  - A problem involving the embedded string << >> notation has been
+    corrected.  Under certain circumstances, if one expression used
+    in an embedded string invoked another string with an embedded
+    expression, an error occurred (usually "invalid type for built-in
+    function").  This should no longer occur.
+
+  - The system did not properly handle lists containing function
+    pointers.  This has been corrected.
+
+  - A problem involving pre-compiled headers and 'modify' has been
+    corrected.  Several people have encountered problems that generally
+    were manifested as "assert" failures in mcm.c (the cache manager)
+    when using 'modify' and pre-compiled headers; these should no
+    longer occur.
+
+  - An internal cache corruption occurred under certain obscure
+    circumstances involving 'modify'.  This has been corrected.
+
+  - A note on roomCheck:  if you return nil from roomCheck, fuses
+    and daemons are NOT run; in this sense, returning nil from roomCheck
+    is equivalent to using abort in other methods.  (This is not a
+    change -- it's always worked this way -- but this behavior is
+    not mentioned in the TADS Author's Manual.)
+
+  - A note on using << >> embedded strings:  If you put a newline
+    immediately before the << of an embedded string, any spaces between
+    the last non-space character preceding the << and the << will be
+    lost.  If you want a space before the <<, do not put it on a new
+    line.  Instead, you can put it at the end of the line, and put
+    the embedded expression itself on the next line.  For example:
+
+        embeddedString = "embedded string"
+        sdesc = "This is a message with an
+                 <<self.embeddedString>>!"     // wrong
+
+    This will display as follows:
+
+        This is a message with anembedded string!
+
+    If you intend a space to precede the embedded string, you should
+    write this as follows:
+
+        sdesc = "This is a message with an <<
+                self.embeddedString>>!";      // right
+
+    (This is not a change, but simply a note for game developers who
+    have encountered this problem.)
+
+
+2.1.2  11/22/93  enhancements, bug fixes
+
+  - You can now detect when the player uses multiple direct objects
+    with a verb, and reject such commands.  Whenever the player uses
+    multiple direct objects with a command (or uses "all", even if it
+    results in a single object being used), the parser calls the
+    verb object's rejectMultiDobj(prep) method.  If you don't wish to
+    take any special action for multiple direct objects used with a
+    particular verb, simply return nil from this method (or don't
+    define the method at all for the verb).  If you want to prevent
+    multiple direct objects from being used, however, you should display
+    an appropriate message, and return true.  The parser will skip the
+    command entirely.  Note that the parser doesn't display any additional
+    message when rejectMultiDobj(prep) returns true; the method should
+    display whatever message is desired.  The "prep" parameter is the
+    preposition object used with the command; it will be nil if no
+    indirect object is present.  An example:
+
+        modify inspectVerb
+            rejectMultiDobj(prep) =
+            {
+                "You can only look at one thing at a time.";
+                return true;
+            }
+
+    The verb's rejectMultiDobj(prep) method is called immediately
+    before the actor's actorAction method.  Note that the parser will
+    continue processing any remaining commands on the line, and will
+    then run daemons and fuses as normal, even if rejectMultiDobj(prep)
+    returns true; if you want to stop the current turn altogether, use
+    abort.
+
+  - The player command parser now gives you greater control over object
+    validation error reporting.  In previous versions, if an object was
+    visible but did not pass the validIo/validDo test, the parser called
+    the object's cantReach method to report the error (see the note below
+    about an additional change to object.cantReach processing).
+
+    Now, however, the parser will call verb.cantReach instead, if the
+    command's deepverb object defines (or inherits) a cantReach method.
+    If the verb does not have a cantReach method at all, the parser
+    will use the old behavior instead.  The new cantReach method should
+    be defined as follows:
+
+       myVerb: deepverb
+           verb = 'whatever'
+           cantReach(actor, dolist, iolist, prep) =
+           {
+               // your code here
+           }
+       ;
+
+    This method doesn't return a value; it simply displays the appropriate
+    message explaining why the object can't be used with the command.
+    verb.cantReach is used only when the objects are visible (that is,
+    object.isVisible(actor) returned true for each object in the list).
+
+    Only one of dolist or iolist will be non-nil.  If the direct object
+    of the command refers to one or more objects that are visible but
+    can't be used (according to validDo), dolist will be a list of all
+    such objects, and iolist will be nil.  Otherwise, iolist will be a
+    list of such objects used for the indirect object, and dolist will
+    be nil.
+
+    adv.t has not been changed to use verb.cantReach.  This change has
+    been made to provide finer control for game authors implementing
+    their own verbs and object validation procedures.
+
+  - The player command parser had an odd quirk when ambiguous nouns
+    were used with transparent items.  If the player used a command
+    containing a noun that referred to multiple objects that were
+    visible but were not valid for the verb (for example:  "take trophy"
+    in a room containing a closed glass trophy case containing a bowling
+    trophy and a tennis trophy), the parser asked the normal disambiguation
+    question.  This was not really necessary, because the parser already
+    knew that the objects were invalid.  This has been changed; the parser
+    now simply uses the cantReach message for *each* object that is
+    visible and matches the vocabulary, using the usual multiple-word
+    format:
+        bowling trophy:  You'll have to open the glass case first.
+        tennis trophy:  You'll have to open the glass case first.
+
+    This new behavior should have no effect on your game code.  Note
+    that it is entirely irrelevant if you use the new verb.cantReach
+    feature described above.
+
+  - The compiler sports a new case sensitivity option.  By default,
+    the compiler is case-sensitive, as it has been in past versions.
+    However, the new toggle option allows you to change this.  Specify
+    -case- to turn off case sensitivity (the default is -case+).  Note
+    that this is a toggle option, so simply using -case will reverse
+    the current case sensitivity (which is useful if you use a CONFIG.TC
+    file that sets a non-default case option).  When case sensitivity
+    is turned off, the compiler will treat upper- and lower-case letters
+    in symbols (names of objects, properties, functions, and local
+    variables) as equivalent.  Hence, foodItem = fooditem = FoodItem,
+    and so on.
+
+    If you create a pre-compiled header with -w, any compilation which
+    reads that binary header with -l will use the same case sensitivity
+    as was in effect when the header was pre-compiled.  The -case option
+    is ignored when a pre-compiled header is loaded.  Likewise, the
+    debugger uses the same case sensitivity that was in effect when the
+    game being debugged was compiled.
+
+  - The debugger's command set is no longer case-sensitive (hence,
+    BP = Bp = bP = bp).
+
+  - adv.t has a new darkVerb class.  This is a type of deepVerb that
+    can be used in the dark.  The darkroom class has been changed to
+    accept any verb of class darkVerb in its roomAction and roomCheck
+    methods.  The travel verbs and system verbs have all been made
+    darkVerb objects, so darkroom only needs to check the single
+    verb type.
+
+    In a related change, turnOnVerb and dropVerb have been changed to
+    be darkVerb objects, allowing the player to turn on an object or
+    drop it in the dark.  The verDoTurnon method in switchItem has
+    been changed so that it checks to see if the player is in a dark
+    room; if so, the item can only be turned on if the player is already
+    carrying the object.  This allows the player to turn on a light
+    source that's already being carried, but doesn't allow the player
+    to pick up a light source in a dark room.
+
+  - The compiler issues a new warning message (TADS-452) if you
+    use the same verb with two deepverb objects.  The parser can only
+    choose a single deepverb object for any verb typed by the player,
+    so you should never define the same 'verb' vocabulary word in more
+    than one deepverb object.  In past versions, the compiler did not
+    flag this as a warning.
+
+  - Several improvements have been made for numbers in player
+    commands.  First, multiple numbers are now allowed in a single
+    commands; for example, the player can now say "press 1, 2, 3,
+    4 on keypad," and the numbers are set in numObj.value, one by
+    one.  Second, the sdesc, adesc, and thedesc properties of
+    basicNumObj have been improved to show the number's value.
+
+  - Similar improvements to those for numbers have been made for
+    strings.  Multiple strings are now allowed in a single command,
+    and the basicStrObj properties sdesc, adesc, and thedesc have
+    been improved to show the string's value.
+
+  - specialWords has been enhanced.  First, in past versions, if a
+    game contained multiple specialWords statements, the word lists
+    were additive -- all specialWords lists were used in the game.
+    This has been changed so that each specialWords statement replaces
+    any previous list in effect.  However, you now can explicitly add
+    to the specialWords list, without removing any of the previously
+    defined words, by using "modify specialWords".  When you use
+    'modify', you can use nil in any word slot if you do not wish
+    to add any words for that slot.  Finally, you can use "replace
+    specialWords" to make the replacement explicit; this is the default
+    if neither 'modify' nor 'replace' is specified, but the compiler
+    will now issue a warning (which is harmless) if you use specialWords
+    without 'replace' or 'modify' and a previous specialWords list is
+    already in effect.
+
+  - The words "one" and "ones" (or their equivalent for your game,
+    if you've changed them with specialWords) are no longer considered
+    reserved words within normal commands.  This allows you to use
+    objects such as a "one dollar bill"; previous versions rejected
+    player commands containing "one" or "ones".  These words are now
+    considered special only during the parsing of a response to a
+    disambiguation question, when they can be used in place of a
+    noun ("the red one" can be used in answer to "Which book do you
+    mean...").
+
+  - The hider class has been changed so that 'it' or 'them' (as
+    appropriate) are set to the object or objects found when
+    searching the hider.
+
+  - The verDoPutIn and verDoPutOn messages in thing and surface
+    (respectively) have been improved for the somewhat obscure case
+    of attempted circular containment - that is, putting an object
+    into a container, when the container is already in the first object
+    (either directly or by virtue of being inside another object which
+    is inside the first object, or inside an object which is inside an
+    object which is inside the first object, and so on).  The new
+    method thing.circularMessage(iobj) is called in these cases to
+    display an appropriate message; the default implementation of this
+    method displays the complete list of containers of the direct
+    object out to the indirect object.  For example, if you have a
+    crate which contains a box, and you try to "put crate in box",
+    the message is "You can't put the crate in the box, because
+    the box is already in the crate."
+
+  - The default doTake method has been changed to include the weight
+    of any contents of the item being taken, in addition to the item
+    itself, to determine if the actor's inventory is too heavy.
+    The old doTake method only included the weight of the object
+    being taken, not counting its contents.
+
+  - The Actor class has been changed to add a travelTo method.  You
+    can now move any actor (Me included) with travelTo(destination).
+    The default Actor.travelTo method moves the actor; it announces
+    the departure of the actor if the actor was in the same location as
+    Me before leaving (and the location is lit); and it announces the
+    arrival of the actor if the actor is moving into the same location
+    as the player (and the location is lit).  The departure message
+    is generated with a call to self.sayLeaving, and the arrival
+    message is generated with self.sayArriving.  The default versions
+    of these methods simply display "Thedesc leaves the area" and
+    "Thedesc enters the area", respectively; you can override these
+    methods if a more specific message is desired.
+
+  - When modifying a class object with 'modify', the modified object
+    was not a class unless the 'class' keyword was included with the
+    'modify' statement ("modify class foo" rather than "modify foo").
+    This has been corrected; a modified class is still a class.
+
+  - outhide(true) now returns a status indicator, which is a value that
+    can be used in a subsequent call to outhide() to return output
+    hiding to the state it was in before the outhide(true).  This
+    allows you to nest text hiding.  When you use the nested form
+    (which you do simply by using the return value of outhide(true) as
+    the parameter - in place of nil - to the subsequent call to outhide()),
+    the value returned by the second outhide() indicates whether any
+    text output occurred ONLY BETWEEN THE NESTED CALLS.  For example:
+    
+	 old_stat1 := outhide(true);
+	 "This is some hidden text.";
+	 old_stat2 := outhide(true);
+	 // write no text here
+	 new_stat2 := outhide(old_stat2);
+	 new_stat1 := outhide(old_stat1);
+
+    Because outhide(old_stat2) indicates whether any output occurred
+    during the NESTED outhide(true), new_stat2 = nil.  However, new_stat1
+    = true, since output occurred after the first outhide(true).  Consider
+    another sequence:
+
+	 old_stat1 := outhide(true);
+	 // write no text here
+	 old_stat2 := outhide(true);
+	 "This is some hidden text.";
+	 new_stat2 := outhide(old_stat2);
+	 new_stat1 := outhide(old_stat1);
+
+    In this case, both new_stat1 and new_stat2 will be true, because
+    hidden output occurred within both nested sections.
+
+    The general form of a nested hidden output section looks like this:
+
+         {
+            local original_hide_stat;
+	    local nested_stat;
+
+            hide_stat := outhide(true);
+            // do whatever you want to do while output is hidden
+	    nested_stat := outhide(original_hide_stat);
+	 }
+
+    Now nested_stat will indicate whether any output occurred during
+    the nested outhide() - that is, between the outhide(true) and
+    the outhide(original_hide_stat).  In addition, output hiding will
+    be returned to the same state it was in prior to the original
+    outhide(true).
+
+  - The random number generator has been improved.  Many people have
+    complained about the many undesirable properties of the old
+    generator, especially when small upper limits were used.  The
+    interface to the new random number generator is the same as
+    before - call rand(upper_limit), which will return a uniformly
+    distributed random number from 1 to upper_limit, inclusive.
+
+    Note that the old random number generator will still be used if
+    you don't call randomize().  This allows test scripts (which require
+    a fixed sequence of random numbers in order to be repeatable) that
+    were written with older versions to continue to operate unchanged.
+    If you want numbers from the improved generator, be sure to call
+    randomize().
+
+  - When 'modify' was used on an object, the compiler sometimes did
+    not correctly apply the original object's vocabulary and location
+    to the new object.  This has been corrected.
+
+  - restore() and undo() have been changed so that they always cancel
+    all pending commands on the command line.  In the past, if the
+    player typed several commands, and something happened (such as
+    the player character dying) during one of the commands that led to
+    an undo() or restore(), the remaining commands were still
+    executed.  This has been fixed.
+
+  - If you explicitly set an object's location to nil in its object
+    definition, and the object inherited a location from a superclass,
+    the system incorrectly placed the object in the contents list of
+    the object named in the location inherited from the object's
+    superclass.  This has been corrected.
+
+  - "abort" can now be used within a daemon or fuse, and the
+    expected behavior will occur.  In the past, "abort" within
+    a fuse (or daemon) merely exited from the current fuse,
+    but the remaining fuses and daemons were still executed.
+    Now, "abort" will cause the entire turn to end; no more
+    fuses or daemons will be executed on the current turn.
+
+
+2.1.1  09/09/93  enhancements
+
+  - You can now access objwords(1) while deciding whether to use a
+    default direct object in doDefault.  This is useful mostly if
+    you want to prevent players from being able to use "all" with
+    certain verbs, but still want to generate a default direct object
+    for the verbs.  To do this, you can detect when objwords(1) = ['A']
+    ('A' is the parser's internal code for "all", which saves you the
+    trouble of checking for "everything" and shorter abbreviations as
+    well as "all"):
+
+      doDefault(actor, prep, iobj) =
+      {
+          if (objwords(1) = ['A'])
+          {
+              global.allMessage := 'You can\'t use "all" with this verb.';
+	      return [];
+
+	  /* your normal default object code goes here */
+      }
+
+    If you wish, you can also suppress the default message that the
+    parser will generate ("I don't see what you're referring to").
+    To do this, you'll have to write your own parseError() function
+    and detect when an "all" violation has occurred (cleverly using the
+    global.allMessage, which we set above for this purpose):
+
+      parseError: function(str, num)
+      {
+          // if there's an allMessage waiting, use it instead of the default
+          if (global.allMessage <> nil)
+	  {
+	      local r;
+
+	      r := global.allMessage;
+	      global.allMessage := nil;
+	      return r;
+	  }
+	  else
+	      return nil;
+      }
+    
+  - The compiler's error message format has been changed slightly
+    to work better with editors and workbench programs that scan error
+    logs to go to lines with errors.  The format is now:
+
+        file(line): error TADS-xxxx: message
+
+    For example:
+
+        deep.t(1151): error TADS-300: expected colon
+
+
+  - The parser now accepts sentences of the form VERB PREP IOBJ DOBJ,
+    where the PREP is *not* part of the verb.  For example, GIVE TO THE
+    MAN THE BALL.  This change has two benefits.  First, while this
+    type of sentence is not common in English, some other languages
+    allow this type of phrasing, so the parser is now somewhat more
+    adaptable to non-English languages.  Second, this allows for
+    object defaulting and command completion when specifying just the
+    indirect object, which was not possible before.  For example, if
+    the player types ASK FOR A BEER, the parser will be able to attempt
+    to provide a default (if one is available), or at least ask for the
+    direct object.  Previous versions would simply say "I don't understand
+    that sentence."  Note that the parser still attempts to combine the
+    verb and preposition into a single phrase; the new action happens
+    only when the verb and preposition don't go together (that is, they
+    haven't been defined together as a "verb =" property of a deepverb).
+    For example, suppose that a line like this appears in a deepverb:
+
+        verb = 'pick up'
+
+    In this case, PICK UP THE BOX will use THE BOX as the direct object,
+    just as in previous versions.  Only when the verb-preposition combination
+    is not specifically defined in a verb will the new phrasing be used.
+
+  - When no preposition is specified between the direct and indirect objects,
+    the parser will now evaluate a new property, nilPrep, in the deepverb
+    object.  This property should return the preposition object that should
+    be used as the preposition between the objects.  Previous versions of
+    TADS always looked for an object that defined the word 'to' as a
+    "preposition =" property.  While 'to' is almost always the correctly
+    the correct preposition to substitute in English, it's obviously the
+    wrong word in other languages; furthermore, the correct word in other
+    languages is sometimes a function of verb.  If no nilPrep property is
+    defined for the deepverb, the parser will still use the object whose
+    "preposition =" property matches the word 'to'.
+
+  - The class transparentItem in adv.t has been modified so it works better
+    when you define an object that inherits from both transparentItem and
+    container or openable.  First, an ldesc has been added so that the
+    contents of a transparentItem are listed by default with the ldesc.
+    Second, the "look in" command now works on a transparentItem.  In
+    addition, the openable class has been changed so that the "look in"
+    command can be used when an openable is also a transparentItem, even
+    when the openable is closed (because you should be able to see the
+    contents of a transparentItem regardless of whether it's open or closed).
+    Thanks to Ron Hale-Evans for pointing out this problem and finding the
+    solution.
+
+2.1.0  04/07/93  new features, enhancements, bug fixes
+
+  - TADS finally has a way of changing objects and functions in
+    adv.t without changing adv.t itself.  The new mechanism allows
+    you to entirely replace a previously defined object or function
+    with one of your own, and also lets you modify a previously
+    defined object by adding or overriding properties.  Two new
+    keywords have been added to the language to support these new
+    features:  "replace" and "modify".
+
+    Using these new features, it should be possible to make most
+    of the changes to adv.t that are necessary while writing a game
+    without actually changing the file adv.t itself.  This should
+    make version upgrades much easier to apply, since you shouldn't
+    need to reconcile any changes you have made to adv.t with the
+    new version.
+
+    High Energy Software requests that you advise us of any changes
+    to adv.t that would facilitate modification and replacement of
+    the objects defined in adv.t.  Examples would include common
+    code fragments that could be moved into a function for easy
+    replacement, and single deepverb objects that should be split
+    into multiple objects.
+
+    You can replace a previously-defined function with a new
+    definition simply by prefacing your new definition with the
+    keyword "replace"; for example, to replace adv.t's new
+    scoreStatus function, you could do this:
+
+       #include <adv.t>
+
+       replace scoreStatus(points, turns)
+       {
+          setscore(cvtstr(pts) + ' points/' + cvtstr(turns) + ' moves');
+       }
+
+    You can do the same thing with objects.  For example, to replace
+    a verb in adv.t, you could do something like this:
+
+       #include <adv.t>
+
+       /* we don't want "buckle", so replace adv.t's fastenVerb */
+       replace fastenVerb: deepverb
+          verb = 'fasten'
+	  sdesc = "fasten"
+	  prepDefault = toPrep
+	  ioAction(toPrep) = 'FastenTo'
+       ;
+
+    Replacing an object entirely deletes the previous definition of
+    the object, including all inheritance information and vocabulary.
+    The only properties of a replaced object are those defined in the
+    replacement; the original definition is entirely discarded.
+
+    You can also modify an object, which retains its original definition
+    (including inheritance information, vocabulary, and properties), and
+    allows you to add new properties and vocabulary.  You can also
+    override properties, simply by redefining them in the new definition.
+    The most common addition to an object from adv.t will probably be
+    new verb associations; for example:
+
+       modify pushVerb
+          verb = 'nudge'
+          ioAction(withPrep) = 'PushWith'
+       ;
+
+    Note several things about this example.  First, no superclass
+    information can be specified in a "modify" statement; this is because
+    the superclass list for the modified object is the same as for the
+    original object.  Second, note that vocabulary has been added.
+    The additional vocabulary does NOT replace the original vocabulary,
+    but simply adds to the previously-defined vocabulary.  Further note
+    that verb association pseudo-properties, such as doAction and ioAction,
+    are legal in a "modify" definition.
+
+    In a method that you redefine with "modify", you can use "pass"
+    or "inherited" to refer to the REPLACED method.  In essence, using
+    "modify" renames the original object, and then creates a new
+    object under the original name; the new object is created as a
+    subclass of the original (now unnamed) object.  There is no way
+    to refer to the original object, except indirectly through the
+    new replacement object.  Here's an example of "modify" and "pass":
+
+        class testClass: object
+	    sdesc = "testClass"
+	;
+
+        testObj: testClass
+            sdesc =
+	    {
+	        "testObj...";
+		pass sdesc;
+	    }
+        ;
+
+        modify testObj
+            sdesc =
+	    {
+	        "modified testObj...";
+		pass sdesc;
+	    }
+	;
+
+    Evaluating testObj.sdesc results in this display:
+
+        modified testObj...testObj...testClass
+
+    However, you can override this behavior for a property by
+    using the replace keyword on the property.  In the example
+    above, we could do this instead:
+
+        modify testObj
+            replace sdesc =
+	    {
+	        "modified testObj...";
+		pass sdesc;
+	    }
+	;
+
+    This would result in the following display for testObj.sdesc:
+
+        modified testObj...testClass
+
+    The "replace" keyword before the property definition tells the
+    compiler to completely delete the previous definitions of the
+    property.  This allows you to completely replace the property,
+    and not merely override it, meaning that "pass" and "inherited"
+    will refer to the property actually inherited from the superclass,
+    and not the original definition of the property.
+
+  - It is now possible for the player to customize the colors used
+    by the runtime.  A small new program, TRCOLOR, is provided to
+    set up the runtime screen colors.  The program is self-explanatory;
+    simply type TRCOLOR at the DOS prompt to invoke it.  Once you've
+    selected your color scheme, TRCOLOR will create a small file
+    called TRCOLOR.DAT (in the current directory); the runtime will
+    read this file in subsequent game sessions.
+
+    Note that you can use multiple TRCOLOR.DAT files, in much the same
+    way you can use two CONFIG.TC files.  The runtime looks first for
+    TRCOLOR.DAT in the current directory; if no such file is found, the
+    runtime will then look in the directory where TR.EXE resides.  So,
+    you can set up separate color schemes for each game you're playing,
+    and have a default color scheme for games with no specific color
+    scheme of their own.
+
+  - The user interface of the MAKETRX program has been improved.
+    For compatibility with existing makefiles, the old command line
+    syntax is still allowed; however, you can now omit most of the
+    arguments, and MAKETRX will use convenient new defaults.
+
+    First, you can now omit the extensions on all the arguments.
+    The extension assumed for the TR.EXE program is .EXE; for the
+    game file it is .GAM; and for the executable output file it is .EXE.
+
+    Second, you can now omit everything except the name of the game
+    file.  If you omit the name of the TR.EXE program, MAKETRX attempts
+    to find TR.EXE in the same directory as MAKETRX.EXE; so, if you
+    simply keep all of your TADS executables in a single directory,
+    you won't need to specify the location of TR.EXE when running MAKETRX.
+    If you omit the name of the destination file, MAKETRX will use the
+    same name as the game file, with the extension replaced by .EXE.
+
+    The command line arguments to MAKETRX that are now understood are:
+
+       maketrx gamefile
+         Converts gamefile.gam into gamefile.exe, using TR.EXE from the
+	 same directory as MAKETRX.EXE.
+
+       maketrx gamefile output
+         Converts gamefile.gam into output.exe, using TR.EXE from the
+	 same directory as MAKETRX.EXE.
+
+       maketrx \tads2\tr.exe gamefile output
+         Converts gamefile.gam into output.exe, using \tads2\tr.exe.
+
+
+  - The dobjGen and iobjGen mechanism has been changed slightly.
+    In the original implementation, you could prevent the system
+    from calling dobjGen/iobjGen by defining an appropriate verXoVerb
+    property in the actual object, but NOT in a superclass.  This
+    made it impossible to define a class that had exceptions to
+    dobjGen/iobjGen except by explicitly testing for those verbs
+    in the xobjGen routines.
+
+    The change is that the system will now skip calling xobjGen
+    if an appropriate verXoVerb/xoVerb property is defined in such
+    a way that it "overrides" xobjGen for the object.  Here's an
+    example:
+
+       class cursedItem: item
+           dobjGen(a, v, i, p) =
+	   {
+	       "As you touch <<self.thedesc>>, a bolt of lightning
+	       leaps from the object and sends you reeling away!";
+	   }
+	   iobjGen(a, v, d, p) = { self.dobjGen(a, v, d, p); }
+	   verDoInspect(actor) = { pass verDoInspect; }  // allow 'inspect'
+       ;
+
+    The change means that the presence of verDoInspect in the *class*
+    prevents the system from calling dobjGen when the verb is "inspect",
+    even for subclasses.  With the old system, since the subclass objects
+    themselves didn't define verDoInspect, dobjGen would be called even
+    though the verDoInspect logically overrides the dobjGen.
+
+  - The restore() intrinsic has been extended to allow your game
+    program to explicitly restore the saved game specified by the
+    user as a parameter to your stand-alone game program.  This is
+    currently only useful on the Macintosh, but the inclusion of
+    code to test for this case will make your game work better on
+    the Macintosh (and possibly other platforms in the future).
+
+    The new functionality is invoked by calling restore(nil).  If
+    a saved game was specified by the user at start-up time, the
+    game will be restored, and nil will be returned.  If no file
+    was specified, or an error occurred restoring the game, the
+    function returns true.  To use this new behavior, we recommend
+    placing the following code in your init function, before your
+    introductory messages and other startup code:
+
+       // check for a file to restore specified as a startup parameter
+       if (restore(nil) = nil)
+       {
+           "\b[Restoring saved game]\b";
+           scoreStatus(global.score, global.turnsofar);
+           Me.location.lookAround(true);
+           return;
+       }
+
+    Note that the run-time will still automatically restore the
+    game provided as a parameter (on the Macintosh) after init returns
+    if you do NOT include this code in init.  The reason for including
+    this code is that it provides your game with greater control over
+    the sequence of events during startup.  If you allow the run-time
+    to perform the restore automatically, your entire init function will
+    be executed; this may be undesirable, because it forces the user to
+    view the entire introductory text even though they'll immediately
+    restore a game after reading it.  If you place the restore(nil) call
+    before your introductory text, the user will be spared the long text
+    display; however, you'll still have complete control over any text
+    that you want the user to see even when restoring a game, such as
+    your copyright message.
+
+  - New built-in function:  objwords(num), which provides a list of
+    the actual words the user typed to refer to an object used in
+    the current command.  The argument (num) is a number specifying
+    which object you're interested in:  1 for the direct object, or
+    2 for the indirect object.  The return value is a list of strings;
+    the strings are the words used in the command.  If a special
+    word, such as "it", "them", or "all", was used to specify the
+    object, the list will have a single element, which is the special
+    word used.
+
+    Examples:
+
+       >take all
+       objwords(1) -> ['all']
+       objwords(2) -> []
+
+       >put all in red box
+       objwords(1) -> ['all']
+       objwords(2) -> ['red' 'box']
+
+       >put blue box in it
+       objwords(1) -> ['blue' 'box']
+       objwords(2) -> ['it']
+
+       >put blue folder and green book in red box
+       blue folder:
+       objwords(1) -> ['blue' 'folder']
+       objwords(2) -> ['red' 'box']
+       green book:
+       objwords(1) -> ['green' 'book']
+       objwords(2) -> ['red' 'box']
+
+    This function could potentially be useful in such cases as
+    "ask actor about object", because it allows you to determine
+    much more precisely what the player is asking about than would
+    otherwise be possible.
+
+  - The setit() function now takes nil as a parameter; this prevents
+    using "it" in a command until another object has been referenced.
+    nil can be used for "him" and "her" as well, as described below.
+
+  - Enhancements to the setit() built-in function:  you can now directly
+    set the 'him', 'her', and 'them' values using the setit() function.
+
+       - To set 'them', simply call setit() with a list value:
+         setit([redBook blueBook boots]);
+
+       - To set 'him', add a second argument value of 1 to the call:
+         setit(joe, 1);
+
+       - To set 'her', add a second argument value of 2:
+         setit(harriet, 2);
+
+  - The restart() built-in function now takes an optional set of
+    arguments:  a pointer to a function, and a parameter value for
+    the function (if one is provided, the other is also required, but
+    both can be omitted).  If they're provided, TADS calls the function
+    with the provided parameter value *after* resetting the game, and
+    before running the init() function.  This allows you make the game
+    start slightly differently after a restart than on the initial startup.
+    adv.t uses this feature to call the function initRestart, with the
+    parameter value global.initRestartParam, upon restart.  The initRestart
+    function defined in adv.t simply sets the flag global.restarting to
+    true.  Your game can test global.restarting (in the init function or
+    elsewhere) to determine whether the game has been restarted, or is
+    being run for the first time.  You can also replace initRestart()
+    with your own function if you wish to do something more complicated;
+    in this case, if you wish to pass information to the function, you
+    can simply store it in global.initRestartParam, and it will be passed
+    to the function automatically by adv.t upon restarting.
+
+  - New built-in function:  inputkey() reads a single keystroke from
+    the keyboard.  The function takes no arguments.  When called,
+    inputkey() will flush any pending output text, then pause the game
+    until the player hits a key.  It then returns a string containing
+    the single key hit by the player.  Note that the function does NOT
+    provide a portable mechanism for reading non-standardized keys;
+    special keys such as cursor arrow keys and function keys will return
+    a string specific to the type of computer being used.  Your game
+    will not be portable if you make use of any non-standardized key
+    values returned by inputkey().  To ensure portability, use inputkey()
+    strictly with standard ASCII keys (alphabetic, numeric, and punctuation
+    keys).  It is also fully portable if you simply ignore the return value
+    and use the function only to pause and wait for a key.
+
+  - Several changes have been made for better national language
+    support.  First, the DOS version now allows 8-bit characters
+    (characters in the extended character set, with ASCII code
+    from 128 to 255) in text displayed by the game, vocabulary
+    words, and player commands.  Characters in the extended character
+    set are always considered to be alphabetic, so these characters
+    can only be used in input as parts of words (hence, symbols
+    from the extended character set that appear as punctuation
+    marks can't be used as punctuation in player commands).
+
+  - The debugger now has "More" mode in the command window.  When
+    a single display won't fit in the window (for example, a long
+    stack traceback), the debugger will prompt with "[More]" each
+    time the window fills up.  Hit the space bar to scroll by a
+    whole screen, or the Return/Enter key to scroll by a single line.
+
+  - The debugger has a new "call history" feature.  This feature
+    captures information about every function and method call,
+    including argument lists and return values (if any), and saves
+    the information for future inspection.  Several new commands
+    have been added to the debugger to support call history:
+
+        c+    Enables call history, and clears previous history.
+        c-    Disables call history capture.
+        cc    Clears all current history information.
+        c     Displays current history information.
+
+    The reason that call history can be enabled and disabled is
+    that enabling the feature slows down the debugger substantially,
+    because it must store information every time a method is called.
+
+    This feature could be useful if you're trying to figure out the
+    sequence of method calls that occurs during the execution of
+    a command.  At the debugger command line, type c+ to turn on
+    call history; then, type g to resume your game.  Type the command
+    that you want to debug, then type DEBUG at the game prompt to
+    return to the debugger.  Now type c- to turn off call history,
+    and c to display the history information from the command you
+    just executed.  This will allow you to see every method and
+    function that was called by TADS, as well as all the methods
+    and functions called by your code.
+
+    The call history display will have each function/method call indented
+    by a number of spaces indicating the nesting depth; any method/function
+    called by TADS will be at the left margin, any methods/functions called
+    by the first one will be indented one space, any methods/functions
+    called by those will be indented two spaces, and so on.  The return
+    values will be indented by the same number of spaces as the function
+    itself was.  Note that a return value may be separated from its
+    entrypoint by several lines, because calls made by the function
+    will appear between the function entry and the return value.
+
+  - Another new national language feature is the addition of
+    several new parser-called user functions that allow better
+    user control over the generation of parser messages.  The
+    new functions have been added because some people have found
+    that the parseError() function is not sufficiently flexible
+    for some situations, because it only allows changing the text
+    of messages on a piecewise basis; when complete messages need
+    to be built out of several pieces, it's necessary to be able to
+    take over the entire process of building the message.  The new
+    functions allow full control of the generation of certain messages.
+
+    parseAskobj(v, ...):  This function is called when the parser
+    needs to ask the player for a direct or indirect object to complete
+    the command.  For example, if the player just types "take", and
+    several objects are present that could be taken, the parser must
+    ask the player what to take.  If a direct object is being requested,
+    the function will have only one argument (the verb).  If an indirect
+    object is being requested, the function will have *two* arguments;
+    the second argument will be the preposition.  Note that the preposition
+    can be nil, in which case you can assume that "to" is to be used.
+    The implementation below emulates the default behavior.
+
+        parseAskobj: function(v, ...)
+	{
+	    "What do you want to <<v.sdesc>>";
+	    if (argcount = 2)
+	    {
+	        local p := getarg(2);
+	        " it << p ? p.sdesc : "to" >>";
+	    }
+	    "?";
+	}
+
+    parseDisambig(string, list):  This function is called by the
+    parser when objects need to be disambiguated.  If this optional
+    function is provided, it is called with the string that the player
+    typed which is in need of disambiguation, and a list of the objects
+    that match the string.  The implementation below emulates the
+    parser's default behavior.
+
+        parseDisambig: function(str, lst)
+        {
+            local i, tot, cnt;
+        
+            "Which << str >> do you mean, ";
+            for (i := 1, cnt := length(lst) ; i <= cnt ; ++i)
+            {
+                lst[i].thedesc;
+                if (i < cnt) ", ";
+                if (i+1 = cnt) "or ";
+            }
+            "?";
+        }
+
+    parseError2(v, d, p, i):  The parser calls this function to
+    generate the default error message stating that the verb attempted
+    isn't accepted by the objects involved; this happens when either
+    the indirect object doesn't define an appropriate verIoXxxx method,
+    or the direct object doesn't define an appropriate verDoXxxx method.
+    Only one of 'd' (direct object) or 'i' (indirect object) will be
+    non-nil.  If 'i' is nil, so will 'p' (preposition).  The verb, 'v',
+    will never be nil.  Note that 'p' can be nil even when 'i' is not,
+    in which case you should assume that the preposition is "to".
+    The implementation below behaves the same as the parser's default.
+
+        parseError2: function(v, d, p, i)
+        {
+            "I don't know how to << v.sdesc >> ";
+            if (d)
+                "<< d.thedesc >>.";
+            else
+        	"anything << p ? p.sdesc : "to" >> << i.thedesc >>.";
+        }
+
+    parseDefault(obj, prp):  This function is called when the parser
+    is assuming a default object.  If a default direct object is being
+    assumed, prp (the preposition) will be nil; otherwise, prp will have
+    the object corresponding to the preposition preceding the indirect
+    object.  The implementation below provides the default behavior.
+
+        parseDefault: function(obj, prp)
+        {
+            "(";
+            if (prp) "<< prp.sdesc>> ";
+            obj.thedesc;
+            ")";
+        }
+
+    Note that all three of these new functions are optional.  If any
+    is omitted, the parser uses the default behavior, so existing games
+    will run unchanged.  You can include any one without including the
+    others; these new functions are all independent.  Note also that
+    the default parser behavior continues to use parseError the same
+    way it has since parseError was introduced; however, when these
+    new functions are provided, the corresponding parseError calls will
+    obviously no longer be made.
+
+  - COMPATIBILITY NOTE:  By default, the .GAM files produced by
+    the 2.1.0 compiler will NOT be compatible with previous
+    versions of the runtime, due to several changes to the .GAM
+    file format.  However, a new compiler option has been added
+    that allows you to specify which .GAM file format to produce:
+
+      -fv a   produces .GAM format compatible with 2.0.14 or earlier
+      -fv b   produces game file format requiring 2.1.0 or later
+      -fv *   (default) produces latest file format (currently b)
+
+    If you want your game to be compatible with older versions of
+    the runtime, use -fv a.  The 2.1.0 runtime is compatible with
+    .GAM files produced by ANY version of the compiler; the runtime
+    automatically detects which file format version it is reading.
+
+    Note that using -fv a will prevent you from being able to call
+    an external function from within the init function (see the bug
+    fix described below).  In addition, even when using -fv a, since
+    previous versions of the run-time did not provide the new built-in
+    functions, your game will be incompatible with runtimes prior to
+    2.1.0 -- regardless of whether you use -fv a or not -- if you
+    use any new built-in functions.
+
+    In the future, if there is another incompatible .GAM file format
+    change, additional -fv options will be added to the new compiler.
+
+  - One of the changes to the .GAM file format makes it much more
+    compressible with archiving tools (such as ZIP).  Previous
+    .GAM files typically compressed by only 10 to 20%; the files
+    produced with file format B are generally compressible by 40
+    to 50%.
+
+  - runfuses and rundaemons had a bug that reset the run-time
+    stack, causing problems if a nested method or function
+    called these functions.  This has been corrected.
+
+  - Subtracting one list from another didn't work as documented.
+    This has been corrected.
+
+  - In previous versions, external functions could not be called
+    while the init function was running.  This was an unintentional
+    side-effect of the way external functions were loaded, and the
+    problem has been corrected.  External functions can now be called
+    at any time.
+
+  - A new warning has been added that can help you track down
+    unterminated strings.  Whenever the compiler sees a line that
+    begins with a semicolon or close brace (';' or '}') inside
+    a string, it will issue a warning.  While this is just a guess
+    that the string may be unterminated, it's often right, especially
+    if you follow the general formatting style used by adv.t:  always
+    end a function with a brace in the first column of a new line,
+    and always end an object with a semicolon in the first column of
+    a new line.
+
+    Note that we strongly recommend that you follow this formatting
+    style in your code, both for general readability and because it
+    may enhance your code's compatibility with future High Energy
+    Software products that use assumptions about formatting style
+    that are similar to that used to generate the new unterminated
+    string warning.
+
+  - Several small enhancements and bug fixes have been made to
+    adv.t:
+
+       - A new property has been added to nestedroom objects:
+         statusPrep, which displays "on" or "in" (or whatever),
+	 as appropriate, for messages such as "Spaceship, in chair".
+	 This defaults to "in" for nestedroom, and "on" for beditem.
+	 Other nestedroom objects you define may want to customize it.
+
+       - There was a bug that allowed the player to throw a fixeditem
+         that was (indirectly) being carried (for example, a fixeditem
+         that is part of another object that can be carried) at something.
+	 This has been fixed.
+
+       - The follower class did not 'exit' at the end of its actorAction.
+         This has been fixed.
+
+       - The follower class now makes use of iobjGen and dobjGen to respond
+         with an appropriate message ("the actor is no longer here") to
+	 any command other than "follow".
+
+       - The clothingItem class has been enhanced to allow "get out of"
+         to be used to take off the item.
+
+       - All of the verbs containing the word "look" now have synonyms
+         with "l" as well:  l at, l on, l in, l under, l around, l thru,
+	 and so on.
+
+       - A bug has been fixed that allowed the command "take all from foo"
+         to remove the contents of "foo" even if it was closed.  The
+	 change is to the doDefault method in takeVerb.
+
+       - The vehicle class has been adjusted so that the player can't
+         take a vehicle or otherwise manipulate it while the player is
+	 currently in the vehicle -- this is important for things such
+	 as rubber rafts which can be used both as vehicles and ordinary
+	 carryable items.  dobjGen and iobjGen are used to accomplish
+         this; the only allowed verbs on a vehicle while it's occupied
+	 by the player are inspectVerb, getOutVerb, outVerb, and putVerb
+	 with the vehicle as an indirect object (allowing objects to be
+	 put into the vehicle while it's occupied).  If you want to allow
+	 additional verbs in a particular vehicle, override dobjGen or
+	 iobjGen as appropriate, and simply return if the verb matches
+	 any of the verbs you wish to add:
+
+	     dobjGen(a, v, i, p) =
+	     {
+	         // allow "launch" and "land" while in the magic raft
+	         if (v <> launchVerb and v <> landVerb)
+		     pass dobjGen;
+	     }
+
+  - The compiler now detects usage (both explicit and implicit)
+    of "self" in functions.  This has always been illegal, but
+    in previous versions the compiler did not notice; any uses
+    of "self" in functions resulted in a run-time error (often
+    a mysterious error, such as a cache manager severe error and
+    abnormal termination due to a reference to a non-existent
+    object).  This was especially troublesome when a property
+    name was used as a local variable when the local variable
+    wasn't declared; since the v2 compiler assumes "self" in
+    references to properties that don't include an object
+    qualification, the compiler would silently turn an undefined
+    variable usage into a reference to "self".  The compiler will
+    now flag a new error in these cases:  TADS-344, "self" is not
+    valid in this context.  If you get this error without an
+    explicit reference to "self", you probably have an implicit
+    reference, which means you probably are using an undeclared
+    local variable.  Adding a "local" declaration for the variable
+    should clear the error.
+
+  - "Her" was not set properly, even when the isHer property was
+    set to true for an object.  This has been corrected.
+
+  - A new compiler option has been added:  -v, for "verbosity".
+    This option lets you tell the compiler how much warning
+    information you'd like to see.  By default, the verbosity
+    level is 0 (zero), which causes certain warnings to be
+    suppressed.  You can specify -v followed by a number to
+    set a higher verbosity level.  So far, only the messages
+    listed below are affected by -v, but the verbosity level
+    for certain warnings may be changed in the future (and new
+    warnings may be added at high verbosity levels).  Currently,
+    the general meaning of the verbosity levels is:  0, report
+    only serious errors and warnings; 1, report suspicious
+    situations that may or may not indicate errors; 2, report
+    all information, including general warning information that
+    usually does not indicate any actual problem.
+
+  - A new compiler option has been added:  -e file, for "error logging".
+    This option captures all messages generated by the the compiler to
+    the specified file.  Messages are also displayed interactively as
+    normal.  WARNING: if the file specified with -e already exists, it
+    is overwritten with the error information.
+
+  - The compiler warning messages about "object not found" for the
+    optional objects (preinit, preparse, parseError, commandPrompt)
+    are now suppressed if the verbosity level is less than 2.
+    If you specify -v2 (or -v with a higher number than 2), these
+    messages will be displayed for all optional objects not found;
+    otherwise, no warnings will be generated.
+
+  - The compiler warning messages about "#include file already included"
+    are now suppressed if the verbosity level is less than 1.
+
+
+2.0.14  02/10/93  bug fixes, minor enhancements
+
+  - A new backslash code has been added to the output formatter that
+    causes the formatter to pass the next two bytes unchanged.
+    This has been added primarily for 16-bit character sets, to allow
+    two-byte characters that contain a backslash ('\', ASCII 92) as
+    one of their two bytes to be passed through the formatter without
+    interpretation as part of a backslash sequence.  The new code
+    is "\-"; the two bytes following the \- are not interpreted by
+    the formatter.  For example:
+
+       "\-\bTesting...\nDone!";
+
+    displays:
+
+       \bTesting...
+       Done!
+
+    Note that the "\b" sequence is not interpreted as a blank line,
+    as it would normally be, but is simply displayed, because the \-
+    suppresses any interpration of the next two bytes.  The "\n",
+    however, is interpreted as a newline as normal, since it is not
+    quoted by a \- sequence.
+
+  - You can now break out of an infinite loop in your game while
+    running under the debugger.  On DOS, if your game goes into a loop,
+    hit the Control + Break keys - the loop should immediately be
+    aborted and control returned to the debugger command line.
+    The Control-Break sequence also works with the runtime; it
+    causes control to be returned to the player command line.
+    Note that the interrupted command is automatically undone, so
+    the interrupt sequence will not leave the game in an inconsistent
+    state.  Note also that only long loops can be interrupted; the
+    system only checks for interruptions once every several hundred
+    instructions for greater efficiency.
+
+  - The debugger will now catch run-time errors, activating the
+    debugger command line when an error occurs.  The source will
+    be positioned at the location of the error, as though a breakpoint
+    had been set there, and the error message will be displayed.  Local
+    variables can be evaluated as normal to help determine the cause of
+    the error.  When you resume execution (with Trace, Step, or Go),
+    the current command will be aborted and control will return to the
+    player command prompt.  Note that there's no way to "fix" the error
+    once it's been caught, but you can at least see exactly where the
+    error occurred and determine the conditions that caused it.  Note
+    also that certain types of errors, such as memory management errors,
+    will not invoke the debugger; only errors that are directly caused
+    by an error in your game program will trap to the debugger.
+
+  - The debugger incorrectly reported files as "not found" in the
+    list of modules produced by the "fl" command.
+
+  - The runtime was inconsistent in its calls to ioDefault.  Sometimes
+    it called ioDefault(actor, prep), and other times it called it as
+    ioDefault(actor, prep, dobj) - this made it impossible to define the
+    method correctly if argument checking was enabled.  This has been
+    corrected so that the dobj parameter is never included.  When attempting
+    to identify a default indirect object, the parser never has a direct
+    object available, since the indirect object must be resolved first;
+    hence, the dobj that was occasionally being passed by the parser was
+    always nil.  The unnecessary extra parameter has been removed:  the
+    method is now always called as ioDefault(actor, prep).
+
+  - The compiler generated incorrect code if the implicit "self" object
+    was used to reference an object (that is, a property was used without
+    an object specifier).  This resulted in "invalid opcode" errors at
+    run-time.
+
+  - The compiler sometimes complained that an included file couldn't
+    be found, even when the included file was explicitly loaded as part
+    of a precompiled header.  This happened any time the included file
+    was not in the current directory at compilation time.
+
+  - The compiler aborted with an "assertion failure" (which indicates
+    that the compiler detected that it was in an internally inconsistent
+    state, which should not be attainable under any circumstances) when
+    the game program used a variable or expression on the right hand
+    side of a dot operator and an object on the left hand side.
+
+2.0.13  01/16/93  enhancements and bug fixes
+
+  - If a vocabulary word contained a single quote character, the
+    word could not be matched at run-time.
+
+  - The run-time now allows all characters from the extended character
+    set (ASCII codes above 127) to be displayed.  The run-time
+    previously converted some extended characters into spaces.
+
+  - The compiler did not allow a label to precede the first goto
+    that referred to the label.
+
+  - The debugger will now stop at a breakpoint in a method that
+    is inherited by an object.  For example, if a breakpoint is
+    set at room.lookAround, and startroom inherits lookAround
+    from the class room, the debugger will stop at startroom.lookAround.
+    It does not, however, stop on startroom.lookAround if startroom
+    overrides lookAround.
+
+  - The compiler will now flag an assignment to an undeclared
+    symbol as an error.  It previously assumed that the symbol
+    referred to a property, with an implicit object of "self".
+    This was almost never desirable, because this type of
+    assignment was most often coded in error -- the game author
+    usually meant to code an assignment to a local variable, but
+    either misspelled the variable name or forgot to declare it.
+
+  - remfuse/remdaemon/unnotify no longer signal an error if the
+    item being removed is not active.  Several game authors have
+    indicated that this error is not helpful, since it makes it
+    impossible to unconditionally remove a fuse -- you have to
+    check to make sure it hasn't fired yet, which create a lot
+    of unnecessary overhead.
+
+  - NEW BUILT-IN FUNCTION:  intersect(list1, list2) returns the
+    intersection of two lists; that is, it returns the list of
+    all of the elements of the shorter of list1 and list2 that
+    are also in the other list.  For example:
+
+        [1 2 3 4 5] and [1 3 5 7]     ->    [1 3 5]
+        ['abc' 'def'] and ['abc']     ->    ['abc']
+
+    This new function can be used to improve performance in cases
+    where (effectively) one list of items is being searched for
+    the presence of another list of items.
+
+  - NEW BUILT-IN FUNCTION:  runfuses() runs all expired fuses, if any.
+    Returns true if any fuses expired, nil otherwise.  This function has
+    been added to allow greater control over fuse processing.  Note that
+    fuses set with both the setfuse() and notify() built-in functions
+    are run.  This function takes no arguments.
+
+  - NEW BUILT-IN FUNCTION:  rundaemons() runs all daemons.  This function
+    runs daemons set with both the setdaemon() and notify() functions.
+    rundaemons() takes no arguments and returns no value.
+
+  - NEW BUILT-IN FUNCTION:  getfuse allows you to determine if a fuse
+    (set with either setfuse or notify) is active.  It returns nil if
+    the fuse is not active (i.e., it has been activated or removed),
+    or the number of turns left.
+
+    For setfuse() fuses:   getfuse(fuse_func, parameter)
+    For notify() fuses:    getfuse(object, &message)
+
+  - NEW BUILT-IN FUNCTION:  gettime() returns the current time.  The
+    time is returned as a list of numeric values for easy processing by
+    your game:
+
+      [year month day weekday yearday hour minute second elapsed]
+
+    The specific meanings of the values are:
+
+          year        - calendar year (e.g., 1992).
+          month       - month number (January = 1, February = 2, etc.)
+          day         - number of the day within the current month
+          weekday     - day of the week (1 = Sunday, 2 = Monday, etc.)
+          yearday     - day of the year (1 = Jan 1)
+          hour        - hour of the day on 24-hour clock (midnight = 0,
+                        noon = 12, 3 PM = 15, etc.)
+          minute      - minute within the hour (0 to 59)
+          second      - second within the minute (0 to 59)
+          elapsed     - the number of seconds since January 1, 1970,
+                        00:00:00 GMT.  This last value is useful for
+                        computing the difference between two points
+                        in time.
+
+  - NEW FEATURE:  The parser now calls an additional method in
+    each direct and indirect object under certain circumstances.
+    These new methods are called dobjGen (general use of an object
+    as a direct object) and iobjGen.  These methods are called
+    immediately prior to the appropriate verXo<Verb> method.  The
+    sequence of calls depends on the command, as detailed below.
+
+    The purpose of these methods is to allow you to define a catch-all
+    routine that is called whenever an object is used in a command.
+    It is sometimes desirable to be able to take some action whenever
+    an object is mentioned, regardless of the verb involved.  For
+    example, you might wish to define a cursed object that damages
+    the player (such as by taking away a treasure) whenever the
+    object is touched or manipulated in any way; these new methods
+    make it possible to do this without having to override every
+    possible verb handler.
+
+    When a command is issued with an indirect object, the parser
+    checks to see if the indirect object *directly* defines the
+    io<Verb> method.  If not, the parser calls iobj.iobjGen(actor,
+    verb, dobj, prep).  The parser then checks to see if the direct
+    object *directly* defines the verDo<Verb> method.  If not, the
+    parser calls dobj.dobjGen(actor, verb, iobj, prep).
+
+    When a command is issued with only a direct object, the parser
+    checks to see if the object *directly* defines the do<Verb> method.
+    If not, the parser calls dobj.dobjGen(actor, verb, nil, nil).
+
+    Note that an object "directly defines" a method if the method
+    is defined in the object itself -- that is, the object does
+    not merely inherit the method from its class.
+    
+    These new methods have no return value, and need not do anything.
+    If they're undefined, the behavior is exactly the same as in
+    previous versions.  So, existing games should continue to run
+    unchanged.
+
+    The reason that these methods are not called when the object
+    directly defines an appropriate verb handler is that these
+    methods are intended as a generic catch-all verb handler.
+    When a specific handler for the current verb is already defined
+    in the object, there should be no need to call the generic
+    handler, since the object already defines specific behavior
+    for that verb.
+
+
+2.0.12  No such release (for internal release coordination)  bug fixes
+
+  - Switch statements did not properly process all datatypes.
+
+  - Assignment operations did not work correctly on list elements.
+    For example:  l := [1 2 3]; l[2] += 5; did not properly leave
+    the value of l as [1 7 3].
+
+2.0.11  12/20/92  bug fixes
+
+  - Goto statement labels were occasionally not released properly,
+    resulting in spurious internal errors.
+
+  - The 'continue' statement did not work as documented in 'for'
+    statements.  Instead of jumping to the re-initializer expression,
+    as it now does, the 'continue' incorrectly jumped to the condition.
+
+  - The run-time is slightly smaller and faster.
+
+  - The compiler did not process locals correctly when multiple disjoint
+    blocks within a function or method had locals, and a later block had
+    fewer locals than a previous block (yes, it's a somewhat obscure bug).
+
+2.0.10  No such release (to synchronize with Mac release levels)
+
+2.0.9  12/12/92  MS-DOS bug fixes and new features
+
+  - The file selector dialog displayed incorrect information when a
+    directory name that used all 11 characters was displayed.
+
+  - The file selector now saves and restores all default directory and
+    disk information.  The current disk, and the current directory on
+    each disk, will be the same when TR is terminated as it was when
+    TR was first run.  (This applies to TDB as well.  It's particularly
+    important for TDB, because TDB needs to have the source files in
+    the current working directory if an absolute path was not specified
+    with -I.)
+
+  - NEW FEATURE:  the new user function commandPrompt, if provided by
+    the user's game program, will be called prior to each player command.
+    If the commandPrompt function is provided, the default ">" prompt is
+    NOT displayed; if no commandPrompt function is defined, the default ">"
+    is used.  This should not affect existing games at all, unless a game
+    defines its own function, method, or property called commandPrompt
+    having a different purpose.  The commandPrompt function returns no
+    value.  The function takes a single argument:  a number, indicating
+    the type of command that the system is prompting for:
+
+       0  - normal command
+       1  - command after invalid word (allowing "oops" to be used)
+       2  - disambiguation (after "which x do you mean..." question)
+       3  - command after askdo (after "what do you want to x?")
+       4  - command after askio
+
+    Note that the default prompt in all cases is simply ">", and in all
+    cases a new command can be entered.  However, when the type code is
+    2, 3, or 4, a question has just been displayed by the run-time, so
+    the commandPrompt function may want to suppress any pre-command
+    information or prompt text.  Case 1 is generally identical to case 0.
+
+    NOTE:  As with the other optional user-provided functions, the
+    compiler will issue a warning message if commandPrompt is not
+    defined by your game.  If your game doesn't provide a commandPrompt
+    function, you can ignore this warning.  The warning is provided so
+    that, if you intended to provide a commandPrompt function, you will
+    be informed if the compiler didn't find it (which could mean that
+    you forgot to define it, or misspelled it).
+
+  - NEW FEATURE:  A new built-in function has been added, which allows
+    the game program to suppress the display of text that would normally
+    be displayed with double-quoted strings or the say() function.  The
+    function is called outhide(), and it takes one argument:  a flag,
+    indicating whether to suppress or re-enable the display of output.
+    If the flag is true, output is suppressed; if the flag is nil, output
+    is re-enabled.  Any output that occurs between outhide(true) and
+    outhide(nil) is discarded.  However, outhide(nil) returns a value
+    indicating whether any output did in fact occur since the call to
+    outhide(true); this allows you to determine if any output would have
+    occurred, even though the output is not seen by the player.  Note
+    that this is effectively the same mechanism used by the player command
+    parser for noun disambiguation using the verDoXxx and verIoXxx
+    methods, as described in the TADS author's manual.  There is no way
+    to recover the text that was suppressed by outhide(); the text is
+    simply discarded, so the only information available is whether any
+    text was generated.
+
+2.0.8  12/03/92  (tc/tdb 2.0.7, tr 2.0.8) MS-DOS bug fixes and minor changes
+
+  - The display initialization code was incorrectly attempting to clear
+    a zero-line region of the display.  This resulted in extremely long
+    delays on some computers (due to an incorrect BIOS call made by TADS).
+
+  - NEW FEATURE:  When the keyword $$ABEND is typed as the entire command,
+    the run-time immediately terminates and returns to DOS.  This emergency
+    escape is provided so that TR can be terminated if the game somehow
+    gets into a state where a more graceful exit is not possible.
+
+  - The compiler did properly detect when an undefined object was used
+    as the superclass of another object.  This generally resulted in
+    unpredictable behavior during execution of preinit.
+
+  - NEW FEATURE:  The parser now calls two new optional methods in the
+    game program.  These new methods are intended to help speed up the
+    identification of words when many objects have the same vocabulary.
+    If the new methods are not present, behavior is the same as before,
+    so existing games will run unchanged.  The new methods are validDoList
+    and validIoList; they are associated with the "deepverb" object for
+    the current command.  They are called with three parameters:  the actor,
+    the prep, and the other object (indirect object for validDoList and
+    direct object for validIoList; the value of the parameter will be nil
+    if not applicable).  These methods are called prior to the disambiguation
+    pass (using verDoXxx/verIoXxx), and prior to testing any objects with
+    validDo/validIo.
+
+    The return value of validDoList/validIoList is a list of all of the
+    valid objects for the verb.  It is fine for these methods to return
+    *too many* objects, since each object is still tested with validDo
+    (or validIo) and the appropriate verDoXxx/verIoXxx methods.  Generally,
+    these methods should simply return a list of all of the accessible
+    objects in the actor's current location (or the actor's location's
+    location), plus a list of all of the "floating" objects (which use
+    methods for the location properties).
+
+    An appropriate definition for validDoList in the deepverb object
+    appears below:
+
+       validDoList(actor, prep, iobj) =
+       {
+           local ret;
+   	   local loc;
+
+	   loc := actor.location;
+	   while (loc.location) loc := loc.location;
+	   ret := visibleList(actor) + visibleList(loc)
+	          + global.floatingList;
+	   return(ret);
+       }
+
+    This same definition (with the name changed) is appropriate
+    for validIoList in deepverb.  This returns a list of all of the
+    objects visible in the current location, plus the global list of
+    all floating objects; this should be a superset of the list of
+    accessible objects in most games.  The only verbs that normally
+    requires a different value of validIoList/validDoList are verbs
+    such as "ask" and "tell" that allow any object (whether accessible
+    or not) to be used as indirect objects; for these, simply use this
+    definition:
+
+       validIoList = nil
+
+    This takes advantage of the reverse compatibility feature:  when the
+    method returns nil, all objects with matching vocabulary are used.
+
+    The one additional game change required to take advantage of this
+    new feature is that global.floatingList must be built during
+    initialization.  This can be done easily with the following loop:
+
+       global.floatingList := [];
+       for (o := firstobj(floatingItem) ; o ; o := nextobj(o, floatingItem))
+   	   global.floatingList += o;
+
+    This should be placed in the preinit or init function.  Note that
+    all objects which have location methods should be declared to be
+    of class floatingItem:
+
+      class floatingItem: object;
+
+    This class doesn't do anything except serve as a flag that an
+    object should be placed in the floatingList.
+
+2.0.7  12/01/92  MS-DOS bug fix release
+
+  - The run-time occasionally missed the \ in an escape sequence in
+    output strings.
+
+  - The run-time couldn't operate in 132 column mode.
+
+  - The run-time abnormally terminated in the file selection dialog
+    when the dialog box was exactly filled.
+
+2.0.6  11/24/92  first general MS-DOS TADS 2.0 release
+

@@ -1,0 +1,354 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3cmap_files/filelist.xml">
+<title>Character Mapping Files</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Dell User</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>3</o:Revision>
+  <o:TotalTime>6</o:TotalTime>
+  <o:Created>2004-06-25T02:41:00Z</o:Created>
+  <o:LastSaved>2004-06-25T02:47:00Z</o:LastSaved>
+  <o:Pages>3</o:Pages>
+  <o:Words>1490</o:Words>
+  <o:Characters>8495</o:Characters>
+  <o:Lines>70</o:Lines>
+  <o:Paragraphs>16</o:Paragraphs>
+  <o:CharactersWithSpaces>10432</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Courier New";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:2042782380;
+	mso-list-type:hybrid;
+	mso-list-template-ids:850929872 818160650 232532808 -1110645106 -1772747720 789479814 -2046499248 619897878 -1544510646 -467655610;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=blue style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>The Unicode Character Set</h3>
+
+<p>Because TADS 3 uses Unicode internally, TADS programs can work on
+practically any computer, in any national language, using any character
+set.<span style="mso-spacerun: yes">&nbsp; </span>Unicode is a
+&quot;universal&quot; character set that encodes almost every character from
+almost every written language in the world.</p>
+
+<h3>Character Mapping Files</h3>
+
+<p>Sadly, most computers today do not use Unicode as their native character
+sets. In order for TADS to work on non-Unicode computers, TADS must translate
+characters between Unicode and native encodings. To accomplish this without
+tying itself to any one type of computer, TADS uses <i>character mapping files</i>.
+A character mapping file describes the association between a computer's native
+character set and Unicode. </p>
+
+<p>The Unicode consortium, which is the organization that defines the Unicode
+standard, publishes files that describe the correspondence between Unicode and
+most native character sets that are in use today. TADS uses these files as a
+starting point. </p>
+
+<h3>Creating a TADS Character Mapping File</h3>
+
+<p>To create a character mapping for use with TADS, follow these steps. </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list .5in'>Identify the character set
+     you're using. This is a function of the type of computer you are using and
+     your computer's localization. For example, Microsoft Windows systems
+     localized for Eastern or Central Europe use Windows Code Page 1250. </li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list .5in'>Obtain the official Unicode
+     character mapping for your character set, if it's available. The Unicode
+     consortium does not permit third-party distribution of its character
+     mapping database files, so those files are not included with TADS. However,
+     you can download these files directly from the <a
+     href="ftp://ftp.unicode.org">Unicode consortium's ftp site</a>. See the <a
+     href="#CommonMappings">download locations table</a> for a list of common
+     mappings and where to find them. </li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list .5in'>The character mapping files
+     as provided on the Unicode ftp site are almost ready to use, but you must
+     make one small addition. At the end of the file, add a line that looks
+     like this: </li>
+</ul>
+
+<pre style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre
+style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;</span>default_display 0x81</pre>
+
+<p style='margin-left:.5in'>For the &quot;0x81&quot;, however, you should
+substitute the character that you want to use as the default display character.
+This defines the character that TADS will display when a Unicode character has
+no mapping in your native character set. Most native character sets include an
+&quot;invalid&quot; character for just this purpose; this character looks like
+an empty rectangle in many fonts, but each character set varies. You should
+find an appropriate character in your native character set, and define it for
+the &quot;default_display&quot; character. </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list .5in'>Use the <tt><span
+     style='font-size:10.0pt;font-family:"Courier New"'>mkchrtab</span></tt>
+     (&quot;make character table&quot;) utility, included with the TADS
+     distribution, to &quot;compile&quot; the mapping file into the format that
+     TADS uses: </li>
+</ul>
+
+<pre style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre
+style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='font-family:Symbol'>&middot;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;</span>mkchrtab cp1250.txt cp1250.tcm</pre>
+
+<p style='margin-left:.5in'>The first argument is the source file that you
+downloaded from the Unicode site. The second argument is the name of the
+&quot;tcm&quot; file (TADS Character Map) that TADS will use. </p>
+
+<h3><a name=CommonMappings></a>Download Locations for Common Mappings</h3>
+
+<table border=1 cellspacing=3 cellpadding=0 style='mso-cellspacing:1.5pt'>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>ISO 8859 (ISO Latin-<i>n</i>) code pages </p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="ftp://ftp.unicode.org/Public/MAPPINGS/ISO8859/">ftp://ftp.unicode.org/Public/MAPPINGS/ISO8859/
+  </a></p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>MS-DOS code pages </p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a
+  href="ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/">ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/PC/
+  </a></p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Microsoft Windows code pages </p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a
+  href="ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/">ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/
+  </a></p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Apple Macintosh character sets </p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a
+  href="ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/APPLE/">ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/APPLE/
+  </a></p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>NeXT character sets </p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a
+  href="ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/NEXT/">ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/NEXT/
+  </a></p>
+  </td>
+ </tr>
+</table>
+
+<h3>Approximation Mappings</h3>
+
+<p>Since the Unicode character set includes character assignments for nearly
+every character used in a written language anywhere in the world, and most
+local character sets on existing operating systems and terminals include
+character assignments for only a few languages, most of the characters in the
+Unicode character set will not be displayable on most computers. </p>
+
+<p>As described earlier, the <tt><span style='font-size:10.0pt;font-family:
+"Courier New"'>default_display</span></tt> setting in the character mapping
+file allows you to specify the glyph to display when a character cannot be
+mapped to the local character set. So, if you're running a game that uses kanji
+characters on a machine localized for the United States, the kanji characters
+will be unmappable and so will be displayed using the <tt><span
+style='font-size:10.0pt;font-family:"Courier New"'>default_display</span></tt>
+setting. </p>
+
+<p>In many cases, however, you might want to provide an &quot;approximate&quot;
+mapping for some characters. An approximate mapping lets you specify a local
+character that is similar enough to a particular Unicode character that you'd
+rather display that local character as an approximation than display the <tt><span
+style='font-size:10.0pt;font-family:"Courier New"'>default_display</span></tt>
+glyph. For example, if your computer can display only plain ASCII characters
+(so it doesn't have any accented letters in its character set), you might want
+to use a regular &quot;a&quot; as an approximation for the various accented
+&quot;a&quot; characters (&quot;&amp;aacute;&quot;, &quot;&agrave;&quot;,
+&quot;&acirc;&quot;, and so on). While displaying a regular &quot;a&quot; for an
+accented &quot;a&quot; loses some information, it might give the reader a
+better chance of understanding the original text than displaying the <tt><span
+style='font-size:10.0pt;font-family:"Courier New"'>default_display</span></tt>
+character, which doesn't tell the reader anything other than that the original
+character can't be displayed on this system. </p>
+
+<p>In addition, some glyphs can be approximated visually by combining two or
+more glyphs from a more limited character set. For example, left and right arrows
+can be approximated by &quot;&lt;-&quot; and &quot;-&gt;&quot;.</p>
+
+<p>The TADS 3 character mapping system provides an optional mechanism for
+making these types of approximations. If you wish to provide approximations,
+you must place them after the local-to-Unicode mappings described earlier (the
+local-to-Unicode mappings are usually the ones you obtain from mapping files
+found on the Unicode web site). After all of the local-to-Unicode mappings, add
+this line to your mapping source file: </p>
+
+<pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">&nbsp;&nbsp; </span>display_mappings</pre>
+
+<p>After this line, provide your approximation mappings. These mappings can
+take two forms, as shown in these examples: </p>
+
+<pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">&nbsp;&nbsp; </span>&amp;mdash<span style="mso-spacerun: yes">&nbsp; </span>'--'</pre><pre><span style="mso-spacerun: yes">&nbsp;&nbsp; </span>0x0141<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>'L'</pre>
+
+<p>In the first form, you can specify an HTML entity name, written with a
+leading ampersand (&quot;&amp;&quot;) as it is in HTML source code. In the
+second form, you use a number (the &quot;0x&quot; prefix indicates that the
+number is in hexadecimal; you can specify a decimal number by omitting the
+&quot;0x&quot; prefix, but the Unicode listings specify everything in hex so
+you would probably want to use hex most of the time). </p>
+
+<p>In both forms, the first item on the line specifies the Unicode character to
+be mapped to a local approximation, and the rest of the line specifies a string
+of Unicode characters to substitute for the original Unicode character. The
+simplest way to specify the substitution string is to enclose a string in
+single quote marks; this works if all of the substituted characters are plain
+ASCII characters (in the Unicode range 0 to 255). If you want to substitute any
+Unicode characters outside of the plain ASCII range, use numbers to specify the
+Unicode code points of the substitution: </p>
+
+<pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">&nbsp;&nbsp; </span>&amp;mdash<span style="mso-spacerun: yes">&nbsp; </span>0x2d 0x2d</pre>
+
+<p>The numeric form eliminates any character set translation issues with
+respect to the character mapping source file itself (the last thing we need to
+worry about at this point is how mapping files are mapped!). </p>
+
+<p><b>Important:</b> the substitution string is a set of <b>Unicode</b>
+characters, not local characters. These Unicode characters are themselves
+further translated into local characters. Note that the Unicode characters in
+the substitution string <b>must</b> appear in the local-to-Unicode mapping
+section; you cannot substitute a character with no mapping, and you cannot
+substitute a character that itself has an approximation mapping. The character
+mapper automatically translates the substitution string to the local character
+set for display. </p>
+
+<p>The reason that the substitution string is specified with Unicode characters
+rather than local characters is that this allows programs to perform the
+approximation substitutions entirely in the Unicode domain, and then know for
+certain that each Unicode character in the substituted string will translate to
+exactly one local character. This is important because it allows programs using
+the character mappings to process the results of any multiple-character
+substitutions in the Unicode domain; for example, the TADS Interpreter's output
+formatter uses this information to perform word wrapping on the text that
+results from substituting the approximation mappings, which must be done in the
+Unicode domain. </p>
+
+<p>You might wonder why the character mapping file has two separate sections -
+one for mappings from local to Unicode, and the other for approximation
+mappings. The reason for this dichotomy is that the character mapper treats the
+local-to-Unicode mappings as reversible - each mapping establishes that the
+local character will be translated on input to the given Unicode character, and
+<i>also</i> that the Unicode character will be translated to the local character
+on output; in order to be reversible, the local-to-Unicode entries must be
+unique, one-to-one mappings. The Unicode-to-local section, on the other hand,
+does not need to provide a unique mapping for each character, because the
+character mapper does not assume that these mappings are reversible - this is a
+one-way mapping. This is all designed as a time-saver for people creating
+character mappings - if one or the other of these sections weren't reversible,
+you'd <i>always</i> have to specify a full set for both directions, because
+neither set could be reversed to infer the other; the logical choice for the
+reversible mappings is the local-to-Unicode set, because the local character
+set will almost always be a small subset of the Unicode set, and hence it is
+frequently desirable to map several Unicode characters to a single local
+character, but not vice versa. </p>
+
+<p>For some approximation mapping examples, refer to the default 7-bit ASCII
+mapping file &quot;us-ascii.txt&quot; (in the &quot;charmap&quot; subdirectory
+of the TADS 3 distribution). </p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,343 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3dynobj_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Merkin Muffley</o:LastAuthor>
+  <o:Revision>4</o:Revision>
+  <o:TotalTime>55</o:TotalTime>
+  <o:Created>2000-03-08T18:10:00Z</o:Created>
+  <o:LastSaved>2001-05-27T00:45:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>1068</o:Words>
+  <o:Characters>6090</o:Characters>
+  <o:Lines>50</o:Lines>
+  <o:Paragraphs>12</o:Paragraphs>
+  <o:CharactersWithSpaces>7478</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:834960297;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1772688404 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Dynamic Creation and Deletion of Objects</h3>
+
+<p class=MsoNormal>Most TADS games define a large number of &quot;static&quot;
+objects that encode the game world: the locations, characters, and items that
+make up the game.<span style="mso-spacerun: yes">  </span>We call these objects
+&quot;static&quot; because they exist throughout the program's execution.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>It is often useful to create objects dynamically as
+well.<span style="mso-spacerun: yes">  </span>The main reason you'd want to
+create an object dynamically, rather than define it statically, is that you
+don't know in advance that you'll need the object at all – or, more typically,
+you don't know exactly how many instances of the object you'll need.<span
+style="mso-spacerun: yes">  </span>For example, suppose your game includes a
+pool of water, and you want the player to be able to fill any container with
+water from the pool.<span style="mso-spacerun: yes">  </span>If you could only
+define objects statically, you'd have to pre-define a sufficient number of<span
+style="mso-spacerun: yes">  </span>&quot;quantity of water&quot; objects to
+cover each possible container, and you'd have to add new static objects every
+time you modified your game to add new containers.<span style="mso-spacerun:
+yes">  </span>You'd also have to work out a scheme to keep track of which
+objects were already in some container, so that you could find an appropriate
+unused object when the player filled a new container.<span style="mso-spacerun:
+yes">  </span>With dynamic objects, though, you need only define a class for
+&quot;quantity of water,&quot; and then dynamically create a new instance of
+this class each time the user fills a new container.</p>
+
+<h3>Creating an Object</h3>
+
+<p class=MsoNormal>To create a new object dynamically, you use the
+&quot;new&quot; operator with the name of the class:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>local x = new QuantityOfWater;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This creates a new object of the
+given class, returning a reference to the new object.<span style="mso-spacerun:
+yes">  </span>You can now use the new object just like any other.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Dynamic objects don't have names, so
+you must refer to them through variables or properties.<span
+style="mso-spacerun: yes">  </span>In the example above, we stored the new
+object reference in a local variable.<span style="mso-spacerun: yes"> 
+</span>If we wanted to call the &quot;sdesc&quot; method to display the
+object's description, we'd call the method on the local variable:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>x.sdesc;</pre>
+
+<h3 style='tab-stops:.5in'>Constructors</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>When you create a new object with the
+&quot;new&quot; operator, the system automatically calls the method
+&quot;construct&quot; in the new object immediately after creating it.<span
+style="mso-spacerun: yes">  </span>You can define this method just like any
+other.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class QuantityOfWater: Item</pre><pre><span style="mso-spacerun: yes">  </span>construct()</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>volume_ = 5;</pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre>;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The construct method can optionally
+take arguments.<span style="mso-spacerun: yes">  </span>If you define a
+construct method with arguments, you must pass the arguments to the
+&quot;new&quot; operator.<span style="mso-spacerun: yes">  </span>For example:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class QuantityOfWater: Item</pre><pre><span style="mso-spacerun: yes">  </span>construct(vol)</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>volume_ = vol;</pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre>;</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre>// later...</pre><pre> <span style="mso-spacerun: yes"> </span>local x = new QuantityOfWater(3);</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If you're familiar with C++ or Java,
+you should take note of some important features of TADS constructors that
+differ from those of C++ and Java:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:.5in'>In C++ and
+     Java, a constructor always implicitly calls its base class constructor, as
+     though a call to the base class constructor with no arguments had appeared
+     as the first line of code of the constructor.<span style="mso-spacerun:
+     yes">  </span>(C++ and Java also allow explicit invocation of the base
+     class constructor, which overrides the implicit call.)<span
+     style="mso-spacerun: yes">  </span><b>TADS does not implicitly call the
+     base class constructor </b>when an object defines its own constructor,
+     although you can explicitly invoke the base class constructor using the
+     normal &quot;inherited&quot; syntax.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:.5in'>In C++ and
+     Java, the name of a constructor is the same as the name of its class.<span
+     style="mso-spacerun: yes">  </span>TADS constructors are always called
+     &quot;construct.&quot;</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:.5in'>C++ and
+     Java both provide &quot;overloading,&quot; which allows multiple methods
+     of the same name (and hence multiple constructors) to be defined as long
+     as they have different argument lists.<span style="mso-spacerun: yes"> 
+     </span>TADS does not offer an overloading mechanism.<span
+     style="mso-spacerun: yes">  </span>You can, however, use variable argument
+     lists with TADS constructors to achieve a similar effect.</li>
+</ul>
+
+<h3 style='tab-stops:.5in'>Implicit Constructors</h3>
+
+<p class=MsoNormal>If you define an object or class with more than one
+superclass, and the object does not define a <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>construct</span></tt> method, the
+compiler automatically generates an &quot;implicit&quot; constructor for the
+object.<span style="mso-spacerun: yes">  </span>The implicit constructor simply
+inherits each of the superclass constructors, in the same order in which the
+superclasses are listed in the object definition.<span style="mso-spacerun:
+yes">  </span>The arguments passed to each base class constructor are the same
+as the arguments passed to the object's constructor.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example, suppose you define a class like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>class MultiClass: Class1, Class2</pre><pre>;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This class does not define an explicit constructor – in
+other words, it has no <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>construct</span></tt> method defined in the class.<span
+style="mso-spacerun: yes">  </span>Because of this, the compiler automatically
+generates an implicit constructor for the object; the implicit constructor is
+equivalent to this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>construct([args])</pre><pre>{</pre><pre><span style="mso-spacerun: yes">  </span>inherited Class1.construct(args...);</pre><pre><span style="mso-spacerun: yes">  </span>inherited Class2.construct(args...);</pre><pre>}</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The compiler only generates an implicit constructor for
+objects and classes with multiple superclasses and no explicit <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>construct</span></tt>
+method.</p>
+
+<h3 style='tab-stops:.5in'>Deleting an Object</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>In TADS 2, it was necessary to notify
+the system that an object was no longer needed by explicitly
+&quot;deleting&quot; the object, which released the memory that the object was
+using, allowing the system to re-use the memory for other objects.<span
+style="mso-spacerun: yes">  </span>This type of manual memory management seems
+straightforward – if you allocate an object, you must eventually delete it –
+but in practice proves to be very prone to errors.<span style="mso-spacerun:
+yes">  </span>In particular, two types of errors frequently occur with manual
+memory management: <i>leaks </i>and <i>dangling references.</i><span
+style="mso-spacerun: yes">  </span>A &quot;leak&quot; occurs when you simply
+never get around to deleting an object that you created; a program that leaks
+memory will eventually consume all available system memory with objects that
+should have been deleted, and is unable to continue running due to the
+artificial memory shortage.<span style="mso-spacerun: yes">   </span>A
+&quot;dangling reference&quot; is the opposite problem: this occurs when you
+delete an object before you were actually done using it, which can happen when
+one piece of code isn't aware that another piece of code is still using the
+same object.<span style="mso-spacerun: yes">  </span>A dangling reference can
+cause all sorts of problems, especially if the system reallocates the
+supposedly free memory for another purpose.<span style="mso-spacerun: yes"> 
+</span>To get manual memory management right, you have to delete objects at
+exactly the right time – not too early and not too late.<span
+style="mso-spacerun: yes">  </span>It is a surprisingly daunting task.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>TADS 3 avoids these problems by
+eliminating manual memory management.<span style="mso-spacerun: yes"> 
+</span>Instead, TADS 3 provides <a href="t3gc.htm">automatic garbage collection</a>,
+which is a mechanism that allows the system to figure out – completely
+automatically – when an object is eligible for deletion.<span
+style="mso-spacerun: yes">  </span>The automatic garbage collector will never
+create a dangling reference, because it will never delete an object which is
+referenced anywhere in your program.<span style="mso-spacerun: yes"> 
+</span>The garbage collector also ensures that there are no leaks due to
+unreachable objects, because it automatically deletes objects after they become
+unreachable (this is, in fact, the only time that the garbage collector deletes
+an object, because deleting a reachable object would create a dangling
+reference – indeed, this is the definition of a dangling reference).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>For the most part, TADS 3's garbage
+collection system is so automatic that you can completely ignore its
+effects.<span style="mso-spacerun: yes">  </span>However, in some cases you
+might wish to be notified when a particular object is about to be deleted.<span
+style="mso-spacerun: yes">  </span>To satisfy this need, TADS 3 includes a
+&quot;finalization&quot; mechanism that calls a method, called a
+&quot;finalizer,&quot; when an object is about to be deleted.<span
+style="mso-spacerun: yes">  </span>Refer to the <a href="t3gc.htm">garbage
+collection section</a> for details on finalization.</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre></div>
+
+</body>
+
+</html>

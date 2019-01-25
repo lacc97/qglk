@@ -1,0 +1,539 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3start_files/filelist.xml">
+<title>Start-up Code</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>17</o:Revision>
+  <o:TotalTime>55</o:TotalTime>
+  <o:Created>2000-02-26T00:29:00Z</o:Created>
+  <o:LastSaved>2004-02-26T07:52:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>1141</o:Words>
+  <o:Characters>6508</o:Characters>
+  <o:Lines>54</o:Lines>
+  <o:Paragraphs>13</o:Paragraphs>
+  <o:CharactersWithSpaces>7992</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:330065295;
+	mso-list-type:hybrid;
+	mso-list-template-ids:698226054 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l1
+	{mso-list-id:695497577;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1828958558 67698689 67698691 67698689 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l1:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l2
+	{mso-list-id:1119838831;
+	mso-list-type:hybrid;
+	mso-list-template-ids:698226054 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Start-up Code</h3>
+
+<p class=MsoNormal>In previous versions of TADS, when the program started
+running, TADS called an initialization function (called <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>init</span></tt>)
+to carry out any special start-up processing that the program wanted to
+perform.<span style="mso-spacerun: yes">  </span>This function performed any needed
+initialization, then returned.<span style="mso-spacerun: yes">  </span>The
+system then entered a command loop, in which the system prompted the user, read
+a command line, parsed the command, and called program functions and methods to
+execute the operations of the command.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>TADS 3 does not have a built-in parser, and it doesn't even
+have a built-in command loop.<span style="mso-spacerun: yes">  </span>Instead,
+the program is responsible for all of this.<span style="mso-spacerun: yes"> 
+</span>At start-up, the VM calls an &quot;entrypoint&quot; function (called <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>_main</span></tt>).<span
+style="mso-spacerun: yes">  </span>This function is called the entrypoint
+because it's the point at which control enters the program.<span
+style="mso-spacerun: yes">  </span>The <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>_main</span></tt> function does not
+return until the program has finished executing.<span style="mso-spacerun:
+yes">  </span>Once <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>_main</span></tt> returns, TADS 3 terminates the program.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In this respect, TADS 3 is more like a traditional
+programming language (such as Java or C++) than it is like previous versions of
+TADS.<span style="mso-spacerun: yes">  </span>This approach requires some extra
+coding in the game program, but it provides much greater flexibility, since the
+program is no longer forced to work with a pre-defined command loop.<span
+style="mso-spacerun: yes">  </span>Besides, any extra code needed for start-up
+will eventually be available from libraries, so most game authors won't have to
+code this part of the program anyway.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>_main</span></tt> function receives one argument, which is a
+list giving the strings making up the command line.<span style="mso-spacerun:
+yes">  </span>The first entry in this list is the name of the program image
+file; the subsequent entries in the list are the strings that follow the image
+file name on the command line that started the program.<span
+style="mso-spacerun: yes">  </span>The rules for parsing command lines vary
+from system to system, but on most systems, arguments are delimited by spaces
+unless the arguments are enclosed in quotation marks.<span style="mso-spacerun:
+yes">  </span>For example, this command line:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>t3run mygame &quot;first argument&quot; second third</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Would yield a list with four elements
+on most systems:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>'mygame.t3'</pre><pre><span style="mso-spacerun: yes">   </span>'first argument'</pre><pre><span style="mso-spacerun: yes">   </span>'second'</pre><pre><span style="mso-spacerun: yes">   </span>'third'</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The <tt><span style='font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>_main</span></tt> routine
+normally also sets up the default display function, so that double-quoted
+strings and embedded text can be displayed.<span style="mso-spacerun: yes"> 
+</span>See <a href="t3dispfn.htm">Default Display Function</a> for details.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that most libraries will
+probably include their own VM-level (<tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>_main</span></tt>) entrypoint
+implementation.<span style="mso-spacerun: yes">  </span>This is the primary
+reason for the odd name: most libraries will probably provide standard
+implementations of <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>_main()</span></tt>, which will set up and then call another
+function, to be provided by the user code.<span style="mso-spacerun: yes"> 
+</span>Library-provided <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>_main()</span></tt> functions will probably want to set up a
+top-level error handler (via the <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>try</span></tt> statement), check the <a
+href="#preinit">pre-initialization</a> mode, possibly process the command-line
+arguments or other environmental data, and call a secondary entrypoint function
+provided by user code.<span style="mso-spacerun: yes">  </span>This is akin to
+the way most C compilers work: the compiler's standard run-time library provides
+a low-level start-up routine, which serves as the entrypoint from the operating
+system; this function normally does some initial processing, then calls the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>main()</span></tt>
+function defined by the program.</p>
+
+<h3 style='tab-stops:.5in'><a name=preinit></a><a name="_Default_Start-Up_Code"></a><span
+style='mso-bookmark:preinit'>Default Start-Up Code</span></h3>
+
+<p class=MsoNormal><span style='mso-bookmark:preinit'>TADS comes with source
+code for a default start-up module.<span style="mso-spacerun: yes"> 
+</span>This code is in a file called _main.t, in the same directory as the
+compiler.<span style="mso-spacerun: yes">  </span>By default, t3make will
+automatically include this module in your program, which makes it unnecessary
+for you to add the module to your build explicitly.</span></p>
+
+<p class=MsoNormal><span style='mso-bookmark:preinit'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='mso-bookmark:preinit'>The code in _main.t
+implements several functions and objects that most TADS 3 programs will
+need.<span style="mso-spacerun: yes">  </span>Most programs will have no reason
+to modify the default versions provided in _main.t, which is why t3make
+includes the file in all builds by default; however, if you do need to replace
+this module, you can use the –nodef compiler option to tell the compiler not to
+include this default module.</span></p>
+
+<p class=MsoNormal><span style='mso-bookmark:preinit'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='mso-bookmark:preinit'>The functions and objects
+implemented in _main.t are:</span></p>
+
+<p class=MsoNormal><span style='mso-bookmark:preinit'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'>_main(args).<span style="mso-spacerun: yes"> 
+     </span>This function is the main entry-point that the VM calls when the
+     program is loaded.<span style="mso-spacerun: yes">  </span>The _main.t
+     implementation performs the following steps:</span></li>
+</ul>
+
+<ul style='margin-top:0in' type=disc>
+ <ul style='margin-top:0in' type=circle>
+  <li class=MsoNormal style='mso-list:l0 level2 lfo6;tab-stops:list 1.0in'><span
+      style='mso-bookmark:preinit'>Establishes a </span><a href="t3dispfn.htm"><span
+      style='mso-bookmark:preinit'>default display function</span><span
+      style='mso-bookmark:preinit'></span></a><span style='mso-bookmark:preinit'>
+      (_default_display_fn(), also implemented in _main.t).</span></li>
+  <li class=MsoNormal style='mso-list:l0 level2 lfo6;tab-stops:list 1.0in'><span
+      style='mso-bookmark:preinit'>Runs </span><a href="t3libpre.htm"><span
+      style='mso-bookmark:preinit'>pre-initialization</span><span
+      style='mso-bookmark:preinit'></span></a><span style='mso-bookmark:preinit'>
+      if necessary by invoking each PreinitObject's execute() method.<span
+      style="mso-spacerun: yes">  </span>During the special post-compilation
+      pre-initialization step, the default start-up code stops here.<span
+      style="mso-spacerun: yes">  </span>If this is a normal execution, though,
+      the library checks to see if pre-initialization has already been
+      completed by checking the mainGlobal.preinited_ flag, and skips this step
+      if this flag is set to true, which indicates that pre-initialization has
+      already been performed.</span></li>
+  <li class=MsoNormal style='mso-list:l0 level2 lfo6;tab-stops:list 1.0in'><span
+      style='mso-bookmark:preinit'>Runs </span><a href="t3libpre.htm#init"><span
+      style='mso-bookmark:preinit'>initialization</span><span style='mso-bookmark:
+      preinit'></span></a><span style='mso-bookmark:preinit'> if by invoking
+      each InitObject's execute() method.</span></li>
+  <li class=MsoNormal style='mso-list:l0 level2 lfo6;tab-stops:list 1.0in'><span
+      style='mso-bookmark:preinit'>Calls the function main(args), which you
+      must provide.</span></li>
+ </ul>
+</ul>
+
+<p class=MsoNormal style='margin-left:.5in'><span style='mso-bookmark:preinit'>All
+of this is done within a try/catch block; if any exceptions are caught at this
+level, the catch block displays the exception's error message and terminates
+the program.</span></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'>forEachInstance(cls, func).<span
+     style="mso-spacerun: yes">  </span>This function is a simple object
+     &quot;iterator&quot; function; it iterates (in arbitrary order) over all
+     instances of the class given by the &quot;cls&quot; argument, and for each
+     instance invokes the function given by &quot;func&quot;, passing the
+     current instance as the function's single argument.<span
+     style="mso-spacerun: yes">  </span>This function is provided for
+     convenience; you can use it as an alternative to writing a loop involving
+     the firstObj/nextObj functions.</span></li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'>class Exception: object.<span
+     style="mso-spacerun: yes">  </span>This class is defined to serve as the
+     base class for all exceptions, including run-time errors and
+     program-defined exceptions.<span style="mso-spacerun: yes">  </span>The
+     class defines a method, displayException(), that should be overridden in
+     all subclasses to display an appropriate message describing the exception.</span></li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'>class RuntimeError: Exception.<span
+     style="mso-spacerun: yes">  </span>This class is the base class for all
+     run-time exceptions that the VM itself throws.</span></li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'>class ModuleExecObject: object.<span
+     style="mso-spacerun: yes">  </span>This is the base class for
+     PreinitObject and InitObject.</span></li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'></span><a href="t3libpre.htm"><span
+     style='mso-bookmark:preinit'>PreinitObject: ModuleExecObject</span><span
+     style='mso-bookmark:preinit'></span></a><span style='mso-bookmark:preinit'>.</span></li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'></span><a href="t3libpre.htm#init"><span
+     style='mso-bookmark:preinit'>InitObject: ModuleExecObject</span><span
+     style='mso-bookmark:preinit'></span></a><span style='mso-bookmark:preinit'>.</span></li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'>_default_display_fn(val).<span
+     style="mso-spacerun: yes">  </span>This function simply calls the function
+     tadsSay(val) from the </span><a href="t3tgen.htm"><span style='mso-bookmark:
+     preinit'>&quot;tads-gen&quot; intrinsic function set</span><span
+     style='mso-bookmark:preinit'></span></a><span style='mso-bookmark:preinit'>.</span></li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bookmark:preinit'>mainGlobal: object.<span style="mso-spacerun:
+     yes">  </span>This object simply serves as a set of global variables for
+     the _main.t module.<span style="mso-spacerun: yes">  </span>In particular,
+     this object's property preinited_ stores the pre-initialization status;
+     this property is set to true after pre-initialization has been completed.</span></li>
+</ul>
+
+<pre><span style='mso-bookmark:preinit'><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></span></pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><span style='mso-bookmark:preinit'>When
+you use the default start-up code, you must define the main(args)
+function.<span style="mso-spacerun: yes">  </span>This function is your
+program's main entrypoint; the default start-up code calls main(args) after
+performing its initialization steps, as described above.<span
+style="mso-spacerun: yes">  </span>&quot;args&quot; is a list of strings giving
+the arguments to the program.</span></p>
+
+<h3 style='tab-stops:.5in'><span style='mso-bookmark:preinit'>Pre-initialization</span>
+</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>With TADS 2, if your game program
+defined a function called preinit(), the compiler called this function after
+completing compilation and before writing the binary .GAM file. TADS 3 has a
+similar mechanism but implements it differently.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that, if you're using the <a
+href="#_Default_Start-Up_Code">default start-up code</a>, you should perform
+pre-initialization by defining one or more PreinitObject instances.<span
+style="mso-spacerun: yes">  </span>Refer to <a href="t3libpre.htm">library
+pre-initialization</a> for details.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In TADS 3, after linking is complete,
+when <b>not</b> compiling for debugging, <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>t3make</span></tt> calls the main
+entrypoint function (_main), just as it would for normal execution.<span
+style="mso-spacerun: yes">  </span>However, the system sets a special internal
+flag that indicates that it's performing pre-initialization rather than a
+normal run of the program.<span style="mso-spacerun: yes">  </span>You can
+access this flag via the <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>t3GetVMPreinitMode()</span></tt> function in the <a
+href="t3t3.htm">&quot;t3vm&quot; function set</a>; this function returns true
+if pre-initialization is taking place, nil during normal execution.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When you compile for debugging (with
+the &quot;-d&quot; flag to t3make, for example), the compiler does <b>not</b>
+perform pre-initialization.<span style="mso-spacerun: yes">  </span>Instead,
+this step is deferred until you run the program with the interpreter.<span
+style="mso-spacerun: yes">  </span>This difference is important because it
+allows you to step through the pre-initialization code with the debugger when
+you compile for debugging; if pre-initialization were to run as part of
+compilation for a debug build, you wouldn't have a chance to trace through that
+code.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the difference between the debug
+and non-debug build modes does <b>not</b> mean that you have to write your code
+differently for the two modes.<span style="mso-spacerun: yes"> 
+</span>Pre-initialization runs in both types of builds, and runs in the same
+sequence in both types of builds; as far as your program is concerned, there's
+no difference at all.<span style="mso-spacerun: yes">  </span>The only
+difference is where the pre-initialization step is carried out.<span
+style="mso-spacerun: yes">  </span>Here's a summary of the sequence of events
+in the two cases:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>Normal (non-debug) builds:<o:p></o:p></b></p>
+
+<pre style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo8;
+tab-stops:.5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-bidi-font-family:"Times New Roman"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+style='font-family:"Times New Roman"'>Compiler:<o:p></o:p></span></pre><pre
+style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo8;tab-stops:
+.5in list 1.0in'><![if !supportLists]><span style='mso-bidi-font-family:"Times New Roman"'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+style='font-family:"Times New Roman"'>Compiles program<o:p></o:p></span></pre><pre
+style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo8;tab-stops:
+.5in list 1.0in'><![if !supportLists]><span style='mso-bidi-font-family:"Times New Roman"'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+style='font-family:"Times New Roman"'>Runs pre-initialization<o:p></o:p></span></pre><pre
+style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo8;tab-stops:
+.5in'><![if !supportLists]><span style='font-family:Symbol;mso-bidi-font-family:
+"Times New Roman"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+style='font-family:"Times New Roman"'>Interpreter:<o:p></o:p></span></pre><pre
+style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo8;tab-stops:
+.5in list 1.0in'><![if !supportLists]><span style='mso-bidi-font-family:"Times New Roman"'>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+style='font-family:"Times New Roman"'>Executes the main program<o:p></o:p></span></pre><pre
+style='tab-stops:.5in'><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre
+style='tab-stops:.5in'><b><span style='font-family:"Times New Roman"'>Debug builds:<o:p></o:p></span></b></pre>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo8;tab-stops:list .5in'>Compiler:</li>
+</ul>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo8;
+tab-stops:.5in list 1.0in'><![if !supportLists]><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]>Compiles program</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo8;tab-stops:list .5in'>Interpreter:</li>
+</ul>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo8;
+tab-stops:.5in list 1.0in'><![if !supportLists]><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]>Runs pre-initialization</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;mso-list:l1 level2 lfo8;
+tab-stops:.5in list 1.0in'><![if !supportLists]><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]>Executes the main program</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In both cases, the sequence of events
+that your program sees is the same: compile, pre-initialize, run.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

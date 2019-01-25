@@ -1,0 +1,370 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3str_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>16</o:Revision>
+  <o:TotalTime>53</o:TotalTime>
+  <o:Created>2000-03-25T04:46:00Z</o:Created>
+  <o:LastSaved>2003-05-24T20:12:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>1162</o:Words>
+  <o:Characters>6629</o:Characters>
+  <o:Lines>55</o:Lines>
+  <o:Paragraphs>13</o:Paragraphs>
+  <o:CharactersWithSpaces>8140</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1472088425;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-205389304 67698691 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Strings</h3>
+
+<p class=MsoNormal>&quot;String&quot; is a native TADS 3 datatype, but it is
+also an intrinsic class.<span style="mso-spacerun: yes">  </span>The String
+class provides a number of useful methods for manipulating string values.</p>
+
+<h3>Value Semantics</h3>
+
+<p class=MsoNormal>Strings have &quot;value semantics,&quot; which means that a
+given string object's text is constant; once you've created a string, the text
+within that string never changes.<span style="mso-spacerun: yes">  </span>All
+of the methods and operators that appear to change the value of a string
+actually create a new string with the modified value, leaving the original
+value intact.<span style="mso-spacerun: yes">  </span>For example, consider
+this code:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>local x = 'foo';</pre><pre><span style="mso-spacerun: yes">   </span>local y = x;</pre><pre><span style="mso-spacerun: yes">   </span>x += 'bar';</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Superficially, it appears that the
+last line changes the string in x.<span style="mso-spacerun: yes">  </span>In fact,
+the original string is not changed – if we displayed the value of y, we'd see
+that it still contains &quot;foo&quot;.<span style="mso-spacerun: yes"> 
+</span>When the interpreter executes the last line above, it creates a new
+string to hold the concatenated value, then assigns the result to x.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Value semantics make it very easy to
+work with strings, because you don't have to worry about whether a function
+might modify a string you pass to it: this can never happen, because a given
+string's text is constant.</p>
+
+<h3 style='tab-stops:.5in'>String Methods</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>endsWith(<i>str</i>) – </b>returns
+true if this string ends with <i>str</i>, nil if not.<span style="mso-spacerun:
+yes">  </span>This string ends with <i>str</i> if this string is at least as
+long as <i>str</i>, and the last <i>str</i>.length() characters of this string
+are the same as the characters of <i>str</i>.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>find(<i>str, index</i>?) – </b>finds
+the substring <i>str</i> within this string.<span style="mso-spacerun: yes"> 
+</span>If the substring is contained within this string, the method returns the
+character index where the substring starts; the first character is at index
+1.<span style="mso-spacerun: yes">  </span>If the substring isn't contained
+within this string, the method returns nil.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If <i>index</i> is given, it gives
+the starting index in <i>self</i> for the search; a value of 1 indicates that
+the search starts at the first character.<span style="mso-spacerun: yes"> 
+</span>If the <i>index</i> value is omitted, the default value is 1.<span
+style="mso-spacerun: yes">  </span>The starting index value can be used to
+search for another occurrence of the same substring following a previous
+search, for example.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Examples:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>'abcdef'.find('cd') yields 3</pre><pre><span style="mso-spacerun: yes">   </span>'abcdef'.find('g') yields nil</pre><pre><span style="mso-spacerun: yes">   </span>'abcdef'.find('c', 3) yields 3</pre><pre><span style="mso-spacerun: yes">   </span>'abcdef'.find('c', 4) yields nil</pre><pre><span style="mso-spacerun: yes">   </span>'abcabcabc'.find('c', 4) yields 6</pre><pre><span style="mso-spacerun: yes">   </span>'abcabcabc'.find('c', 7) yields 9</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=htmlify></a><b>findReplace(<i>origStr,
+newStr, flags, index</i>?) – </b>finds instances of the substring <i>origStr</i>
+within the target string, and replaces them with the new substring <i>newStr</i>.<span
+style="mso-spacerun: yes">  </span>If the <i>flags</i> value is ReplaceAll,
+then all occurrences of <i>origStr</i> are replaced; if the value is
+ReplaceOnce, then only the first occurrence is replaced.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If <i>index</i> is specified, it
+gives the starting index in <i>self</i> for the search.<span
+style="mso-spacerun: yes">  </span>If <i>index</i> is 1, the search starts at
+the first character; this is the default if <i>index</i> is not given.<span
+style="mso-spacerun: yes">  </span>No instances of <i>origStr </i>before <i>index</i>
+will be replaced. </p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>htmlify(<i>flags</i>?) – </b>converts
+HTML markup-significant characters in the string to appropriate HTML sequences,
+and returns the resulting string.<span style="mso-spacerun: yes">  </span>If
+the <i>flags</i> argument is not included, the method acts as though <i>flags </i>has
+the value 0 (zero).<span style="mso-spacerun: yes">  </span>By default, this
+method scans the string for the characters &quot;&amp;&quot; (ampersand) and
+&quot;&lt;&quot; (less than), and converts these characters to the sequences
+&quot;&amp;amp;&quot; and &quot;&amp;lt;&quot; respectively.<span
+style="mso-spacerun: yes">  </span>This conversion ensures that, when the
+string is rendered in HTML mode, the display shows ampersands and less-than
+signs where they appeared in the original string's text.<span
+style="mso-spacerun: yes">  </span>In addition, you can specify a combination
+(using the bitwise OR operator, &quot;|&quot;) of the following flags to
+perform additional conversions:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=circle>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>HtmlifyTranslateSpaces:
+     converts each space after the first space in a run of multiple spaces to
+     the sequence &quot;&amp;nbsp;&quot; (the HTML non-breaking space).<span
+     style="mso-spacerun: yes">  </span>This ensures that, when the string is
+     rendered in HTML mode, the display shows the same number of spaces that
+     appeared in the original string.<span style="mso-spacerun: yes"> 
+     </span>Note that the method never converts the first space in a run of
+     whitespace to the &quot;&amp;nbsp;&quot; sequence, because the first space
+     in a run of whitespace is significant in HTML and thus requires no special
+     handling.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>HtmlifyTranslateTabs:
+     converts each tab character ('\t') in the string to the sequence
+     &quot;&lt;tab&gt;&quot;.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>HtmlifyTranslateNewlines:
+     converts each newline character ('\n') in the string to the sequence
+     &quot;&lt;br&gt;&quot;.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>HtmlifyTranslateWhitespace:
+     this is simply a combination of HtmlifyTranslateSpaces,
+     HtmlifyTranslateTabs, and HtmlifyTranslateNewlines.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This method is useful if you obtain a
+string from an external source, such as from the user (via the inputLine()
+function, for example) or from a text file, and you then want to display the
+string in HTML mode.<span style="mso-spacerun: yes">  </span>Without
+conversions, any markup-significant characters in the string might not be
+displayed properly, since the HTML parser would attempt to interpret the
+characters as HTML formatting codes.<span style="mso-spacerun: yes"> 
+</span>You can use this method to ensure that a string obtained externally is
+displayed verbatim in HTML mode.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>length()</b> – returns the number
+of characters in the string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><a name=mapToByteArray></a><b>mapToByteArray(<i>charset</i>)
+</b>– maps the string from its internal Unicode representation to the
+corresponding representation in the character set specified by <i>charset</i>,
+and returns a new ByteArray containing the bytes of the result.<span
+style="mso-spacerun: yes">  </span>The <i>charset</i> parameter must be an
+object of class <a href="t3cset.htm">CharacterSet</a>.<span
+style="mso-spacerun: yes">  </span>If <i>charset</i> refers to an unknown
+character set, an UnknownCharSetException will be thrown; you can determine if
+the character set is known using its isMappingKnown() method.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>substr(<i>start, length</i>?) – </b>returns
+a new string consisting of a substring of this string.<span
+style="mso-spacerun: yes">  </span>The substring starts at character index <i>start</i>
+(the first character in the string is at index 1).<span style="mso-spacerun:
+yes">  </span>If <i>length</i> is specified, the result string is at most <i>length</i>
+characters long; if <i>length</i> is not specified, the result runs to the end
+of the source string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If the <i>start</i> parameter is
+negative, it indicates an offset from the end of the string: -1 indicates that
+the substring is to start at the last character, -2 at the second-to-last, and
+so on.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Examples:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>'abcdef'.substr(3) yields 'cdef'</pre><pre><span style="mso-spacerun: yes">   </span>'abcdef'.substr(3, 2) yields 'cd'</pre><pre><span style="mso-spacerun: yes">   </span>'abcdefghi'.substr(-3) yields 'ghi'</pre><pre><span style="mso-spacerun: yes">   </span>'abcdefghi'.substr(-3, 2) yields 'gh'</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>toLower() – </b>returns a new
+string consisting of the characters of the original string converted to
+lower-case.<span style="mso-spacerun: yes">  </span>Only alphabetic characters
+are affected; other characters are copied to the new string unchanged.<span
+style="mso-spacerun: yes">  </span>The conversion uses the case conversions
+specified in the Unicode character database, so accented and non-Roman alphabetic
+characters are properly converted.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>startsWith(<i>str</i>) – </b>returns
+true if this string starts with <i>str</i>, nil if not.<span
+style="mso-spacerun: yes">  </span>This string starts with <i>str</i> if this
+string is at least as long as <i>str</i>, and the first <i>str</i>.length()
+characters match the characters of <i>str</i>.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>toUnicode(<i>idx</i>?) – </b>converts
+one or all of the characters of this string to Unicode character codes.<span
+style="mso-spacerun: yes">  </span>If <i>idx</i> is given, it specifies the
+character index within the string of the single character to convert (the first
+character is at index 1), and the method returns an integer containing the
+Unicode code point for the character at that index.<span style="mso-spacerun:
+yes">  </span>If <i>idx</i> is not specified, the function returns a list; each
+element in the list is an integer giving the Unicode code point value for the
+corresponding character in the source string.<span style="mso-spacerun: yes"> 
+</span>The list will have one element per character in the source string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This function can be used to
+decompose a string into its individual characters, which is sometimes an easier
+or more efficient method of manipulating the string.<span style="mso-spacerun:
+yes">  </span>You can convert a list of Unicode code point values back into a
+string using the <a href="t3tgen.htm#makeString">makeString()</a> function in
+the <a href="t3tgen.htm">&quot;tads-gen&quot; function set</a>.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='tab-stops:.5in'><b>toUpper() – </b>returns a new
+string consisting of the characters of the original string converted to upper-case.<span
+style="mso-spacerun: yes">  </span>Only alphabetic characters are affected;
+other characters are copied to the new string unchanged.<span
+style="mso-spacerun: yes">  </span>The conversion uses the case conversions
+specified in the Unicode character database, so accented and non-Roman
+alphabetic characters are properly converted.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

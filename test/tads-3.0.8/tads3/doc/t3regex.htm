@@ -1,0 +1,2458 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3regex_files/filelist.xml">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>68</o:Revision>
+  <o:TotalTime>521</o:TotalTime>
+  <o:Created>2000-03-24T19:39:00Z</o:Created>
+  <o:LastSaved>2004-04-22T23:07:00Z</o:LastSaved>
+  <o:Pages>13</o:Pages>
+  <o:Words>6985</o:Words>
+  <o:Characters>39819</o:Characters>
+  <o:Lines>331</o:Lines>
+  <o:Paragraphs>79</o:Paragraphs>
+  <o:CharactersWithSpaces>48900</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-font-kerning:0pt;}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1128548589;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-889261834 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Regular Expressions</h3>
+
+<p class=MsoNormal>TADS 3 provides several string functions which use
+&quot;regular expressions.&quot;<span style="mso-spacerun: yes">  </span>A
+regular expression is a similar to a &quot;wildcard&quot; search string, but
+regular expressions are much more powerful than simple wildcards.<span
+style="mso-spacerun: yes">  </span>Regular expressions are used to search for
+strings within text.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>If you're a seasoned veteran of regular expressions in other
+programming languages or applications, you'll probably want to <a
+href="#_Summary_of_Special">skip ahead to the summary</a>.<span
+style="mso-spacerun: yes">  </span>You might also want to read about the <a
+href="t3rexpat.htm">RexPattern</a> intrinsic class, which stores compiled
+patterns; and about the specific regular expression functions, <a
+href="t3tgen.htm#rexMatch">rexMatch</a>, <a href="t3tgen.htm#rexSearch">rexSearch</a>,
+<a href="t3tgen.htm#rexReplace">rexReplace</a>, and <a
+href="t3tgen.htm#rexGroup">rexGroup</a>.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>A regular expression is often called a &quot;pattern,&quot;
+because it doesn't usually specify a literal string of characters to find, but
+rather specifies several possible formats that the text of interest could
+take.<span style="mso-spacerun: yes">  </span>What makes regular expressions
+powerful is that you can specify a whole range of possibilities without
+actually listing all of the possibilities individually.<span
+style="mso-spacerun: yes">  </span>In fact, you can easily specify a pattern
+that matches an <i>infinite</i> number of possibilities (and do so quite
+compactly).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Regular expressions can look a little daunting at first,
+because the pattern language uses punctuation marks to carry much of the meaning.<span
+style="mso-spacerun: yes">  </span>Don't worry about that; once you learn what
+a few symbols mean and how they combine, you'll find most expressions are not
+that difficult to understand.</p>
+
+<p class=MsoNormal><span style="mso-spacerun: yes"> </span></p>
+
+<p class=MsoNormal>The simplest kind of regular expression is simply a string
+of literal text.<span style="mso-spacerun: yes">  </span>For example, this is a
+valid regular expression:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>abc</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This simply matches the string
+&quot;abc&quot;, because the pattern consists entirely of &quot;ordinary
+characters,&quot; and each ordinary character of the regular expression is
+matched literally to a character of the string to be searched.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>An &quot;ordinary character&quot; is
+any character that doesn't have some other meaning in the regular expression
+language.<span style="mso-spacerun: yes">  </span>All of the alphabetic
+characters (including accented characters), all of the digits, and space
+characters of all kinds are ordinary characters.<span style="mso-spacerun:
+yes">  </span>The following punctuation marks have special meanings:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>% &lt; &gt; + . * ? [ ^ $ | ( ) {</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Everything else is an ordinary
+character.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can use <i>almost</i> all of
+these special characters as though they were ordinary characters by putting a
+percent sign (&quot;%&quot;) in front of them.<span style="mso-spacerun: yes"> 
+</span>So, to search for the letters &quot;abc&quot; enclosed in parentheses,
+we could write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>%(abc%)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>By putting the percent signs in front
+of the parentheses, you remove the special meaning from the parentheses and
+turn them into ordinary characters that literally match the search text.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note one pair of exceptions to the
+&quot;%&quot; rule:<span style="mso-spacerun: yes">  </span>the sequences
+&quot;%&lt;&quot; and &quot;%&gt;&quot; have special meanings of their own, so
+you can't use &quot;%&lt;&quot; to match a less-than sign, and you can't use
+&quot;%&gt;&quot; to match a greater-than sign.<span style="mso-spacerun:
+yes">  </span>To match these characters, you must use a <a
+href="#_Wildcards,_Ranges,_and">range expression</a> or a <a href="#namedChars">named
+character expression</a>; we'll see these in more detail later, but for now
+just note that we can match angle brackets like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;langle&gt;abc&lt;rangle&gt;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The &quot;&lt;langle&gt;&quot; part
+matches a single left angle bracket (&quot;&lt;&quot;), and the
+&quot;&lt;rangle&gt;&quot; part matches a single right angle bracket
+(&quot;&gt;&quot;).<span style="mso-spacerun: yes">  </span>Thus, the pattern
+above matches &quot;&lt;abc&gt;&quot;.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The meanings of all of the special
+characters, and how they combine, are explained in the sections that follow.</p>
+
+<h3 style='tab-stops:.5in'>Concatenation</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>Even the simple string above uses one
+of the construction principles that lets you build complex search
+patterns.<span style="mso-spacerun: yes">  </span>The string above consists of
+three ordinary characters that are <i>concatenated </i>together to form a
+longer string.<span style="mso-spacerun: yes">  </span>When you concatenate a
+regular expression element to a regular expression, you get a new regular
+expression that matches what the first one matches, plus what the new element
+matches.<span style="mso-spacerun: yes">  </span>This is pretty obvious for
+simple cases like &quot;abc&quot;, because if we add a new element – say the
+letter &quot;d&quot; – we get a new regular expression which matches a longer
+literal string:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>abcd</pre>
+
+<h3 style='tab-stops:.5in'>Alternation</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>Another construction principle that
+lets you combine expressions is <i>alternation</i>.<span style="mso-spacerun:
+yes">  </span>With alternation, you specify that the pattern matches one
+regular expression or another regular expression.<span style="mso-spacerun:
+yes">  </span>You specify alternation with the character &quot;|&quot; (the vertical
+bar).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>We know that the expression
+&quot;abc&quot; matches the literal string &quot;abc&quot;, and the expression
+&quot;def&quot; matches the literal string &quot;def&quot;.<span
+style="mso-spacerun: yes">  </span>So, we could combine these with alternation
+to make a new regular expression that matches either &quot;abc&quot; or
+&quot;def&quot;:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>abc|def</pre>
+
+<h3 style='tab-stops:.5in'><a name="_Wildcards,_Ranges,_and"></a><a
+name=namedChars></a>Named Characters</h3>
+
+<p class=MsoNormal>Each of the special characters (except angle brackets) can
+be entered literally in an expression using a percent sign (&quot;%&quot;) to
+quote the character, as shown above.<span style="mso-spacerun: yes">  </span>In
+addition, these characters, plus a few others, can be entered by name, by
+enclosing the character's name in angle brackets (&quot;&lt; &gt;&quot;).<span
+style="mso-spacerun: yes">  </span>To search for an asterisk, for example, you
+could write this expression:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;star&gt;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The named character notation is equivalent to using
+&quot;%&quot; to quote the special characters.<span style="mso-spacerun: yes"> 
+</span>The named notation is provided as an alternative because it often
+results in expressions that are easier to read than the &quot;%&quot;
+equivalents.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The special character names and the corresponding characters
+are:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">     </span>&lt;lparen&gt;<span style="mso-spacerun: yes">    </span>(</pre><pre><span style="mso-spacerun: yes">   </span><span style="mso-spacerun: yes">  </span>&lt;rparen&gt;<span style="mso-spacerun: yes">    </span>)</pre><pre><span style="mso-spacerun: yes">     </span>&lt;lsquare&gt;<span style="mso-spacerun: yes">   </span>[</pre><pre><span style="mso-spacerun: yes">     </span>&lt;rsquare&gt;<span style="mso-spacerun: yes">   </span>]</pre><pre><span style="mso-spacerun: yes">     </span>&lt;lbrace&gt;<span style="mso-spacerun: yes">    </span>{</pre><pre><span style="mso-spacerun: yes">     </span>&lt;rbrace&gt;<span style="mso-spacerun: yes">    </span>}</pre><pre><span style="mso-spacerun: yes">     </span>&lt;langle&gt;<span style="mso-spacerun: yes">    </span>&lt;</pre><pre><span style="mso-spacerun: yes">     </span>&lt;rangle&gt;<span style="mso-spacerun: yes">    </span>&gt;</pre><pre><span style="mso-spacerun: yes">     </span>&lt;vbar&gt;<span style="mso-spacerun: yes">      </span>|</pre><pre><span style="mso-spacerun: yes">     </span>&lt;caret&gt;<span style="mso-spacerun: yes">     </span>^</pre><pre><span style="mso-spacerun: yes">     </span>&lt;period&gt;<span style="mso-spacerun: yes">    </span>.</pre><pre><span style="mso-spacerun: yes">     </span>&lt;dot&gt;<span style="mso-spacerun: yes">       </span>.</pre><pre><span style="mso-spacerun: yes">     </span>&lt;squote&gt;<span style="mso-spacerun: yes">    </span>'</pre><pre><span style="mso-spacerun: yes">     </span>&lt;dquote&gt;<span style="mso-spacerun: yes">    </span>&quot;</pre><pre><span style="mso-spacerun: yes">     </span>&lt;star&gt;<span style="mso-spacerun: yes">      </span>*</pre><pre><span style="mso-spacerun: yes">     </span>&lt;plus&gt;<span style="mso-spacerun: yes">      </span>+</pre><pre><span style="mso-spacerun: yes">     </span>&lt;percent&gt;<span style="mso-spacerun: yes">   </span>%</pre><pre><span style="mso-spacerun: yes">     </span>&lt;question&gt;<span style="mso-spacerun: yes">  </span>?</pre><pre><span style="mso-spacerun: yes">     </span>&lt;dollar&gt;<span style="mso-spacerun: yes">    </span>$</pre><pre><span style="mso-spacerun: yes">     </span>&lt;backslash&gt; \</pre><pre><span style="mso-spacerun: yes">     </span>&lt;return&gt;<span style="mso-spacerun: yes">    </span>carriage return (character code 0x000D)</pre><pre><span style="mso-spacerun: yes">     </span>&lt;linefeed&gt;<span style="mso-spacerun: yes">  </span>line feed (character code 0x000A)</pre><pre><span style="mso-spacerun: yes">     </span>&lt;tab&gt;<span style="mso-spacerun: yes">       </span>tab (character code 0x0009)</pre><pre><span style="mso-spacerun: yes">     </span>&lt;nul&gt;<span style="mso-spacerun: yes">       </span>null character (character code 0x0000)</pre><pre><span style="mso-spacerun: yes">     </span>&lt;null&gt;<span style="mso-spacerun: yes">      </span>null character (character code 0x0000)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>These names are not sensitive to case, so &lt;LANGLE&gt; and
+&lt;LAngle&gt; are equivalent to &lt;langle&gt;.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that the named characters are simply &quot;character
+classes,&quot; which we'll get to in a moment.<span style="mso-spacerun: yes"> 
+</span>This means that you can combine named characters with the &quot;|&quot;
+symbol, and reverse the sense of the match with the &quot;^&quot; symbol, just
+as with character classes.<span style="mso-spacerun: yes">  </span>For example,
+the following matches a period, plus sign, or asterisk:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;period|plus|star&gt;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>and the following matches anything <i>except </i>a question
+mark:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;^question&gt;</pre>
+
+<h3 style='tab-stops:.5in'>Wildcards, Ranges, and Classes</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>If you've ever used an operating
+system like DOS or Unix, you're probably familiar with &quot;wildcard&quot;
+characters for file directory listings.<span style="mso-spacerun: yes"> 
+</span>A wildcard is a character that matches any other character.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Regular expressions have a wildcard
+character, too, but it's not what you might expect if you're thinking about
+filename wildcards from DOS or Unix.<span style="mso-spacerun: yes"> 
+</span>The regular expression wildcard character is the period (&quot;.&quot;).<span
+style="mso-spacerun: yes">  </span>This simply matches any single
+character.<span style="mso-spacerun: yes">  </span>So, if we wanted to match
+the word &quot;the&quot; followed by a space followed by any three characters,
+we'd write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>the ...</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Regular expressions don't stop at
+simple wildcards, though: they let you get much more specific.<span
+style="mso-spacerun: yes">  </span>First, you can use &quot;ranges,&quot; which
+let you match one of a selected group of specific characters.<span
+style="mso-spacerun: yes">  </span>For example, if you want to match any single
+character that is a vowel, you could write a range like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[aeiouAEIOU]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that, by default, regular
+expressions are case-sensitive, which is why we wrote the vowels in both upper-
+and lower-case.<span style="mso-spacerun: yes">  </span>You can, however,
+control the <a href="#_Case_Sensitivity">case-sensitivity</a> of a search, so
+you don't always have to write your expressions this way.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><br>
+You can use a range expression in an expression wherever an ordinary character
+can go.<span style="mso-spacerun: yes">  </span>So, to write a pattern that
+matches &quot;button&quot;, followed by a space, followed by a digit from 0 to
+9, you could write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>button [0123456789]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Ranges can also specify that you want
+to exclude characters.<span style="mso-spacerun: yes">  </span>An
+&quot;exclusive&quot; range works just the opposite of a regular range: it
+matches anything that's <i>not </i>listed in the range.<span
+style="mso-spacerun: yes">  </span>You specify an exclusive range by putting a
+caret (&quot;^&quot;) as the first character inside the brackets of the
+range.<span style="mso-spacerun: yes">  </span>So, to match any single character
+that isn't a vowel, you'd write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[^aeiouAEIOU]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that exclusive ranges match
+anything that's not in the range, so the range above will match anything that
+isn't a vowel, including digits, spaces, and punctuation characters.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can also use a range to specify
+contiguous portions of the Unicode character set simply by giving the endpoints
+of the portion.<span style="mso-spacerun: yes">  </span>Do this by listing the
+ends of the range, separated by a hyphen (&quot;-&quot;).<span
+style="mso-spacerun: yes">  </span>For example, to match any letter in the
+Roman alphabet, not including any accented characters, you'd write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[a-zA-Z]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This matches any character whose
+Unicode character code value is between &quot;a&quot; and &quot;z&quot;
+inclusive, or between &quot;A&quot; and &quot;Z&quot; inclusive.<span
+style="mso-spacerun: yes">  </span>(The Unicode character set includes the ASCII
+character set as a subset, assigning the same character code values as ASCII
+does to the ASCII characters, so if you're familiar with Unix-style regular
+expression ranges, you will find Unicode ranges end up working exactly the same
+way.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can use exclusion with subset
+ranges as well:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[^a-zA-Z]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This matches any single character
+that is <i>not </i>in the Roman alphabet.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If you want to include the character
+&quot;^&quot; in a range expression, you can do so, as long as it's not the
+first character – if the &quot;^&quot; appears as the first character, it's
+taken to indicate an exclusive range.<span style="mso-spacerun: yes"> 
+</span>So, to specify a match for either an ampersand or a caret, you'd have to
+write the range expression like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[&amp;^]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Similarly, note that, if you want to
+include a hyphen character in a range expression, it must be the <i>first</i>
+character in the range list.<span style="mso-spacerun: yes">  </span>If a
+hyphen appears anywhere else, it's taken as a subset specifier.<span
+style="mso-spacerun: yes">  </span>So, to write a range that matches a pound
+sign or a hyphen, you'd have to write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[-#]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In addition, if you want to include a
+right square bracket in a search string, it must be the first character in an
+inclusive range, or the first character after &quot;^&quot; in an exclusive
+range.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Combining all of the rules above, if
+we wanted to write an inclusive search for all of the special range characters
+– hyphen, caret, and right square bracket – we'd have to write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[]-^]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>And to write a search that excludes
+all of these characters:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[^]-^]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The two examples above are the exact
+orders needed for these special situations.<span style="mso-spacerun: yes"> 
+</span>If you want to write these ranges and include additional characters,
+insert them at the end of the range, just before the closing square
+bracket.<span style="mso-spacerun: yes">  </span>If you don't want to include
+all of the special characters, take out the ones you don't want from the
+example above, leaving the remaining ones in the same order.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that, other than the three
+special range characters (&quot;^&quot;, &quot;-&quot;, and &quot;]&quot;), all
+of the characters that are special elsewhere in a pattern lose their special
+meaning within a range.<span style="mso-spacerun: yes">  </span>So, the
+following range expression matches a period, a star, or a percent sign:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[.*%]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Ranges are useful for matching a
+specific group of characters, but it's harder to write a good range expression
+for more complex character sets, such as any alphabetic character or any
+digit.<span style="mso-spacerun: yes">  </span>Unicode has so many different
+groups of alphabetic characters, since it includes support for so many
+different languages, that it would take a lot of work to list all of the
+different alphabetic ranges.<span style="mso-spacerun: yes"> 
+</span>Fortunately, TADS regular expressions provide a shorthand notation for
+certain important character sets, called &quot;character classes.&quot;</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Each character class is written as a
+name enclosed in angle brackets (&quot;&lt;&quot; and &quot;&gt;&quot;).<span
+style="mso-spacerun: yes">  </span>Each class matches a single character.<span
+style="mso-spacerun: yes">  </span>The classes are:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>&lt;Alpha&gt;
+     - matches any single alphabetic character.<span style="mso-spacerun:
+     yes">  </span>This class matches anything that the Unicode character
+     database classifies as alphabetic, so this includes accented characters
+     and characters from non-Roman alphabets.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>&lt;Upper&gt;
+     - matches any single upper-case alphabetic character.<span
+     style="mso-spacerun: yes">  </span>Like &lt;Alpha&gt;, this class uses
+     Unicode classifications, so it matches accented upper-case characters.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>&lt;Lower&gt;
+     - matches any single lower-case alphabetic character.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>&lt;Digit&gt;
+     - matches any single digit character.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>&lt;AlphaNum&gt;
+     - matches any single alphanumeric character.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>&lt;Space&gt;
+     - matches any whitespace character.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>&lt;Punct&gt;
+     - matches any punctuation mark character.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>&lt;Newline&gt;
+     - matches any single newline character (carriage return [0x000D], line
+     feed [0x000A], or Unicode line separator [0x2028]).</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the class names are not
+case-sensitive (regardless of whether or not the search itself is), so
+&lt;Alpha&gt;, &lt;alpha&gt;, and &lt;ALPHA&gt; are equivalent.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can use a character class in
+place of an ordinary character.<span style="mso-spacerun: yes">  </span>So, to
+search for a five-letter word starting with an upper-case letter followed by
+four lower-case letters, we could write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;Upper&gt;&lt;lower&gt;&lt;lower&gt;&lt;lower&gt;&lt;lower&gt;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Character classes can be combined using &quot;|&quot; to
+separate class names.<span style="mso-spacerun: yes">  </span>For example, if
+you want to write an expression that matches any upper-case letter or any
+digit, you could write this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;Upper|Digit&gt;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This is equivalent to writing
+&quot;(&lt;upper&gt;|&lt;digit&gt;)&quot;, but is a little more concise.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Character classes can be complemented using &quot;^&quot; as
+the first character inside the angle brackets.<span style="mso-spacerun: yes"> 
+</span>For example, to match any character <i>other than </i>an upper-case
+letter, you could write this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;^Upper&gt;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You can complement combined character classes as well.<span
+style="mso-spacerun: yes">  </span>This matches any character except a space or
+punctuation mark:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;^Space|Punct&gt;</pre>
+
+<p class=MsoNormal><i><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></i></p>
+
+<p class=MsoNormal>Note that the &quot;^&quot; applies to the entire class
+expression, not just to the first element, so the example above does <i>not</i>
+match punctuation marks.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You can combine character classes and literal characters in
+a single angle-bracket expression.<span style="mso-spacerun: yes">  </span>For
+example, suppose you want to match the characters of a C++ identifier.<span
+style="mso-spacerun: yes">  </span>The first character of an identifier in C++
+must be an alphabetic character or an underscore (&quot;_&quot;), and
+subsequent characters can be letters, numbers, or underscores.<span
+style="mso-spacerun: yes">  </span>You could use this expression:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">   </span>&lt;Alpha|_&gt;&lt;Alpha|Digit|_&gt;*</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal>You can also use literal ranges, just like in square bracket
+expressions, and combine these with individual literals or classes.<span
+style="mso-spacerun: yes">  </span>For example, to match any upper-case letter,
+but only lower-case &quot;a&quot; through &quot;m&quot;, you could write this:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">   </span>&lt;Upper|a-m&gt;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You might have noticed by now that angle bracket expressions
+using literals are very similar to square bracket expressions.<span
+style="mso-spacerun: yes">  </span>However, there's one crucial difference in
+the syntax: inside angle brackets, each individual literal character or literal
+range must be separated from others by bars (&quot;|&quot;).<span
+style="mso-spacerun: yes">  </span>For example, consider this square-bracket
+range:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">   </span>[13579a-f]</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal>To write the same expression with angle brackets, you must
+separate each digit from the next by a bar:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">   </span>&lt;1|3|5|7|9|a-f&gt;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The bars are required because the
+regular expression compiler would otherwise not be able to tell for sure what
+something like this means:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;Alpha&gt;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Were it not for the rule about separating
+literals with vertical bars, this could either mean any alphabetic character or
+any of the characters &quot;A&quot;, &quot;l&quot;, &quot;p&quot;,
+&quot;h&quot;, or &quot;a&quot;.<span style="mso-spacerun: yes">  </span>Thanks
+to the rule that literals must be separated with bars, there is no ambiguity:
+&lt;Alpha&gt; can only mean any alphabetic character.<span style="mso-spacerun:
+yes">  </span>You might think that you should be allowed to get away without
+the bars when the literals don't spell a character class name or the name of a
+special character.<span style="mso-spacerun: yes">  </span>However, if this
+were allowed, it could create problems in the future: what you think is a
+meaningless string of literals now could take on a new meaning in a future
+version.<span style="mso-spacerun: yes">  </span>So, to avoid any confusion or
+future compatibility problems, the bars are required for all literals.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>All of the named characters (&lt;lparan&gt;, &lt;period&gt;,
+and so on) are essentially just very narrow character classes, so you can
+freely mix them with literals and character classes in angle-bracketed
+patterns.<span style="mso-spacerun: yes">  </span>For example, to match any
+upper-case letter or an open or close parenthesis, you could use this expression:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;Upper|lparen|rparen&gt;</pre>
+
+<h3 style='tab-stops:.5in'>Closures and Optionality</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>If you've used filename patterns on
+DOS or Unix, you're probably wondering by now how you match a variable-length
+string, the way the &quot;*&quot; character does for filename matches on these
+systems.<span style="mso-spacerun: yes">  </span>Regular expressions let you do
+this, but in a different and more powerful way than filename patterns do.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>There are three ways of specifying
+variable-length regular expression matches.<span style="mso-spacerun: yes"> 
+</span>The first is the &quot;optionality&quot; operator, which specifies that
+the immediately preceding expression character is optional – specifically, that
+the preceding character can be present zero or one times in the match
+string.<span style="mso-spacerun: yes">  </span>The optionality operator is the
+question mark, &quot;?&quot;, and immediately follows the character to be made
+optional.<span style="mso-spacerun: yes">  </span>So, to search for either
+&quot;you&quot; or &quot;your&quot;, we could write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>your?</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The second variable-length operator
+is the one-or-more &quot;closure.&quot;<span style="mso-spacerun: yes"> 
+</span>This operator is the plus sign, &quot;+&quot;, and specifies that the
+immediately preceding character is to be repeated once or more – any number of
+times, as long as it appears at least once.<span style="mso-spacerun: yes"> 
+</span>So, to match a string of any number of copies of the letter
+&quot;A&quot;, we'd write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>A+</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This matches &quot;A&quot;,
+&quot;AA&quot;, &quot;AAA&quot;, and so on without limit.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The third variable-length operator is
+almost the same: it's the zero-or-more closure.<span style="mso-spacerun:
+yes">  </span>This operator is the asterisk, &quot;*&quot;.<span
+style="mso-spacerun: yes">  </span>This specifies that the preceding character
+is to match any number of times, and furthermore that it need not be present at
+all.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>abcd*</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This matches &quot;abc&quot;, or
+&quot;abcd&quot;, or &quot;abcdd&quot;, or &quot;abcddd&quot;, and so on.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can apply the closure operators
+to more complex expressions than a single ordinary character.<span
+style="mso-spacerun: yes">  </span>For example, to search for one or more
+digits, you could write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;digit&gt;+</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To search for any word of any length written
+with an upper-case initial letter and lower-case letters following, you'd write
+this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;upper&gt;&lt;lower&gt;*</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>To search for any number of
+repetitions of an arithmetic operator character, we could write this amusing
+sequence of punctuation marks:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[-+*/]*</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Closures normally match as much text
+as they possibly can, but you can change this using the <a
+href="#_Shortest-Match_Closures">shortest-match modifier</a>, as we'll see a
+little later.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>(In case you're wondering why
+&quot;*&quot; and &quot;+&quot; are called &quot;closures&quot;: this term
+comes from the set mathematics from which the concept of regular expressions
+descends.<span style="mso-spacerun: yes">  </span>A set is said to be
+&quot;closed&quot; under an operator if, for every element of the set, applying
+the operator to the element yields another element of the set.<span
+style="mso-spacerun: yes">  </span>The operator of interest in this case is
+concatenation.<span style="mso-spacerun: yes">  </span>Suppose we wished to
+form a set of strings closed under the concatenation operator: we could start
+with a string X, but then we'd have to include XX (X concatenated with itself)
+in the set, plus XXX (X concatenated with this new member XX), XXXX, and so on,
+forever forming longer strings.<span style="mso-spacerun: yes">  </span>The set
+wouldn't be closed under concatenation until we've added a string of X's of
+every possible length.<span style="mso-spacerun: yes">  </span>This set would
+obviously be inconvenient to write out in research papers without some kind of
+trick, which is where &quot;*&quot; and &quot;+&quot; come in: these symbols
+give us a way to express a set that's closed under concatenation – hence
+infinite if non-trivial – with a finite notation, and thereby provide closure
+to the notation.<span style="mso-spacerun: yes">  </span>Glad you asked?<span
+style="mso-spacerun: yes">  </span>Happily, this level of formalism is not
+needed in the course of using regular expressions.)</p>
+
+<h3 style='tab-stops:.5in'><a name=Intervals></a>Intervals (Counted
+Repetitions)</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>It is often useful to match a certain
+number of repetitions of a given character.<span style="mso-spacerun: yes"> 
+</span>The obvious way to express a repetition is with ordinary concatenation;
+for example, if we wanted to find a string of five A's, we could write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>AAAAA</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This type of thing is less convenient
+when we want to find something that takes up more space than a single letter,
+though; for example, a pattern matching any five lower-case letters is
+cumbersome when written with concatenation:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;lower&gt;&lt;lower&gt;&lt;lower&gt;&lt;lower&gt;&lt;lower&gt;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The regular expression language has a
+more convenient way: the <i>interval </i>operator.<span style="mso-spacerun:
+yes">  </span>This operator immediately follows an expression character, and
+specifies that the preceding character is to be repeated a given number of
+times.<span style="mso-spacerun: yes">  </span>The interval operator is written
+by placing a number if curly braces (&quot;{ }&quot;).<span
+style="mso-spacerun: yes">  </span>We can use this operator to re-write our example
+more concisely:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;lower&gt;{5}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The interval operator can also be
+used to specify a range of repetitions.<span style="mso-spacerun: yes"> 
+</span>You can put two numbers between the braces, separating the two by a
+comma.<span style="mso-spacerun: yes">  </span>The first number is the minimum repeat
+count, and the second is the maximum count.<span style="mso-spacerun: yes"> 
+</span>For example, to match a string of three, four, five, six, or seven
+digits, we could write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;digit&gt;{3,7}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Finally, the interval operator can
+specify an <i>unlimited </i>maximum count.<span style="mso-spacerun: yes"> 
+</span>To do this, include the comma, but omit the upper bound.<span
+style="mso-spacerun: yes">  </span>For example, to match at least five digits
+in a row, we would write:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;digit&gt;{5,}</pre>
+
+<h3 style='tab-stops:.5in'>Grouping</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>Each construction rule has a default
+grouping.<span style="mso-spacerun: yes">  </span>For example, the alternation
+operator (&quot;|&quot;) considers everything to the left of the &quot;|&quot;
+to be one complete regular expression, and everything to the right to be
+another complete expression: the pattern &quot;abc|def&quot; thus matches
+&quot;abc&quot; or &quot;def&quot;.<span style="mso-spacerun: yes"> 
+</span>Sometimes, however, you will want to change the default grouping, to
+extend or limit the extent to which an operator applies.<span
+style="mso-spacerun: yes">  </span>You can do this by putting a portion of the
+expression in parentheses (&quot;(&quot; and &quot;)&quot;).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>For example, suppose we wanted to
+construct an expression that matches either &quot;the red ball&quot; or
+&quot;the blue ball&quot;.<span style="mso-spacerun: yes">  </span>We might
+first attempt something like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>the red|blue ball</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>However, this wouldn't work the way
+we want: the &quot;|&quot; operator applies to everything to its left and
+right, so what this expression actually matches is &quot;the red&quot; or
+&quot;blue ball&quot;.<span style="mso-spacerun: yes">  </span>This is where
+parentheses come in handy: we can enclose in parentheses the part of the
+expression to which we want to apply the &quot;|&quot; operator:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>the (red|blue) ball</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can also use parentheses to
+achieve the opposite effect with the closure operators.<span
+style="mso-spacerun: yes">  </span>Using parentheses, you can make the closure
+operators apply to more than just the single character preceding the
+closure.<span style="mso-spacerun: yes">  </span>For example, to match any
+number of repetitions of the word &quot;the&quot; followed by a space, you
+could write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>(the )+</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Similarly, you can use parentheses to
+control the reach of the interval operator:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>(the ){2,3}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can use parentheses within
+parentheses for more complex grouping.<span style="mso-spacerun: yes"> 
+</span>For example, to search for the word &quot;the&quot; followed by any
+number of repetitions of &quot;ball&quot;, and then repeating the whole thing
+any number of times, we'd write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>(the (ball )+)+</pre>
+
+<h3 style='tab-stops:.5in'><a name="_Case_Sensitivity"></a>Group Matches</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>Parenthesized groups have another use
+besides controlling operator grouping.<span style="mso-spacerun: yes"> 
+</span>Each time you use parentheses, the regular expression matcher
+automatically assigns a &quot;group number&quot; to the expression contained
+within the parentheses.<span style="mso-spacerun: yes">  </span>The group
+numbers start at 1, and increase each time the parser encounters an open
+parenthesis.<span style="mso-spacerun: yes">  </span>(Nesting doesn't matter for
+numbering – the order of appearance of the open parentheses establishes the group
+numbering.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The regular expression functions let
+you look at the exact text that matched a particular group after a search.<span
+style="mso-spacerun: yes">  </span>For example, suppose you defined a search
+like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>say &quot;(.*)&quot; to (&lt;alphanum&gt;*)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This expression has two groups.<span
+style="mso-spacerun: yes">  </span>Group number 1 is the part within the quote
+marks.<span style="mso-spacerun: yes">  </span>Group number two is the part
+after &quot;to&quot;.<span style="mso-spacerun: yes">  </span>Now, suppose we
+match this string:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>say &quot;hello there&quot; to Mark</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If we ask the regular expression
+matcher for group number 1, it will give us the string &quot;hello there&quot;
+(no quotes – the group is inside the quotes, so the quotes won't be part of the
+group string).<span style="mso-spacerun: yes">  </span>Similarly, group number
+2 is the string &quot;Mark&quot;.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Groups can also be used <i>within </i>an
+expression.<span style="mso-spacerun: yes">  </span>If you write the sequence
+&quot;%1&quot; in an expression, it specifies a match to the same thing that
+group number 1 already matched in the same string.<span style="mso-spacerun:
+yes">  </span>Similarly, &quot;%2&quot; matches the same text as group number
+2, and so on, up to &quot;%9&quot; for group 9.<span style="mso-spacerun:
+yes">  </span>This allows you to look for repeated sequences that are separated
+from one another.<span style="mso-spacerun: yes">  </span>For example:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>(&lt;alphanum&gt;*) is %1</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This will match any string of the
+form &quot;<i>word</i> is <i>word</i>&quot;, where the two words are the
+same.<span style="mso-spacerun: yes">  </span>So, it will match &quot;red is
+red&quot; and &quot;blue is blue&quot;, but it won't match &quot;blue is
+red&quot;.</p>
+
+<h3 style='tab-stops:.5in'><a name=NonCapturingGroups></a>Non-Capturing Groups</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>As we've seen above, the grouping
+syntax (putting a portion of the regular expression in parentheses) has two
+uses: first, to control the reach of an operator such as &quot;*&quot; or
+&quot;|&quot;; second, to capture part of the matching text, for use in a group
+match (such as &quot;%1&quot;) or for replacement or extraction.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When you're only grouping part of the
+expression to control the reach of an operator, the text-capture feature is
+sometimes undesirable.<span style="mso-spacerun: yes">  </span>In particular,
+because groups are numbered by position, adding a new group into an existing
+expression requires that you adjust the numbering for any other groups.<span
+style="mso-spacerun: yes">  </span>For example, suppose we defined an
+expression like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>to (.*) %1</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now, suppose we wanted to change this
+slightly by making it recognize &quot;of&quot; as well as &quot;to&quot;. <span
+style="mso-spacerun: yes"> </span>We'd change it to something like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>(to|of) (.*) %1</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Unfortunately, we've forgotten
+something: the group that was originally number 1 is now number 2, because
+we've added another group before it.<br>
+<br>
+This example is so simple that renumbering its groups wouldn't pose much of a
+challenge, but we might simply forget; and for a complicated expression, this
+could become a real maintenance problem.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Fortunately, the regular expression
+language has a feature that lets you mark a group as <i>non-capturing</i>.<span
+style="mso-spacerun: yes">  </span>A non-capturing group still has the same
+operator grouping effects as a normal group, but it doesn't capture its
+matching text, and it doesn't affect the numbering for any other groups.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><br>
+To make a non-capturing group, add the sequence &quot;?:&quot; immediately
+after the group's opening parenthesis.<span style="mso-spacerun: yes"> 
+</span>(This might seem like a strange bit of syntax, because the question mark
+character is normally used as a closure operator.<span style="mso-spacerun:
+yes">  </span>However, the &quot;?&quot; closure operator is always a postfix
+operator – it has to follow the sub-expression that it modifies.<span
+style="mso-spacerun: yes">  </span>When a &quot;?&quot; appears immediately
+following an open parenthesis, it's simply not meaningful as a closure
+operator, because there's no sub-expression that it can modify in this
+position.<span style="mso-spacerun: yes">  </span>The regular expression
+language thus can assign this separate meaning to a question mark that
+immediately follows an open parenthesis.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>So, let's re-write our example with a
+non-capturing group:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>(?:to|of) (.*) %1</pre>
+
+<h3 style='tab-stops:.5in'><a name="_Special_Matches"></a>Special Matches</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The regular expression matcher
+provides a number of special match types.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The &quot;^&quot; character specifies
+a match to the very beginning of the search string.<span style="mso-spacerun:
+yes">  </span>If specified, this has to be the first character in the pattern
+(or the first character within a parenthesized group at a top-level
+alternation).<span style="mso-spacerun: yes">  </span>The &quot;^&quot;
+character doesn't match any characters – it simply matches if the search
+position is the very start of the string.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The &quot;$&quot; character specifies
+a match to the very end of the string.<span style="mso-spacerun: yes"> 
+</span>This must be the last character in the pattern or within a parenthesized
+group at a top-level alternation.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The sequence &quot;%&lt;&quot;
+matches the start of a word, which is defined as a position where the preceding
+character is not a word character, and the following character is.<span
+style="mso-spacerun: yes">  </span>A word character is any alphanumeric
+character.<span style="mso-spacerun: yes">  </span>&quot;%&lt;&quot; doesn't
+actually match any characters – it just requires that the current position is
+the start of a word.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The sequence &quot;%&gt;&quot;
+matches the end of a word.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The sequence &quot;%w&quot; matches
+any word character, which is defined as an alphanumeric character.<span
+style="mso-spacerun: yes">  </span>This is equivalent to
+&quot;&lt;AlphaNum&gt;&quot;, but is shorter to type in.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The sequence &quot;%W&quot; matches
+any non-word character.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The sequence &quot;%b&quot; matches
+any word boundary, which is either the beginning or ending of a word.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The sequence &quot;%B&quot; matches
+anywhere that is <i>not </i>a word boundary.</p>
+
+<h3 style='tab-stops:.5in'>Case Sensitivity</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>By default, searches are sensitive to
+case, which means that an upper-case letter in the search pattern will match
+only the identical upper-case letter in the string being searched.<span
+style="mso-spacerun: yes">  </span>You can, however, make a search insensitive
+to case.<span style="mso-spacerun: yes">  </span>To do this, add the
+&lt;NoCase&gt; flag to the search pattern.<span style="mso-spacerun: yes"> 
+</span>There's also a &lt;Case&gt; flag to make the case sensitivity explicit,
+but this is the default, so you won't usually need to specify it.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The &lt;Case&gt; and &lt;NoCase&gt;
+flags don't match anything themselves; they're just flag sequences that control
+the overall search mode.<span style="mso-spacerun: yes">  </span>You can put
+these anywhere in the search, but normally you'd just want to put them at the start
+of the search string to avoid confusion. <span style="mso-spacerun:
+yes"> </span>Note that these flags are global, which means that the entire
+search is case-sensitive or case-insensitive; you can't make part of your
+search string sensitive to case and another part insensitive.<span
+style="mso-spacerun: yes">  </span>If the flags appear more than once, only the
+last one that appears is obeyed.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>For example, to search for a match to
+&quot;abc&quot;, ignoring case, we'd write this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;NoCase&gt;abc</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>When you use &lt;NoCase&gt;, the case
+of the letters in your pattern is <i>mostly </i>irrelevant, since the pattern
+matcher will match &quot;A&quot; or &quot;a&quot; to a pattern character
+&quot;a&quot;, and will likewise match &quot;A&quot; or &quot;a&quot; to a
+pattern character &quot;A&quot;.<span style="mso-spacerun: yes"> 
+</span>However, there are some cases involving non-English languages where the
+case of the pattern characters might be significant.<span style="mso-spacerun:
+yes">  </span>In particular, when the matcher encounters an alphabetic
+character in case-insensitive mode, it will first convert the string character
+to the case of the corresponding pattern character, and it will then perform
+the comparison.<span style="mso-spacerun: yes">  </span>In some languages, a
+few characters have ambiguous translations from upper-case to lower-case or
+vice versa.<span style="mso-spacerun: yes">  </span>In these languages, you can
+control how the matcher performs the translation by using the correct
+unambiguous case in the pattern string.<span style="mso-spacerun: yes"> 
+</span>For most languages whose writing systems are based on the Roman
+alphabet, there is no ambiguity, so you won't have to worry about this.</p>
+
+<h3 style='tab-stops:.5in'><a name="_Shortest-Match_Closures"></a>Shortest-Match
+Closures</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>Normally, closures will attempt to
+match as much text as possible.<span style="mso-spacerun: yes"> 
+</span>Sometimes, however, this is undesirable.<span style="mso-spacerun:
+yes">  </span>Consider this example:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>tell%&gt;(.*)%&lt;to%&gt;(.*)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This works fine for a string like
+this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>tell him to call me</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The first group matches &quot; him
+&quot;, and the second group matches &quot; call me&quot; (note that we could
+eliminate the spaces in the match groups by adding &lt;space&gt;* patterns
+outside the groups, but we left them out in this example to keep it
+simple).<span style="mso-spacerun: yes">  </span>However, the pattern doesn't
+work so well if we type something like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>tell him to go to the store</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The match here gives us &quot; him to
+go &quot; for the first group, and &quot; the store&quot; for the second
+group.<span style="mso-spacerun: yes">  </span>This probably isn't what we
+wanted.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The problem with this example is that
+the first group (the &quot;.*&quot; closure) tries to match as much text as it
+can.<span style="mso-spacerun: yes">  </span>So, instead of stopping at the
+first &quot;to&quot; in the string, the regular expression matcher notices that
+there's another &quot;to&quot; later in the string, and keeps going.<span
+style="mso-spacerun: yes">  </span>The first &quot;to&quot; simply becomes part
+of the match for the first group.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Fortunately, there's a solution.<span
+style="mso-spacerun: yes">  </span>We can modify the first closure so that,
+instead of finding the longest match it possibly can, it instead finds the
+shortest match.<span style="mso-spacerun: yes">  </span>To modify the closure,
+add a question mark after the asterisk:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>tell%&gt;(.*?)%&lt;to%&gt;(.*)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If we try the string (&quot;tell him
+to go to the store&quot;) again with this new expression, we match &quot; him
+&quot; for the first group and &quot; to to the store&quot; for the second
+group.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can use the shortest-match
+modifier with all of the closures (&quot;*&quot;, &quot;?&quot;, and
+&quot;+&quot;), as well as with the interval operator (&quot;{ }&quot;).</p>
+
+<h3 style='tab-stops:.5in'><a name=LookaheadAssertions></a>Look-Ahead
+Assertions</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>Sometimes, it's desirable to look for
+a sub-pattern without including it in the full result match.<span
+style="mso-spacerun: yes">  </span>The regular expression language lets you do
+this using a <i>positive look-ahead assertion</i>.<span style="mso-spacerun:
+yes">  </span>An &quot;assertion&quot; is a sub-pattern that requires that some
+condition be met, but doesn't actually match anything in the search text; we've
+already seen a couple of these before, namely the &quot;%&lt;&quot; and
+&quot;%&gt;&quot; <a href="#_Special_Matches">special match sequences</a>.<span
+style="mso-spacerun: yes">  </span>The important thing about an assertion is
+that it doesn't match any text – it simply imposes a requirement on the text at
+a certain point.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The syntax for a positive look-ahead
+assertion is a special variation on the group syntax.<span style="mso-spacerun:
+yes">  </span>Put the sub-expression within parentheses, but insert the
+sequence &quot;?=&quot; immediately after the open parenthesis.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>A positive look-ahead assertion requires that the search
+text match a sub-expression; but since this is an assertion, the text matching
+the sub-expression doesn't actually become part of the result.<span
+style="mso-spacerun: yes">  </span>For example, suppose we had some strings
+giving people's names, and we want to find the first name of each person whose
+last name is Smith – but we don't care about anyone with a different
+surname.<span style="mso-spacerun: yes">  </span>We could do this using a
+positive look-ahead assertion:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">   </span>^&lt;alpha&gt;+(?=&lt;space&gt;+Smith$)</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal>This matches a sequence of alphabetic characters from the
+beginning of the string, but only matches when the sequence is immediately
+followed by one or more spaces, the word &quot;Smith&quot;, and the end of the
+string.<span style="mso-spacerun: yes">  </span>So, this will match
+&quot;John&quot; in &quot;John Smith&quot;, but won't match anything in
+&quot;John Jones&quot;.<span style="mso-spacerun: yes">  </span>Note that the
+length of the match for &quot;John Smith&quot; is only four characters – the
+part that matches the assertion doesn't count in the match.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The regular expression language also provides <i>negative
+look-ahead assertions</i>.<span style="mso-spacerun: yes">  </span>These have
+the opposite effect of positive assertions: a negative assertion requires that
+the search text at a given point does <i>not </i>match the sub-pattern.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The negative assertion syntax is similar to the positive
+assertion syntax, but uses &quot;?!&quot; as the special sequence after the
+open parenthesis.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example, suppose we wanted to change the example above
+so that we find first names for anyone whose last name <i>isn't </i>Smith.<span
+style="mso-spacerun: yes">  </span>We could do this by changing our example to
+use a negative assertion for the last name:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">   </span>^&lt;alpha&gt;+(?!.*&lt;space&gt;+Smith$)</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal>Note that we had to insert an extra &quot;.*&quot; at the
+beginning of the negative assertion.<span style="mso-spacerun: yes">  </span>If
+we hadn't done this, the assertion would have given us a match for
+&quot;Joh&quot; in &quot;John Smith&quot;, because the assertion would have been
+satisfied by the substring &quot;n Smith&quot; (it doesn't start with a space,
+after all).<span style="mso-spacerun: yes">  </span>The extra &quot;.*&quot;
+ensures that the assertion will fail for any string that ends with one or more
+spaces followed by &quot;Smith&quot;.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Negative assertions are sometimes useful within larger
+expressions as well.<span style="mso-spacerun: yes">  </span>For example, suppose
+we wanted to create a group that matched one or more words, but stopped as soon
+as it got to the words &quot;to&quot; or &quot;of&quot;.<span
+style="mso-spacerun: yes">  </span>We could do this like so:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">   </span>((?!%&lt;(to|of)%&gt;).)+</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal>This is a little complicated, so let's consider it piece by
+piece, starting at the outside and working in.<span style="mso-spacerun: yes"> 
+</span>At the outermost level, we have a parenthesized group that's repeated
+one or more times.<span style="mso-spacerun: yes">  </span>Inside this, we have
+a negative assertion, followed by a &quot;.&quot; wildcard character.<span
+style="mso-spacerun: yes">  </span>So, the overall expression is simply the
+wildcard character, repeated one or more times – with the additional
+requirement that the wildcard character obey the negative assertion each time
+it's repeated.<span style="mso-spacerun: yes">  </span>Inside the assertion, we
+have this:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">   </span>%&lt;(to|of)%&gt;</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal>This matches &quot;to&quot; or &quot;of&quot; as stand-alone
+words – they must not be immediately preceded or followed by word characters.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>So, our entire expression means: repeat a wildcard one or
+more times, but each wildcard must obey the requirement that it is not at the
+start of &quot;to&quot; or &quot;of&quot; as a separate word.<span
+style="mso-spacerun: yes">  </span>Consider this search text:</p>
+
+<pre><span style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre><pre><span style="mso-spacerun: yes">  </span>he will go to the store</pre><pre><span
+style='font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></pre>
+
+<p class=MsoNormal>This will match the substring &quot;he will go &quot;:
+everything up to the word &quot;to&quot; will match, but the word
+&quot;to&quot; ends the match because of the negative assertion.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Note that, while look-ahead assertions look like groups
+(because they're in parentheses), they don't have group numbers – you can't
+refer back to an assertion with a group-match sequence (such as
+&quot;%1&quot;).<span style="mso-spacerun: yes">  </span>Assertions are
+effectively always <a href="#NonCapturingGroups">non-capturing groups</a>.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Warning: Assertions and Closures Don't Mix</h1>
+
+<p class=MsoNormal>Note that you must never apply an unbounded closure (*, +,
+or {n} without an upper bound) to a sub-expression that contains only
+assertions.<span style="mso-spacerun: yes">  </span>It's okay to apply a
+closure to a mixture of assertions and ordinary pattern characters, but you
+have to be sure that you don't try to apply a closure to an assertion alone or
+a group that contains only assertions.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The reason is a bit subtle.<span style="mso-spacerun: yes"> 
+</span>Since an assertion doesn't consume any input text, matching it once is
+no different than matching it twice, or indeed any number of times.<span
+style="mso-spacerun: yes">  </span>A closure forces the matcher to ask: how
+many times can I match this successfully?<span style="mso-spacerun: yes"> 
+</span>The answer, in the case of a successful assertion, is always: an
+infinite number of times.<span style="mso-spacerun: yes">  </span>Thus, if you
+apply a closure to an assertion, and the assertion is successful, the matcher
+will get into an infinite loop, successfully matching the assertion over and
+over and over until you intervene by killing the process.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The regular expression parser is smart enough to detect and
+ignore obvious cases.<span style="mso-spacerun: yes">  </span>In particular, if
+you apply any closure <i>directly</i> to an assertion, the parser will simply
+ignore the closure.<span style="mso-spacerun: yes">  </span>However, the parser
+isn't smart enough to catch more subtle cases; you can fool it by enclosing one
+or more assertions in a parenthesized group that contains nothing else, and
+then applying a closure to the group.<span style="mso-spacerun: yes">  </span>It's
+highly unlikely that you'll create such an expression accidentally, but it's
+something to be aware of.<span style="mso-spacerun: yes">  </span>If you're
+finding that one of your patterns seems to get stuck in an infinite loop when
+being matched, this is a possible cause to consider.</p>
+
+<h3 style='tab-stops:.5in'>First Beginning/Ending, Longest/Shortest Match</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>As we saw above in the examples for
+the <a href="#_Shortest-Match_Closures">shortest-match closure modifier</a>,
+there are times when a particular expression can match a string in several
+different ways.<span style="mso-spacerun: yes">  </span>For example, consider
+this pattern:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>say (.*) to (.*)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>For many strings, there will be only
+one way to match this.<span style="mso-spacerun: yes">  </span>In some cases,
+though, we could type a string that could be interpreted different ways.<span
+style="mso-spacerun: yes">  </span>For example:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>say time to go to Bob</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This could match in several different
+ways.<span style="mso-spacerun: yes">  </span>We could end up with group 1 as
+&quot;time to go&quot; and group 2 as &quot;Bob&quot;.<span
+style="mso-spacerun: yes">  </span>We could also have group 1 as
+&quot;time&quot; and group 2 as &quot;go to Bob&quot;.<span
+style="mso-spacerun: yes">  </span>We could also have group 1 as
+&quot;time&quot; and group 2 as &quot;go&quot;, or even an empty group 2 –
+&quot;.*&quot; can match zero characters, after all.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Normally, the matcher will give us
+the longest match that begins earliest in the search string.<span
+style="mso-spacerun: yes">  </span>The matcher will furthermore give the
+earliest groups in the string the longest matches.<span style="mso-spacerun:
+yes">  </span>So, of all of the choices above, the matcher will normally pick
+the one where group 1 is longest and group 2 is longest given that group 1 is
+already longest – thus, group 1 is &quot;time to go&quot; and group 2 is
+&quot;Bob&quot;.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can, however, control this
+behavior.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Two flags control whether the matcher
+picks the longest or shortest match for a string.<span style="mso-spacerun:
+yes">  </span>If you put the &lt;Max&gt; flag somewhere in your expression
+(it's a global flag, so it doesn't matter where it goes), the parser will
+always choose the longest string it can for each subexpression, giving
+precedence to the earliest expression.<span style="mso-spacerun: yes"> 
+</span>This is the default behavior.<span style="mso-spacerun: yes">  </span>If
+you use the &lt;Min&gt; flag, though, the matcher will use the shortest match
+that it possibly can for the overall match.<span style="mso-spacerun: yes"> 
+</span>Thus, consider this new expression:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;Min&gt;say (.*) to (.*)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now if match this to &quot;say time
+to go to Bob&quot;, we'll get &quot;time&quot; for group 1, and an empty group
+2.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note that the matcher still always
+tries to give the earliest groups the longest matches, but this is only after
+figuring out which is the shortest overall match.<span style="mso-spacerun:
+yes">  </span>Consider this example<br style='mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></p>
+
+<pre><span style="mso-spacerun: yes">   </span>tell (.*) to (.*)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>If we type in something like
+&quot;tell Bob to eat my shorts&quot;, there's no ambiguity.<span
+style="mso-spacerun: yes">  </span>But if we try a string like &quot;tell Bob
+to go to the store&quot;, the parser matches group 1 as &quot;Bob to go&quot;
+and group 2 as &quot;the store&quot;, which isn't what we want.<span
+style="mso-spacerun: yes">  </span>How do we solve this?</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Unfortunately, &lt;Min&gt; doesn't
+help us much with a situation like this, because the second group is free to
+match nothing at all.<span style="mso-spacerun: yes">  </span>So, if we try
+this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;Min&gt;tell (.*) to (.*)</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>and we try &quot;tell Bob to go to
+the store&quot;, we'll have &quot;Bob&quot; for group 1, as we want, but now
+we'll have an empty group 2 – the shortest match to the string is simply
+&quot;tell bob to &quot;, since the second group can match nothing.<span
+style="mso-spacerun: yes">  </span>We could change the expression like so:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;Min&gt;tell (.*) to (.*)$</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This forces the expression to match
+to the end of the string.<span style="mso-spacerun: yes">  </span>But this <i>still</i>
+doesn't do what we want, because now the first group will be &quot;Bob to
+go&quot; and the second will be &quot;the store&quot; – so we're back where we
+started.<span style="mso-spacerun: yes">  </span>The reason that &lt;Min&gt;
+doesn't help us here is that &lt;Min&gt; affects only the length of the <i>complete
+</i>match, and doesn't affect the matcher's preference for putting the longer
+string in the earlier group in case of ambiguity.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can solve this kind of problem in
+many cases using the <a href="#_Shortest-Match_Closures">shortest-match
+modifier</a>.<span style="mso-spacerun: yes">  </span>In some cases, though,
+you might want even more control.<span style="mso-spacerun: yes">  </span>A
+good approach in these cases is to use two separate regular expressions applied
+in sequence.<span style="mso-spacerun: yes">  </span>For the first, we
+eliminate the second anything-goes wildcard sequence, and end the expression at
+the &quot;to&quot;:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>tell (.*) to&lt;space&gt;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Now, this reduces the ambiguity of
+the expression, but it still doesn't do what we want – when we match &quot;tell
+Bob to go to the store&quot;, we again find that group 1 is &quot;Bob to
+go&quot;, since the parser by default matches the longest sequence it can.<span
+style="mso-spacerun: yes">  </span>However, we finally have a situation where
+the &lt;Min&gt; flag solves our problem:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;Min&gt;tell (.*) to&lt;space&gt;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This gives us what we want – group 1
+is simply &quot;Bob&quot;, since the shortest possible string that matches the <i>complete</i>
+pattern is now &quot;tell Bob to &quot;.<span style="mso-spacerun: yes"> 
+</span>We can finish by using the match length for the overall expression to
+learn what's left in the rest of the string, which gives us what we formerly
+tried to get from the second group.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>You can also specify whether the
+matcher finds the matching string that begins first or ends first.<span
+style="mso-spacerun: yes">  </span>By default, the matcher finds a string that
+begins earliest in the search string.<span style="mso-spacerun: yes"> 
+</span>However, there are times when you might want to find the string that
+ends earliest.<span style="mso-spacerun: yes">  </span>To do this, use the
+&lt;FirstEnd&gt; flag, which you can also write as simply &lt;FE&gt;.<span
+style="mso-spacerun: yes">  </span>The default flag, &lt;FirstBegin&gt; or
+&lt;FB&gt;, finds the string that begins earliest.</p>
+
+<h3 style='tab-stops:.5in'><a name="_Summary_of_Special"></a>Summary of Special
+Characters and Sequences</h3>
+
+<table border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ mso-padding-alt:0in 5.4pt 0in 5.4pt'>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>|</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Alternation operator</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>( )</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Grouping operator</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>+</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Repeat preceding expression one or more times</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>+?</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Repeat expression one or more times, taking shortest match
+  when ambiguous</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>*</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Repeat preceding expression zero or more times</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>*?</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Repeat zero or more times, taking shortest match when
+  ambiguous</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>?</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Repeat preceding expression zero or one times</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>??</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Repeat zero or one times, taking shorter match when
+  ambiguous</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>{<i>n</i>}</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Match exactly <i>n </i>repetitions of the preceding
+  expression</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>{<i>n</i>,<i>m</i>}</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Match at least <i>n</i> and at most <i>m</i> repetitions
+  of the preceding expression</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>{<i>n</i>,}</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Match at least <i>n</i> repetitions of the preceding
+  expression</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>{ }?</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Match repetitions, taking shortest match when ambiguous</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>.</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Match any single character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>^</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Match only at beginning of string</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>$</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Match only at end of string</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>[ ]</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Character range</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>[^ ]</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Exclusive character range</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;Alpha&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any single alphabetic character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;Upper&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any single upper-case alphabetic character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;Lower&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any single lower-case alphabetic character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;Digit&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any single digit character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;AlphaNum&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any single alphabetic or digit character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;Space&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any single space character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;Punct&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any single punctuation mark character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;Newline&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any single newline character: carriage return (0x000D),
+  line feed (0x000A), or Unicode line separator (0x2028)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;x&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>The literal character &quot;x&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;a-z&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any character in the range a-z (equivalent to [a-z])</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;x|y|z&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&quot;x&quot;, &quot;y&quot;, or &quot;z&quot; (equivalent
+  to [xyz])</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&lt;a-f|w-z&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Any character in &quot;a&quot; through &quot;f&quot; or
+  &quot;w&quot; through &quot;z&quot; (equivalent to [a-fw-z]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'><pre><span
+  style='font-family:"Times New Roman"'>&lt;Digit|Upper&gt;<o:p></o:p></span></pre></td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Any character matching
+  &lt;Digit&gt; or &lt;Upper&gt;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'><pre><span
+  style='font-family:"Times New Roman"'>&lt;Digit|x|y&gt;<o:p></o:p></span></pre></td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Any digit character, or either
+  &quot;x&quot; or &quot;y&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;^Digit&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Any character <i>except</i> a digit</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%1</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match the same text that the first
+  parenthesized group matched</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%2</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match the same text as the second
+  parenthesized group</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%9</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match the same text as the ninth
+  parenthesized group</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%&lt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match only at the beginning of a
+  word</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match only at the end of a word</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%w</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match any single word character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%W</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match any single non-word character</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%b</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match at any word boundary</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%B</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Match only at a non-word boundary</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;Case&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Make the match case-sensitive
+  (default)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;NoCase&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Make the match insensitive to case</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;FirstBegin&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Find the match that begins earliest
+  in the search text (default)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;FB&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Same as &lt;FirstBegin&gt;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;FirstEnd&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Find the match that ends earliest
+  in the search text</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;FE&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Same as &lt;FirstEnd&gt;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;Max&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Find the longest match (default)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;Min&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Find the shortest match</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>%</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Quote the following special character
+  (except &quot;&lt;&quot; and &quot;&gt;&quot;)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>(?: )</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Non-capturing group</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>(?= )</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Positive look-ahead assertion</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>(?! )</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>Negative look-ahead assertion</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;langle&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;&lt;&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;rangle&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;&gt;&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;lsquare&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;[&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;rsquare&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;]&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;lparen&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;(&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;rparen&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;)&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;lbrace&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;{&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;rbrace&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;}&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;vbar&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;|&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;caret&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;^&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;period&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;.&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;dot&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;.&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;squote&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;'&quot; (a
+  single quote)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;dquote&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character '&quot;' (a double
+  quote)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;star&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;*&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;plus&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;+&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;percent&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;%&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;dollar&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;$&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;backslash&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The character &quot;\&quot;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;return&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The carriage return (CR) character
+  (code 0x000D)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;linefeed&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The line feed (LF) character (code
+  0x000A)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;tab&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The tab character (code 0x0009)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;nul&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The null character (code 0x0000)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>&lt;null&gt;</p>
+  </td>
+  <td width=493 valign=top style='width:369.5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='tab-stops:.5in'>The null character (code 0x0000)</p>
+  </td>
+ </tr>
+</table>
+
+<h3 style='tab-stops:.5in'>Examples</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>If we were writing a C++ compiler,
+we'd want to write regular expressions for the lexical tokens that make up the
+language.<span style="mso-spacerun: yes">  </span>For example, a symbol is any
+string of characters starting with a letter or an underscore, followed by any
+number of letters, digits, or underscores; C++ symbols are limited to the ASCII
+character set, so we can use range expressions rather than the &lt;alpha&gt;
+class and the like:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&lt;nocase&gt;[a-z_][a-z_0-9]*</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>A C-style comment (/* … */) is a
+little tricky.<span style="mso-spacerun: yes">  </span>At first glance, we
+might try something simple like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>/%*.*%*/</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This won't do quite what we want,
+though: suppose we tried matching something like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>a /* destination */ = 1 /* value */;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Our expression match would give us
+everything from the first slash to the final slash – the one before the
+semicolon.<span style="mso-spacerun: yes">  </span>This is incorrect, because
+we've mistaken the part between the two comments as part of one big
+comment.<span style="mso-spacerun: yes">  </span>To rectify this, we can use
+the shortest-match modifier with the &quot;.*&quot; part of the expression:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>/%*.*?%*/</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Character strings are even
+trickier.<span style="mso-spacerun: yes">  </span>We can start with a similar
+sort of expression:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&quot;.*?&quot;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>This almost does the trick, but misses
+one important case: in C++, a string can contain a quotation mark, if it's
+preceded by a backslash character.<span style="mso-spacerun: yes">  </span>To
+handle this case, we can handle backslashes specially: we'll treat a backslash
+and the immediately following character as a group, and then alternatively
+handle anything that isn't a backslash:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>&quot;([^\]|\.)*?&quot;</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>(Note that, if you were coding this
+expression within a string in your source code, you'd have to double the
+backslashes, because the TADS compiler considers them significant in the same
+way a C++ compiler would.)</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Moving on to other types of patterns,
+here's an expression that matches a North American telephone number, with
+optional area code:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>(%([0-9][0-9][0-9]%))?&lt;space&gt;*[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Or, more compactly using intervals:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>(%([0-9]{3}%))?&lt;space&gt;*[0-9]{3}-[0-9]{4}</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The next expression matches a C-style
+floating point number.<span style="mso-spacerun: yes">  </span>These numbers
+start with an optional sign character, then have either a string of digits, a
+decimal point, and a string of zero or more digits; or a decimal point followed
+by one or more digits.<span style="mso-spacerun: yes">  </span>After this is an
+optional exponent, written with the letter &quot;E&quot; (capital or small)
+followed by an optional sign followed by one or more digits.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[-+]?([0-9]+%.?|[0-9]*%.[0-9]+)([eE][-+]?[0-9]+)?</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Note the way we constructed the
+alternation that gives us the mantissa (the part before the exponent).<span
+style="mso-spacerun: yes">  </span>We use the alternation to gives us one of
+two expressions:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[0-9]+%.?</pre><pre><span style="mso-spacerun: yes">   </span>[0-9]*%.[0-9]+</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>The first expression matches a string
+of one or more digits, followed by an optional decimal point.<span
+style="mso-spacerun: yes">  </span>This matches numbers that have no decimal
+point at all, as well as numbers that end in a decimal point.<span
+style="mso-spacerun: yes">  </span>The second expression matches zero or more
+digits, a decimal point, and then one or more digits.<span style="mso-spacerun:
+yes">  </span>One might wonder why we didn't write the expression more simply
+like this:</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">   </span>[0-9]*%.?[0-9]*</pre>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>In other words, as zero or more
+digits, an optional decimal, and zero or more digits.<span style="mso-spacerun:
+yes">  </span>The reason we didn't write the expression this way is that everything
+in this expression is optional – this one would match an empty string.<span
+style="mso-spacerun: yes">  </span>It would also match a period, without any
+digits on either side.<span style="mso-spacerun: yes">  </span>Obviously, we
+don't want to consider either an empty string or simply a period as a valid
+floating point number, so this simpler form of the expression is a little too
+general.<span style="mso-spacerun: yes">  </span>The alternation solves these
+problems, because it allows for starting with a decimal, ending with a decimal,
+or containing an embedded decimal, but there must always be one or more digits
+on one side or the other of the decimal.</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

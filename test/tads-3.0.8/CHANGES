@@ -1,0 +1,57 @@
+    * tads2/osunixt.c: os_get_event() now properly redraws the screen
+      before waiting for an event (this is done by calling
+      osssb_redraw_if_needed()).  Dan Shiovitz provided this fix.
+    * tads3/Makefile: Added "t3res" target for building the Tads 3
+      command line resource compiler, added "mkchrtab" target along with
+      its dependencies for building the Tads character table generator,
+      changed the "install" target to also install the t3res and
+      mkchrtab utilities
+Nikos Chantziaras <realnc@lycos.de>, on Thu, 05 Mar 2005 12:28:00 +0200
+
+    * New upstream release 3.0.8
+    * tads3/Makefile: Added warning about -fno-strict-aliasing in Linux
+      section, changed Trill's pointer from ../README to ../INSTALL,
+      removed the install-strip target and made install strip the
+      binaries (there's no point in keeping the compiler's debug
+      symbols), changed the -R option to -fR in the chown invocation in
+      the install-common target (to hide the warnings when the user is
+      not root and is installing in his home directory)
+    * tads2/Makefile: Added PREFIX and DATADIR variables (like in
+      tads3/Makefile) and made the install target install adv.t, std.t
+      and gameinfo.t into DATADIR
+    * INSTALL: Added some info about the Glk interpreter, other minor
+      cosmetic changes
+    * README: We lack an "official" maintainer
+    * NEWS: Created
+Nikos Chantziaras <realnc@lycos.de>, on Thu, 04 Nov 2004 21:20:00 +0200
+
+    * New upstream release 3.0.7
+    * tads2/: renamed "makefile" to "Makefile"
+    * tads3/: renamed "makefile" to "Makefile"
+    * tads2/Makefile: removed "dummy.o" from the build, since it's
+      obsolete in Tads 2.5.8
+    * tads2/glk/Makefile: removed "dummy.o" from the build
+    * tads2/glk/os_glk.c: dummy implementation of os_nonstop_mode()
+    * tads3/Makefile: removed "vmosc.o" from the build, since it's
+      obsolete in Tads 3.0.7
+    * tads3/Makefile: removed Tads 2 object "dummy.o" from the build
+Nikos Chantziaras <realnc@lycos.de>, on Tue, 13 Jul 2004 22:30:00 +0200
+
+    * New upstream release 3.0.6m
+    * INSTALL:  Remove Suzanne Skinner's Email address
+    * tads3/makefile:  Change from DOS format (CRLF terminated) to UNIX
+      format (LF terminated) (Thanks to D. J. Picton)
+    * tads2/makefile, tads3/makefile:  Add -fno-strict-aliasing option
+      for Linux, to work around a segfault bug while compiling with GCC
+      3.3 (Thanks to Daniel Schepler and Antti Markus)
+Ming Hua <minghua@rice.edu>, on Mon, 16 Feb 2004 21:39:22 -0600
+
+TODO list:
+- Fix the conflict of variable ``PC'' and ``ospeed'' between osunixt.c
+  and ncurses library
+  (Nikos: The conflict arises because we want combatability with the
+  termcap library; the primary target of the Unix-port.)
+- Make menu system working on Solaris (maybe also ncurses related)
+- Find the segfault reason with strict aliasing and fix it
+  (Nikos: The problem is in the portable code, not the Unix code. No
+  idea where though.)

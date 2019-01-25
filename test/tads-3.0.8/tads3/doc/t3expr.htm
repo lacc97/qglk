@@ -1,0 +1,1232 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./t3expr_files/filelist.xml">
+<title>Expressions and Operators</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Merkin Muffley</o:Author>
+  <o:LastAuthor>Dell User</o:LastAuthor>
+  <o:Revision>26</o:Revision>
+  <o:TotalTime>106</o:TotalTime>
+  <o:Created>2000-02-26T00:26:00Z</o:Created>
+  <o:LastSaved>2004-02-28T22:29:00Z</o:LastSaved>
+  <o:Pages>5</o:Pages>
+  <o:Words>2256</o:Words>
+  <o:Characters>12862</o:Characters>
+  <o:Lines>107</o:Lines>
+  <o:Paragraphs>25</o:Paragraphs>
+  <o:CharactersWithSpaces>15795</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>125</w:Zoom>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:AutoSpaceLikeWord95/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-font-kerning:0pt;
+	font-weight:normal;
+	font-style:italic;}
+h2
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:13.0pt;
+	font-family:Arial;}
+h4
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	font-style:italic;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-layout-grid-align:none;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+tt
+	{mso-ascii-font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1596742466;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1777218488 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1026"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3 style='tab-stops:.5in'>Expressions and Operators</h3>
+
+<p class=MsoNormal style='tab-stops:.5in'>The TADS 3 language's expression
+syntax and operators are essentially the same as they were in TADS 2.<span
+style="mso-spacerun: yes">  </span>Some changes are:</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>The
+     new operators <a href="#isIn">&quot;is in&quot; and &quot;not in&quot;</a>
+     have been added to the language.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>List constants
+     now <i>require</i> commas separating the elements.<span
+     style="mso-spacerun: yes">  </span>In TADS 2, commas were optional.<span
+     style="mso-spacerun: yes">  </span>Omitting commas frequently led to
+     ambiguity in the intuitive meaning of a list constant expression, so the commas
+     are now required to make the meaning clear.<span style="mso-spacerun:
+     yes">  </span>So, it is now illegal to write a list value like [1 2 3];
+     instead, write [1, 2, 3].</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>Java/C-style
+     assignment operators are now the default:<span style="mso-spacerun: yes"> 
+     </span>use <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+     "Times New Roman"'>=</span></tt> for assignment and <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>==</span></tt>
+     for equality comparisons.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>The <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>new</span></tt>
+     operator allows constructor arguments.<span style="mso-spacerun: yes"> 
+     </span>After the name of the object, you can specify in parentheses a list
+     of arguments; these arguments are passed to the new instance's <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>construct</span></tt>
+     method.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>The <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>delete</span></tt>
+     operator has been deleted (or, more to the point, it has been collected
+     because it is no longer referenced).<span style="mso-spacerun: yes"> 
+     </span>Explicit object deletion is no longer required or allowed, thanks
+     to the <a href="t3gc.htm">automatic garbage collection</a> mechanism.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>The
+     new <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><a
+     href="#delegated">delegated<span style='font-family:"Times New Roman"'>
+     keyword</span></a></span></tt> allows a method call to be delegated to an
+     unrelated object.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>The <tt><span
+     style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+     and <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>
+     expressions do not require a property to be specified explicitly.<span
+     style="mso-spacerun: yes">  </span>When an expression of one of these
+     types does not specify a property to inherit or delegate to, the
+     expression <a href="#implicitInherit">implicitly inherits or delegates</a>
+     to the same property that was evaluated to invoke the current method.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>The
+     new <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><a
+     href="#targetprop">targetprop<span style='font-family:"Times New Roman"'>
+     pseudo-variable</span></a></span></tt> provides run-time access to the
+     current target property, which is the property that was invoked to reach
+     the current method.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>The
+     new <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><a
+     href="#_The_targetobj_pseudo-variable">targetobj<span style='font-family:
+     "Times New Roman"'> pseudo-variable</span></a></span></tt> provides
+     run-time access to the current target object, which is the object whose
+     method was originally invoked to reach the current method.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>The
+     new <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><a
+     href="#_The_definingobj_pseudo-variable">definingobj<span
+     style='font-family:"Times New Roman"'> pseudo-variable</span></a></span></tt>
+     provides run-time access to the current defining object, which is the
+     object that defines the method currently being executed.</li>
+ <li class=MsoNormal style='mso-list:l0 level1 lfo3;tab-stops:list .5in'>You
+     can control the treatment of newlines in strings using <a
+     href="#_Controlling_string_newline">#pragma newline_spacing()</a>.</li>
+</ul>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='tab-stops:.5in'>Here is a summary of the TADS 3
+operators, shown in order of precedence (each operator has higher precedence
+than the operators that follow it in the table).</p>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<table border=1 cellspacing=0 cellpadding=0 width=473 style='width:354.9pt;
+ margin-left:40.4pt;border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
+ mso-padding-alt:0in 5.4pt 0in 5.4pt'>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <h2><tt><span style='mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:
+  "Times New Roman"'>Operator<o:p></o:p></span></tt></h2>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border:solid windowtext .5pt;
+  border-left:none;mso-border-left-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <h2>Operands</h2>
+  </td>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-left:none;mso-border-left-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <h2>Associativity</h2>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border:solid windowtext .5pt;
+  border-left:none;mso-border-left-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>[]<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>.<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><tt><span
+  style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Not applicable</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates the left operand, then evaluates the index
+  value/right operand, then yields the indexed value/property or method value</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&amp;<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>1</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Not applicable</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Valid with a property name operand <b>only</b>; yields a
+  property &quot;pointer&quot; to the named property, which can be stored in a
+  variable and used to invoke a property/method via the &quot;.&quot; operator</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>!<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>~<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>+<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>-<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>++</span></tt><tt><span style='mso-ascii-font-family:"Times New Roman";
+  mso-hansi-font-family:"Times New Roman"'> (pre)</span></tt><tt><span
+  style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>--</span></tt><tt><span style='mso-ascii-font-family:"Times New Roman";
+  mso-hansi-font-family:"Times New Roman"'> (pre)</span></tt><tt><span
+  style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>1</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Not applicable</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates operand, then yields logical negation/bit-wise
+  negation/arithmetic identity/arithmetic negative, or increments/decrements
+  the lvalue's contents, then yields the incremented/decremented value.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>()<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Not applicable</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates the argument list within the parentheses,
+  starting with the rightmost argument, then evaluates the left operand, then
+  calls the method or function and yields the return value, if any</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>++</span></tt><tt><span style='mso-ascii-font-family:"Times New Roman";
+  mso-hansi-font-family:"Times New Roman"'> (post)<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>--</span></tt><tt><span style='mso-ascii-font-family:"Times New Roman";
+  mso-hansi-font-family:"Times New Roman"'> (post)</span></tt><tt><span
+  style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>1</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Not applicable</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Increments/decrements the lvalue's contents, then yields
+  the original value prior to the increment/decrement</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>*<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>/<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>%<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand then right operand, and yields the
+  product/quotient/modulo</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>+<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>-<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand then right operand, and yields the
+  sum/difference</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&lt;&lt;<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&gt;&gt;<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand then right operand, and yields left
+  side shifted left/right by the number of bits specified by the right side</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&gt;<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&lt;<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&gt;=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&lt;=<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand then right operand, and yields true
+  if the comparison holds, nil if not</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>is in<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>not in<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>==<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>!=<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand then right operand, and yields true
+  if the results are equal/unequal, nil otherwise (see the <a href="#isIn">additional
+  details on &quot;is in&quot; and &quot;not in&quot; below</a>)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&amp;<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand then right operand, and yields
+  bit-wise AND of the values</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>^<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand then right operand, and yields the
+  bit-wise XOR of the values</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>|<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand then right operand, and yields the
+  bit-wise OR of the values</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&amp;&amp;<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand; if zero or nil, yields nil,
+  otherwise evaluates right operand, and yields nil if zero or nil, true
+  otherwise</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>||<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left operand; if true, the result is true; otherwise
+  evaluates right operand, and yields nil if zero or nil, true otherwise</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>? :<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>3</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Right-to-left</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates first operand; if true, evaluates second
+  operand, otherwise third</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>,<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Left-to-right</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Evaluates left side, then right side</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=78 valign=top style='width:58.8pt;border:solid windowtext .5pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>+=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>-=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>*=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>/=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>%=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&amp;=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>|=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>^=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&gt;&gt;=<o:p></o:p></span></tt></p>
+  <p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+  "Times New Roman"'>&lt;&lt;=<o:p></o:p></span></tt></p>
+  </td>
+  <td width=71 valign=top style='width:53.4pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>2</p>
+  </td>
+  <td width=91 valign=top style='width:.95in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>Right-to-left</p>
+  </td>
+  <td width=232 valign=top style='width:174.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Except for =, evaluates the left operand first; then
+  evaluates right operand, and assigns its value to the left operand (=) or
+  combines its value with the left operand's value and assigns the result to the
+  left operand, which must be an &quot;lvalue&quot; of some kind (a local
+  variable, an indexed list, or an object property)</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='tab-stops:.5in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h3><a name=isIn></a>The &quot;is in&quot; and &quot;not in&quot; Operators</h3>
+
+<p class=MsoNormal>It's frequently necessary to test a value for equality against
+several possible alternatives.<span style="mso-spacerun: yes">  </span>The
+traditional way to write this kind of test is with several &quot;==&quot;
+expressions joined by &quot;||&quot; operators:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>if (cmd == 'q' || cmd == 'quit' || cmd == 'exit')</pre><pre><span style="mso-spacerun: yes">    </span>// etc</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This kind of expression is especially tedious when the
+common expression you're testing is more than a simple variable.<span
+style="mso-spacerun: yes">  </span>For example, if you wanted to make the above
+comparison insensitive to case, you'd have to do something like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>if (cmd.toLower() == 'q' || cmd.toLower() = 'quit'</pre><pre><span style="mso-spacerun: yes">      </span>|| cmd.toLower() == 'exit')</pre><pre><span style="mso-spacerun: yes">     </span>// etc</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In addition to being tedious, this is inefficient: the
+compiler has to evaluate the call to toLower() again for each &quot;==&quot; test,
+in case the method call had any side effects.<span style="mso-spacerun: yes"> 
+</span>You could always evaluate the toLower() call once and store the result
+in another local variable, but that requires extra typing for the variable
+declaration (although the expression would become simpler to type, which
+sometimes makes up the difference).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The &quot;is in&quot; operator makes it easier and more
+efficient to write this kind of comparison.<span style="mso-spacerun: yes"> 
+</span>This operator takes a list of expressions, enclosed in parentheses and
+separated by commas, to compare to a given value.<span style="mso-spacerun:
+yes">  </span>We could rewrite the test above using &quot;is in&quot; like
+this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>if (cmd.toLower() is in ('q', 'quit', 'exit'))</pre><pre><span style="mso-spacerun: yes">     </span>// etc</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This is much less work to type, and it's easier to
+read.<span style="mso-spacerun: yes">  </span>It also has the benefit that the
+expression on the left of the &quot;is in&quot; operator is evaluated only
+once.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The result of the &quot;is in&quot; operator is true if the
+value on the left is found in the parenthesized list of values, nil if not.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The entries in the list don't have to be constants, so you
+could write something like this:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>if (cmd.toLower() is in (global.quitCommand, global.exitCommand))</pre><pre><span style="mso-spacerun: yes">     </span>// etc</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The &quot;is in&quot; operator has &quot;short-circuit&quot;
+behavior, just like the || and &amp;&amp; operators.<span style="mso-spacerun:
+yes">  </span>This means that the &quot;is in&quot; operator only evaluates as
+many entries in the comparison list as are necessary to determine if the list
+contains a match.<span style="mso-spacerun: yes">  </span>The operator first
+evaluates the left operand, then evaluates the items in the list, one at a
+time, in left-to-right order.<span style="mso-spacerun: yes">  </span>If the
+first element matches the left operand, the operator stops and yields true as
+the result.<span style="mso-spacerun: yes">  </span>If the first element
+doesn't match, the operator evaluates the second list element; if this element
+matches the left operand, the operator stops and yields true.<span
+style="mso-spacerun: yes">  </span>Thus, the operator evaluates list elements
+only until it finds one that matches.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This short-circuit behavior is important when the
+expressions in the list have side effects.<span style="mso-spacerun: yes"> 
+</span>Consider this example:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>f1(x)</pre><pre>{</pre><pre><span style="mso-spacerun: yes">   </span>&quot;this is f1: x = &lt;&lt;x&gt;&gt;\n&quot;;</pre><pre><span style="mso-spacerun: yes">   </span>return x;</pre><pre>}</pre><pre><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></pre><pre><span style="mso-spacerun: yes">  </span>// elsewhere...</pre><pre><span style="mso-spacerun: yes">  </span>if (3 is in (f1(1), f2(2), f1(3), f1(4), f1(5))) // ...</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The &quot;if&quot; statement will result in the following
+display:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>this is f1:<span style="mso-spacerun: yes">  </span>x = 1</pre><pre>this is f1:<span style="mso-spacerun: yes">  </span>x = 2</pre><pre>this is f1:<span style="mso-spacerun: yes">  </span>x = 3</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The &quot;is in&quot; operator will stop there – it won't
+call f1(4) or f1(5), because it finds the value it's looking for after it calls
+f1(3).</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>Another operator, &quot;not in&quot; lets you perform the
+opposite test: this operator yields true if a value is <i>not </i>found in a
+list of values:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>if (x not in (a, b, c)) // ...</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The &quot;not in&quot; operator has the same short-circuit
+behavior as the &quot;is in&quot; operator: the operator only evaluates as many
+of the list elements as necessary to determine whether or not the value is in
+the list.<span style="mso-spacerun: yes">  </span>So, the operator stops as
+soon as it finds the left operand value in the list.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The &quot;is in&quot; and &quot;not in&quot; operators have
+the same precedence and associativity as the &quot;==&quot; and &quot;!=&quot;
+operators (these operators all associate left-to-right).</p>
+
+<h3><a name=delegated></a>The <tt><span style='font-size:10.0pt;font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>
+keyword</h3>
+
+<p class=MsoNormal>It is sometimes desirable to be able to circumvent the
+normal inheritance relationships between objects, and call a method in an
+unrelated object as though it were inherited from a base class of the current
+object.<span style="mso-spacerun: yes">  </span>For example, you might want to
+create an object that sometimes acts as though it were derived from one base
+class, and sometimes acts as though it were derived from another class, based
+on some dynamic state in the object.<span style="mso-spacerun: yes"> 
+</span>Or, you might wish to create a specialized set of inheritance
+relationships that don't fit into the usual class tree model.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>delegated</span></tt> keyword can be useful for these
+situations.<span style="mso-spacerun: yes">  </span>This keyword is similar to
+the <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+keyword, in that it allows you to invoke a method in another object while
+retaining the same &quot;self&quot; object as the caller.<span
+style="mso-spacerun: yes">  </span><tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>delegated</span></tt> differs from <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>,
+though, in that you can delegate a call to <i>any </i>object, whether or not
+the object is related to &quot;self.&quot;<span style="mso-spacerun: yes"> 
+</span>In addition, you can use an object expression with <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>,
+whereas <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+requires a compile-time constant object.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The syntax of <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>delegated</span></tt> is similar to
+that of <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span><i>return_value </i>= delegated <i>object_expression</i>.<i>property</i> <i>optional_argument_list<o:p></o:p></i></pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For example:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>book: Item<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'><span style="mso-spacerun: yes">  </span>handler = Readable<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'><span style="mso-spacerun: yes">  </span>doTake(actor) {
+return delegated handler.doTake(actor); }<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal><tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>;<o:p></o:p></span></tt></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In this example, the doTake method delegates its processing to
+the doTake method of the object given by the &quot;handler&quot; property of
+the &quot;self&quot; object, which in this case is the Readable object.<span
+style="mso-spacerun: yes">  </span>When Readable.doTake executes, its
+&quot;self&quot; object will be the same as it was in book.doTake, because <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>
+preserves the &quot;self&quot; object in the delegatee.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In the delegatee, the <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>targetobj</span></tt> pseudo-variable
+contains the object that was the target of the <tt><span style='font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>
+expression.</p>
+
+<h3><a name=implicitInherit></a>Implicit <tt><span style='font-size:10.0pt;
+font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+and <tt><span style='font-size:10.0pt;font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>delegated</span></tt> properties</h3>
+
+<p class=MsoNormal>It is legal to omit the property name or expression in an <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+or <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>
+expression.<span style="mso-spacerun: yes">  </span>When the property name or
+expression is omitted, the property inherited or delegated to is implicitly the
+same as the current target property.<span style="mso-spacerun: yes"> 
+</span>For example, consider this code:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>myObj: myClass</pre><pre><span style="mso-spacerun: yes">  </span>myMethod(a, b)</pre><pre><span style="mso-spacerun: yes">  </span>{</pre><pre><span style="mso-spacerun: yes">    </span>inherited(a*2, b*2);</pre><pre><span style="mso-spacerun: yes">  </span>}</pre><pre>;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This invokes the inherited myMethod(), as though we had
+instead written <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>inherited.myMethod(a*2, b*2)</span></tt>.<span
+style="mso-spacerun: yes">  </span>Because the current method is myMethod when
+the <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+expression is evaluated, myMethod is the implied property of the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+expression.</p>
+
+<h3><a name=targetprop></a>The <tt><span style='font-size:10.0pt;font-family:
+"Courier New";mso-bidi-font-family:"Times New Roman"'>targetprop</span></tt>
+pseudo-variable</h3>
+
+<p class=MsoNormal>The new pseudo-variable <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>targetprop</span></tt> provides access
+at run-time to the current target property, which is the property that was
+invoked to reach the current method.<span style="mso-spacerun: yes"> 
+</span>This complements <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>self</span></tt>, which gives the object whose property was
+invoked.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>targetprop</span></tt> pseudo-variable can be used in
+expressions as though it were a normal local variable containing a property
+pointer value, except that <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>targetprop</span></tt> cannot be
+assigned a new value explicitly.<span style="mso-spacerun: yes">  </span>You
+can use <tt><span style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>targetprop</span></tt>
+only in contexts where <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>self</span></tt> is valid.</p>
+
+<h3><a name="_The_targetobj_pseudo-variable"></a>The <tt><span
+style='font-size:10.0pt;font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>targetobj</span></tt>
+pseudo-variable</h3>
+
+<p class=MsoNormal>The new pseudo-variable <tt><span style='font-family:"Courier New";
+mso-bidi-font-family:"Times New Roman"'>targetobj</span></tt> provides access
+at run-time to the original target object of the current method.<span
+style="mso-spacerun: yes">  </span>This is the object that was specified in the
+method call that reached the current method.<span style="mso-spacerun: yes"> 
+</span>Note that the target object remains unchanged when you use <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>inherited</span></tt>
+to inherit a superclass method, because the method is still executing in the
+context of the original call to the inheriting method.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>targetobj</span></tt> value is the same as <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>self</span></tt>
+in normal method calls, but not in calls initiated with the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>
+keyword.<span style="mso-spacerun: yes">  </span>When <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>
+is used, the value of <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>self</span></tt> stays the same as it was in the delegating
+method, and <tt><span style='font-family:"Courier New";mso-bidi-font-family:
+"Times New Roman"'>targetobj</span></tt> gives the target of the <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>delegated</span></tt>.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You can use this variable only in contexts where <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>self</span></tt>
+is valid.</p>
+
+<h3><a name="_The_definingobj_pseudo-variable"></a>The <tt><span
+style='font-size:10.0pt;font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>definingobj</span></tt>
+pseudo-variable</h3>
+
+<p class=MsoNormal>This new pseudo-variable provides access at run-time to the
+current method definer.<span style="mso-spacerun: yes">  </span>This is the
+object that actually defines the method currently executing; in most cases,
+this is the object that defined the current method code in the source code of
+the program.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>You can use this variable only in contexts where <tt><span
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>self</span></tt>
+is valid.</p>
+
+<h3><a name="_Controlling_string_newline"></a>Controlling string newline
+spacing: #pragma newline_spacing()</h3>
+
+<p class=MsoNormal>Unlike C and Java, a string in TADS 3 doesn't have to fit
+all on one line.<span style="mso-spacerun: yes">  </span>You can instead write
+a string that spans several lines:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre><span style="mso-spacerun: yes">  </span>&quot;This is a string</pre><pre><span style="mso-spacerun: yes">  </span>that spans several</pre><pre><span style="mso-spacerun: yes">  </span>lines of source code. &quot;;</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>The compiler essentially ignores the line breaks; it
+converts each line break into a single space character.<span
+style="mso-spacerun: yes">  </span>If a line break is immediately followed by
+one or more whitespace characters (spaces, tabs, and so on), the compiler
+removes all of those spaces; so each line break turns into a single space, no
+matter how many leading spaces are on each line.<span style="mso-spacerun:
+yes">  </span>This is important because most people like to use indentation to
+make their source code easier to read; ignoring the leading whitespace on each
+extra line within a string means that you don't have to worry about indentation
+affecting the appearance of a string.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>In some languages, it's undesirable to have <i>any</i> extra
+whitespace in a string.<span style="mso-spacerun: yes">  </span>For example,
+Chinese is usually written without using any spaces between words.<span
+style="mso-spacerun: yes">  </span>To accommodate languages where extra spacing
+is unwanted, the compiler has a directive, #pragma newline_spacing(), that lets
+you control how the compiler treats newlines in strings.<span
+style="mso-spacerun: yes">  </span>By default, newline spacing is on:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#pragma newline_spacing(on)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This tells the compiler to use the behavior described above:
+each line break within a string is converted to a single space character, and
+all whitespace characters immediately following a line break are removed.<span
+style="mso-spacerun: yes">  </span>This default is suitable for most Western
+languages, where spaces are used to separate adjacent words.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>For languages where extra whitespace is unwanted, you can
+turn off newline spacing:</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<pre>#pragma newline_spacing(off)</pre>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This tells the compiler to simply remove each line break
+entirely, including any whitespace immediately following a line break.<span
+style="mso-spacerun: yes">  </span>In this mode, the compiler doesn't convert a
+line break to a space, but simply removes the line break entirely.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal>This pragma only affects strings following the pragma in the
+source file, so you can change the mode at any time within the same source
+file.<span style="mso-spacerun: yes">  </span>Whenever you change the mode, the
+new mode is in effect until the next mode change, or until the end of the
+current source file.<span style="mso-spacerun: yes">  </span>Note that if you
+change the mode within a header file, the mode will revert to its previous
+setting at the end of the header file – this means that you can #include a file
+without worrying about any mode changes, because even if the included file
+changes the mode, the mode will revert back once the compiler finishes with the
+included file.</p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

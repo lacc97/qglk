@@ -1,0 +1,26 @@
+This package contains the sources of the UNIX port of TADS.
+TADS 2 version 2.5.9, TADS 3 version 3.0.8
+
+Currently, the port lacks a maintainer.  For now, send questions and
+bug-reports to <realnc@lycos.de> and I'll try to help.
+
+For installation instructions, please refer to the INSTALL file.
+
+This package includes the following programs:
+
+	Tads 2 compiler (tadsc) along with supporting libraries
+	Tads 2 interpreter (tadsr)
+	Tads 2 debugger (tdb)
+	Tads 2 Glk-based interpreter (optional)
+	Tads 3 compiler (t3make) along with supporting libraries
+	Tads 3 interpreter (t3run)
+	Combined Tads2/Tads3 interpreter (t23run)
+	Tads 3 resource compiler (t3res)
+	Tads character table generator (mkchrtab)
+
+For recent changes, as well as a to-do list, please see the file
+CHANGES.  For less geeky and only relevant information, see NEWS.
+
+For the newest version, pay a visit to:
+
+  http://www.tads.org
