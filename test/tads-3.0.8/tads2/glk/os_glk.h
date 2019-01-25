@@ -68,15 +68,6 @@
 #define DISCARD (void)
 
 /*
-** Some machines are missing memmove, so we use our own memcpy/memmove
-** routine instead.
-*/
-void *our_memcpy(void *dst, const void *src, size_t size);
-#define memcpy our_memcpy
-#define memmove our_memcpy
-/* and, yes, zarf will slap me for that last #define */
-
-/*
 ** Turn on/off a busy cursor. Under Glk, we don't handle this at all.
 */
 #define os_csr_busy(show_as_busy)

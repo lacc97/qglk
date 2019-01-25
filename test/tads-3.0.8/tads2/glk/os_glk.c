@@ -18,38 +18,6 @@
 
 /* ------------------------------------------------------------------------ */
 /*
-** Some machines are missing memmove, so we use our own memcpy/memmove
-** routine instead.
-*/
-void *our_memcpy(void *destp, const void *srcp, size_t size)
-{
-    char *dest = (char *)destp;
-    char *src = (char *)srcp;
-    size_t n;
-
-    n = size;
-    if (dest < src) {
-        while (n > 0) {
-            *dest = *src;
-            dest++;
-            src++;
-        n--;
-        }
-    }
-    else if (dest > src) {
-        for (src += n, dest += n; n > 0; n--) {
-            dest--;
-            src--;
-            *dest = *src;
-        }
-    }
-
-    return destp;
-}
-
-
-/* ------------------------------------------------------------------------ */
-/*
 ** File handling
 */
 
