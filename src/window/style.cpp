@@ -1,6 +1,5 @@
 #include "style.hpp"
 
-#include <QDebug>
 #include <QFontDatabase>
 #include <QTextBrowser>
 

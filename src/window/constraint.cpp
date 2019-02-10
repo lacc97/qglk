@@ -7,6 +7,23 @@
 
 #define BORDER_SIZE (5)
 
+QString Glk::WindowConstraint::methodString(glui32 met) {
+    QString method;
+    
+    if(isVertical(met)) {
+        VerticalWindowConstraint vwc(static_cast<Method>(met), 0);
+        method.append(vwc.constrainsAbove() ? QStringLiteral("Above") : QStringLiteral("Below"));
+    } else {
+        HorizontalWindowConstraint hwc(static_cast<Method>(met), 0);
+        method.append(hwc.constrainsLeft() ? QStringLiteral("Left") : QStringLiteral("Right"));
+    }
+    
+    method.append(isProportional(met) ? QStringLiteral(" | Proportional") : QStringLiteral(" | Fixed"));
+    method.append(isBordered(met) ? QStringLiteral(" | Border") : QStringLiteral(" | NoBorder"));
+    
+    return method;
+}
+
 Glk::WindowConstraint::WindowConstraint(Glk::WindowConstraint::Method method_, glui32 size_) : m_Method(method_), m_Size(size_) {}
 
 void Glk::WindowConstraint::setChildWindows(Glk::PairWindow* parentw, Glk::Window* keywin, Glk::Window* firstwin, Glk::Window* secondwin) const {

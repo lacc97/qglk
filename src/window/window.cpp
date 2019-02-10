@@ -6,6 +6,23 @@
 
 #include "pairwindow.hpp"
 
+QString Glk::Window::windowsTypeString(glui32 type) {
+    switch(type) {
+        case Blank:
+            return QStringLiteral("Blank");
+        case Graphics:
+            return QStringLiteral("Graphics");
+        case Pair:
+            return QStringLiteral("Pair");
+        case TextBuffer:
+            return QStringLiteral("Text Buffer");
+        case TextGrid:
+            return QStringLiteral("Text Grid");
+        default:
+            return QStringLiteral("Unknown");
+    }
+}
+
 Glk::Window::Window(QIODevice* device_, glui32 rock_, bool acceptsCharRequest, bool acceptsLineRequest, bool acceptsMouseRequest, bool acceptsHyperlinkRequest) : QWidget(NULL), Object(rock_), mp_Parent(NULL), mp_Stream(new WindowStream(this, device_)), mp_KIProvider(new KeyboardInputProvider(this, acceptsCharRequest, acceptsLineRequest)), mp_MIProvider(new MouseInputProvider(this, acceptsMouseRequest)), mp_HLProvider(new HyperlinkInputProvider(this, acceptsHyperlinkRequest)) {
     assert(device_);
 

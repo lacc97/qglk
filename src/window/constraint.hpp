@@ -39,6 +39,8 @@ namespace Glk {
             static inline bool isVertical(glui32 met) {
                 return (met & Above) != 0;
             }
+            
+            static QString methodString(glui32 met);
 
             WindowConstraint(Method method_, glui32 size_);
             virtual ~WindowConstraint() = default;

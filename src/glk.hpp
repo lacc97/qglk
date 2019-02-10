@@ -65,10 +65,10 @@ namespace Glk {
 }
 
 template <typename T>
-inline const QString to_string(T val) {
+inline const std::string to_string(T val) {
     std::ostringstream ss;
     ss << val;
-    return QString::fromStdString(ss.str());
+    return ss.str();
 }
 
 #endif

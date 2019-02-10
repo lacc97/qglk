@@ -4,11 +4,12 @@
 #include <cstring>
 
 #include <QBuffer>
-#include <QDebug>
 
 #include "glk.hpp"
 #include "qglk.hpp"
 #include "blorb/chunk.hpp"
+
+#include "log/log.hpp"
 
 Glk::Stream::Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, bool unicode_, glui32 rock_) : QObject(parent_), Object(rock_), mp_Device(device_), m_Unicode(unicode_), m_ReadChars(0), m_WriteChars(0), m_Type(type_) {
     assert(mp_Device);
@@ -18,7 +19,7 @@ Glk::Stream::~Stream() {
     close();
 
     if(!QGlk::getMainWindow().streamList().removeOne(this))
-        qWarning() << "this" << (this) << "not found in stream list while removing";
+        warn() << "Stream " << (this) << " not found in stream list while removing";
 
     Glk::Dispatch::unregisterObject(this);
 

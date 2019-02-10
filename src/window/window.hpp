@@ -27,6 +27,8 @@ namespace Glk {
                 TextBuffer = wintype_TextBuffer,
                 TextGrid = wintype_TextGrid,
             };
+            
+            static QString windowsTypeString(glui32 type);
 
             virtual ~Window();
 

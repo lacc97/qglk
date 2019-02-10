@@ -13,6 +13,8 @@
 #include "window/textbufferwindow.hpp"
 #include "window/textgridwindow.hpp"
 
+#include "log/log.hpp"
+
 // Glk::Window* s_Root = NULL;
 
 namespace {
@@ -33,47 +35,54 @@ namespace {
     }
 }
 
-#ifndef NDEBUG
-void printTree(Glk::Window* root) {
-    static int tabs = 0;
-
-    if(!root)
-        return;
-
-    {
-        QDebug debug = qDebug();
-
-        for(int ii = 0; ii < tabs; ii++)
-            debug << "  ";
-
-        debug << root << ": {"
-//               << "parent <=" << root->windowParent() << ";"
-//               << "children <=" << root->children() << ";"
-              << "layout <=" << root->layout() << ";"
-              << "rect <=" << root->rect() << ";";
-
-        if(root->windowType() == Glk::Window::Pair)
-            debug << "key <=" << static_cast<Glk::PairWindow*>(root)->keyWindow() << ";";
-
-        debug << "}";
-    }
-
-    if(root->windowType() == Glk::Window::Pair) {
-        Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(root);
-        tabs++;
-        printTree(pw->firstWindow());
-        printTree(pw->secondWindow());
-        tabs--;
-    }
-}
-#endif
+// #ifndef NDEBUG
+// void printTree(Glk::Window* root) {
+//     static int tabs = 0;
+//
+//     if(!root)
+//         return;
+//
+//     {
+//         QDebug debug = qDebug();
+//
+//         for(int ii = 0; ii < tabs; ii++)
+//             debug << "  ";
+//
+//         debug << root << ": {"
+// //               << "parent <=" << root->windowParent() << ";"
+// //               << "children <=" << root->children() << ";"
+//               << "layout <=" << root->layout() << ";"
+//               << "rect <=" << root->rect() << ";";
+//
+//         if(root->windowType() == Glk::Window::Pair)
+//             debug << "key <=" << static_cast<Glk::PairWindow*>(root)->keyWindow() << ";";
+//
+//         debug << "}";
+//     }
+//
+//     if(root->windowType() == Glk::Window::Pair) {
+//         Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(root);
+//         tabs++;
+//         printTree(pw->firstWindow());
+//         printTree(pw->secondWindow());
+//         tabs--;
+//     }
+// }
+// #endif
 
 winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintype, glui32 rock) {
     Glk::PairWindow* pairw = NULL;
     Glk::Window* neww = NULL;
 
-    if(wintype == Glk::Window::Pair || (!split && s_WindowSet.size() > 0))
+    if(wintype == Glk::Window::Pair || (!split && s_WindowSet.size() > 0)) {
+        trace() << "glk_window_open(" << split << ", "
+                << Glk::WindowConstraint::methodString(method).toStdString()
+                << ", " << size << ", "
+                << Glk::Window::windowsTypeString(wintype).toStdString()
+                << ", " << rock << ") => " << ((void*)NULL);
+
         return NULL;
+    }
 
     Glk::sendTaskToEventThread([&] {
         neww = winFromType(wintype, rock);
@@ -112,15 +121,17 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
         }
     });
 
-// #ifndef NDEBUG
-//     printTree(QGlk::getMainWindow().rootWindow());
-//     qDebug() << "";
-// #endif
+    trace() << "glk_window_open(" << split << ", "
+            << Glk::WindowConstraint::methodString(method).toStdString() << ", "
+            << size << ", " << Glk::Window::windowsTypeString(wintype).toStdString() << ", "
+            << rock << ") => " << TO_WINID(neww);
 
     return TO_WINID(neww);
 }
 
 void glk_window_close(winid_t win, stream_result_t* result) {
+    trace() << "glk_window_close(" << win << ", " << result << ")";
+
     Glk::sendTaskToEventThread([&] {
         Glk::PairWindow* prntw = FROM_WINID(win)->windowParent();
 
@@ -133,6 +144,8 @@ void glk_window_close(winid_t win, stream_result_t* result) {
             if(FROM_WINID(win) == prntws)
                 delete prntw;
         } else if(FROM_WINID(win)->parent()) {
+            debug() << "Closing root window " << win;
+
             QGlk::getMainWindow().setRootWindow(NULL);
         }
 
@@ -166,8 +179,17 @@ void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {
 }
 
 void glk_window_set_arrangement(winid_t win, glui32 method, glui32 size, winid_t keywin) {
-    if(FROM_WINID(win)->windowType() != Glk::Window::Pair)
+    trace() << "glk_window_set_arrangement(" << win << ", "
+            << Glk::WindowConstraint::methodString(method).toStdString()
+            << ", " << size << ", " << keywin << ")";
+
+    if(FROM_WINID(win)->windowType() != Glk::Window::Pair) {
+        warn() << "Cannot set arrangement of window " << win << " of type "
+               << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
+               << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::Pair).toStdString() << ")";
+
         return;
+    }
 
     Glk::sendTaskToEventThread([&] {
         Glk::PairWindow* pw = static_cast<Glk::PairWindow*>(FROM_WINID(win));
@@ -204,8 +226,13 @@ void glk_window_get_arrangement(winid_t win, glui32* methodptr, glui32* sizeptr,
 }
 
 void glk_window_move_cursor(winid_t win, glui32 xpos, glui32 ypos) {
-    if(FROM_WINID(win)->windowType() != Glk::Window::TextGrid)
+    if(FROM_WINID(win)->windowType() != Glk::Window::TextGrid) {
+        warn() << "Cannot move cursor of window " << win << " of type "
+               << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
+               << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::TextGrid).toStdString() << ")";
+
         return;
+    }
 
     Glk::sendTaskToEventThread([&] {
         static_cast<Glk::TextGridWindow*>(FROM_WINID(win))->setGridCursor(xpos, ypos);
@@ -213,6 +240,8 @@ void glk_window_move_cursor(winid_t win, glui32 xpos, glui32 ypos) {
 }
 
 void glk_window_set_echo_stream(winid_t win, strid_t str) {
+    trace() << "glk_window_set_echo_stream(" << win << ", " << str << ")";
+
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->windowStream()->setEchoStream(FROM_STRID(str));
     });
@@ -225,31 +254,31 @@ strid_t glk_window_get_echo_stream(winid_t win) {
         str = TO_STRID(FROM_WINID(win)->windowStream()->echoStream());
     });
 
+    trace() << "glk_window_get_echo_stream(" << win << ") => " << str;
+
     return str;
 }
 
 QSet<Glk::Window*> s_WindowSet;
 winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
+    QSet<Glk::Window*>::const_iterator iter;
+
     if(win == NULL) {
-        auto iter = s_WindowSet.begin();
-
-        if(iter == s_WindowSet.end())
-            return NULL;
-
-        if(rockptr)
-            *rockptr = (*iter)->rock();
-
-        return TO_WINID(*iter);
+        iter = s_WindowSet.begin();
+    } else {
+        iter = s_WindowSet.find(FROM_WINID(win));
+        iter++;
     }
 
-    auto iter = s_WindowSet.find(FROM_WINID(win));
-    iter++;
-
-    if(iter == s_WindowSet.end())
+    if(iter == s_WindowSet.end()) {
+        trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << ((void*)NULL);
         return NULL;
+    }
 
     if(rockptr)
         *rockptr = (*iter)->rock();
+
+    trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << TO_WINID(*iter);
 
     return TO_WINID(*iter);
 }
@@ -267,17 +296,25 @@ winid_t glk_window_get_parent(winid_t win) {
 }
 
 winid_t glk_window_get_sibling(winid_t win) {
-    if(!FROM_WINID(win)->windowParent())
+    Q_ASSERT(win);
+    
+    if(!FROM_WINID(win)->windowParent()) {
+        warn() << "Cannot return sibling of window " << win << " (root window has no siblings)";
+
         return NULL;
+    }
 
     Glk::PairWindow* prnt = FROM_WINID(win)->windowParent();
+    winid_t sibling = NULL;
 
     if(prnt->keyWindow() == FROM_WINID(win))
-        return TO_WINID(prnt->secondWindow());
+        sibling = TO_WINID(prnt->secondWindow());
     else if(prnt->secondWindow() == FROM_WINID(win))
-        return TO_WINID(prnt->keyWindow());
+        sibling = TO_WINID(prnt->keyWindow());
 
-    return NULL;
+    trace() << "glk_window_get_sibling(" << win << ") => " << sibling;
+    
+    return sibling;
 }
 
 winid_t glk_window_get_root() {
@@ -286,11 +323,15 @@ winid_t glk_window_get_root() {
     Glk::sendTaskToEventThread([&] {
         rw = TO_WINID(QGlk::getMainWindow().rootWindow());
     });
+    
+    trace() << "glk_window_get_root() => " << rw;
 
     return rw;
 }
 
 void glk_window_clear(winid_t win) {
+    trace() << "glk_window_clear(" << win << ")";
+    
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->clearWindow();
     });
@@ -308,8 +349,15 @@ void glk_set_window(winid_t win) {
 }
 
 void glk_window_set_background_color(winid_t win, glui32 color) {
-    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
+    trace() << "glk_window_set_background_color(" << win << ", " << color << ")";
+    
+    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics) {
+        warn() << "Cannot change background colour of window " << win << " of type "
+               << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
+               << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::Graphics).toStdString() << ")";
+        
         return;
+    }
 
     Glk::sendTaskToEventThread([&] {
         static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->setBackgroundColor(QColor::fromRgb(color));
@@ -317,8 +365,16 @@ void glk_window_set_background_color(winid_t win, glui32 color) {
 }
 
 void glk_window_fill_rect(winid_t win, glui32 color, glsi32 left, glsi32 top, glui32 width, glui32 height) {
-    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
+    trace() << "glk_window_fill_rect(" << win << ", " << color << ", "
+            << left << ", " << top << ", " << width << ", " << height << ")";
+    
+    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics) {
+        warn() << "Cannot fill rect in window " << win << " of type "
+               << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
+               << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::Graphics).toStdString() << ")";
+        
         return;
+    }
 
     Glk::sendTaskToEventThread([&] {
         static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->fillRect(QColor::fromRgb(color), left, top, width, height);
@@ -326,8 +382,16 @@ void glk_window_fill_rect(winid_t win, glui32 color, glsi32 left, glsi32 top, gl
 }
 
 void glk_window_erase_rect(winid_t win, glsi32 left, glsi32 top, glui32 width, glui32 height) {
-    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics)
+    trace() << "glk_window_erase_rect(" << win << ", " << left << ", "
+            << top << ", " << width << ", " << height << ")";
+    
+    if(FROM_WINID(win)->windowType() != Glk::Window::Graphics) {
+        warn() << "Cannot erase rect in window " << win << " of type "
+               << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
+               << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::Graphics).toStdString() << ")";
+        
         return;
+    }
 
     Glk::sendTaskToEventThread([&] {
         static_cast<Glk::GraphicsWindow*>(FROM_WINID(win))->fillRect(Qt::transparent, left, top, width, height);
