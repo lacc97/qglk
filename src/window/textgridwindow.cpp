@@ -66,7 +66,7 @@ Glk::TextGridWindow::TextGridWindow(glui32 rock_) : Window(new TextGridDevice(th
 void Glk::TextGridWindow::clearWindow() {
     for(QVector<glui32>& column : m_CharArray) {
         for(glui32& ch : column) {
-            ch = 0;
+            ch = EMPTY_CHAR;
         }
     }
 
@@ -103,7 +103,7 @@ void Glk::TextGridWindow::resizeEvent(QResizeEvent* ev) {
     if(news.width() > olds.width()) {
         for(int xx = olds.width(); xx < news.width(); xx++) {
             for(glui32& ch : m_CharArray[xx]) {
-                ch = 0;
+                ch = EMPTY_CHAR;
             }
         }
     }
@@ -111,7 +111,7 @@ void Glk::TextGridWindow::resizeEvent(QResizeEvent* ev) {
     if(news.height() > olds.height()) {
         for(QVector<glui32>& column : m_CharArray) {
             for(int yy = olds.height(); yy < news.height(); yy++) {
-                column[yy] = 0;
+                column[yy] = EMPTY_CHAR;
             }
         }
     }
@@ -183,7 +183,7 @@ bool Glk::TextGridWindow::deletePreviousChar() {
     else
         m_Cursor -= QPoint(1, 0);
 
-    m_CharArray[m_Cursor.x()][m_Cursor.y()] = 0;
+    m_CharArray[m_Cursor.x()][m_Cursor.y()] = EMPTY_CHAR;
 
     return true;
 }

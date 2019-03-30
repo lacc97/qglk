@@ -69,6 +69,8 @@ namespace Glk {
             void onSpecialCharacterInput(glui32 ch);
 
         private:
+            static constexpr glui32 EMPTY_CHAR = ' ';
+
             QVector<QVector<glui32>> m_CharArray;
             QPoint m_Cursor;
     };
