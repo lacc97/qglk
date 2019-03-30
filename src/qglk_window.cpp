@@ -133,18 +133,17 @@ void glk_window_close(winid_t win, stream_result_t* result) {
     trace() << "glk_window_close(" << win << ", " << result << ")";
 
     Glk::sendTaskToEventThread([&] {
-        Glk::PairWindow* prntw = FROM_WINID(win)->windowParent();
+        auto thisWin = FROM_WINID(win);
+        auto prntw = thisWin->windowParent();
 
         if(prntw) {
-            Glk::Window* prntws = prntw->secondWindow();
+            prntw->removeChildWindow(thisWin);
+            thisWin->orphan();
 
-            prntw->removeChildWindow(FROM_WINID(win));
-            FROM_WINID(win)->orphan();
-
-            if(FROM_WINID(win) == prntws)
+//            if(thisWin == prntws)
                 delete prntw;
-        } else if(FROM_WINID(win)->parent()) {
-            debug() << "Closing root window " << win;
+        } else if(thisWin->parent()) {
+            debug() << "Closing root window " << thisWin;
 
             QGlk::getMainWindow().setRootWindow(NULL);
         }
@@ -152,11 +151,11 @@ void glk_window_close(winid_t win, stream_result_t* result) {
         QGlk::getMainWindow().eventQueue().cleanWindowEvents(win);
 
         if(result) {
-            result->readcount = FROM_WINID(win)->windowStream()->readCount();
-            result->writecount = FROM_WINID(win)->windowStream()->writeCount();
+            result->readcount = thisWin->windowStream()->readCount();
+            result->writecount = thisWin->windowStream()->writeCount();
         }
 
-        delete FROM_WINID(win);
+        delete thisWin;
     });
 
 // #ifndef NDEBUG
