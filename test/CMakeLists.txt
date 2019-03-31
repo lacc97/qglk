@@ -11,6 +11,7 @@ else()
 endif()
 
 find_package(Curses REQUIRED)
+find_package(Threads REQUIRED)
 
 add_library(glkterm STATIC
         glkterm-1.0.4/main.c
@@ -89,41 +90,44 @@ set(GIT_SOURCES
 )
     
 add_executable(git-qglk ${GIT_SOURCES})
-    target_compile_definitions(git-qglk PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
+    target_compile_definitions(git-qglk PRIVATE "-DUSE_MMAP -DUSE_INLINE")
     target_include_directories(git-qglk PRIVATE git-1.3.5/ ../src/)
-    target_link_libraries(git-qglk qglk ${MATH_LIBRARY})
+    target_link_libraries(git-qglk qglk)
     
 add_executable(git-glkterm ${GIT_SOURCES})
-    target_compile_definitions(git-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
+    target_compile_definitions(git-glkterm PRIVATE "-DUSE_MMAP -DUSE_INLINE")
     target_include_directories(git-glkterm PRIVATE git-1.3.5/ glkterm-1.0.4/)
     target_link_libraries(git-glkterm glkterm ${MATH_LIBRARY})
 
     
 find_package(Perl REQUIRED)
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startunix.c
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/opt2glkc.pl
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/nitfol.opt
-    COMMAND ${PERL_EXECUTABLE} opt2glkc.pl -unix nitfol.opt
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1)
-    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startunix.c PROPERTY GENERATED TRUE)
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startwin.c
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/opt2glkc.pl
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/nitfol.opt
-    COMMAND ${PERL_EXECUTABLE} opt2glkc.pl -win nitfol.opt
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1)
-    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startwin.c PROPERTY GENERATED TRUE)
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startmac.c
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/opt2glkc.pl
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/nitfol.opt
-    COMMAND ${PERL_EXECUTABLE} opt2glkc.pl -mac nitfol.opt
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1)
-    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startmac.c PROPERTY GENERATED TRUE)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startunix.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-opt2glkc.pl
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-nitfol.opt
+    COMMAND ${PERL_EXECUTABLE} nitfol-0.5_p1-opt2glkc.pl -unix nitfol-0.5_p1-nitfol.opt
+    COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/startunix.c ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startunix.c
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startunix.c PROPERTY GENERATED TRUE)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startwin.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-opt2glkc.pl
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-nitfol.opt
+    COMMAND ${PERL_EXECUTABLE} nitfol-0.5_p1-opt2glkc.pl -win nitfol-0.5_p1-nitfol.opt
+    COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/startwin.c ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startwin.c
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startwin.c PROPERTY GENERATED TRUE)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startmac.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/opt2glkc.pl ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-opt2glkc.pl
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/nitfol-0.5_p1/nitfol.opt ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-nitfol.opt
+    COMMAND ${PERL_EXECUTABLE} nitfol-0.5_p1-opt2glkc.pl -mac nitfol-0.5_p1-nitfol.opt
+    COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/startmac.c ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startmac.c
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startmac.c PROPERTY GENERATED TRUE)
     
 find_package(BISON)
 if(BISON_FOUND)
-    bison_target(InformParser nitfol-0.5_p1/inform.y ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/inform.c COMPILE_FLAGS "-y")
-    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/inform.c PROPERTY GENERATED TRUE)
-    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/inform.h PROPERTY SKIP_AUTOGEN TRUE)
+    bison_target(InformParser nitfol-0.5_p1/inform.y ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-inform.c COMPILE_FLAGS "-y")
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-inform.c PROPERTY GENERATED TRUE)
+    set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-inform.h PROPERTY SKIP_AUTOGEN TRUE)
 else()
     set(BISON_InformParser_OUTPUTS nitfol-0.5_p1/inform.c)
 endif()
@@ -163,11 +167,11 @@ set(NITFOL_SOURCES
 )
 
 if(WIN32) # windows
-    set(NITFOL_OS_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startwin.c)
+    set(NITFOL_OS_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startwin.c)
 elseif(UNIX AND NOT APPLE) # linux
-    set(NITFOL_OS_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startunix.c)
+    set(NITFOL_OS_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startunix.c)
 elseif(APPLE) # mac
-    set(NITFOL_OS_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1/startmac.c)
+    set(NITFOL_OS_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/nitfol-0.5_p1-startmac.c)
 endif()
     
 add_executable(nitfol-qglk
@@ -188,7 +192,7 @@ add_executable(nitfol-glkterm
 )
     target_compile_definitions(nitfol-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
     target_include_directories(nitfol-glkterm PRIVATE nitfol-0.5_p1/ glkterm-1.0.4/)
-    target_link_libraries(nitfol-glkterm glkterm)
+    target_link_libraries(nitfol-glkterm glkterm ${MATH_LIBRARY})
 
 set(GLULXE_SOURCES
     glulxe-0.5.4/main.c
@@ -287,4 +291,4 @@ add_executable(tads2-glkterm
         memicmp=strncasecmp
     )
     target_include_directories(tads2-glkterm PRIVATE tads-3.0.8/tads2/ tads-3.0.8/tads2/glk ../src/)
-    target_link_libraries(tads2-glkterm glkterm)
+    target_link_libraries(tads2-glkterm glkterm ${MATH_LIBRARY})
