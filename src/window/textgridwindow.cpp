@@ -155,7 +155,7 @@ QSize Glk::TextGridWindow::unitsToPixels(const QSize& units) const {
 bool Glk::TextGridWindow::writeChar(glui32 ch) {
     QSize ws(m_CharArray.size(), m_CharArray[0].size());
 
-    if(m_Cursor.x() >= ws.width() || m_Cursor.y() >= ws.height())
+    if(m_Cursor.x() < 0 || m_Cursor.y() < 0 || m_Cursor.x() >= ws.width() || m_Cursor.y() >= ws.height())
         return false;
 
     if(ch == '\n') {
