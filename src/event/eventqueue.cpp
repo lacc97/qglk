@@ -52,7 +52,7 @@ event_t Glk::EventQueue::poll() {
                 ev = m_Queue.takeAt(ii--);
                 TaskEvent* tev = m_TaskEventQueue.dequeue();
                 ml.unlock();
-                tev->execute();
+                tev->execute();     // TODO this bit looks dodgy
                 ml.relock();
                 delete tev;
                 m_Semaphore.acquire(1);
@@ -81,16 +81,30 @@ void Glk::EventQueue::cleanWindowEvents(winid_t win) {
     QMutexLocker ml(&m_AccessMutex);
 
     for(int ii = 0; ii < m_Queue.size(); ii++) {
-        if(m_Queue[ii].win == win)
+        if(m_Queue[ii].win == win) {
             m_Queue.removeAt(ii--);
+            m_Semaphore.acquire(1);
+        }
     }
 }
 
 void Glk::EventQueue::push(const event_t& ev) {
     QMutexLocker ml(&m_AccessMutex);
 
-    m_Queue.enqueue(ev);
+    switch(ev.type) {
+        case evtype_Arrange:
+        case evtype_Redraw:
+        case evtype_Timer:
+            for(int ii = 0; ii < m_Queue.size(); ii++) {
+                if(m_Queue[ii].type == ev.type && (ev.type == evtype_Timer || m_Queue[ii].win == ev.win)) {
+                    m_Queue.removeAt(ii);
+                    m_Queue.enqueue(ev);
+                    return;
+                }
+            }
+    }
 
+    m_Queue.enqueue(ev);
     m_Semaphore.release(1);
 }
 
@@ -106,22 +120,7 @@ void Glk::EventQueue::pushTaskEvent(Glk::TaskEvent* ev) {
 }
 
 void Glk::EventQueue::pushTimerEvent() {
-    event_t ev {evtype_Timer, NULL, 0, 0};
-
-    QMutexLocker ml(&m_AccessMutex);
-
-    for(int ii = 0; ii < m_Queue.size(); ii++) {
-        switch(m_Queue[ii].type) {
-            case evtype_Timer:
-                m_Queue.removeAt(ii);
-                m_Queue.enqueue(ev);
-                return;
-        }
-    }
-
-    m_Queue.enqueue(ev);
-
-    m_Semaphore.release(1);
+    push({evtype_Timer, NULL, 0, 0});
 }
 
 const std::string eventTypeName(glui32 t) {
