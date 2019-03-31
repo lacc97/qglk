@@ -284,16 +284,16 @@ QGlk::QGlk(int argc, char** argv) : QMainWindow(), ui(new Ui::QGlk), mp_Runnable
 
 QGlk::~QGlk() {
     while(!m_WindowList.empty())
-        delete m_WindowList.takeFirst();
+        delete m_WindowList.first();
     
     while(!m_StreamList.empty())
-        delete m_StreamList.takeFirst();
+        delete m_StreamList.first();
     
     while(!m_FileReferenceList.empty())
-        delete m_FileReferenceList.takeFirst();
+        delete m_FileReferenceList.first();
     
     while(!m_SoundChannelList.empty())
-        delete m_SoundChannelList.takeFirst();
+        delete m_SoundChannelList.first();
     
     delete ui;
 }
