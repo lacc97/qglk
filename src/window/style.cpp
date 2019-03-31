@@ -1,9 +1,10 @@
 #include "style.hpp"
 
+#include <QApplication>
 #include <QFontDatabase>
 #include <QTextBrowser>
 
-Glk::Style::Style(Glk::Style::Type type_) : m_Type(type_), m_Font(QFontDatabase::systemFont(QFontDatabase::GeneralFont)), m_Indentation(0), m_ParaIndentation(0), m_Justification(stylehint_just_LeftRight), m_FontSizeIncrease(0), m_TextColor(Qt::black), m_BackgroundColor(Qt::white) {
+Glk::Style::Style(Glk::Style::Type type_) : m_Type(type_), m_Font(QFontDatabase::systemFont(QFontDatabase::GeneralFont)), m_Indentation(0), m_ParaIndentation(0), m_Justification(stylehint_just_LeftRight), m_FontSizeIncrease(0), m_TextColor(QApplication::palette().text().color()), m_BackgroundColor(Qt::white) {
     switch(m_Type) { // TODO load these up from a stylesheet file?
         case Emphasized:
             m_Font.setWeight(QFont::Bold);
