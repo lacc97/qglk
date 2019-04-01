@@ -10,6 +10,8 @@
 
 #define DOTRACE
 
+/// This header should always be included LAST.
+
 namespace Log {
     extern const uint64_t StartTime;
 

@@ -6,14 +6,13 @@
 #include "qglk.hpp"
 
 #include "blorb/chunk.hpp"
+#include "log/log.hpp"
 #include "thread/taskrequest.hpp"
 #include "window/blankwindow.hpp"
 #include "window/graphicswindow.hpp"
 #include "window/pairwindow.hpp"
 #include "window/textbufferwindow.hpp"
 #include "window/textgridwindow.hpp"
-
-#include "log/log.hpp"
 
 // Glk::Window* s_Root = NULL;
 
@@ -74,7 +73,7 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
     Glk::PairWindow* pairw = NULL;
     Glk::Window* neww = NULL;
 
-    if(wintype == Glk::Window::Pair || (!split && s_WindowSet.size() > 0)) {
+    if(wintype == Glk::Window::Pair || (!split && !QGlk::getMainWindow().windowList().empty())) {
         log_trace() << "glk_window_open(" << split << ", "
                 << Glk::WindowConstraint::methodString(method).toStdString()
                 << ", " << size << ", "
@@ -258,28 +257,40 @@ strid_t glk_window_get_echo_stream(winid_t win) {
     return str;
 }
 
-QSet<Glk::Window*> s_WindowSet;
 winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
-    QSet<Glk::Window*>::const_iterator iter;
+    const auto& winList = QGlk::getMainWindow().windowList();
 
     if(win == NULL) {
-        iter = s_WindowSet.begin();
-    } else {
-        iter = s_WindowSet.find(FROM_WINID(win));
-        iter++;
+        if(winList.empty()) {
+            log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << ((void*)NULL);
+            return NULL;
+        }
+
+        auto first = winList.first();
+
+        if(rockptr)
+            *rockptr = first->rock();
+
+        log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << TO_WINID(first);
+
+        return TO_WINID(first);
     }
 
-    if(iter == s_WindowSet.end()) {
+    auto it = winList.cbegin();
+
+    while(it != winList.cend() && (*it++) != FROM_WINID(win));
+
+    if(it == winList.cend()) {
         log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << ((void*)NULL);
         return NULL;
     }
 
     if(rockptr)
-        *rockptr = (*iter)->rock();
+        *rockptr = (*it)->rock();
 
-    log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << TO_WINID(*iter);
+    log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << TO_WINID(*it);
 
-    return TO_WINID(*iter);
+    return TO_WINID(*it);
 }
 
 glui32 glk_window_get_rock(winid_t win) {

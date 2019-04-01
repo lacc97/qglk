@@ -7,11 +7,10 @@
 #include "qglk.hpp"
 
 #include "blorb/chunk.hpp"
+#include "log/log.hpp"
 #include "stream/latin1stream.hpp"
 #include "stream/nulldevice.hpp"
 #include "stream/unicodestream.hpp"
-
-#include "log/log.hpp"
 
 Glk::Stream* s_CurrentStream = NULL;
 void glk_stream_set_current(strid_t str) {
@@ -41,13 +40,15 @@ void glk_stream_close(strid_t str, stream_result_t* result) {
 }
 
 strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
+    const auto& strList = QGlk::getMainWindow().streamList();
+
     if(str == NULL) {
-        if(QGlk::getMainWindow().streamList().empty()) {
+        if(strList.empty()) {
             log_trace() << "glk_stream_iterate(" << str << ", " << rockptr << ") => " << ((void*)NULL);
             return NULL;
         }
 
-        Glk::Stream* first = QGlk::getMainWindow().streamList().first();
+        auto first = strList.first();
 
         if(rockptr)
             *rockptr = first->rock();
@@ -57,11 +58,11 @@ strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
         return TO_STRID(first);
     }
 
-    auto it = QGlk::getMainWindow().streamList().cbegin();
+    auto it = strList.cbegin();
 
-    while(it != QGlk::getMainWindow().streamList().cend() && (*it++) != FROM_STRID(str));
+    while(it != strList.cend() && (*it++) != FROM_STRID(str));
 
-    if(it == QGlk::getMainWindow().streamList().cend()) {
+    if(it == strList.cend()) {
         log_trace() << "glk_stream_iterate(" << str << ", " << rockptr << ") => " << ((void*)NULL);
         return NULL;
     }

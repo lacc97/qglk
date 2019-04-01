@@ -2,13 +2,12 @@
 
 #include "glk.hpp"
 
+#include "qglk.hpp"
+
 #include "blorb/chunk.hpp"
+#include "log/log.hpp"
 #include "sound/schannel.hpp"
 #include "thread/taskrequest.hpp"
-
-#include <QSet>
-
-QSet<Glk::SoundChannel*> s_ChannelSet;
 
 schanid_t glk_schannel_create(glui32 rock) {
     return glk_schannel_create_ext(rock, Glk::SoundChannel::FullVolume);
@@ -86,29 +85,40 @@ void glk_sound_load_hint(glui32 snd, glui32 flag) {
     }
 }
 
-schanid_t glk_schannel_iterate(schanid_t chan, glui32* rockptr) {
-    if(chan == NULL) {
-        auto iter = s_ChannelSet.begin();
+schanid_t glk_schannel_iterate(schanid_t schan, glui32* rockptr) {
+    const auto& schanList = QGlk::getMainWindow().soundChannelList();
 
-        if(iter == s_ChannelSet.end())
+    if(schan == NULL) {
+        if(schanList.empty()) {
+            log_trace() << "glk_schannel_iterate(" << schan << ", " << rockptr << ") => " << ((void*)NULL);
             return NULL;
+        }
+
+        auto first = schanList.first();
 
         if(rockptr)
-            *rockptr = (*iter)->rock();
+            *rockptr = first->rock();
 
-        return TO_SCHANID(*iter);
+        log_trace() << "glk_schannel_iterate(" << schan << ", " << rockptr << ") => " << TO_SCHANID(first);
+
+        return TO_SCHANID(first);
     }
 
-    auto iter = s_ChannelSet.find(FROM_SCHANID(chan));
-    iter++;
+    auto it = schanList.cbegin();
 
-    if(iter == s_ChannelSet.end())
+    while(it != schanList.cend() && (*it++) != FROM_SCHANID(schan));
+
+    if(it == schanList.cend()) {
+        log_trace() << "glk_schannel_iterate(" << schan << ", " << rockptr << ") => " << ((void*)NULL);
         return NULL;
+    }
 
     if(rockptr)
-        *rockptr = (*iter)->rock();
+        *rockptr = (*it)->rock();
 
-    return TO_SCHANID(*iter);
+    log_trace() << "glk_schannel_iterate(" << schan << ", " << rockptr << ") => " << TO_SCHANID(*it);
+
+    return TO_SCHANID(*it);
 }
 
 glui32 glk_schannel_get_rock(schanid_t chan) {

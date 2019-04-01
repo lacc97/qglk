@@ -97,8 +97,6 @@ namespace Glk {
     };
 }
 
-extern QSet<Glk::Window*> s_WindowSet;
-
 inline const winid_t TO_WINID(Glk::Window* win) {
     return reinterpret_cast<winid_t>(win);
 }

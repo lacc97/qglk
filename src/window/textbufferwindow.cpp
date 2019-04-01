@@ -10,6 +10,8 @@
 
 #include "qglk.hpp"
 
+#include "log/log.hpp"
+
 Glk::TextBufferDevice::FormattedText::FormattedText(const QString& qstr, const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt) : m_Text(qstr), m_BlockFormat(blkfmt), m_CharFormat(chfmt) {}
 
 void Glk::TextBufferDevice::FormattedText::writeToCursor(QTextCursor& cursor) const {
@@ -273,9 +275,7 @@ bool Glk::TextBufferWindow::drawImage(const QImage& im, glsi32 alignment, glui32
 }
 
 void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
-#ifndef NDEBUG
-    qDebug() << "Changed style from" << m_CurrentStyleType << "to" << style;
-#endif
+    log_debug() << "Changed style from " << m_CurrentStyleType << " to " << style;
 
     m_PreviousStyleType = m_CurrentStyleType;
     m_CurrentStyleType = style;

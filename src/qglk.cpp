@@ -283,6 +283,7 @@ QGlk::QGlk(int argc, char** argv) : QMainWindow(), ui(new Ui::QGlk), mp_Runnable
 }
 
 QGlk::~QGlk() {
+    // windows contain their own window streams so we first delete windows, then streams
     while(!m_WindowList.empty())
         delete m_WindowList.first();
     

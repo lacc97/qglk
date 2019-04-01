@@ -1,16 +1,17 @@
-#include "file/fileref.hpp"
-#include "thread/taskrequest.hpp"
-
 #include <QFileDialog>
 #include <QSet>
 #include <QTemporaryDir>
 
+#include "glk.hpp"
+
 #include "qglk.hpp"
+
+#include "file/fileref.hpp"
+#include "log/log.hpp"
+#include "thread/taskrequest.hpp"
 
 QTemporaryDir s_TempDir;
 glui32 s_TempCounter = 0;
-
-QSet<Glk::FileReference*> s_FileReferenceSet;
 
 QString extFromUsage(glui32 usg) {
     switch(usg & 0x03) {
@@ -108,28 +109,39 @@ void glk_fileref_destroy(frefid_t fref) {
 }
 
 frefid_t glk_fileref_iterate(frefid_t fref, glui32* rockptr) {
-    if(fref == NULL) {
-        auto iter = s_FileReferenceSet.begin();
+    const auto& frefList = QGlk::getMainWindow().fileReferenceList();
 
-        if(iter == s_FileReferenceSet.end())
+    if(fref == NULL) {
+        if(frefList.empty()) {
+            log_trace() << "glk_fileref_iterate(" << fref << ", " << rockptr << ") => " << ((void*)NULL);
             return NULL;
+        }
+
+        auto first = frefList.first();
 
         if(rockptr)
-            *rockptr = (*iter)->rock();
+            *rockptr = first->rock();
 
-        return TO_FREFID(*iter);
+        log_trace() << "glk_fileref_iterate(" << fref << ", " << rockptr << ") => " << TO_FREFID(first);
+
+        return TO_FREFID(first);
     }
 
-    auto iter = s_FileReferenceSet.find(FROM_FREFID(fref));
-    iter++;
+    auto it = frefList.cbegin();
 
-    if(iter == s_FileReferenceSet.end())
+    while(it != frefList.cend() && (*it++) != FROM_FREFID(fref));
+
+    if(it == frefList.cend()) {
+        log_trace() << "glk_fileref_iterate(" << fref << ", " << rockptr << ") => " << ((void*)NULL);
         return NULL;
+    }
 
     if(rockptr)
-        *rockptr = (*iter)->rock();
+        *rockptr = (*it)->rock();
 
-    return TO_FREFID(*iter);
+    log_trace() << "glk_fileref_iterate(" << fref << ", " << rockptr << ") => " << TO_FREFID(*it);
+
+    return TO_FREFID(*it);
 }
 
 glui32 glk_fileref_get_rock(frefid_t fref) {

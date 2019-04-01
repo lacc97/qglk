@@ -44,8 +44,6 @@ namespace Glk {
     };
 }
 
-extern QSet<Glk::FileReference*> s_FileReferenceSet;
-
 inline const frefid_t TO_FREFID(Glk::FileReference* fref) {
     return reinterpret_cast<frefid_t>(fref);
 }

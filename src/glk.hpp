@@ -49,8 +49,8 @@ namespace Glk {
                 Window = 0, Stream = 1, FileReference = 2, SoundChannel = 3
             };
             
-            Object(glui32 rock_ = 0) : m_Rock(rock_) {}
-            virtual ~Object() {}
+            explicit Object(glui32 rock_ = 0) : m_Rock(rock_) {}
+            virtual ~Object() = default;
 
             virtual Type objectType() const = 0;
             

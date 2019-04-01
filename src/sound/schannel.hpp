@@ -62,6 +62,4 @@ inline Glk::SoundChannel* const FROM_SCHANID(schanid_t sch) {
     return reinterpret_cast<Glk::SoundChannel*>(sch);
 }
 
-extern QSet<Glk::SoundChannel*> s_ChannelSet;
-
 #endif

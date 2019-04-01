@@ -6,6 +6,8 @@
 
 #include "pairwindow.hpp"
 
+#include "log/log.hpp"
+
 QString Glk::Window::windowsTypeString(glui32 type) {
     switch(type) {
         case Blank:
@@ -29,14 +31,18 @@ Glk::Window::Window(QIODevice* device_, glui32 rock_, bool acceptsCharRequest, b
     mp_Stream->open(QIODevice::WriteOnly);
 
     Glk::Dispatch::registerObject(this);
-    s_WindowSet.insert(this);
+    QGlk::getMainWindow().windowList().append(this);
 }
 
 Glk::Window::~Window() {
-//     delete mp_Stream; // deleted by qobject
+    //     delete mp_Stream; // deleted by qobject
+
+    if(!QGlk::getMainWindow().windowList().removeOne(this))
+        log_warn() << "Window " << (this) << " not found in window list while removing";
+    else
+        log_trace() << "Window " << (this) << " removed from window list";
 
     Glk::Dispatch::unregisterObject(this);
-    s_WindowSet.remove(this);
 }
 
 QSize Glk::Window::windowSize() const {

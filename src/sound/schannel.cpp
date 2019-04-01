@@ -1,5 +1,9 @@
 #include "schannel.hpp"
 
+#include "qglk.hpp"
+
+#include "log/log.hpp"
+
 Glk::SoundRepeater::SoundRepeater(QMediaPlayer& mp) : QObject(), mr_Player(mp), m_NumRepeat(0) {
     connect(&mr_Player, &QMediaPlayer::stateChanged, this, &Glk::SoundRepeater::mediaPlayerStateChanged);
 }
@@ -19,11 +23,15 @@ Glk::SoundChannel::SoundChannel(glui32 volume_, glui32 rock_) : Object(rock_), m
     m_Player.setVolume(100 * volume_ / FullVolume);
     
     Glk::Dispatch::registerObject(this);
-    s_ChannelSet.insert(this);
+    QGlk::getMainWindow().soundChannelList().append(this);
 }
 
 Glk::SoundChannel::~SoundChannel() {
-    s_ChannelSet.remove(this);
+    if(!QGlk::getMainWindow().soundChannelList().removeOne(this))
+        log_warn() << "Sound channel " << (this) << " not found in sound channel list while removing";
+    else
+        log_trace() << "Sound channel " << (this) << " removed from sound channel list";
+
     Glk::Dispatch::unregisterObject(this);
 }
 
