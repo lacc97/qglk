@@ -75,7 +75,7 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
     Glk::Window* neww = NULL;
 
     if(wintype == Glk::Window::Pair || (!split && s_WindowSet.size() > 0)) {
-        trace() << "glk_window_open(" << split << ", "
+        log_trace() << "glk_window_open(" << split << ", "
                 << Glk::WindowConstraint::methodString(method).toStdString()
                 << ", " << size << ", "
                 << Glk::Window::windowsTypeString(wintype).toStdString()
@@ -121,7 +121,7 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
         }
     });
 
-    trace() << "glk_window_open(" << split << ", "
+    log_trace() << "glk_window_open(" << split << ", "
             << Glk::WindowConstraint::methodString(method).toStdString() << ", "
             << size << ", " << Glk::Window::windowsTypeString(wintype).toStdString() << ", "
             << rock << ") => " << TO_WINID(neww);
@@ -130,7 +130,7 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
 }
 
 void glk_window_close(winid_t win, stream_result_t* result) {
-    trace() << "glk_window_close(" << win << ", " << result << ")";
+    log_trace() << "glk_window_close(" << win << ", " << result << ")";
 
     Glk::sendTaskToEventThread([&] {
         auto thisWin = FROM_WINID(win);
@@ -143,7 +143,7 @@ void glk_window_close(winid_t win, stream_result_t* result) {
 //            if(thisWin == prntws)
                 delete prntw;
         } else if(thisWin->parent()) {
-            debug() << "Closing root window " << thisWin;
+            log_debug() << "Closing root window " << thisWin;
 
             QGlk::getMainWindow().setRootWindow(NULL);
         }
@@ -178,12 +178,12 @@ void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {
 }
 
 void glk_window_set_arrangement(winid_t win, glui32 method, glui32 size, winid_t keywin) {
-    trace() << "glk_window_set_arrangement(" << win << ", "
+    log_trace() << "glk_window_set_arrangement(" << win << ", "
             << Glk::WindowConstraint::methodString(method).toStdString()
             << ", " << size << ", " << keywin << ")";
 
     if(FROM_WINID(win)->windowType() != Glk::Window::Pair) {
-        warn() << "Cannot set arrangement of window " << win << " of type "
+        log_warn() << "Cannot set arrangement of window " << win << " of type "
                << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
                << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::Pair).toStdString() << ")";
 
@@ -226,7 +226,7 @@ void glk_window_get_arrangement(winid_t win, glui32* methodptr, glui32* sizeptr,
 
 void glk_window_move_cursor(winid_t win, glui32 xpos, glui32 ypos) {
     if(FROM_WINID(win)->windowType() != Glk::Window::TextGrid) {
-        warn() << "Cannot move cursor of window " << win << " of type "
+        log_warn() << "Cannot move cursor of window " << win << " of type "
                << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
                << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::TextGrid).toStdString() << ")";
 
@@ -239,7 +239,7 @@ void glk_window_move_cursor(winid_t win, glui32 xpos, glui32 ypos) {
 }
 
 void glk_window_set_echo_stream(winid_t win, strid_t str) {
-    trace() << "glk_window_set_echo_stream(" << win << ", " << str << ")";
+    log_trace() << "glk_window_set_echo_stream(" << win << ", " << str << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->windowStream()->setEchoStream(FROM_STRID(str));
@@ -253,7 +253,7 @@ strid_t glk_window_get_echo_stream(winid_t win) {
         str = TO_STRID(FROM_WINID(win)->windowStream()->echoStream());
     });
 
-    trace() << "glk_window_get_echo_stream(" << win << ") => " << str;
+    log_trace() << "glk_window_get_echo_stream(" << win << ") => " << str;
 
     return str;
 }
@@ -270,14 +270,14 @@ winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
     }
 
     if(iter == s_WindowSet.end()) {
-        trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << ((void*)NULL);
+        log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << ((void*)NULL);
         return NULL;
     }
 
     if(rockptr)
         *rockptr = (*iter)->rock();
 
-    trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << TO_WINID(*iter);
+    log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << TO_WINID(*iter);
 
     return TO_WINID(*iter);
 }
@@ -298,7 +298,7 @@ winid_t glk_window_get_sibling(winid_t win) {
     Q_ASSERT(win);
     
     if(!FROM_WINID(win)->windowParent()) {
-        warn() << "Cannot return sibling of window " << win << " (root window has no siblings)";
+        log_warn() << "Cannot return sibling of window " << win << " (root window has no siblings)";
 
         return NULL;
     }
@@ -311,7 +311,7 @@ winid_t glk_window_get_sibling(winid_t win) {
     else if(prnt->secondWindow() == FROM_WINID(win))
         sibling = TO_WINID(prnt->keyWindow());
 
-    trace() << "glk_window_get_sibling(" << win << ") => " << sibling;
+    log_trace() << "glk_window_get_sibling(" << win << ") => " << sibling;
     
     return sibling;
 }
@@ -323,13 +323,13 @@ winid_t glk_window_get_root() {
         rw = TO_WINID(QGlk::getMainWindow().rootWindow());
     });
     
-    trace() << "glk_window_get_root() => " << rw;
+    log_trace() << "glk_window_get_root() => " << rw;
 
     return rw;
 }
 
 void glk_window_clear(winid_t win) {
-    trace() << "glk_window_clear(" << win << ")";
+    log_trace() << "glk_window_clear(" << win << ")";
     
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->clearWindow();
@@ -348,10 +348,10 @@ void glk_set_window(winid_t win) {
 }
 
 void glk_window_set_background_color(winid_t win, glui32 color) {
-    trace() << "glk_window_set_background_color(" << win << ", " << color << ")";
+    log_trace() << "glk_window_set_background_color(" << win << ", " << color << ")";
     
     if(FROM_WINID(win)->windowType() != Glk::Window::Graphics) {
-        warn() << "Cannot change background colour of window " << win << " of type "
+        log_warn() << "Cannot change background colour of window " << win << " of type "
                << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
                << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::Graphics).toStdString() << ")";
         
@@ -364,11 +364,11 @@ void glk_window_set_background_color(winid_t win, glui32 color) {
 }
 
 void glk_window_fill_rect(winid_t win, glui32 color, glsi32 left, glsi32 top, glui32 width, glui32 height) {
-    trace() << "glk_window_fill_rect(" << win << ", " << color << ", "
+    log_trace() << "glk_window_fill_rect(" << win << ", " << color << ", "
             << left << ", " << top << ", " << width << ", " << height << ")";
     
     if(FROM_WINID(win)->windowType() != Glk::Window::Graphics) {
-        warn() << "Cannot fill rect in window " << win << " of type "
+        log_warn() << "Cannot fill rect in window " << win << " of type "
                << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
                << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::Graphics).toStdString() << ")";
         
@@ -381,11 +381,11 @@ void glk_window_fill_rect(winid_t win, glui32 color, glsi32 left, glsi32 top, gl
 }
 
 void glk_window_erase_rect(winid_t win, glsi32 left, glsi32 top, glui32 width, glui32 height) {
-    trace() << "glk_window_erase_rect(" << win << ", " << left << ", "
+    log_trace() << "glk_window_erase_rect(" << win << ", " << left << ", "
             << top << ", " << width << ", " << height << ")";
     
     if(FROM_WINID(win)->windowType() != Glk::Window::Graphics) {
-        warn() << "Cannot erase rect in window " << win << " of type "
+        log_warn() << "Cannot erase rect in window " << win << " of type "
                << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()).toStdString()
                << " (must be of type " << Glk::Window::windowsTypeString(Glk::Window::Graphics).toStdString() << ")";
         

@@ -28,30 +28,30 @@ void glk_exit() {
 }
 
 void glk_select(event_t* event) {
-    trace() << "glk_select(" << event << ")";
-    debug() << "Waiting for event";
+    log_trace() << "glk_select(" << event << ")";
+    log_debug() << "Waiting for event";
 
     emit QGlk::getMainWindow().poll();
     *event = QGlk::getMainWindow().eventQueue().pop();
 
-    debug() << "Received event of type " << to_string(*event);
+    log_debug() << "Received event of type " << to_string(*event);
 }
 
 void glk_select_poll(event_t* event) {
     emit QGlk::getMainWindow().poll();
 
-    debug() << "Polling events";
+    log_debug() << "Polling events";
     *event = QGlk::getMainWindow().eventQueue().poll();
 
     if(event->type == evtype_None) {
-        debug() << "No event received";
+        log_debug() << "No event received";
     } else {
-        debug() << "Received event of type " << to_string(*event);
+        log_debug() << "Received event of type " << to_string(*event);
     }
 }
 
 void glk_request_char_event(winid_t win) {
-    trace() << "glk_request_char_event(" << win << ")";
+    log_trace() << "glk_request_char_event(" << win << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestCharInput(false);
@@ -59,7 +59,7 @@ void glk_request_char_event(winid_t win) {
 }
 
 void glk_request_char_event_uni(winid_t win) {
-    trace() << "glk_request_char_event_uni(" << win << ")";
+    log_trace() << "glk_request_char_event_uni(" << win << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestCharInput(true);
@@ -67,7 +67,7 @@ void glk_request_char_event_uni(winid_t win) {
 }
 
 void glk_cancel_char_event(winid_t win) {
-    trace() << "glk_cancel_char_event(" << win << ")";
+    log_trace() << "glk_cancel_char_event(" << win << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->cancelCharInputRequest();
@@ -75,7 +75,7 @@ void glk_cancel_char_event(winid_t win) {
 }
 
 void glk_request_line_event(winid_t win, char* buf, glui32 maxlen, glui32 initlen) {
-    trace() << "glk_request_line_event(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
+    log_trace() << "glk_request_line_event(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestLineInput(buf, maxlen, initlen, false);
@@ -83,7 +83,7 @@ void glk_request_line_event(winid_t win, char* buf, glui32 maxlen, glui32 initle
 }
 
 void glk_request_line_event_uni(winid_t win, glui32* buf, glui32 maxlen, glui32 initlen) {
-    trace() << "glk_request_line_event_uni(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
+    log_trace() << "glk_request_line_event_uni(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->requestLineInput(buf, maxlen, initlen, true);
@@ -91,7 +91,7 @@ void glk_request_line_event_uni(winid_t win, glui32* buf, glui32 maxlen, glui32 
 }
 
 void glk_cancel_line_event(winid_t win, event_t* event) {
-    trace() << "glk_cancel_line_event(" << win << ")";
+    log_trace() << "glk_cancel_line_event(" << win << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->cancelLineInputRequest(event);
@@ -99,7 +99,7 @@ void glk_cancel_line_event(winid_t win, event_t* event) {
 }
 
 void glk_set_echo_line_event(winid_t win, glui32 val) {
-    trace() << "glk_set_echo_line_event(" << win << ", " << (val != 0) << ")";
+    log_trace() << "glk_set_echo_line_event(" << win << ", " << (val != 0) << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->setLineEcho(val != 0);
@@ -107,7 +107,7 @@ void glk_set_echo_line_event(winid_t win, glui32 val) {
 }
 
 void glk_set_terminators_line_event(winid_t win, glui32* keycodes, glui32 count) {
-    trace() << "glk_set_terminators_line_event(" << win << ", " << keycodes << ", " << count << ")";
+    log_trace() << "glk_set_terminators_line_event(" << win << ", " << keycodes << ", " << count << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->keyboardInputProvider()->setTerminators(keycodes, count);
@@ -115,7 +115,7 @@ void glk_set_terminators_line_event(winid_t win, glui32* keycodes, glui32 count)
 }
 
 void glk_request_mouse_event(winid_t win) {
-    trace() << "glk_request_mouse_event(" << win << ")";
+    log_trace() << "glk_request_mouse_event(" << win << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->mouseInputProvider()->requestMouseInput();
@@ -123,7 +123,7 @@ void glk_request_mouse_event(winid_t win) {
 }
 
 void glk_cancel_mouse_event(winid_t win) {
-    trace() << "glk_cancel_mouse_event(" << win << ")";
+    log_trace() << "glk_cancel_mouse_event(" << win << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->mouseInputProvider()->cancelMouseInputRequest();
@@ -132,7 +132,7 @@ void glk_cancel_mouse_event(winid_t win) {
 
 QTimer* s_Timer = NULL;
 void glk_request_timer_events(glui32 millisecs) {
-    trace() << "glk_request_timer_events(" << millisecs << ")";
+    log_trace() << "glk_request_timer_events(" << millisecs << ")";
 
     Glk::sendTaskToEventThread([&] {
         if(!s_Timer) {
@@ -148,7 +148,7 @@ void glk_request_timer_events(glui32 millisecs) {
 }
 
 void glk_request_hyperlink_event(winid_t win) {
-    trace() << "glk_request_hyperlink_event(" << win << ")";
+    log_trace() << "glk_request_hyperlink_event(" << win << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->hyperlinkInputProvider()->requestHyperlinkInput();
@@ -156,7 +156,7 @@ void glk_request_hyperlink_event(winid_t win) {
 }
 
 void glk_cancel_hyperlink_event(winid_t win) {
-    trace() << "glk_cancel_hyperlink_event(" << win << ")";
+    log_trace() << "glk_cancel_hyperlink_event(" << win << ")";
 
     Glk::sendTaskToEventThread([&] {
         FROM_WINID(win)->hyperlinkInputProvider()->cancelHyperlinkInputRequest();

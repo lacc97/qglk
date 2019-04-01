@@ -101,19 +101,19 @@ std::basic_ostream<CharT>& operator<<(std::basic_ostream<CharT>& os, const QStri
 
 #ifndef NDEBUG
 #ifdef DOTRACE
-#define trace() Log::Stream(Log::TRACE)
+#define log_trace() Log::Stream(Log::TRACE)
 #else
-#define trace() Log::NullStream<char>()
+#define log_trace() Log::NullStream<char>()
 #endif
-#define debug() Log::Stream(Log::DEBUG)
+#define log_debug() Log::Stream(Log::DEBUG)
 #else
-#define trace() Log::NullStream<char>()
-#define debug() Log::NullStream<char>()
+#define log_trace() Log::NullStream<char>()
+#define log_debug() Log::NullStream<char>()
 #endif
 
-#define info()  Log::Stream(Log::INFO)
-#define warn()  Log::Stream(Log::WARNING)
-#define error() Log::Stream(Log::ERROR)
-#define fatal() Log::Stream(Log::FATAL)
+#define log_info()  Log::Stream(Log::INFO)
+#define log_warn()  Log::Stream(Log::WARNING)
+#define log_error() Log::Stream(Log::ERROR)
+#define log_fatal() Log::Stream(Log::FATAL)
 
 #endif
