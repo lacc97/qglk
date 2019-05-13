@@ -39,7 +39,7 @@ add_library(glkterm STATIC
 )
     target_include_directories(glkterm PRIVATE glkterm-1.0.4/ ${CURSES_INCLUDE_DIR})
     target_link_libraries(glkterm ${CURSES_LIBRARIES})
-    
+
 
 add_executable(model-qglk
         model.c
@@ -93,6 +93,7 @@ add_executable(git-qglk ${GIT_SOURCES})
     target_compile_definitions(git-qglk PRIVATE "-DUSE_MMAP -DUSE_INLINE")
     target_include_directories(git-qglk PRIVATE git-1.3.5/ ../src/)
     target_link_libraries(git-qglk qglk)
+install(TARGETS git-qglk DESTINATION bin)
     
 add_executable(git-glkterm ${GIT_SOURCES})
     target_compile_definitions(git-glkterm PRIVATE "-DUSE_MMAP -DUSE_INLINE")
@@ -183,6 +184,7 @@ add_executable(nitfol-qglk
     target_compile_definitions(nitfol-qglk PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
     target_include_directories(nitfol-qglk PRIVATE nitfol-0.5_p1/ ../src/)
     target_link_libraries(nitfol-qglk qglk)
+install(TARGETS nitfol-qglk DESTINATION bin)
 
 add_executable(nitfol-glkterm
         ${NITFOL_SOURCES}
@@ -225,7 +227,7 @@ add_executable(glulxe-qglk
     target_compile_definitions(glulxe-qglk PRIVATE "-DOS_UNIX")
     target_include_directories(glulxe-qglk PRIVATE glulxe-0.5.4/ ../src/)
     target_link_libraries(glulxe-qglk qglk)
-
+install(TARGETS glulxe-qglk DESTINATION bin)
 
 set(TADS2_SOURCES
     tads-3.0.8/tads2/glk/oem_glk.c
@@ -279,6 +281,7 @@ add_executable(tads2-qglk
     )
     target_include_directories(tads2-qglk PRIVATE tads-3.0.8/tads2/ tads-3.0.8/tads2/glk ../src/)
     target_link_libraries(tads2-qglk qglk)
+install(TARGETS tads2-qglk DESTINATION bin)
 
 add_executable(tads2-glkterm
         ${TADS2_SOURCES}
