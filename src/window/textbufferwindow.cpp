@@ -65,7 +65,7 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
     Q_ASSERT(len % 4 == 0);
 
     qint64 ulen = len / 4;
-    const glui32* udata = reinterpret_cast<const glui32*>(data);
+    auto udata = reinterpret_cast<const glui32*>(data);
 
     QString text = QString::fromUcs4(udata, ulen);
 //     QStringList blocks = text.split('\n');
@@ -330,19 +330,19 @@ QSize Glk::TextBufferWindow::unitsToPixels(const QSize& units) const {
 void Glk::TextBufferWindow::onCharacterInputRequested() {
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     setFocus();
-    ioDevice()->flush();
+//    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onCharacterInputRequestEnded(bool cancelled) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
-    ioDevice()->flush();
+//    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onLineInputRequested() {
     setStyle(Glk::Style::Input);
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     setFocus();
-    ioDevice()->flush();
+//    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode) {
@@ -373,7 +373,7 @@ void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, g
 
     setStyle(m_PreviousStyleType);
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
-    ioDevice()->flush();
+//    ioDevice()->flush();
 }
 
 void Glk::TextBufferWindow::onCharacterInput(glui32 ch, bool doFlush) {
