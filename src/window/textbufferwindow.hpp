@@ -1,8 +1,12 @@
 #ifndef TEXTBUFFERWINDOW_HPP
 #define TEXTBUFFERWINDOW_HPP
 
+#include <memory>
+#include <vector>
+
 #include <QLinkedList>
 #include <QTextBrowser>
+#include <QVector>
 
 #include "stylemanager.hpp"
 #include "window.hpp"
@@ -13,24 +17,45 @@ namespace Glk {
     class TextBufferDevice : public QIODevice {
             Q_OBJECT
 
-            class FormattedText {
+            class Command {
                 public:
-                    FormattedText(const QString& qstr, const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt);
+                    virtual ~Command() = default;
+
+                    virtual void perform(QTextCursor& cursor) const = 0;
+            };
+
+            class WriteCommand : public Command {
+                public:
+                    WriteCommand(const QString& qstr, const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt);
+
+                    void perform(QTextCursor& cursor) const override;
 
                     inline void appendText(const QString& qstr) {
                         m_Text.append(qstr);
-                    }
-
-                    void writeToCursor(QTextCursor& cursor) const;
-
-                    inline QString text() const {
-                        return m_Text;
                     }
 
                 private:
                     QString m_Text;
                     QTextBlockFormat m_BlockFormat;
                     QTextCharFormat m_CharFormat;
+            };
+
+            class ImageCommand : public Command {
+                public:
+                    ImageCommand(int imgnum, glsi32 alignment, glui32 w, glui32 h);
+
+                    void perform(QTextCursor& cursor) const override;
+
+                private:
+                    int m_ImageNumber;
+                    glsi32 m_Alignment;
+                    glui32 m_Width;
+                    glui32 m_Height;
+            };
+
+            class ClearCommand : public Command {
+                public:
+                    void perform(QTextCursor& cursor) const override;
             };
 
         public:
@@ -42,6 +67,7 @@ namespace Glk {
             qint64 writeData(const char* data, qint64 len) override;
 
         public slots:
+            void clear();
             void discard();
             void flush();
             void onHyperlinkPushed(glui32 linkval);
@@ -53,8 +79,9 @@ namespace Glk {
         private:
             TextBufferWindow* mp_TBWindow;
             QTextBlockFormat m_CurrentBlockFormat;
+            QTextCharFormat m_CurrentNonHLCharFormat;
             QTextCharFormat m_CurrentCharFormat;
-            QList<FormattedText> m_Buffer;
+            std::vector<std::unique_ptr<Command>> m_Buffer;
             glui32 m_CurrentHyperlink;
     };
 
@@ -148,7 +175,6 @@ namespace Glk {
 
         private:
             TextBufferBrowser* mp_Text;
-            QTextCursor m_EditingCursor;
             History m_History;
             Glk::StyleManager m_Styles;
             Glk::Style::Type m_CurrentStyleType;

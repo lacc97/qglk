@@ -12,25 +12,24 @@
 
 #include "log/log.hpp"
 
-Glk::TextBufferDevice::FormattedText::FormattedText(const QString& qstr, const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt) : m_Text(qstr), m_BlockFormat(blkfmt), m_CharFormat(chfmt) {}
 
-void Glk::TextBufferDevice::FormattedText::writeToCursor(QTextCursor& cursor) const {
+Glk::TextBufferDevice::WriteCommand::WriteCommand(const QString& qstr, const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt) : m_Text{qstr}, m_BlockFormat{blkfmt}, m_CharFormat{chfmt} {}
+
+void Glk::TextBufferDevice::WriteCommand::perform(QTextCursor& cursor) const {
     cursor.setBlockFormat(m_BlockFormat);
     cursor.setCharFormat(m_CharFormat);
-
     cursor.insertText(m_Text);
 }
 
-Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindow(win), m_CurrentHyperlink(0) {
-    Q_ASSERT(mp_TBWindow);
+Glk::TextBufferDevice::ImageCommand::ImageCommand(int imgnum, glsi32 alignment, glui32 w, glui32 h) : m_ImageNumber{imgnum}, m_Alignment{alignment}, m_Width{w}, m_Height{h} {
 }
 
-void Glk::TextBufferDevice::drawImage(int imgnum, glsi32 alignment, glui32 w, glui32 h) {
-    QString altAttrib = QStringLiteral("alt=\"%1\"").arg(imgnum);
-    QString sizeAttrib = QStringLiteral("width=\"%1\" height=\"%2\"").arg(w).arg(h);
+void Glk::TextBufferDevice::ImageCommand::perform(QTextCursor& cursor) const {
+    QString altAttrib = QStringLiteral("alt=\"%1\"").arg(m_ImageNumber);
+    QString sizeAttrib = QStringLiteral("width=\"%1\" height=\"%2\"").arg(m_Width).arg(m_Height);
     QString alignAttrib;
 
-    switch(alignment) {
+    switch(m_Alignment) {
         case imagealign_InlineUp:
             alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg(QStringLiteral("top"));
             break;
@@ -52,9 +51,21 @@ void Glk::TextBufferDevice::drawImage(int imgnum, glsi32 alignment, glui32 w, gl
             break;
     }
 
-    flush();
+    cursor.insertHtml(QStringLiteral("<img src=\"%1\" %2 %3 %4 />").arg(m_ImageNumber).arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
+}
 
-    mp_TBWindow->m_EditingCursor.insertHtml(QStringLiteral("<img src=\"%1\" %2 %3 %4 />").arg(imgnum).arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
+void Glk::TextBufferDevice::ClearCommand::perform(QTextCursor& cursor) const {
+    cursor.select(QTextCursor::SelectionType::Document);
+    cursor.removeSelectedText();
+    cursor.clearSelection();
+}
+
+Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win) : mp_TBWindow(win), m_CurrentHyperlink(0) {
+    Q_ASSERT(mp_TBWindow);
+}
+
+void Glk::TextBufferDevice::drawImage(int imgnum, glsi32 alignment, glui32 w, glui32 h) {
+    m_Buffer.push_back(std::unique_ptr<Command>(new ImageCommand(imgnum, alignment, w, h)));
 }
 
 qint64 Glk::TextBufferDevice::readData(char* data, qint64 maxlen) {
@@ -64,20 +75,19 @@ qint64 Glk::TextBufferDevice::readData(char* data, qint64 maxlen) {
 qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
     Q_ASSERT(len % 4 == 0);
 
-    qint64 ulen = len / 4;
-    auto udata = reinterpret_cast<const glui32*>(data);
+    WriteCommand* wcmd = nullptr;
+    if(m_Buffer.empty() || (wcmd = dynamic_cast<WriteCommand*>(m_Buffer.back().get())) == nullptr) {
+        wcmd = new WriteCommand(QString(), m_CurrentBlockFormat, m_CurrentCharFormat);
+        m_Buffer.push_back(std::unique_ptr<Command>(wcmd));
+    }
 
-    QString text = QString::fromUcs4(udata, ulen);
-//     QStringList blocks = text.split('\n');
-//
-//     QStringList words = blocks.front().split(' ');
-
-    if(m_Buffer.isEmpty())
-        m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, m_CurrentCharFormat));
-
-    m_Buffer.back().appendText(text);
+    wcmd->appendText(QString::fromUcs4(reinterpret_cast<const glui32*>(data), len/4));
 
     return len;
+}
+
+void Glk::TextBufferDevice::clear() {
+    m_Buffer.push_back(std::unique_ptr<Command>(new ClearCommand));
 }
 
 void Glk::TextBufferDevice::discard() {
@@ -85,21 +95,15 @@ void Glk::TextBufferDevice::discard() {
 }
 
 void Glk::TextBufferDevice::flush() {
-    if(m_Buffer.isEmpty())
+    if(m_Buffer.empty())
         return;
 
-    for(const FormattedText& text : qAsConst(m_Buffer))
-        text.writeToCursor(mp_TBWindow->m_EditingCursor);
+    QTextCursor cursor = mp_TBWindow->mp_Text->textCursor();
+
+    for(const std::unique_ptr<Command>& cmd : m_Buffer)
+        cmd->perform(cursor);
 
     m_Buffer.clear();
-
-    if(m_CurrentHyperlink != 0) {
-        QTextCharFormat chfmt(m_CurrentCharFormat);
-        chfmt.setAnchor(true);
-        chfmt.setAnchorHref(QStringLiteral("%1").arg(m_CurrentHyperlink));
-
-        m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, chfmt));
-    }
 
     emit textChanged();
 }
@@ -108,26 +112,33 @@ void Glk::TextBufferDevice::onHyperlinkPushed(glui32 linkval) {
     if(m_CurrentHyperlink == linkval)
         return;
 
+    m_CurrentCharFormat = m_CurrentNonHLCharFormat;
     m_CurrentHyperlink = linkval;
 
-    if(m_CurrentHyperlink == 0) {
-        m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, m_CurrentCharFormat));
-    } else {
-        QTextCharFormat chfmt(m_CurrentCharFormat);
-        chfmt.setAnchor(true);
-        chfmt.setAnchorHref(QStringLiteral("%1").arg(m_CurrentHyperlink));
-        chfmt.setForeground(Qt::blue);
-        chfmt.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-
-        m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, chfmt));
+    if(m_CurrentHyperlink != 0) {
+        m_CurrentCharFormat.setAnchor(true);
+        m_CurrentCharFormat.setAnchorHref(QStringLiteral("%1").arg(m_CurrentHyperlink));
+        m_CurrentCharFormat.setForeground(Qt::blue);
+        m_CurrentCharFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
     }
+
+    m_Buffer.push_back(std::unique_ptr<Command>(new WriteCommand(QString(), m_CurrentBlockFormat, m_CurrentCharFormat)));
 }
 
 void Glk::TextBufferDevice::onWindowStyleChanged(const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt) {
     m_CurrentBlockFormat = blkfmt;
+
+    m_CurrentNonHLCharFormat = chfmt;
     m_CurrentCharFormat = chfmt;
 
-    m_Buffer.append(FormattedText(QString(), m_CurrentBlockFormat, m_CurrentCharFormat));
+    if(m_CurrentHyperlink != 0) {
+        m_CurrentCharFormat.setAnchor(true);
+        m_CurrentCharFormat.setAnchorHref(QStringLiteral("%1").arg(m_CurrentHyperlink));
+        m_CurrentCharFormat.setForeground(Qt::blue);
+        m_CurrentCharFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+    }
+
+    m_Buffer.push_back(std::unique_ptr<Command>(new WriteCommand(QString(), m_CurrentBlockFormat, m_CurrentCharFormat)));
 }
 
 Glk::TextBufferWindow::History::History() : m_History(), m_Iterator(m_History.begin()) {
@@ -209,7 +220,11 @@ void Glk::TextBufferBrowser::keyPressEvent(QKeyEvent* event) {
     }
 }
 
-Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false, true), mp_Text(), m_EditingCursor(), m_History(), m_Styles(QGlk::getMainWindow().textBufferStyleManager()), m_CurrentStyleType(Glk::Style::Normal), m_PreviousStyleType(Glk::Style::Normal) {
+Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDevice(this), rock_, true, true, false,
+                                                               true), mp_Text(), m_History(),
+                                                        m_Styles(QGlk::getMainWindow().textBufferStyleManager()),
+                                                        m_CurrentStyleType(Glk::Style::Normal),
+                                                        m_PreviousStyleType(Glk::Style::Normal) {
     setFocusPolicy(Qt::FocusPolicy::NoFocus);
 
     QLayout* lay = new QGridLayout(this);
@@ -221,9 +236,6 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
     mp_Text->setReadOnly(true);
     mp_Text->setOpenExternalLinks(false);
     mp_Text->setOpenLinks(false);
-
-    m_EditingCursor = mp_Text->textCursor();
-    m_EditingCursor.movePosition(QTextCursor::End);
 
     lay->addWidget(mp_Text);
 
@@ -262,7 +274,8 @@ Glk::TextBufferWindow::TextBufferWindow(glui32 rock_) : Window(new TextBufferDev
         &QGlk::getMainWindow(), &QGlk::poll,
         ioDevice(), &Glk::TextBufferDevice::flush);
 
-    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].blockFormat(), m_Styles[m_CurrentStyleType].charFormat());
+    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].blockFormat(),
+                                     m_Styles[m_CurrentStyleType].charFormat());
 }
 
 bool Glk::TextBufferWindow::drawImage(const QImage& im, glsi32 alignment, glui32 w, glui32 h) {
@@ -279,7 +292,8 @@ void Glk::TextBufferWindow::setStyle(Glk::Style::Type style) {
 
     m_PreviousStyleType = m_CurrentStyleType;
     m_CurrentStyleType = style;
-    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].blockFormat(), m_Styles[m_CurrentStyleType].charFormat());
+    ioDevice()->onWindowStyleChanged(m_Styles[m_CurrentStyleType].blockFormat(),
+                                     m_Styles[m_CurrentStyleType].charFormat());
 }
 
 void Glk::TextBufferWindow::clearWindow() {
@@ -291,7 +305,7 @@ void Glk::TextBufferWindow::clearWindow() {
 void Glk::TextBufferWindow::onHyperlinkClicked(const QUrl& link) {
     glui32 linkval = link.toString().toUInt();
 
-    Glk::postTaskToGlkThread([ = ]() {
+    Glk::postTaskToGlkThread([=]() {
         hyperlinkInputProvider()->handleHyperlinkClicked(linkval);
     });
 }
@@ -307,10 +321,13 @@ void Glk::TextBufferWindow::resizeEvent(QResizeEvent* ev) {
 }
 
 QSize Glk::TextBufferWindow::pixelsToUnits(const QSize& pixels) const {
-    int hmargins = contentsMargins().left() + contentsMargins().right() + mp_Text->contentsMargins().left() + mp_Text->contentsMargins().right();
-    int vmargins = contentsMargins().top() + contentsMargins().bottom() + mp_Text->contentsMargins().top() + mp_Text->contentsMargins().bottom();
+    int hmargins = contentsMargins().left() + contentsMargins().right() + mp_Text->contentsMargins().left() +
+                   mp_Text->contentsMargins().right();
+    int vmargins = contentsMargins().top() + contentsMargins().bottom() + mp_Text->contentsMargins().top() +
+                   mp_Text->contentsMargins().bottom();
 
-    QSize u(std::clamp(pixels.width() - hmargins, 0, size().width() - hmargins), std::clamp(pixels.height() - vmargins, 0, size().height() - vmargins));
+    QSize u(std::clamp(pixels.width() - hmargins, 0, size().width() - hmargins),
+            std::clamp(pixels.height() - vmargins, 0, size().height() - vmargins));
 
     u.setWidth(u.width() / mp_Text->fontMetrics().horizontalAdvance('0'));
     u.setHeight(u.height() / mp_Text->fontMetrics().height());
@@ -319,10 +336,13 @@ QSize Glk::TextBufferWindow::pixelsToUnits(const QSize& pixels) const {
 }
 
 QSize Glk::TextBufferWindow::unitsToPixels(const QSize& units) const {
-    int hmargins = contentsMargins().left() + contentsMargins().right() + mp_Text->contentsMargins().left() + mp_Text->contentsMargins().right();
-    int vmargins = contentsMargins().top() + contentsMargins().bottom() + mp_Text->contentsMargins().top() + mp_Text->contentsMargins().bottom();
+    int hmargins = contentsMargins().left() + contentsMargins().right() + mp_Text->contentsMargins().left() +
+                   mp_Text->contentsMargins().right();
+    int vmargins = contentsMargins().top() + contentsMargins().bottom() + mp_Text->contentsMargins().top() +
+                   mp_Text->contentsMargins().bottom();
 
-    QSize u(hmargins + units.width()*mp_Text->fontMetrics().horizontalAdvance('0'), vmargins + units.height()*mp_Text->fontMetrics().height());
+    QSize u(hmargins + units.width() * mp_Text->fontMetrics().horizontalAdvance('0'),
+            vmargins + units.height() * mp_Text->fontMetrics().height());
 
     return u;
 }
@@ -346,11 +366,11 @@ void Glk::TextBufferWindow::onLineInputRequested() {
 }
 
 void Glk::TextBufferWindow::onLineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode) {
-    m_EditingCursor.movePosition(QTextCursor::End);
+    mp_Text->textCursor().movePosition(QTextCursor::End);
 
     if(!keyboardInputProvider()->echoesLine()) {
         for(glui32 ii = 0; ii < len; ii++) // equality because of newline at end
-            m_EditingCursor.deletePreviousChar(); // TODO more efficient?
+            mp_Text->textCursor().deletePreviousChar(); // TODO more efficient?
     } else {
         windowStream()->writeUnicodeChar('\n');
 
@@ -386,7 +406,7 @@ void Glk::TextBufferWindow::onCharacterInput(glui32 ch, bool doFlush) {
 void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc, bool doFlush) {
     switch(kc) {
         case keycode_Delete:
-            m_EditingCursor.deletePreviousChar();
+            mp_Text->textCursor().deletePreviousChar();
             break;
 
         case keycode_Down:
@@ -399,11 +419,11 @@ void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc, bool doFlush) {
             break;
 
         case keycode_Left:
-            m_EditingCursor.movePosition(QTextCursor::PreviousCharacter);
+            mp_Text->textCursor().movePosition(QTextCursor::PreviousCharacter);
             break;
 
         case keycode_Right:
-            m_EditingCursor.movePosition(QTextCursor::NextCharacter);
+            mp_Text->textCursor().movePosition(QTextCursor::NextCharacter);
             break;
 
         case keycode_Up:
@@ -415,5 +435,3 @@ void Glk::TextBufferWindow::onSpecialCharacterInput(glui32 kc, bool doFlush) {
     if(doFlush)
         ioDevice()->flush();
 }
-
-#include "moc_textbufferwindow.cpp"
