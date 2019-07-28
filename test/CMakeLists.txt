@@ -11,32 +11,34 @@ endif()
 find_package(Curses REQUIRED)
 find_package(Threads REQUIRED)
 
-add_library(glkterm STATIC
-        glkterm-1.0.4/main.c
-#         glkterm-1.0.4/glkstart.c
-        glkterm-1.0.4/gtevent.c
-        glkterm-1.0.4/gtfref.c
-        glkterm-1.0.4/gtgestal.c
-        glkterm-1.0.4/gtinput.c
-        glkterm-1.0.4/gtmessag.c
-        glkterm-1.0.4/gtmessin.c
-        glkterm-1.0.4/gtmisc.c
-        glkterm-1.0.4/gtstream.c
-        glkterm-1.0.4/gtstyle.c
-        glkterm-1.0.4/gtw_blnk.c
-        glkterm-1.0.4/gtw_buf.c
-        glkterm-1.0.4/gtw_grid.c
-        glkterm-1.0.4/gtw_pair.c
-        glkterm-1.0.4/gtwindow.c
-        glkterm-1.0.4/gtschan.c
-        glkterm-1.0.4/gtblorb.c
-        glkterm-1.0.4/cgunicod.c
-        glkterm-1.0.4/cgdate.c
-        glkterm-1.0.4/gi_dispa.c
-        glkterm-1.0.4/gi_blorb.c
-)
-    target_include_directories(glkterm PRIVATE glkterm-1.0.4/ ${CURSES_INCLUDE_DIR})
-    target_link_libraries(glkterm ${CURSES_LIBRARIES})
+if(${BUILD_GLKTERM})
+    add_library(glkterm STATIC
+            glkterm-1.0.4/main.c
+    #         glkterm-1.0.4/glkstart.c
+            glkterm-1.0.4/gtevent.c
+            glkterm-1.0.4/gtfref.c
+            glkterm-1.0.4/gtgestal.c
+            glkterm-1.0.4/gtinput.c
+            glkterm-1.0.4/gtmessag.c
+            glkterm-1.0.4/gtmessin.c
+            glkterm-1.0.4/gtmisc.c
+            glkterm-1.0.4/gtstream.c
+            glkterm-1.0.4/gtstyle.c
+            glkterm-1.0.4/gtw_blnk.c
+            glkterm-1.0.4/gtw_buf.c
+            glkterm-1.0.4/gtw_grid.c
+            glkterm-1.0.4/gtw_pair.c
+            glkterm-1.0.4/gtwindow.c
+            glkterm-1.0.4/gtschan.c
+            glkterm-1.0.4/gtblorb.c
+            glkterm-1.0.4/cgunicod.c
+            glkterm-1.0.4/cgdate.c
+            glkterm-1.0.4/gi_dispa.c
+            glkterm-1.0.4/gi_blorb.c
+    )
+        target_include_directories(glkterm PRIVATE glkterm-1.0.4/ ${CURSES_INCLUDE_DIR})
+        target_link_libraries(glkterm ${CURSES_LIBRARIES})
+endif()
 
 
 add_executable(model-qglk
@@ -45,13 +47,15 @@ add_executable(model-qglk
 )
     target_include_directories(model-qglk PRIVATE ../src/)
     target_link_libraries(model-qglk qglk)
-    
-add_executable(model-glkterm
-        model.c
-        glkterm-1.0.4/glkstart.c
-)
-    target_include_directories(model-glkterm PRIVATE glkterm-1.0.4/)
-    target_link_libraries(model-glkterm glkterm)
+
+if(${BUILD_GLKTERM})
+    add_executable(model-glkterm
+            model.c
+            glkterm-1.0.4/glkstart.c
+    )
+        target_include_directories(model-glkterm PRIVATE glkterm-1.0.4/)
+        target_link_libraries(model-glkterm glkterm)
+endif()
     
 
 add_executable(multiwin-qglk
@@ -60,13 +64,15 @@ add_executable(multiwin-qglk
 )
     target_include_directories(multiwin-qglk PRIVATE ../src/)
     target_link_libraries(multiwin-qglk qglk)
-    
-add_executable(multiwin-glkterm
-        multiwin.c
-        glkterm-1.0.4/glkstart.c
-)
-    target_include_directories(multiwin-glkterm PRIVATE glkterm-1.0.4/)
-    target_link_libraries(multiwin-glkterm glkterm)
+
+if(${BUILD_GLKTERM})
+    add_executable(multiwin-glkterm
+            multiwin.c
+            glkterm-1.0.4/glkstart.c
+    )
+        target_include_directories(multiwin-glkterm PRIVATE glkterm-1.0.4/)
+        target_link_libraries(multiwin-glkterm glkterm)
+endif()
     
 
 set(GIT_SOURCES
@@ -92,11 +98,13 @@ add_executable(git-qglk ${GIT_SOURCES})
     target_include_directories(git-qglk PRIVATE git-1.3.5/ ../src/)
     target_link_libraries(git-qglk qglk)
 install(TARGETS git-qglk DESTINATION bin)
-    
-add_executable(git-glkterm ${GIT_SOURCES})
-    target_compile_definitions(git-glkterm PRIVATE "-DUSE_MMAP -DUSE_INLINE")
-    target_include_directories(git-glkterm PRIVATE git-1.3.5/ glkterm-1.0.4/)
-    target_link_libraries(git-glkterm glkterm ${MATH_LIBRARY})
+
+if(${BUILD_GLKTERM})
+    add_executable(git-glkterm ${GIT_SOURCES})
+        target_compile_definitions(git-glkterm PRIVATE "-DUSE_MMAP -DUSE_INLINE")
+        target_include_directories(git-glkterm PRIVATE git-1.3.5/ glkterm-1.0.4/)
+        target_link_libraries(git-glkterm glkterm ${MATH_LIBRARY})
+endif()
 
     
 find_package(Perl REQUIRED)
@@ -184,15 +192,17 @@ add_executable(nitfol-qglk
     target_link_libraries(nitfol-qglk qglk)
 install(TARGETS nitfol-qglk DESTINATION bin)
 
-add_executable(nitfol-glkterm
-        ${NITFOL_SOURCES}
-        ${NITFOL_OS_SOURCES}
-        nitfol-0.5_p1/no_graph.c
-        nitfol-0.5_p1/no_snd.c
-)
-    target_compile_definitions(nitfol-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
-    target_include_directories(nitfol-glkterm PRIVATE nitfol-0.5_p1/ glkterm-1.0.4/)
-    target_link_libraries(nitfol-glkterm glkterm ${MATH_LIBRARY})
+if(${BUILD_GLKTERM})
+    add_executable(nitfol-glkterm
+            ${NITFOL_SOURCES}
+            ${NITFOL_OS_SOURCES}
+            nitfol-0.5_p1/no_graph.c
+            nitfol-0.5_p1/no_snd.c
+    )
+        target_compile_definitions(nitfol-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
+        target_include_directories(nitfol-glkterm PRIVATE nitfol-0.5_p1/ glkterm-1.0.4/)
+        target_link_libraries(nitfol-glkterm glkterm ${MATH_LIBRARY})
+endif()
 
 set(GLULXE_SOURCES
     glulxe-0.5.4/main.c
@@ -281,15 +291,17 @@ add_executable(tads2-qglk
     target_link_libraries(tads2-qglk qglk)
 install(TARGETS tads2-qglk DESTINATION bin)
 
-add_executable(tads2-glkterm
-        ${TADS2_SOURCES}
-)
-    target_compile_definitions(tads2-glkterm PRIVATE
-        OSANSI
-        GLKTERM
-        GLKUNIX
-        GLK
-        memicmp=strncasecmp
+if(${BUILD_GLKTERM})
+    add_executable(tads2-glkterm
+            ${TADS2_SOURCES}
     )
-    target_include_directories(tads2-glkterm PRIVATE tads-3.0.8/tads2/ tads-3.0.8/tads2/glk ../src/)
-    target_link_libraries(tads2-glkterm glkterm ${MATH_LIBRARY})
+        target_compile_definitions(tads2-glkterm PRIVATE
+            OSANSI
+            GLKTERM
+            GLKUNIX
+            GLK
+            memicmp=strncasecmp
+        )
+        target_include_directories(tads2-glkterm PRIVATE tads-3.0.8/tads2/ tads-3.0.8/tads2/glk ../src/)
+        target_link_libraries(tads2-glkterm glkterm ${MATH_LIBRARY})
+endif()
