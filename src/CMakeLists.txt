@@ -22,6 +22,7 @@ add_library(qglk STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_window.cpp)
     set_target_properties(qglk PROPERTIES
         AUTOMOC                     ON
+        AUTOUIC                     ON
         CXX_VISIBILITY_PRESET       hidden)
     target_include_directories(qglk
         PUBLIC
