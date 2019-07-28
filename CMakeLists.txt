@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.11)
 project(QGlk)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -14,6 +14,9 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_C_VISIBILITY_PRESET   hidden)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 add_subdirectory(src/)
 add_subdirectory(test/)

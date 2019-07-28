@@ -1,6 +1,3 @@
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
@@ -22,10 +19,16 @@ add_library(qglk STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_stream.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_unix.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/qglk_window.cpp
-)
-    target_include_directories(qglk PRIVATE src/)
-    target_link_libraries(qglk ${QT_REQUIRED_LIBS})
+    ${CMAKE_CURRENT_SOURCE_DIR}/qglk_window.cpp)
+    set_target_properties(qglk PROPERTIES
+        AUTOMOC                     ON
+        CXX_VISIBILITY_PRESET       hidden)
+    target_include_directories(qglk
+        PUBLIC
+            ${CMAKE_CURRENT_SOURCE_DIR})
+    target_link_libraries(qglk
+        PRIVATE
+            ${QT_REQUIRED_LIBS})
 
 install(TARGETS qglk DESTINATION lib/glk)
 
