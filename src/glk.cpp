@@ -51,9 +51,9 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
             return TRUE;
 
         case gestalt_DrawImage:
-            if(val == Glk::Window::Graphics)
+            if(val == Glk::Window::Graphics || val == Glk::Window::TextBuffer)
                 return TRUE;
-            else // TODO implement for text buffer windows
+            else
                 return FALSE;
 
         case gestalt_Graphics:
