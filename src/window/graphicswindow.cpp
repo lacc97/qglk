@@ -7,80 +7,59 @@
 #include "qglk.hpp"
 #include "stream/nulldevice.hpp"
 
-Glk::GraphicsWindow::GraphicsWindow(glui32 rock_) : Window(new NullDevice(), rock_, true, false, true, false), m_Buffer(QSize(1, 1), QImage::Format_ARGB32_Premultiplied) {
-    QPalette pal = palette();
-    pal.setColor(QPalette::Background, Qt::black);
-    setPalette(pal);
-
-    connect(
-        &QGlk::getMainWindow(), &QGlk::poll,
-        this, qOverload<>(&Glk::GraphicsWindow::update));
+Glk::GraphicsWindow::GraphicsWindow(GraphicsWindowController* winController, PairWindow* winParent, glui32 objRock)
+    : Window(winController, new WindowDevice{this}, winParent, objRock),
+      m_Buffer{1, 1},
+      m_BGColor{} {
 }
 
-void Glk::GraphicsWindow::setBackgroundColor(const QColor& c) {
-    QPalette pal = palette();
-//     QColor prev = pal.color(QPalette::Background);
-    pal.setColor(QPalette::Background, c);
-    setPalette(pal);
+void Glk::GraphicsWindow::clearWindow() {
+    assert(onGlkThread());
 
-//     if(prev != c)
-//         QGlk::getMainWindow().eventQueue().push(event_t{evtype_Redraw, TO_WINID(this), 0, 0});
+    m_Buffer.fill(Qt::transparent);
+
+    controller()->requestSynchronization();
 }
 
-bool Glk::GraphicsWindow::drawImage(const QImage& im, glsi32 x, glsi32 y, glui32 w, glui32 h) {
-    QPainter* p = new QPainter(&m_Buffer);
+bool Glk::GraphicsWindow::drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize) {
+    assert(onGlkThread());
+
+    std::unique_ptr<QPainter> p = std::make_unique<QPainter>(&m_Buffer);
     p->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    p->drawImage(QRect(x, y, w, h), im);
-    delete p;
+    p->drawImage(QRect{param1, param2, imgSize.width(), imgSize.height()}, img);
+
+    controller()->requestSynchronization();
 
     return true;
 }
 
-void Glk::GraphicsWindow::fillRect(const QColor& c, glsi32 x, glsi32 y, glui32 w, glui32 h) {
-    QPainter* p = new QPainter(&m_Buffer);
-    p->fillRect(x, y, w, h, c);
-    delete p;
+void Glk::GraphicsWindow::eraseRect(const QRect& rect) {
+    fillRect(Qt::transparent, rect);
 }
 
-void Glk::GraphicsWindow::clearWindow() {
-    m_Buffer = QImage(size(), QImage::Format_ARGB32_Premultiplied);
+void Glk::GraphicsWindow::fillRect(const QColor& color, const QRect& rect) {
+    assert(onGlkThread());
 
-    QPainter* p = new QPainter(&m_Buffer);
-    p->fillRect(rect(), palette().background());
-    delete p;
+    std::unique_ptr<QPainter> p = std::make_unique<QPainter>(&m_Buffer);
+    p->fillRect(rect, color);
+
+    controller()->requestSynchronization();
 }
 
-void Glk::GraphicsWindow::paintEvent(QPaintEvent* ev) {
-    Window::paintEvent(ev);
+void Glk::GraphicsWindow::setBackgroundColor(const QColor& color) {
+    assert(onGlkThread());
 
-    QRect r = ev->region().boundingRect();
-
-    QPainter* p = new QPainter(this);
-    p->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    p->drawImage(r, m_Buffer, r);
-    delete p;
+    m_BGColor = color;
 }
 
-void Glk::GraphicsWindow::resizeEvent(QResizeEvent* ev) {
-//     Window::resizeEvent(ev);
+void Glk::GraphicsWindow::resizeBuffer(QSize newSize) {
+    assert(onEventThread());
 
-    QImage newi(ev->size(), QImage::Format_ARGB32_Premultiplied);
+    QPixmap newBuffer{newSize};
 
-    QPainter* p = new QPainter(&newi);
-    p->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    p->fillRect(rect(), palette().background());
-    p->drawImage(QPoint(0, 0), m_Buffer);
-    delete p;
+    std::unique_ptr<QPainter> p = std::make_unique<QPainter>(&newBuffer);
+    p->fillRect(newBuffer.rect(), Qt::transparent);
+    p->drawPixmap(0, 0, m_Buffer);
 
-    m_Buffer = std::move(newi);
-
-//     QGlk::getMainWindow().eventQueue().push(event_t{evtype_Redraw, TO_WINID(this), 0, 0});
-}
-
-QSize Glk::GraphicsWindow::pixelsToUnits(const QSize& pixels) const {
-    return pixels;
-}
-
-QSize Glk::GraphicsWindow::unitsToPixels(const QSize& units) const {
-    return units;
+    m_Buffer = std::move(newBuffer);
 }

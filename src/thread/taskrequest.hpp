@@ -34,7 +34,13 @@ namespace Glk {
     private:
         QSemaphore& mr_Semaphore;
     };
-    
+
+    [[nodiscard]] bool onEventThread();
+    [[nodiscard]] bool onGlkThread();
+
+
+    void postTaskToEventThread(const std::function<void(void)>& tsk);
+
     void postTaskToGlkThread(const std::function<void(void)>& tsk);
     
     void sendTaskToEventThread(const std::function<void(void)>& tsk);

@@ -6,11 +6,14 @@
 #include <QThreadPool>
 
 #include "glk.hpp"
+
 extern "C" {
 #include "glkstart.h"
 }
 
 #include "exception.hpp"
+
+#include "window/pairwindow.hpp"
 
 #define ex_Void (0)
 #define ex_Int (1)
@@ -45,7 +48,7 @@ static int string_to_bool(char* str) {
 static int extract_value(int argc, char* argv[], char* optname, int type,
                          int* argnum, int* result, int defval) {
     int optlen, val;
-    char* cx, *origcx, firstch;
+    char* cx, * origcx, firstch;
 
     optlen = strlen(optname);
     origcx = argv[*argnum];
@@ -123,12 +126,14 @@ static int extract_value(int argc, char* argv[], char* optname, int type,
     return FALSE;
 }
 
-Glk::Runnable::Runnable(int argc_, char** argv_) : argc(argc_), argv(argv_) {
+Glk::Runnable::Runnable(int argc_, char** argv_)
+    : argc(argc_),
+      argv(argv_) {
 }
 
 void Glk::Runnable::run() {
     mp_Thread = QThread::currentThread();
-    
+
     // Code taken from glkterm-1.0.4
     //
     int ix, jx, val;
@@ -141,14 +146,14 @@ void Glk::Runnable::run() {
         return;
     }
 
-    if((glui32)(-1) < 0) {
+    if((glui32) (-1) < 0) {
         printf("Compile-time error: glui32 is not unsigned. Please fix glk.h.\n");
         return;
     }
 
     /* Now some argument-parsing. This is probably going to hurt. */
     startdata.argc = 0;
-    startdata.argv = (char**)malloc(argc * sizeof(char*));
+    startdata.argv = (char**) malloc(argc * sizeof(char*));
 
     /* Copy in the program name. */
     startdata.argv[startdata.argc] = argv[0];
@@ -160,8 +165,8 @@ void Glk::Runnable::run() {
         char* cx;
 
         for(argform = glkunix_arguments;
-                argform->argtype != glkunix_arg_End && !errflag;
-                argform++) {
+            argform->argtype != glkunix_arg_End && !errflag;
+            argform++) {
 
             if(argform->name[0] == '\0') {
                 if(argv[ix][0] != '-') {
@@ -198,7 +203,7 @@ void Glk::Runnable::run() {
                     }
                 } else if(argform->argtype == glkunix_arg_NumberValue) {
                     if(ix + 1 >= argc
-                            || (atoi(argv[ix + 1]) == 0 && argv[ix + 1][0] != '0')) {
+                       || (atoi(argv[ix + 1]) == 0 && argv[ix + 1][0] != '0')) {
                         printf("%s: %s must be followed by a number\n",
                                argv[0], argform->name);
                         errflag = TRUE;
@@ -242,8 +247,8 @@ void Glk::Runnable::run() {
             printf("game options:\n");
 
             for(argform = glkunix_arguments;
-                    argform->argtype != glkunix_arg_End;
-                    argform++) {
+                argform->argtype != glkunix_arg_End;
+                argform++) {
                 if(strlen(argform->name) == 0)
                     printf("  %s\n", argform->desc);
                 else if(argform->argtype == glkunix_arg_ValueFollows)
@@ -275,28 +280,49 @@ void Glk::Runnable::run() {
     return;
 }
 
-QGlk::QGlk(int argc, char** argv) : QMainWindow(), ui(new Ui::QGlk), mp_Runnable(new Glk::Runnable(argc, argv)), mp_RootWindow(NULL), m_InterruptHandler(), m_DefaultStyles(), m_TextBufferStyles() {
-    setMinimumSize(640, 480);
-    ui->setupUi(this);
+QGlk::QGlk(int argc, char** argv)
+    : QMainWindow(),
+      mp_UI{new Ui::QGlk},
+      mp_Runnable{new Glk::Runnable(argc, argv)},
+      mp_RootWindow{nullptr},
+      m_DeleteQueue{},
+      m_EventQueue{},
+      m_WindowList{},
+      m_StreamList{},
+      m_FileReferenceList{},
+      m_SoundChannelList{},
+      m_InterruptHandler{},
+      m_DefaultStyles{},
+      m_TextBufferStyles{} {
+    setMinimumSize(800, 600);
+    mp_UI->setupUi(this);
 
     mp_Runnable->setAutoDelete(true);
+
+    QObject::connect(&m_EventQueue, &Glk::EventQueue::canSynchronize,
+                     this, &QGlk::synchronize,
+                     Qt::BlockingQueuedConnection);
 }
 
 QGlk::~QGlk() {
     // windows contain their own window streams so we first delete windows, then streams
     while(!m_WindowList.empty())
         delete m_WindowList.first();
-    
+
     while(!m_StreamList.empty())
         delete m_StreamList.first();
-    
+
     while(!m_FileReferenceList.empty())
         delete m_FileReferenceList.first();
-    
+
     while(!m_SoundChannelList.empty())
         delete m_SoundChannelList.first();
-    
-    delete ui;
+
+    delete mp_UI;
+}
+
+void QGlk::addToDeleteQueue(Glk::WindowController* winController) {
+    m_DeleteQueue.push_back(winController);
 }
 
 void QGlk::run() {
@@ -310,6 +336,36 @@ bool QGlk::event(QEvent* event) {
         return QMainWindow::event(event);
 }
 
+void QGlk::synchronize() {
+
+
+    while(!m_DeleteQueue.empty()) {
+        delete m_DeleteQueue.front();
+        m_DeleteQueue.pop_front();
+    }
+
+    if(!mp_RootWindow) {
+        if(centralWidget() != nullptr)
+            setCentralWidget(nullptr);
+    } else if(centralWidget() != mp_RootWindow->controller()->widget()) {
+        setCentralWidget(mp_RootWindow->controller()->widget());
+        mp_RootWindow->controller()->widget()->show();
+
+        mp_RootWindow->controller()->synchronize();
+    } else {
+        auto fn_recursive_synchronize = [](auto&& this_fn, Glk::WindowController* win) mutable -> void {
+            if(win->window()->windowType() == Glk::Window::Pair && !win->requiresSynchronization()) {
+                this_fn(this_fn, win->window<Glk::PairWindow>()->firstWindow()->controller());
+                this_fn(this_fn, win->window<Glk::PairWindow>()->secondWindow()->controller());
+            } else if(win->requiresSynchronization()) {
+                win->synchronize();
+            }
+        };
+
+        fn_recursive_synchronize(fn_recursive_synchronize, mp_RootWindow->controller());
+    }
+}
+
 void QGlk::closeEvent(QCloseEvent* event) {
     m_EventQueue.interrupt();
     event->accept();
@@ -318,7 +374,7 @@ void QGlk::closeEvent(QCloseEvent* event) {
 void QGlk::resizeEvent(QResizeEvent* event) {
     QMainWindow::resizeEvent(event);
 
-    eventQueue().push(event_t {evtype_Arrange, NULL, 0, 0});
+    eventQueue().push(event_t{evtype_Arrange, NULL, 0, 0});
 }
 
 bool QGlk::handleGlkTask(Glk::TaskEvent* event) {

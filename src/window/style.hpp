@@ -27,20 +27,25 @@ namespace Glk {
                 STYLE(User2)
             };
 
-            Style(Type type_ = Normal);
-            
-            const QTextBlockFormat blockFormat() const;
-            const QTextCharFormat charFormat() const;
-            
-            glui32 getHint(glui32 hint) const;
+            explicit Style(Type type_ = Normal);
+
+            [[nodiscard]] QTextBlockFormat blockFormat() const;
+
+            [[nodiscard]] QTextCharFormat charFormat() const;
+
+            [[nodiscard]] glui32 getHint(glui32 hint) const;
+
             bool measureHint(glui32 hint, glui32* result) const;
+
             void setHint(glui32 hint, glui32 value);
-            inline Type type() const {
+
+            [[nodiscard]] inline Type type() const {
                 return m_Type;
             }
 
-            bool operator==(const Style& other) const;
-            inline bool operator!=(const Style& other) const {
+            [[nodiscard]] bool operator==(const Style& other) const;
+
+            [[nodiscard]] inline bool operator!=(const Style& other) const {
                 return !(operator==(other));
             }
 

@@ -25,8 +25,23 @@ void Glk::SynchronizedTaskEvent::execute() {
     mr_Semaphore.release(1);
 }
 
+bool Glk::onEventThread() {
+    return QGlk::getMainWindow().thread() == QThread::currentThread();
+}
+
+bool Glk::onGlkThread() {
+    return QGlk::getMainWindow().glkRunnable()->glkThread() == QThread::currentThread();
+}
+
+void Glk::postTaskToEventThread(const std::function<void(void)>& tsk) {
+    if(!onEventThread())
+        QCoreApplication::postEvent(&QGlk::getMainWindow(), new TaskEvent(tsk), Qt::HighEventPriority);
+    else
+        tsk();
+}
+
 void Glk::postTaskToGlkThread(const std::function<void ()>& tsk) {
-    if(QGlk::getMainWindow().glkRunnable()->glkThread() != QThread::currentThread())
+    if(!onGlkThread())
         QGlk::getMainWindow().eventQueue().pushTaskEvent(new TaskEvent(tsk));
     else
         tsk();
@@ -34,7 +49,7 @@ void Glk::postTaskToGlkThread(const std::function<void ()>& tsk) {
 
 // This function should only be called from the glk thread.
 void Glk::sendTaskToEventThread(const std::function<void ()>& tsk) {
-    if(QGlk::getMainWindow().thread() != QThread::currentThread()) {
+    if(!onEventThread()) {
         QSemaphore sem(0);
         TaskEvent* te = new SynchronizedTaskEvent(sem, tsk);
         QCoreApplication::postEvent(&QGlk::getMainWindow(), te, Qt::HighEventPriority);

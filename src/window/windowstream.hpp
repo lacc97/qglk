@@ -5,35 +5,59 @@
 
 namespace Glk {
     class Window;
-    
-    class WindowStream : public UnicodeStream {
-            Q_OBJECT
-        public:
-            WindowStream(Window* parent_, QIODevice* device_);
 
-            inline Glk::Stream* echoStream() const {
+    class WindowDevice : public QIODevice {
+        public:
+            explicit WindowDevice(Window* win);
+
+            ~WindowDevice() override = default;
+
+            template<class WindowT = Window>
+            [[nodiscard]] inline WindowT* window() const {
+                static_assert(std::is_base_of_v<Window, WindowT>);
+                assert(dynamic_cast<WindowT*>(mp_Window));
+
+                return static_cast<WindowT*>(mp_Window);
+            }
+
+        protected:
+            qint64 readData(char* data, qint64 maxlen) override;
+
+            qint64 writeData(const char* data, qint64 len) override;
+
+        private:
+            Window* mp_Window;
+    };
+
+    class WindowStream : public UnicodeStream {
+        Q_OBJECT
+        public:
+            explicit WindowStream(WindowDevice* dev);
+
+            [[nodiscard]] inline Glk::Stream* echoStream() const {
                 return mp_EchoStream;
             }
+
             void setEchoStream(Glk::Stream* echo);
-            
+
             void pushStyle(Style::Type sty) override;
-            
+
             void pushHyperlink(glui32 linkval) override;
 
             void writeUnicodeBuffer(glui32* buf, glui32 len) override;
+
             void writeUnicodeChar(glui32 ch) override;
+
             void writeUnicodeString(glui32* str) override;
-            
-            inline QIODevice* getIODevice() const {
-                return device();
+
+            [[nodiscard]] inline WindowDevice* windowDevice() const {
+                return static_cast<WindowDevice*>(device());
             }
 
         public slots:
+
             void onEchoStreamClosed();
-            
-        signals:
-            void hyperlinkPushed(glui32 linkval);
-            
+
         private:
             Glk::Stream* mp_EchoStream;
     };

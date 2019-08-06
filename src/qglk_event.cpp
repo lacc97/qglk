@@ -17,7 +17,7 @@ void glk_tick() {
     emit QGlk::getMainWindow().tick();
 }
 
-void glk_set_interrupt_handler(void (*func)(void)) {
+void glk_set_interrupt_handler(void (* func)(void)) {
     QGlk::getMainWindow().setInterruptHandler(func);
 }
 
@@ -38,6 +38,10 @@ void glk_select(event_t* event) {
 }
 
 void glk_select_poll(event_t* event) {
+    Glk::sendTaskToEventThread([]() {
+        QGlk::getMainWindow().synchronize();
+    });
+
     emit QGlk::getMainWindow().poll();
 
     log_debug() << "Polling events";
@@ -53,91 +57,87 @@ void glk_select_poll(event_t* event) {
 void glk_request_char_event(winid_t win) {
     log_trace() << "glk_request_char_event(" << win << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->keyboardInputProvider()->requestCharInput(false);
-    });
+    FROM_WINID(win)->controller()->requestCharInput(false);
 }
 
 void glk_request_char_event_uni(winid_t win) {
     log_trace() << "glk_request_char_event_uni(" << win << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->keyboardInputProvider()->requestCharInput(true);
-    });
+    FROM_WINID(win)->controller()->requestCharInput(true);
 }
 
 void glk_cancel_char_event(winid_t win) {
     log_trace() << "glk_cancel_char_event(" << win << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->keyboardInputProvider()->cancelCharInputRequest();
-    });
+    FROM_WINID(win)->controller()->cancelCharInput();
 }
 
 void glk_request_line_event(winid_t win, char* buf, glui32 maxlen, glui32 initlen) {
-    log_trace() << "glk_request_line_event(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
+    log_trace() << "glk_request_line_event(" << win << "," << ((void*) buf) << "," << maxlen << "," << initlen << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->keyboardInputProvider()->requestLineInput(buf, maxlen, initlen, false);
-    });
+    FROM_WINID(win)->controller()->requestLineInput(buf, maxlen, initlen, false);
 }
 
 void glk_request_line_event_uni(winid_t win, glui32* buf, glui32 maxlen, glui32 initlen) {
-    log_trace() << "glk_request_line_event_uni(" << win << "," << ((void*)buf) << "," << maxlen << "," << initlen << ")";
+    log_trace() << "glk_request_line_event_uni(" << win << "," << ((void*) buf) << "," << maxlen << "," << initlen
+                << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->keyboardInputProvider()->requestLineInput(buf, maxlen, initlen, true);
-    });
+    FROM_WINID(win)->controller()->requestLineInput(buf, maxlen, initlen, true);
 }
 
 void glk_cancel_line_event(winid_t win, event_t* event) {
     log_trace() << "glk_cancel_line_event(" << win << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->keyboardInputProvider()->cancelLineInputRequest(event);
-    });
+    auto retEvent = FROM_WINID(win)->controller()->cancelLineInput();
+
+    if(event)
+        *event = retEvent;
 }
 
 void glk_set_echo_line_event(winid_t win, glui32 val) {
     log_trace() << "glk_set_echo_line_event(" << win << ", " << (val != 0) << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->keyboardInputProvider()->setLineEcho(val != 0);
-    });
+    FROM_WINID(win)->controller()->setLineInputEcho(val != 0);
 }
 
 void glk_set_terminators_line_event(winid_t win, glui32* keycodes, glui32 count) {
     log_trace() << "glk_set_terminators_line_event(" << win << ", " << keycodes << ", " << count << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->keyboardInputProvider()->setTerminators(keycodes, count);
-    });
+    std::set<Qt::Key> keyset;
+
+    if(keycodes) {
+        for(size_t ii = 0; ii < count; ++ii) {
+            auto qtkeys = Glk::LineInputRequest::toQtKeyTerminators(keycodes[ii]);
+            keyset.insert(qtkeys.begin(), qtkeys.end());
+        }
+    }
+
+    FROM_WINID(win)->controller()->setLineInputTerminators(keyset);
 }
 
 void glk_request_mouse_event(winid_t win) {
     log_trace() << "glk_request_mouse_event(" << win << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->mouseInputProvider()->requestMouseInput();
-    });
+
+    FROM_WINID(win)->controller()->requestMouseInput();
 }
 
 void glk_cancel_mouse_event(winid_t win) {
     log_trace() << "glk_cancel_mouse_event(" << win << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->mouseInputProvider()->cancelMouseInputRequest();
-    });
+    FROM_WINID(win)->controller()->cancelMouseInput();
 }
 
 QTimer* s_Timer = NULL;
+
 void glk_request_timer_events(glui32 millisecs) {
     log_trace() << "glk_request_timer_events(" << millisecs << ")";
 
     Glk::sendTaskToEventThread([&] {
         if(!s_Timer) {
             s_Timer = new QTimer();
-            QObject::connect(s_Timer, &QTimer::timeout, &QGlk::getMainWindow().eventQueue(), &Glk::EventQueue::pushTimerEvent);
+            QObject::connect(s_Timer, &QTimer::timeout, &QGlk::getMainWindow().eventQueue(),
+                             &Glk::EventQueue::pushTimerEvent);
         }
 
         if(millisecs == 0)
@@ -150,15 +150,15 @@ void glk_request_timer_events(glui32 millisecs) {
 void glk_request_hyperlink_event(winid_t win) {
     log_trace() << "glk_request_hyperlink_event(" << win << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->hyperlinkInputProvider()->requestHyperlinkInput();
-    });
+//    Glk::sendTaskToEventThread([&] {
+//        FROM_WINID(win)->hyperlinkInputProvider()->requestHyperlinkInput();
+//    });
 }
 
 void glk_cancel_hyperlink_event(winid_t win) {
     log_trace() << "glk_cancel_hyperlink_event(" << win << ")";
 
-    Glk::sendTaskToEventThread([&] {
-        FROM_WINID(win)->hyperlinkInputProvider()->cancelHyperlinkInputRequest();
-    });
+//    Glk::sendTaskToEventThread([&] {
+//        FROM_WINID(win)->hyperlinkInputProvider()->cancelHyperlinkInputRequest();
+//    });
 }

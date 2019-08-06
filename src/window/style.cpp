@@ -4,7 +4,15 @@
 #include <QFontDatabase>
 #include <QTextBrowser>
 
-Glk::Style::Style(Glk::Style::Type type_) : m_Type(type_), m_Font(QFontDatabase::systemFont(QFontDatabase::GeneralFont)), m_Indentation(0), m_ParaIndentation(0), m_Justification(stylehint_just_LeftRight), m_FontSizeIncrease(0), m_TextColor(QApplication::palette().text().color()), m_BackgroundColor(Qt::white) {
+Glk::Style::Style(Glk::Style::Type type_)
+    : m_Type(type_),
+      m_Font(QFontDatabase::systemFont(QFontDatabase::GeneralFont)),
+      m_Indentation(0),
+      m_ParaIndentation(0),
+      m_Justification(stylehint_just_LeftRight),
+      m_FontSizeIncrease(0),
+      m_TextColor(QApplication::palette().text().color()),
+      m_BackgroundColor(Qt::white) {
     switch(m_Type) { // TODO load these up from a stylesheet file?
         case Emphasized:
             m_Font.setWeight(QFont::Bold);
@@ -66,18 +74,18 @@ Qt::AlignmentFlag toAlignmentFlag(glui32 just) {
     }
 }
 
-const QTextBlockFormat Glk::Style::blockFormat() const {
+QTextBlockFormat Glk::Style::blockFormat() const {
     QTextBlockFormat blk;
 
     blk.setAlignment(toAlignmentFlag(m_Justification));
     blk.setIndent(0.1 * m_Indentation);
     blk.setTextIndent(0.1 * m_ParaIndentation);
-    blk.setBottomMargin(blk.bottomMargin()*1.5);
+    blk.setBottomMargin(blk.bottomMargin() * 1.5);
 
     return blk;
 }
 
-const QTextCharFormat Glk::Style::charFormat() const {
+QTextCharFormat Glk::Style::charFormat() const {
     QTextCharFormat ch;
 
     ch.setFont(m_Font);
@@ -259,8 +267,5 @@ bool Glk::Style::operator==(const Glk::Style& other) const {
     if(m_TextColor == other.m_TextColor)
         return true;
 
-    if(m_BackgroundColor == other.m_BackgroundColor)
-        return true;
-
-    return false;
+    return (m_BackgroundColor == other.m_BackgroundColor);
 }

@@ -4,69 +4,108 @@
 
 #include "qglk.hpp"
 #include "stream/nulldevice.hpp"
+#include "pairwindowcontroller.hpp"
 
-Glk::PairWindow::PairWindow(Glk::Window* key_, Glk::Window* first_, Glk::Window* second_, WindowConstraint* constraint_) : Window(new NullDevice()), mp_Key(NULL), mp_First(NULL), mp_Second(NULL), mp_Constraint(constraint_) {
-    mp_Constraint->setupWindows(this, key_, first_, second_);
-}
 
-Glk::PairWindow::~PairWindow() {
-    delete mp_Constraint;
-}
+Glk::PairWindow::PairWindow(Window* key, Window* first, Window* second, WindowArrangement* winArrangement,
+                            PairWindowController* winController, PairWindow* parent)
+    : Window(winController,
+             new WindowDevice{this},
+             parent),
+      mp_Key{key},
+      mp_First{first},
+      mp_Second{second},
+      mp_Arrangement{winArrangement} {
+    assert(mp_Key);
+    assert(mp_First);
+    assert(mp_Second);
+    assert(mp_Arrangement);
 
-void Glk::PairWindow::removeChildWindow(Window* ptr) {
-    Q_ASSERT_X(ptr == mp_First || ptr == mp_Second, "Glk::PairWindow::removeChildWindow(Window* ptr)", "ptr must be either mp_First or mp_Second");
+    assert(mp_Key == mp_First);
 
-    Glk::PairWindow* prnt = windowParent();
-    Glk::Window* sibling = (ptr == mp_First ? mp_Second : mp_First);
-
-    if(prnt) {
-        Glk::Window* prntf = prnt->mp_First;
-        Glk::Window* prnts = prnt->mp_Second;
-
-        if(ptr == mp_Second) { // this means that mp_Second is or could contain the key window of a parent window
-            Glk::Window* kwin = mp_Second;
-
-            while(kwin->windowType() == Glk::Window::Pair)
-                kwin = static_cast<Glk::PairWindow*>(kwin)->mp_Second;
-
-            Glk::PairWindow* ancestor = prnt;
-
-            while(ancestor && ancestor->mp_Key != kwin)
-                ancestor = ancestor->windowParent();
-
-            if(ancestor != NULL)
-                ancestor->mp_Constraint->setupWindows(ancestor, NULL, ancestor->mp_First, ancestor->mp_Second);
-        }
-
-        prntf = (prntf == this ? sibling : prntf);
-        prnts = (prnts == this ? sibling : prnts);
-
-        Q_ASSERT_X(sibling == prntf || sibling == prnts, "Glk::PairWindow::removeChildWindow(Window* ptr)", "this should be a child of prnt");
-
-        prnt->mp_Constraint->setupWindows(prnt, prnt->mp_Key, prntf, prnts);
-    } else {
-        QGlk::getMainWindow().setRootWindow(sibling);
-    }
+    mp_First->setParent(this);
+    mp_Second->setParent(this);
 }
 
 bool Glk::PairWindow::isDescendant(Glk::Window* win) const {
+    if(!win)
+        return false;
+
     bool des = (win == mp_First || win == mp_Second);
-    
+
     if(!des) {
-        if(mp_First->windowType() == Glk::Window::Pair)
+        if(mp_First && mp_First->windowType() == Glk::Window::Pair)
             des = static_cast<Glk::PairWindow*>(mp_First)->isDescendant(win);
-        
-        if(mp_Second->windowType() == Glk::Window::Pair)
+
+        if(mp_Second && mp_Second->windowType() == Glk::Window::Pair)
             des = des || static_cast<Glk::PairWindow*>(mp_Second)->isDescendant(win);
     }
-    
+
     return des;
 }
 
-QSize Glk::PairWindow::pixelsToUnits(const QSize& pixels) const {
-    return pixels;
+Glk::Window* Glk::PairWindow::removeChild(Glk::Window* deadChild) {
+    assert(deadChild);
+    assert(deadChild == mp_First || deadChild == mp_Second);
+
+    Glk::Window* survivingChild = (deadChild == mp_First ? mp_Second : mp_First);
+
+    Glk::PairWindow* ancestor = parent();
+
+    if(deadChild->windowType() == Pair) {
+        auto deadChildPairWindow = static_cast<PairWindow*>(deadChild);
+
+        while(ancestor) {
+            if(ancestor->keyWindow() && deadChildPairWindow->isDescendant(ancestor->keyWindow()))
+                ancestor->setArrangement(nullptr, ancestor->arrangement());
+            ancestor = ancestor->parent();
+        }
+    } else {
+        while(ancestor) {
+            if(ancestor->keyWindow() && ancestor->keyWindow() == deadChild)
+                ancestor->setArrangement(nullptr, ancestor->arrangement());
+            ancestor = ancestor->parent();
+        }
+    }
+
+    controller()->requestSynchronization();
+
+    return survivingChild;
 }
 
-QSize Glk::PairWindow::unitsToPixels(const QSize& units) const {
-    return units;
+void Glk::PairWindow::replaceChild(Glk::Window* oldChild, Glk::Window* newChild) {
+    assert(oldChild == mp_First || oldChild == mp_Second);
+    assert(!newChild || !(newChild == mp_First || newChild == mp_Second));
+    assert(newChild != this);
+
+//    removeChild(oldChild);
+
+    if(oldChild == mp_First)
+        mp_First = newChild;
+    else
+        mp_Second = newChild;
+
+    setArrangement(mp_Key, mp_Arrangement.get());
+}
+
+void Glk::PairWindow::setArrangement(Glk::Window* key, Glk::WindowArrangement* arrange) {
+    assert(!key || !mp_First || isDescendant(key));
+    assert(!key || key->windowType() != Window::Pair);
+
+    mp_Key = key;
+
+    if(arrange != mp_Arrangement.get())
+        mp_Arrangement.reset(arrange);
+
+    // ensure mp_Key is mp_First or a descendant of mp_First
+    if(mp_Key) {
+        if(mp_Second && (mp_Second == mp_Key || (mp_Second->windowType() == Glk::Window::Pair &&
+                                                 static_cast<PairWindow*>(mp_Second)->isDescendant(mp_Key)))) {
+            auto temp = mp_First;
+            mp_First = mp_Second;
+            mp_Second = temp;
+        }
+    }
+
+    controller()->requestSynchronization();
 }

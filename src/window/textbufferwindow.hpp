@@ -6,106 +6,25 @@
 
 #include <QLinkedList>
 #include <QTextBrowser>
-#include <QVector>
 
 #include "stylemanager.hpp"
+#include "textbufferwindowcontroller.hpp"
 #include "window.hpp"
 
 namespace Glk {
     class TextBufferWindow;
 
-    class TextBufferDevice : public QIODevice {
-            Q_OBJECT
-
-            class Command {
-                public:
-                    virtual ~Command() = default;
-
-                    virtual void perform(QTextCursor& cursor) const = 0;
-            };
-
-            class WriteCommand : public Command {
-                public:
-                    WriteCommand(const QString& qstr, const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt);
-
-                    void perform(QTextCursor& cursor) const override;
-
-                    inline void appendText(const QString& qstr) {
-                        m_Text.append(qstr);
-                    }
-
-                private:
-                    QString m_Text;
-                    QTextBlockFormat m_BlockFormat;
-                    QTextCharFormat m_CharFormat;
-            };
-
-            class ImageCommand : public Command {
-                public:
-                    ImageCommand(int imgnum, glsi32 alignment, glui32 w, glui32 h);
-
-                    void perform(QTextCursor& cursor) const override;
-
-                private:
-                    int m_ImageNumber;
-                    glsi32 m_Alignment;
-                    glui32 m_Width;
-                    glui32 m_Height;
-            };
-
-            class ClearCommand : public Command {
-                public:
-                    void perform(QTextCursor& cursor) const override;
-            };
-
+    class TextBufferDevice : public WindowDevice {
         public:
-            TextBufferDevice(TextBufferWindow* win);
-
-            void drawImage(int imgnum, glsi32 alignment, glui32 w, glui32 h);
-
-            qint64 readData(char* data, qint64 maxlen) override;
-            qint64 writeData(const char* data, qint64 len) override;
-
-        public slots:
-            void clear();
-            void discard();
-            void flush();
-            void onHyperlinkPushed(glui32 linkval);
-            void onWindowStyleChanged(const QTextBlockFormat& blkfmt, const QTextCharFormat& chfmt);
-
-        signals:
-            void textChanged();
-
-        private:
-            TextBufferWindow* mp_TBWindow;
-            QTextBlockFormat m_CurrentBlockFormat;
-            QTextCharFormat m_CurrentNonHLCharFormat;
-            QTextCharFormat m_CurrentCharFormat;
-            std::vector<std::unique_ptr<Command>> m_Buffer;
-            glui32 m_CurrentHyperlink;
-    };
-
-    class TextBufferBrowser : public QTextBrowser {
-        public:
-            TextBufferBrowser(QWidget* parent = NULL) : QTextBrowser(parent) {}
-
-            int numImages() const;
-
-            void addImage(const QImage& im);
-            void clearImages();
-
-            QVariant loadResource(int type, const QUrl& name) override;
+            explicit TextBufferDevice(TextBufferWindow* win);
 
         protected:
-            void keyPressEvent(QKeyEvent* event) override;
+            qint64 readData(char* data, qint64 maxlen) override;
 
-        private:
-            QList<QImage> m_ImageList;
+            qint64 writeData(const char* data, qint64 len) override;
     };
 
     class TextBufferWindow : public Window {
-            Q_OBJECT
-
             friend class TextBufferDevice;
 
             class History {
@@ -118,7 +37,9 @@ namespace Glk {
                     void push(const QString& newcmd);
 
                     void resetIterator();
+
                     const QString next();
+
                     const QString previous();
 
                 private:
@@ -127,58 +48,45 @@ namespace Glk {
             };
 
         public:
-            TextBufferWindow(glui32 rock_ = 0);
-            ~TextBufferWindow() {}
+            TextBufferWindow(TextBufferWindowController* winController, PairWindow* winParent, glui32 winRock);
 
-            bool drawImage(const QImage& im, glsi32 alignment, glui32 w, glui32 h);
+            ~TextBufferWindow() final = default;
 
-            inline const Glk::StyleManager& styles() const {
-                return m_Styles;
-            }
-
-            inline Glk::Style::Type getStyle() const {
-                return m_CurrentStyleType;
-            }
-            void setStyle(Glk::Style::Type style) override;
-
-            Glk::Window::Type windowType() const override {
-                return Window::TextBuffer;
-            }
 
             void clearWindow() override;
 
-        public slots:
-            void onHyperlinkClicked(const QUrl& link);
-            void onTextChanged();
+            bool drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize) override;
 
-        signals:
-            void styleChanged(const QString& newStyleString);
+            void flowBreak() override;
 
-        protected:
-            inline Glk::TextBufferDevice* ioDevice() const {
-                return static_cast<Glk::TextBufferDevice*>(windowStream()->getIODevice());
+            void pushHyperlink(glui32 linkValue) override;
+
+            void pushStyle(Glk::Style::Type style) override;
+
+            [[nodiscard]] Window::Type windowType() const override {
+                return TextBuffer;
             }
 
-            void resizeEvent(QResizeEvent* ev) override;
 
-            QSize pixelsToUnits(const QSize& pixels) const override;
-            QSize unitsToPixels(const QSize& units) const override;
+            void writeString(const QString& str);
 
-        protected slots:
-            void onCharacterInputRequested();
-            void onCharacterInputRequestEnded(bool cancelled);
-            void onLineInputRequested();
-            void onLineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode);
 
-            void onCharacterInput(glui32 ch, bool doUpdate = true);
-            void onSpecialCharacterInput(glui32 ch, bool doUpdate = true);
+            [[nodiscard]] inline const std::vector<QImage>& images() const {
+                return m_Images;
+            }
+
+            [[nodiscard]] inline const StyleManager& styles() const {
+                return m_Styles;
+            }
 
         private:
-            TextBufferBrowser* mp_Text;
-            History m_History;
-            Glk::StyleManager m_Styles;
-            Glk::Style::Type m_CurrentStyleType;
-            Glk::Style::Type m_PreviousStyleType;
+            std::vector<QImage> m_Images;
+            StyleManager m_Styles;
+            Style::Type m_CurrentStyleType;
+            QTextBlockFormat m_CurrentBlockFormat;
+            QTextCharFormat m_CurrentCharFormat;
+            QTextCharFormat m_NonHyperlinkCharFormat;
+            glui32 m_CurrentHyperlink;
     };
 }
 

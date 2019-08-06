@@ -1,6 +1,7 @@
 #ifndef QGLK_H
 #define QGLK_H
 
+#include <deque>
 #include <functional>
 
 #include <QLinkedList>
@@ -51,17 +52,19 @@ class QGlk : public QMainWindow {
         QGlk(QWidget* parent = NULL) : QMainWindow(parent) {}
         ~QGlk();
 
+
+        void addToDeleteQueue(Glk::WindowController* winController);
+
         void run();
+
 
         inline Glk::Window* rootWindow() const {
             return mp_RootWindow;
         }
         inline void setRootWindow(Glk::Window* win) {
-            if(win)
-                win->setWindowParent(NULL);
+            assert(!win || !win->parent());
 
             mp_RootWindow = win;
-            setCentralWidget(mp_RootWindow ? mp_RootWindow : new QWidget(this));
         }
         inline const Glk::Runnable* glkRunnable() const {
             return mp_Runnable;
@@ -97,6 +100,9 @@ class QGlk : public QMainWindow {
 
         bool event(QEvent* event) override;
 
+    public slots:
+        void synchronize();
+
     signals:
         void tick();
         void poll();
@@ -110,9 +116,10 @@ class QGlk : public QMainWindow {
 
         bool handleGlkTask(Glk::TaskEvent* event);
 
-        Ui::QGlk* ui;
+        Ui::QGlk* mp_UI;
         Glk::Runnable* mp_Runnable;
         Glk::Window* mp_RootWindow;
+        std::deque<Glk::WindowController*> m_DeleteQueue;
         Glk::EventQueue m_EventQueue;
         QLinkedList<Glk::Window*> m_WindowList;
         QLinkedList<Glk::Stream*> m_StreamList;

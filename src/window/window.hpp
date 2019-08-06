@@ -1,24 +1,21 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include <memory>
+
 #include <QIODevice>
-#include <QSet>
-#include <QWidget>
+#include <QColor>
 
 #include "glk.hpp"
 
-#include "inputprovider.hpp"
 #include "style.hpp"
+#include "windowcontroller.hpp"
 #include "windowstream.hpp"
 
 namespace Glk {
     class PairWindow;
-    class LineEventRequest;
-    
-    class Window : public QWidget, public Object {
-            Q_OBJECT
-        
-            friend winid_t glk_window_open(winid_t, glui32, glui32, glui32, glui32);
+
+    class Window : public Object {
         public:
             enum Type : glui32 {
                 Blank = wintype_Blank,
@@ -27,81 +24,84 @@ namespace Glk {
                 TextBuffer = wintype_TextBuffer,
                 TextGrid = wintype_TextGrid,
             };
-            
+
             static QString windowsTypeString(glui32 type);
 
-            virtual ~Window();
 
-            Object::Type objectType() const override {
-                return Object::Type::Window;
-            }
+            ~Window() override;
 
-            inline Glk::KeyboardInputProvider* keyboardInputProvider() {
-                return mp_KIProvider;
-            }
-            inline Glk::MouseInputProvider* mouseInputProvider() {
-                return mp_MIProvider;
-            }
-            inline Glk::HyperlinkInputProvider* hyperlinkInputProvider() {
-                return mp_HLProvider;
-            }
-            
-            inline PairWindow* windowParent() const {
-                return mp_Parent;
-            }
-            void setWindowParent(PairWindow* prnt);
-            inline void orphan() {
-                setParent(NULL);
-                mp_Parent = NULL;
-            }
-            inline Glk::WindowStream* windowStream() const {
-                return mp_Stream;
+
+            [[nodiscard]] Object::Type objectType() const final {
+                return Object::Window;
             }
 
-            virtual QSize windowSize() const;
-
-            inline glui32 pixelWidth(glui32 units) const {
-                return unitsToPixels(QSize(units, 0)).width();
-            }
-            inline glui32 pixelHeight(glui32 units) const {
-                return unitsToPixels(QSize(0, units)).height();
-            }
-            inline glui32 unitWidth(glui32 pixels) const {
-                return pixelsToUnits(QSize(pixels, 0)).width();
-            }
-            inline glui32 unitHeight(glui32 pixels) const {
-                return pixelsToUnits(QSize(0, pixels)).height();
-            }
-            
-            virtual void setStyle(Glk::Style::Type style) {}
-
-            virtual Type windowType() const = 0;
 
             virtual void clearWindow() = 0;
 
+            virtual bool drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize);
+
+            virtual void eraseRect(const QRect& rect);
+
+            virtual void fillRect(const QColor& color, const QRect& rect);
+
+            virtual void flowBreak();
+
+            virtual void moveCursor(glui32 x, glui32 y);
+
+            virtual void pushHyperlink(glui32 linkValue);
+
+            virtual void pushStyle(Glk::Style::Type style);
+
+            virtual void setBackgroundColor(const QColor& color);
+
+            [[nodiscard]] virtual Glk::Window::Type windowType() const = 0;
+
+
+            template<class ControllerT = WindowController>
+            [[nodiscard]] inline ControllerT* controller() const {
+                static_assert(std::is_base_of_v<WindowController, ControllerT>);
+                assert(dynamic_cast<ControllerT*>(mp_Controller));
+
+                return static_cast<ControllerT*>(mp_Controller);
+            }
+
+            [[nodiscard]] inline PairWindow* parent() const {
+                return mp_Parent;
+            }
+
+            inline void setParent(PairWindow* parent) {
+                mp_Parent = parent;
+            }
+
+            [[nodiscard]] inline QSize size() const {
+                return mp_Controller->glkSize();
+            }
+
+            [[nodiscard]] inline WindowStream* stream() const {
+                return mp_Stream.get();
+            }
+
         protected:
-            Window(QIODevice* device_, glui32 rock_ = 0, bool acceptsCharRequest = false, bool acceptsLineRequest = false, bool acceptsMouseRequest = false, bool acceptsHyperlinkRequest = false);
-
-            void keyPressEvent(QKeyEvent* event) override;
-            void mouseReleaseEvent(QMouseEvent * event) override;
-
-            virtual QSize pixelsToUnits(const QSize& pixels) const = 0;
-            virtual QSize unitsToPixels(const QSize& units) const = 0;
+            Window(WindowController* winController, WindowDevice* streamDevice, PairWindow* winParent, glui32 rock = 0);
 
         private:
+            WindowController* mp_Controller;
+            std::unique_ptr<WindowStream> mp_Stream;
             PairWindow* mp_Parent;
-            Glk::WindowStream* mp_Stream;
-            Glk::KeyboardInputProvider* mp_KIProvider;
-            Glk::MouseInputProvider* mp_MIProvider;
-            Glk::HyperlinkInputProvider* mp_HLProvider;
     };
 }
 
-inline const winid_t TO_WINID(Glk::Window* win) {
+inline winid_t TO_WINID(Glk::Window* win) {
     return reinterpret_cast<winid_t>(win);
 }
-inline Glk::Window* const FROM_WINID(winid_t win) {
+
+inline Glk::Window* FROM_WINID(winid_t win) {
     return reinterpret_cast<Glk::Window*>(win);
+}
+
+std::ostream& operator<<(std::ostream& os, Glk::Window* win);
+inline std::ostream& operator<<(std::ostream& os, winid_t win) {
+    return os << FROM_WINID(win);
 }
 
 #endif

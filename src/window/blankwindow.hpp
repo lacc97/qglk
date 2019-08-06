@@ -5,27 +5,14 @@
 
 namespace Glk {
     class BlankWindow : public Window {
-            Q_OBJECT
         public:
-            BlankWindow(glui32 rock_ = 0);
+            explicit BlankWindow(WindowController* winController, PairWindow* winParent, glui32 objRock = 0);
 
-            Glk::Window::Type windowType() const override {
+
+            void clearWindow() override {}
+
+            [[nodiscard]] Glk::Window::Type windowType() const final {
                 return Window::Blank;
-            }
-
-            void clearWindow() override {
-            }
-
-            QSize windowSize() const override {
-                return QSize();
-            }
-
-        protected:
-            QSize pixelsToUnits(const QSize& pixels) const override {
-                return pixels;
-            }
-            QSize unitsToPixels(const QSize& units) const override {
-                return units;
             }
     };
 }

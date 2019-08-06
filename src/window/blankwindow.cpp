@@ -2,4 +2,5 @@
 
 #include "stream/nulldevice.hpp"
 
-Glk::BlankWindow::BlankWindow(glui32 rock_) : Window(new NullDevice(), rock_) {}
+Glk::BlankWindow::BlankWindow(WindowController* winController, Glk::PairWindow* winParent, glui32 objRock)
+    : Window(winController, new WindowDevice{this}, winParent, objRock) {}

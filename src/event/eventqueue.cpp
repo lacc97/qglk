@@ -5,15 +5,30 @@
 #include <QMutexLocker>
 
 // #define evtype_TaskEvent (0xfafbfcfd)
-#define evtype_TaskEvent (evtype_None)
+#define evtype_TaskEvent (0xfafbfcfd)
 
-Glk::EventQueue::EventQueue(QObject* parent) : QObject(parent), m_Queue(), m_Semaphore(0), m_Terminate(false) {
+Glk::EventQueue::EventQueue(QObject* parent)
+    : QObject{parent},
+      m_Queue{},
+      m_Semaphore{0},
+      m_Terminate{false} {
+}
+
+void Glk::EventQueue::requestImmediateSynchronization() {
+    QMutexLocker ml(&m_AccessMutex);
+
+    if(m_Queue.empty()) {
+        m_Queue.push_front({evtype_None});
+        m_Semaphore.release(1);
+    }
 }
 
 event_t Glk::EventQueue::pop() {
     event_t ev;
 
     do {
+        emit canSynchronize();
+
         m_Semaphore.acquire(1);
 
         QMutexLocker ml(&m_AccessMutex);
@@ -30,19 +45,23 @@ event_t Glk::EventQueue::pop() {
             ml.relock();
             delete tev;
         }
-    } while(ev.type == evtype_TaskEvent);
+    } while(ev.type == evtype_TaskEvent || ev.type == evtype_None);
+
+    emit canSynchronize();
 
     return ev;
 }
 
 event_t Glk::EventQueue::poll() {
+    emit canSynchronize();
+
     QMutexLocker ml(&m_AccessMutex);
 
     if(m_Terminate)
         throw Glk::ExitException(true);
 
     if(m_Queue.isEmpty())
-        return event_t {evtype_None, NULL, 0, 0};
+        return event_t{evtype_None, NULL, 0, 0};
 
     for(int ii = 0; ii < m_Queue.size(); ii++) {
         event_t ev;
@@ -69,7 +88,7 @@ event_t Glk::EventQueue::poll() {
         }
     }
 
-    return event_t {evtype_None, NULL, 0, 0};
+    return event_t{evtype_None, NULL, 0, 0};
 }
 
 void Glk::EventQueue::interrupt() {
@@ -113,7 +132,7 @@ void Glk::EventQueue::pushTaskEvent(Glk::TaskEvent* ev) {
 
     QMutexLocker ml(&m_AccessMutex);
 
-    m_Queue.enqueue(event_t {evtype_TaskEvent, NULL, 0, 0});
+    m_Queue.enqueue(event_t{evtype_TaskEvent, NULL, 0, 0});
     m_TaskEventQueue.enqueue(ev);
 
     m_Semaphore.release(1);

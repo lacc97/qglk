@@ -2,7 +2,8 @@
 
 #define SETUP_STYLE(n) m_StyleMap[Style::n] = Style(Style::n)
 
-Glk::StyleManager::StyleManager() : m_StyleMap() {
+Glk::StyleManager::StyleManager()
+    : m_StyleMap() {
     SETUP_STYLE(Normal);
     SETUP_STYLE(Emphasized);
     SETUP_STYLE(Preformatted);

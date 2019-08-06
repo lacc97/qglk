@@ -2,11 +2,16 @@
 
 #include <cassert>
 
+#include "log/log.hpp"
+
+#include "window/blankwindow.hpp"
+#include "window/graphicswindow.hpp"
+#include "window/pairwindow.hpp"
+#include "window/textbufferwindow.hpp"
+#include "window/textgridwindow.hpp"
+
 #include "qglk.hpp"
 
-#include "pairwindow.hpp"
-
-#include "log/log.hpp"
 
 QString Glk::Window::windowsTypeString(glui32 type) {
     switch(type) {
@@ -17,56 +22,73 @@ QString Glk::Window::windowsTypeString(glui32 type) {
         case Pair:
             return QStringLiteral("Pair");
         case TextBuffer:
-            return QStringLiteral("Text Buffer");
+            return QStringLiteral("TextBuffer");
         case TextGrid:
-            return QStringLiteral("Text Grid");
+            return QStringLiteral("TextGrid");
         default:
             return QStringLiteral("Unknown");
     }
 }
 
-Glk::Window::Window(QIODevice* device_, glui32 rock_, bool acceptsCharRequest, bool acceptsLineRequest, bool acceptsMouseRequest, bool acceptsHyperlinkRequest) : QWidget(NULL), Object(rock_), mp_Parent(NULL), mp_Stream(new WindowStream(this, device_)), mp_KIProvider(new KeyboardInputProvider(this, acceptsCharRequest, acceptsLineRequest)), mp_MIProvider(new MouseInputProvider(this, acceptsMouseRequest)), mp_HLProvider(new HyperlinkInputProvider(this, acceptsHyperlinkRequest)) {
-    assert(device_);
+Glk::Window::Window(WindowController* winController, WindowDevice* streamDevice, PairWindow* winParent, glui32 rock)
+    : Object{rock},
+      mp_Controller{winController},
+      mp_Stream{new WindowStream{streamDevice}},
+      mp_Parent{winParent} {
+    assert(mp_Controller);
+    assert(mp_Stream);
 
     mp_Stream->open(QIODevice::WriteOnly);
 
-    Glk::Dispatch::registerObject(this);
-    QGlk::getMainWindow().windowList().append(this);
+    Dispatch::registerObject(this);
 }
 
 Glk::Window::~Window() {
-    //     delete mp_Stream; // deleted by qobject
-
     if(!QGlk::getMainWindow().windowList().removeOne(this))
-        log_warn() << "Window " << (this) << " not found in window list while removing";
+        log_warn() << (this) << " not found in window list while removing";
     else
-        log_trace() << "Window " << (this) << " removed from window list";
+        log_trace() << (this) << " removed from window list";
 
-    Glk::Dispatch::unregisterObject(this);
+    Dispatch::unregisterObject(this);
 }
 
-QSize Glk::Window::windowSize() const {
-    return pixelsToUnits(size());
+bool Glk::Window::drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize) {
+    log_warn() << "Cannot draw image in window " << this;
+
+    return false;
 }
 
-void Glk::Window::setWindowParent(Glk::PairWindow* prnt) {
-    setParent(prnt ? static_cast<QWidget*>(prnt) : static_cast<QWidget*>(&QGlk::getMainWindow()));
-    mp_Parent = prnt;
+void Glk::Window::eraseRect(const QRect& rect) {
+    log_warn() << "Cannot erase rect in window " << this;
 }
 
-void Glk::Window::keyPressEvent(QKeyEvent* event) {
-    int key = event->key();
-    QString text(event->text().data());
-    
-    Glk::postTaskToGlkThread([=]() {
-        mp_KIProvider->handleKeyEvent(key, text);
-    });
+void Glk::Window::fillRect(const QColor& color, const QRect& rect) {
+    log_warn() << "Cannot fill rect in window " << this;
 }
 
-void Glk::Window::mouseReleaseEvent(QMouseEvent* event) {
-    QPoint pos = event->pos();
-    
-    Glk::postTaskToGlkThread([=]() {
-        mp_MIProvider->handleMouseEvent(pos);
-    });
+void Glk::Window::flowBreak() {
+    log_warn() << "Cannot break flow in window " << this;
+}
+
+void Glk::Window::moveCursor(glui32 x, glui32 y) {
+    log_warn() << "Cannot move cursor of window " << this;
+}
+
+void Glk::Window::pushHyperlink(glui32 linkValue) {
+    log_warn() << "Cannot push hyperlink to window " << this;
+}
+
+void Glk::Window::pushStyle(Glk::Style::Type style) {
+    log_warn() << "Cannot push style to window " << this;
+}
+
+void Glk::Window::setBackgroundColor(const QColor& color) {
+    log_warn() << "Cannot change background colour of window " << this;
+}
+
+std::ostream& operator<<(std::ostream& os, Glk::Window* win) {
+    if(win)
+        return os << Glk::Window::windowsTypeString(win->windowType()).toStdString() << "(" << ((void*)win) << ")";
+    else
+        return os << "null";
 }

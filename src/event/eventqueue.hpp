@@ -14,26 +14,34 @@ namespace Glk {
     class EventQueue : public QObject {
         Q_OBJECT
     public:
-        EventQueue(QObject* parent = NULL);
+        explicit EventQueue(QObject* parent = nullptr);
         
+
         // these two methods should only be called from glk thread
         event_t pop();
         event_t poll();
         
+
         void interrupt();
-        inline bool isInterrupted() const {
+
+        [[nodiscard]] inline bool isInterrupted() const {
             return m_Terminate;
         }
         
-        inline bool isWaitingOnSemaphore() const {
+        [[nodiscard]] inline bool isWaitingOnSemaphore() const {
             return m_Semaphore.available() == 0;
         }
+
+        void requestImmediateSynchronization();
         
     public slots:
         void cleanWindowEvents(winid_t win);
         void push(const event_t& ev);
         void pushTaskEvent(Glk::TaskEvent* ev); // push code that should be executed in glk thread
         void pushTimerEvent();
+
+    signals:
+        void canSynchronize();
         
     private:
         QQueue<event_t> m_Queue;
