@@ -1,6 +1,7 @@
 #ifndef INPUTPROVIDER_HPP
 #define INPUTPROVIDER_HPP
 
+#include <memory>
 #include <set>
 
 #include <QObject>
@@ -11,6 +12,7 @@
 
 namespace Glk {
     class Window;
+    class WindowController;
 
     class InputRequest : public QObject {
             Q_OBJECT
@@ -34,13 +36,15 @@ namespace Glk {
                 return m_Fulfilled;
             }
 
+            [[nodiscard]] bool isPending() const;
+
         signals:
             void cancelled();
 
             void fulfilled();
 
         protected:
-            inline void doFulfill() {
+            inline void fulfill() {
                 m_Fulfilled = true;
             }
 
@@ -148,11 +152,118 @@ namespace Glk {
         public:
             event_t generateEvent(Window* win) override;
 
+
+            [[nodiscard]] inline const QPoint& point() const {
+                return m_ClickPos;
+            }
+
         public slots:
             void fulfill(const QPoint& qtpos);
 
         private:
             QPoint m_ClickPos;
+    };
+
+    class InputProvider : public QObject {
+        public:
+            explicit InputProvider(WindowController* winController);
+
+            [[nodiscard]] inline WindowController* controller() const {
+                return mp_WindowsController;
+            }
+
+        private:
+            WindowController* mp_WindowsController;
+    };
+
+    class KeyboardInputProvider : public InputProvider {
+            Q_OBJECT
+        public:
+            explicit KeyboardInputProvider(WindowController* winController);
+
+            [[nodiscard]] inline CharInputRequest* charInputRequest() const {
+                return mp_CharInputRequest.get();
+            }
+
+            [[nodiscard]] inline bool lineInputEchoes() const {
+                return m_LineInputEcho;
+            }
+
+            inline void setLineInputEcho(bool echoes) {
+                m_LineInputEcho = echoes;
+            }
+
+            [[nodiscard]] inline LineInputRequest* lineInputRequest() const {
+                return mp_LineInputRequest.get();
+            }
+
+            [[nodiscard]] inline const std::set<Qt::Key>& lineInputTerminators() const {
+                return m_LineInputTerminators;
+            }
+
+            inline void setLineInputTerminators(const std::set<Qt::Key>& terminators) {
+                m_LineInputTerminators = terminators;
+            }
+
+        public slots:
+            void requestCharInput(bool unicode);
+            void cancelCharInputRequest();
+
+            void requestLineInput(void* buf, glui32 maxLen, glui32 initLen, bool unicode);
+            void cancelLineInputRequest(event_t* ev);
+
+        signals:
+            void notifyCharInputRequested();
+
+            void notifyCharInputRequestCancelled();
+
+            void notifyCharInputRequestFulfilled();
+
+
+            void notifyLineInputRequested();
+
+            void notifyLineInputRequestCancelled(const QString& text, bool echoes);
+
+            void notifyLineInputRequestFulfilled(const QString& text, bool echoes);
+
+        protected slots:
+            void onCharInputFulfilled();
+
+            void onLineInputFulfilled();
+
+        private:
+            std::unique_ptr<CharInputRequest> mp_CharInputRequest;
+
+            bool m_LineInputEcho;
+            std::set<Qt::Key> m_LineInputTerminators;
+            std::unique_ptr<LineInputRequest> mp_LineInputRequest;
+    };
+
+    class MouseInputProvider : public InputProvider {
+        Q_OBJECT
+        public:
+            explicit MouseInputProvider(WindowController* winController);
+
+            [[nodiscard]] inline MouseInputRequest* mouseInputRequest() const {
+                return mp_MouseInputRequest.get();
+            }
+
+        public slots:
+            void requestMouseInput();
+            void cancelMouseInputRequest();
+
+        signals:
+            void notifyMouseInputRequested();
+
+            void notifyMouseInputRequestCancelled();
+
+            void notifyMouseInputRequestFulfilled(const QPoint& point);
+
+        protected slots:
+            void onMouseInputFulfilled();
+
+        private:
+            std::unique_ptr<MouseInputRequest> mp_MouseInputRequest;
     };
 
 //    class KeyboardInputProvider : public QObject {

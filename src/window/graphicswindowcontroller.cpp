@@ -20,47 +20,12 @@ Glk::GraphicsWindowController::GraphicsWindowController(Glk::PairWindow* parent,
     });
 }
 
-void Glk::GraphicsWindowController::cancelMouseInput() {
-    assert(onGlkThread());
-
-    if(mouseInputRequest() && !mouseInputRequest()->isCancelled()) {
-        mouseInputRequest()->cancel();
-        requestSynchronization();
-    }
-}
-
-void Glk::GraphicsWindowController::requestMouseInput() {
-    assert(onGlkThread());
-    assert(!mouseInputRequest() || mouseInputRequest()->isCancelled());
-
-    setMouseInputRequest(new MouseInputRequest);
-
-    requestSynchronization();
+bool Glk::GraphicsWindowController::supportsMouseInput() const {
+    return true;
 }
 
 void Glk::GraphicsWindowController::synchronize() {
     assert(onEventThread());
-
-    if(mouseInputRequest()) {
-        if(mouseInputRequest()->isFulfilled() || mouseInputRequest()->isCancelled()) {
-            setMouseInputRequest(nullptr);
-        } else if(!widget<GraphicsWidget>()->mouseInputPending()) {
-            widget<GraphicsWidget>()->requestMouseInput();
-
-            QObject::connect(widget<GraphicsWidget>(), &GraphicsWidget::mouseInput,
-                             mouseInputRequest(), &MouseInputRequest::fulfill, Qt::DirectConnection);
-
-            QObject::connect(mouseInputRequest(), &MouseInputRequest::fulfilled, [this]() {
-                QGlk::getMainWindow().eventQueue().push(mouseInputRequest()->generateEvent(window()));
-                requestSynchronization();
-            });
-
-            QObject::connect(mouseInputRequest(), &MouseInputRequest::cancelled,
-                             widget<GraphicsWidget>(), &GraphicsWidget::cancelMouseInput, Qt::QueuedConnection);
-        }
-
-        // input pending but still not fulfilled or cancelled: do nothing
-    }
 
     if(widget<GraphicsWidget>()->backgroundColor() != window<GraphicsWindow>()->backgroundColor())
         widget<GraphicsWidget>()->setBackgroundColor(window<GraphicsWindow>()->backgroundColor());

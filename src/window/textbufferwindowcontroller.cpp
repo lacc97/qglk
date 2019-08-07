@@ -18,6 +18,37 @@ Glk::TextBufferWindowController::TextBufferWindowController(Glk::PairWindow* win
         mp_EventThreadDocument = new QTextDocument;
         mp_Cursor = new QTextCursor{mp_EventThreadDocument};
     });
+
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequested,
+                     [this]() {
+                         assert(onEventThread());
+
+                         auto tbBrowser = widget<TextBufferWidget>()->browser();
+
+                         Style style = window<TextBufferWindow>()->styles()[Style::Input];
+                         QTextCursor tbBrowserCursor{widget<TextBufferWidget>()->browser()->document()};
+                         tbBrowserCursor.movePosition(QTextCursor::End);
+                         tbBrowserCursor.setBlockFormat(style.blockFormat());
+                         tbBrowserCursor.setCharFormat(style.charFormat());
+
+                         tbBrowser->setTextCursor(tbBrowserCursor);
+                     });
+
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestCancelled,
+                     [this](const QString& text, bool lineEchoes) {
+                         if(lineEchoes && !text.isEmpty())
+                             window<TextBufferWindow>()->writeString(text + '\n');
+
+                         requestSynchronization();
+                     });
+
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestFulfilled,
+                     [this](const QString& text, bool lineEchoes) {
+                         if(lineEchoes && !text.isEmpty())
+                             window<TextBufferWindow>()->writeString(text + '\n');
+
+                         requestSynchronization();
+                     });
 }
 
 Glk::TextBufferWindowController::~TextBufferWindowController() {
@@ -27,203 +58,18 @@ Glk::TextBufferWindowController::~TextBufferWindowController() {
     });
 }
 
-void Glk::TextBufferWindowController::cancelCharInput() {
-    assert(onGlkThread());
-
-    if(charInputRequest() && !charInputRequest()->isCancelled()) {
-        charInputRequest()->cancel();
-        requestSynchronization();
-    }
-}
-
-event_t Glk::TextBufferWindowController::cancelLineInput() {
-    assert(onGlkThread());
-
-    if(lineInputRequest() && !lineInputRequest()->isCancelled()) {
-        // horrible hack
-        QSemaphore sem;
-        QObject context;
-        event_t cancelEvent;
-
-        QObject::connect(lineInputRequest(), &LineInputRequest::fulfilled, &context, [this, &sem, &cancelEvent]() {
-            cancelEvent = lineInputRequest()->generateEvent(window());
-            sem.release();
-        }, Qt::DirectConnection);
-
-        lineInputRequest()->cancel();
-
-        // block until fulfilled signal is emitted
-        sem.acquire();
-
-        requestSynchronization();
-
-        return cancelEvent;
-    } else {
-        return {evtype_None, nullptr, 0, 0};
-    }
-}
-
-void Glk::TextBufferWindowController::requestCharInput(bool unicode) {
-    assert(onGlkThread());
-    assert(!lineInputRequest() || lineInputRequest()->isCancelled() || lineInputRequest()->isFulfilled());
-    assert(!charInputRequest() || charInputRequest()->isCancelled());
-
-    setCharInputRequest(new CharInputRequest(unicode));
-
-    requestSynchronization();
-}
-
-void Glk::TextBufferWindowController::requestLineInput(void* buf, glui32 maxLen, glui32 initLen, bool unicode) {
-    assert(onGlkThread());
-    assert(!charInputRequest() || charInputRequest()->isCancelled() || charInputRequest()->isFulfilled());
-    assert(!lineInputRequest() || lineInputRequest()->isCancelled());
-
-    setLineInputRequest(new LineInputRequest(buf, maxLen, initLen, unicode, lineInputTerminators(), lineInputEchoes()));
-
-    requestSynchronization();
-}
-
 void Glk::TextBufferWindowController::synchronize() {
     assert(onEventThread());
 
-    if(charInputRequest()) {
-        if(charInputRequest()->isFulfilled() || charInputRequest()->isCancelled()) {
-            setCharInputRequest(nullptr);
-        } else if(!widget<TextBufferWidget>()->charInputPending()) {
-            widget<TextBufferWidget>()->requestCharInput();
-
-            QObject::connect(widget<TextBufferWidget>(), &TextBufferWidget::characterInput,
-                             charInputRequest(), &CharInputRequest::fulfill, Qt::DirectConnection);
-
-            QObject::connect(charInputRequest(), &CharInputRequest::fulfilled, [this]() {
-                QGlk::getMainWindow().eventQueue().push(charInputRequest()->generateEvent(window()));
-                requestSynchronization();
-            });
-
-            QObject::connect(charInputRequest(), &CharInputRequest::cancelled,
-                             widget<TextBufferWidget>(), &TextBufferWidget::cancelCharInput, Qt::QueuedConnection);
-        }
-
-        // input pending but still not fulfilled or cancelled: do nothing
-    }
-
-    if(lineInputRequest()) {
-        if(lineInputRequest()->isFulfilled() || lineInputRequest()->isCancelled()) {
-            if(lineInputRequest()->lineEchoes())
-                window<TextBufferWindow>()->writeString(lineInputRequest()->text() + '\n');
-            setLineInputRequest(nullptr);
-        } else if(!widget<TextBufferWidget>()->lineInputPending()) {
-            synchronizeText();
-
-            auto tbBrowser = widget<TextBufferWidget>()->browser();
-
-            Style style = window<TextBufferWindow>()->styles()[Style::Input];
-            QTextCursor tbBrowserCursor{widget<TextBufferWidget>()->browser()->document()};
-            tbBrowserCursor.movePosition(QTextCursor::End);
-            tbBrowserCursor.setBlockFormat(style.blockFormat());
-            tbBrowserCursor.setCharFormat(style.charFormat());
-
-            tbBrowser->setTextCursor(tbBrowserCursor);
-
-            widget<TextBufferWidget>()->requestLineInput(lineInputRequest()->bufferLength(),
-                                                         lineInputRequest()->lineTerminators());
-
-            QObject::connect(widget<TextBufferWidget>(), &TextBufferWidget::lineInput,
-                             lineInputRequest(), &LineInputRequest::fulfill, Qt::DirectConnection);
-
-            QObject::connect(lineInputRequest(), &LineInputRequest::fulfilled, [this]() {
-                QGlk::getMainWindow().eventQueue().push(lineInputRequest()->generateEvent(window()));
-                requestSynchronization();
-            });
-
-            QObject::connect(lineInputRequest(), &LineInputRequest::cancelled,
-                             widget<TextBufferWidget>(), &TextBufferWidget::cancelLineInput, Qt::QueuedConnection);
-
-            WindowController::synchronize();
-
-            return;
-        }
-
-        // input pending but still not fulfilled or cancelled: do nothing
-    }
-
-    // TODO hyperlink request
-
-    synchronizeText();
+    if(!keyboardProvider()->lineInputRequest() || !keyboardProvider()->lineInputRequest()->isPending())
+        synchronizeText();
 
     WindowController::synchronize();
 }
 
-//void Glk::TextBufferWindowController::synchronize() {
-//    assert(onEventThread());
-//
-//    if(charInputRequest()) {
-//        if(charInputRequest()->isFulfilled() || charInputRequest()->isCancelled()) {
-//            setCharInputRequest(nullptr);
-//        } else if(!widget<TextBufferWidget>()->browser()->charInputPending()) {
-//            auto tbBrowser = widget<TextBufferWidget>()->browser();
-//
-//            tbBrowser->requestCharInput();
-//            QObject::connect(tbBrowser, &TextBufferBrowser::characterInput, charInputRequest(),
-//                             &CharInputRequest::fulfill, Qt::DirectConnection);
-//            QObject::connect(charInputRequest(), &CharInputRequest::fulfilled, [this]() {
-//                QGlk::getMainWindow().eventQueue().push(charInputRequest()->generateEvent(window()));
-//                requestSynchronization();
-//            });
-//            QObject::connect(charInputRequest(), &CharInputRequest::cancelled, tbBrowser,
-//                             &TextBufferBrowser::onCharInputRequestCancelled, Qt::QueuedConnection);
-//        }
-//
-//        // input pending but still not fulfilled or cancelled: do nothing
-//    }
-//
-//    if(lineInputRequest()) {
-//        if(lineInputRequest()->isFulfilled()) {
-//            if(lineInputRequest()->lineEchoes())
-//                window<TextBufferWindow>()->writeString(lineInputRequest()->text() + '\n');
-//            setLineInputRequest(nullptr);
-//        } else if(lineInputRequest()->isCancelled()) {
-//            setLineInputRequest(nullptr);
-//        } else if(!widget<TextBufferWidget>()->browser()->lineInputPending()) {
-//            synchronizeText();
-//
-//            auto tbBrowser = widget<TextBufferWidget>()->browser();
-//
-//            Style style = window<TextBufferWindow>()->styles()[Style::Input];
-//            QTextCursor tbBrowserCursor{widget<TextBufferWidget>()->browser()->document()};
-//            tbBrowserCursor.movePosition(QTextCursor::End);
-//            tbBrowserCursor.setBlockFormat(style.blockFormat());
-//            tbBrowserCursor.setCharFormat(style.charFormat());
-//
-//            tbBrowser->setTextCursor(tbBrowserCursor);
-//
-//            tbBrowser->requestLineInput();
-//            QObject::connect(tbBrowser, &TextBufferBrowser::lineInput, lineInputRequest(),
-//                             &LineInputRequest::fulfill, Qt::DirectConnection);
-//            QObject::connect(lineInputRequest(), &LineInputRequest::fulfilled, [this]() {
-//                QGlk::getMainWindow().eventQueue().push(lineInputRequest()->generateEvent(window()));
-//                requestSynchronization();
-//            });
-//            QObject::connect(lineInputRequest(), &LineInputRequest::cancelled, tbBrowser,
-//                             &TextBufferBrowser::onLineInputRequestCancelled, Qt::QueuedConnection);
-//
-//            WindowController::synchronize();
-//
-//            return;
-//        }
-//
-//        // input pending but still not fulfilled or cancelled: do nothing
-//    }
-//
-//    // TODO hyperlink request
-//
-//    synchronizeText();
-//
-//    WindowController::synchronize();
-//}
-
 QPoint Glk::TextBufferWindowController::glkPos(const QPoint& qtPos) const {
-    log_warn() << "Requesting glk position of Qt point (" << qtPos.x() << ", " << qtPos.y() << ") for window " << TO_WINID(window()) << "(" << Window::windowsTypeString(window()->windowType()) << ")";
+    log_warn() << "Requesting glk position of Qt point (" << qtPos.x() << ", " << qtPos.y() << ") for window "
+               << TO_WINID(window()) << "(" << Window::windowsTypeString(window()->windowType()) << ")";
 
     return qtPos;
 }
@@ -240,6 +86,14 @@ QSize Glk::TextBufferWindowController::toQtSize(const QSize& glk) const {
 
     return {w + widget()->contentsMargins().left() + widget()->contentsMargins().right(),
             h + widget()->contentsMargins().top() + widget()->contentsMargins().bottom()};
+}
+
+bool Glk::TextBufferWindowController::supportsCharInput() const {
+    return true;
+}
+
+bool Glk::TextBufferWindowController::supportsLineInput() const {
+    return true;
 }
 
 void Glk::TextBufferWindowController::clearDocument() {
@@ -285,10 +139,11 @@ QWidget* Glk::TextBufferWindowController::createWidget() {
 }
 
 void Glk::TextBufferWindowController::synchronizeText() {
+    assert(onEventThread());
+
     widget<TextBufferWidget>()->browser()->setImages(window<TextBufferWindow>()->images());
 
-    auto html = mp_EventThreadDocument->toHtml();
-    widget<TextBufferWidget>()->browser()->setHtml(html);
+    widget<TextBufferWidget>()->browser()->setHtml(mp_EventThreadDocument->toHtml());
 
     widget<TextBufferWidget>()->browser()->moveCursor(QTextCursor::End);
 }

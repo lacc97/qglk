@@ -5,10 +5,10 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <type_traits>
 
 #include <QString>
 
-#define DOTRACE
 
 /// This header should always be included LAST.
 
@@ -70,14 +70,12 @@ namespace Log {
         private:
             Level m_Level;
     };
-    
-#ifdef NDEBUG
-    template <typename CharT>
-    class NullStream : public std::basic_ostream<CharT> {};
-    
-    extern template class NullStream<char>;
-    extern template class NullStream<wchar_t>;
-#endif
+
+//    template <typename CharT>
+//    class NullStream {};
+//
+//    extern template class NullStream<char>;
+//    extern template class NullStream<wchar_t>;
     
     extern template class BasicStream<char, std::clog>;
     typedef BasicStream<char, std::clog> Stream;
@@ -86,17 +84,13 @@ namespace Log {
     typedef BasicStream<wchar_t, std::wclog> WStream;
 }
 
-#ifdef NDEBUG
-#include <type_traits>
-
-template <typename CharT, class T>
-inline Log::NullStream<CharT>& operator<<(Log::NullStream<CharT>& nos, typename std::conditional<std::is_fundamental<T>::value, T, const T&>::type t) {
-    if(false)
-        static_cast<std::basic_ostream<CharT>>(nos) << t;
-    
-    return nos;
-}
-#endif
+//template <typename CharT, class T>
+//inline Log::NullStream<CharT>& operator<<(Log::NullStream<CharT>& nos, T t) {
+//    if(false)
+//        Log::BasicStream<CharT, std::clog>(Log::INFO) << t;
+//
+//    return nos;
+//}
 
 template <typename CharT>
 std::basic_ostream<CharT>& operator<<(std::basic_ostream<CharT>& os, const QString& str);
@@ -105,12 +99,12 @@ std::basic_ostream<CharT>& operator<<(std::basic_ostream<CharT>& os, const QStri
 #ifdef DOTRACE
 #define log_trace() Log::Stream(Log::TRACE)
 #else
-#define log_trace() Log::NullStream<char>()
+#define log_trace() if(false) Log::Stream(Log::TRACE)
 #endif
 #define log_debug() Log::Stream(Log::DEBUG)
 #else
-#define log_trace() Log::NullStream<char>()
-#define log_debug() Log::NullStream<char>()
+#define log_trace() if(false) Log::Stream(Log::TRACE)
+#define log_debug() if(false) Log::Stream(Log::DEBUG)
 #endif
 
 #define log_info()  Log::Stream(Log::INFO)

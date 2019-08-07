@@ -9,6 +9,7 @@
 
 Glk::WindowWidget::WindowWidget()
     : QWidget{nullptr},
+      mp_InputWidget{nullptr},
       m_ReceivingCharInput{false},
       m_ReceivingHyperlinkInput{false},
       m_ReceivingLineInput{false},

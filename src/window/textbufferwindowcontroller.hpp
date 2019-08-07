@@ -20,14 +20,6 @@ namespace Glk {
             ~TextBufferWindowController() override;
 
 
-            void cancelCharInput() override;
-
-            event_t cancelLineInput() override;
-
-            void requestCharInput(bool unicode) override;
-
-            void requestLineInput(void* buf, glui32 maxLen, glui32 initLen, bool unicode) override;
-
             void synchronize() override;
 
             QPoint glkPos(const QPoint& qtPos) const override;
@@ -35,6 +27,10 @@ namespace Glk {
             [[nodiscard]] QSize glkSize() const override;
 
             [[nodiscard]] QSize toQtSize(const QSize& glk) const override;
+
+            [[nodiscard]] bool supportsCharInput() const override;
+
+            [[nodiscard]] bool supportsLineInput() const override;
 
 
             void clearDocument();

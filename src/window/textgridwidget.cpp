@@ -6,13 +6,16 @@
 #include <QPainter>
 #include <QPaintEvent>
 
-Glk::TextGridWidget::TextGridWidget() {
+Glk::TextGridWidget::TextGridWidget()
+    : WindowWidget{} {
     setFocusPolicy(Qt::StrongFocus);
     setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+
+    installInputFilter(this);
 }
 
 void Glk::TextGridWidget::paintEvent(QPaintEvent* event) {
-    assert(m_Grid.size() > 0 && m_Grid[0].size() > 0);
+    assert(!m_Grid.empty() && !m_Grid[0].empty());
 
     QWidget::paintEvent(event);
 

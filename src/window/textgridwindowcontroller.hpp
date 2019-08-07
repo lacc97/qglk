@@ -10,6 +10,8 @@ namespace Glk {
             TextGridWindowController(PairWindow* winParent, glui32 winRock);
 
 
+            bool supportsCharInput() const override;
+
             void synchronize() override;
 
             QPoint glkPos(const QPoint& qtPos) const override;

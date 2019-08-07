@@ -11,14 +11,16 @@
 #include "thread/taskrequest.hpp"
 
 namespace Glk {
+    class Window;
+
     class EventQueue : public QObject {
         Q_OBJECT
     public:
         explicit EventQueue(QObject* parent = nullptr);
         
 
-        // these two methods should only be called from glk thread
         event_t pop();
+        event_t popLineEvent(Glk::Window* win);
         event_t poll();
         
 

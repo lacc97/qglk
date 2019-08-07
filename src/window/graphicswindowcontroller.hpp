@@ -14,9 +14,7 @@ namespace Glk {
             ~GraphicsWindowController() override = default;
 
 
-            void cancelMouseInput() override;
-
-            void requestMouseInput() override;
+            [[nodiscard]] bool supportsMouseInput() const override;
 
             void synchronize() override;
 

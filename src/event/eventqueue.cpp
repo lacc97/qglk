@@ -4,6 +4,8 @@
 
 #include <QMutexLocker>
 
+#include "window/window.hpp"
+
 // #define evtype_TaskEvent (0xfafbfcfd)
 #define evtype_TaskEvent (0xfafbfcfd)
 
@@ -24,6 +26,8 @@ void Glk::EventQueue::requestImmediateSynchronization() {
 }
 
 event_t Glk::EventQueue::pop() {
+    assert(onGlkThread());
+
     event_t ev;
 
     do {
@@ -52,7 +56,28 @@ event_t Glk::EventQueue::pop() {
     return ev;
 }
 
+event_t Glk::EventQueue::popLineEvent(Glk::Window* win) {
+    assert(onEventThread());
+    assert(win);
+
+    QMutexLocker ml{&m_AccessMutex};
+
+    if(m_Queue.isEmpty())
+        return event_t{evtype_None, nullptr, 0, 0};
+
+    for(int ii = 0; ii < m_Queue.size(); ii++) {
+        if(m_Queue[ii].type == evtype_LineInput && m_Queue[ii].win == TO_WINID(win)) {
+            m_Semaphore.acquire();
+            return m_Queue.takeAt(ii);
+        }
+    }
+
+    return event_t{evtype_None, nullptr, 0, 0};
+}
+
 event_t Glk::EventQueue::poll() {
+    assert(onGlkThread());
+
     emit canSynchronize();
 
     QMutexLocker ml(&m_AccessMutex);

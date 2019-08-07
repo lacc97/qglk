@@ -18,6 +18,10 @@ Glk::TextGridWindowController::TextGridWindowController(Glk::PairWindow* winPare
     });
 }
 
+bool Glk::TextGridWindowController::supportsCharInput() const {
+    return true;
+}
+
 void Glk::TextGridWindowController::synchronize() {
     assert(onEventThread());
 

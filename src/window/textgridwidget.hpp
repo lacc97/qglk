@@ -3,12 +3,12 @@
 
 #include <vector>
 
-#include <QWidget>
-
 #include "glk.hpp"
 
+#include "windowwidget.hpp"
+
 namespace Glk {
-    class TextGridWidget : public QWidget {
+    class TextGridWidget : public WindowWidget {
         Q_OBJECT
         public:
             TextGridWidget();

@@ -57,75 +57,98 @@ void glk_select_poll(event_t* event) {
 void glk_request_char_event(winid_t win) {
     log_trace() << "glk_request_char_event(" << win << ")";
 
-    FROM_WINID(win)->controller()->requestCharInput(false);
+    if(FROM_WINID(win)->controller()->supportsCharInput())
+        FROM_WINID(win)->controller()->keyboardProvider()->requestCharInput(false);
+    else
+        log_warn() << FROM_WINID(win) << " does not accept char input.";
 }
 
 void glk_request_char_event_uni(winid_t win) {
     log_trace() << "glk_request_char_event_uni(" << win << ")";
 
-    FROM_WINID(win)->controller()->requestCharInput(true);
+    if(FROM_WINID(win)->controller()->supportsCharInput())
+        FROM_WINID(win)->controller()->keyboardProvider()->requestCharInput(true);
+    else
+        log_warn() << FROM_WINID(win) << " does not accept char input.";
 }
 
 void glk_cancel_char_event(winid_t win) {
     log_trace() << "glk_cancel_char_event(" << win << ")";
 
-    FROM_WINID(win)->controller()->cancelCharInput();
+    if(FROM_WINID(win)->controller()->supportsCharInput())
+        FROM_WINID(win)->controller()->keyboardProvider()->cancelCharInputRequest();
+    else
+        log_warn() << "Failed to cancel char input event. " << FROM_WINID(win) << " does not accept char input.";
 }
 
 void glk_request_line_event(winid_t win, char* buf, glui32 maxlen, glui32 initlen) {
     log_trace() << "glk_request_line_event(" << win << "," << ((void*) buf) << "," << maxlen << "," << initlen << ")";
 
-    FROM_WINID(win)->controller()->requestLineInput(buf, maxlen, initlen, false);
+    if(FROM_WINID(win)->controller()->supportsLineInput())
+        FROM_WINID(win)->controller()->keyboardProvider()->requestLineInput(buf, maxlen, initlen, false);
+    else
+        log_warn() << FROM_WINID(win) << " does not accept line input.";
 }
 
 void glk_request_line_event_uni(winid_t win, glui32* buf, glui32 maxlen, glui32 initlen) {
     log_trace() << "glk_request_line_event_uni(" << win << "," << ((void*) buf) << "," << maxlen << "," << initlen
                 << ")";
 
-    FROM_WINID(win)->controller()->requestLineInput(buf, maxlen, initlen, true);
+    if(FROM_WINID(win)->controller()->supportsLineInput())
+        FROM_WINID(win)->controller()->keyboardProvider()->requestLineInput(buf, maxlen, initlen, true);
+    else
+        log_warn() << FROM_WINID(win) << " does not accept line input.";
 }
 
 void glk_cancel_line_event(winid_t win, event_t* event) {
     log_trace() << "glk_cancel_line_event(" << win << ")";
 
-    auto retEvent = FROM_WINID(win)->controller()->cancelLineInput();
-
-    if(event)
-        *event = retEvent;
+    if(FROM_WINID(win)->controller()->supportsLineInput())
+        FROM_WINID(win)->controller()->keyboardProvider()->cancelLineInputRequest(event);
+    else
+        log_warn() << "Failed to cancel line input event. " << FROM_WINID(win) << " does not accept line input.";
 }
 
 void glk_set_echo_line_event(winid_t win, glui32 val) {
     log_trace() << "glk_set_echo_line_event(" << win << ", " << (val != 0) << ")";
 
-    FROM_WINID(win)->controller()->setLineInputEcho(val != 0);
+    if(FROM_WINID(win)->controller()->supportsLineInput())
+        FROM_WINID(win)->controller()->keyboardProvider()->setLineInputEcho(val != 0);
 }
 
 void glk_set_terminators_line_event(winid_t win, glui32* keycodes, glui32 count) {
     log_trace() << "glk_set_terminators_line_event(" << win << ", " << keycodes << ", " << count << ")";
 
-    std::set<Qt::Key> keyset;
+    if(FROM_WINID(win)->controller()->supportsLineInput()) {
+        std::set<Qt::Key> keyset;
 
-    if(keycodes) {
-        for(size_t ii = 0; ii < count; ++ii) {
-            auto qtkeys = Glk::LineInputRequest::toQtKeyTerminators(keycodes[ii]);
-            keyset.insert(qtkeys.begin(), qtkeys.end());
+        if(keycodes) {
+            for(size_t ii = 0; ii < count; ++ii) {
+                auto qtkeys = Glk::LineInputRequest::toQtKeyTerminators(keycodes[ii]);
+                keyset.insert(qtkeys.begin(), qtkeys.end());
+            }
         }
-    }
 
-    FROM_WINID(win)->controller()->setLineInputTerminators(keyset);
+        FROM_WINID(win)->controller()->keyboardProvider()->setLineInputTerminators(keyset);
+    }
 }
 
 void glk_request_mouse_event(winid_t win) {
     log_trace() << "glk_request_mouse_event(" << win << ")";
 
-
-    FROM_WINID(win)->controller()->requestMouseInput();
+    if(FROM_WINID(win)->controller()->supportsMouseInput())
+        FROM_WINID(win)->controller()->mouseProvider()->requestMouseInput();
+    else
+        log_warn() << FROM_WINID(win) << " does not accept mouse input.";
 }
 
 void glk_cancel_mouse_event(winid_t win) {
     log_trace() << "glk_cancel_mouse_event(" << win << ")";
 
-    FROM_WINID(win)->controller()->cancelMouseInput();
+    if(FROM_WINID(win)->controller()->supportsMouseInput())
+        FROM_WINID(win)->controller()->mouseProvider()->cancelMouseInputRequest();
+    else
+        log_warn() << "Failed to cancel mouse input event. " << FROM_WINID(win) << " does not accept mouse input.";
 }
 
 QTimer* s_Timer = NULL;

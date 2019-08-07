@@ -5,13 +5,16 @@
 #include <algorithm>
 
 #include <QMutexLocker>
+#include <memory>
 #include <utility>
 
 #include "glk.hpp"
 #include "qglk.hpp"
 #include "event/eventqueue.hpp"
+#include "log/log.hpp"
 
 #include "window.hpp"
+#include "windowwidget.hpp"
 
 
 namespace {
@@ -176,23 +179,31 @@ namespace {
     }
 }
 
-Glk::InputRequest::InputRequest() : QObject{nullptr}, m_Fulfilled{false}, m_Cancelled{false} {
+Glk::InputRequest::InputRequest()
+    : QObject{nullptr},
+      m_Fulfilled{false},
+      m_Cancelled{false} {
 }
 
 void Glk::InputRequest::cancel() {
     QMutexLocker locker{&m_Mutex};
-
-    assert(onGlkThread());
 
     m_Cancelled = true;
 
     emit cancelled();
 }
 
+bool Glk::InputRequest::isPending() const {
+//    QMutexLocker locker{m_Mutex};
+    return !m_Fulfilled && !m_Cancelled;
+}
+
 Glk::CharInputRequest::CharInputRequest(bool unicode)
     : InputRequest{},
       m_Unicode{unicode},
-      m_Char{0} {}
+      m_Char{0} {
+    assert(onEventThread());
+}
 
 event_t Glk::CharInputRequest::generateEvent(Glk::Window* win) {
     QMutexLocker locker{mutex()};
@@ -216,7 +227,7 @@ void Glk::CharInputRequest::fulfill(Qt::Key key, const QString& ch) {
 
         if(glkKey != keycode_MAXVAL) {
             m_Char = glkKey;
-            doFulfill();
+            InputRequest::fulfill();
         } else {
             QVector<uint> ucs4 = ch.normalized(QString::NormalizationForm_KC).toUcs4();
 
@@ -226,7 +237,7 @@ void Glk::CharInputRequest::fulfill(Qt::Key key, const QString& ch) {
                 if(!m_Unicode)
                     m_Char = (m_Char < 256 ? m_Char : '?');
 
-                doFulfill();
+                InputRequest::fulfill();
             }
         }
     }
@@ -249,7 +260,7 @@ Glk::LineInputRequest::LineInputRequest(void* buf, glui32 maxBufLen, glui32 init
       m_Text{m_Unicode ? QString::fromUcs4(buffer<glui32>(), initBufLen) : QString::fromLatin1(buffer<char>(),
                                                                                                initBufLen)},
       m_Terminator{Qt::Key_unknown} {
-    assert(onGlkThread());
+    assert(onEventThread());
 
     Glk::Dispatch::registerArray(buf, maxBufLen, unicode);
 }
@@ -285,25 +296,29 @@ event_t Glk::LineInputRequest::generateEvent(Glk::Window* win) {
 }
 
 void Glk::LineInputRequest::fulfill(Qt::Key terminator, const QString& text) {
-    {
-        QMutexLocker locker{mutex()};
+    assert(onEventThread());
 
-        assert(!isFulfilled());
+    if(isPending()) {
+        {
+            QMutexLocker locker{mutex()};
 
-        m_Terminator = terminator;
-        m_Text = text;
+            m_Terminator = terminator;
+            m_Text = text;
 
-        if(m_Unicode)
-            std::for_each(m_Text.begin(), m_Text.end(), [](auto& ch) {
-                ch = (ch < 256 ? ch : '?');
-            });
+            if(m_Unicode)
+                std::for_each(m_Text.begin(), m_Text.end(), [](auto& ch) {
+                    ch = (ch < 256 ? ch : '?');
+                });
 
-        m_Text.truncate(m_MaxBufferLength);
+            m_Text.truncate(m_MaxBufferLength);
 
-        doFulfill();
+            if(!isCancelled())
+                InputRequest::fulfill();
+        }
+
+        if(!isCancelled())
+            emit fulfilled();
     }
-
-    emit fulfilled();
 }
 
 event_t Glk::MouseInputRequest::generateEvent(Glk::Window* win) {
@@ -325,10 +340,233 @@ void Glk::MouseInputRequest::fulfill(const QPoint& qtpos) {
 
         m_ClickPos = qtpos;
 
-        doFulfill();
+        if(!isCancelled())
+            InputRequest::fulfill();
     }
 
-    emit fulfilled();
+    if(!isCancelled())
+        emit fulfilled();
+}
+
+Glk::InputProvider::InputProvider(Glk::WindowController* winController)
+    : QObject{},
+      mp_WindowsController{winController} {
+    assert(mp_WindowsController);
+}
+
+Glk::KeyboardInputProvider::KeyboardInputProvider(Glk::WindowController* winController)
+    : InputProvider{winController},
+    mp_CharInputRequest{nullptr},
+      m_LineInputEcho{true},
+      m_LineInputTerminators{},
+      mp_LineInputRequest{nullptr} {}
+
+void Glk::KeyboardInputProvider::requestCharInput(bool unicode) {
+    assert(onGlkThread());
+
+    Glk::sendTaskToEventThread([=]() {
+        assert(dynamic_cast<WindowWidget*>(controller()->widget()));
+#if !defined(NDEBUG)
+        assert(!lineInputRequest() || !lineInputRequest()->isPending());
+        assert(!charInputRequest() || !charInputRequest()->isPending());
+#else
+        if(lineInputRequest() && lineInputRequest()->isPending()) {
+            log_error() << "Char input requested on window " << controller()->window()
+                        << " but there is already a pending char input request.";
+            return;
+        }
+        if(charInputRequest() && charInputRequest()->isPending()) {
+            log_error() << "Char input requested on window " << controller()->window()
+                        << " but there is already a pending line input request.";
+            return;
+        }
+#endif
+
+        emit notifyCharInputRequested();
+
+        mp_CharInputRequest = std::make_unique<CharInputRequest>(unicode);
+
+        controller()->widget<WindowWidget>()->requestCharInput();
+
+        QObject::connect(controller()->widget<WindowWidget>(), &WindowWidget::characterInput,
+                         charInputRequest(), &CharInputRequest::fulfill,
+                         Qt::DirectConnection);
+
+        QObject::connect(charInputRequest(), &CharInputRequest::cancelled,
+                         controller()->widget<WindowWidget>(), &WindowWidget::cancelCharInput,
+                         Qt::DirectConnection);
+
+        QObject::connect(charInputRequest(), &CharInputRequest::fulfilled,
+                         this, &KeyboardInputProvider::onCharInputFulfilled,
+                         Qt::DirectConnection);
+    });
+}
+
+void Glk::KeyboardInputProvider::cancelCharInputRequest() {
+    assert(onGlkThread());
+
+    Glk::sendTaskToEventThread([=]() {
+        if(charInputRequest() && !charInputRequest()->isCancelled()) {
+            charInputRequest()->cancel();
+
+            emit notifyCharInputRequestCancelled();
+
+            mp_CharInputRequest.reset();
+        }
+    });
+}
+
+void Glk::KeyboardInputProvider::requestLineInput(void* buf, glui32 maxLen, glui32 initLen, bool unicode) {
+    assert(onGlkThread());
+
+    Glk::sendTaskToEventThread([=]() {
+        assert(dynamic_cast<WindowWidget*>(controller()->widget()));
+#if !defined(NDEBUG)
+        assert(!charInputRequest() || !charInputRequest()->isPending());
+        assert(!lineInputRequest() || !lineInputRequest()->isPending());
+#else
+        if(charInputRequest() && charInputRequest()->isPending()) {
+            log_error() << "Line input requested on window " << controller()->window()
+                        << " but there is already a pending line input request.";
+            return;
+        }
+        if(lineInputRequest() && lineInputRequest()->isPending()) {
+            log_error() << "Line input requested on window " << controller()->window()
+                        << " but there is already a pending char input request.";
+            return;
+        }
+#endif
+
+        emit notifyLineInputRequested();
+
+        mp_LineInputRequest = std::make_unique<LineInputRequest>(buf, maxLen, initLen, unicode,
+                                                                 m_LineInputTerminators, m_LineInputEcho);
+
+        controller()->widget<WindowWidget>()->requestLineInput(maxLen, m_LineInputTerminators);
+
+        QObject::connect(controller()->widget<WindowWidget>(), &WindowWidget::lineInput,
+                         lineInputRequest(), &LineInputRequest::fulfill,
+                         Qt::DirectConnection);
+
+        QObject::connect(lineInputRequest(), &LineInputRequest::cancelled,
+                         controller()->widget<WindowWidget>(), &WindowWidget::cancelLineInput,
+                         Qt::DirectConnection);
+
+        QObject::connect(lineInputRequest(), &LineInputRequest::fulfilled,
+                         this, &KeyboardInputProvider::onLineInputFulfilled,
+                         Qt::DirectConnection);
+    });
+}
+
+void Glk::KeyboardInputProvider::cancelLineInputRequest(event_t* ev) {
+    assert(onGlkThread());
+
+    Glk::sendTaskToEventThread([=]() {
+        if(lineInputRequest() && !lineInputRequest()->isCancelled()) {
+            lineInputRequest()->cancel();
+
+            event_t lineInputEvent;
+            if(lineInputRequest()->isFulfilled()) {
+                // event has been logged but not yet retrieved by glk_select
+                lineInputEvent = QGlk::getMainWindow().eventQueue().popLineEvent(controller()->window());
+                assert(lineInputEvent.type == evtype_LineInput);
+            } else {
+                lineInputEvent = lineInputRequest()->generateEvent(controller()->window());
+            }
+
+            if(ev)
+                *ev = lineInputEvent;
+
+            emit notifyLineInputRequestCancelled(lineInputRequest()->text(), lineInputRequest()->lineEchoes());
+
+
+            mp_LineInputRequest.reset();
+        }
+    });
+}
+
+void Glk::KeyboardInputProvider::onCharInputFulfilled() {
+    assert(onEventThread());
+
+    emit notifyCharInputRequestFulfilled();
+
+    QGlk::getMainWindow().eventQueue().push(charInputRequest()->generateEvent(controller()->window()));
+
+    mp_CharInputRequest.reset();
+}
+
+void Glk::KeyboardInputProvider::onLineInputFulfilled() {
+    assert(onEventThread());
+
+    emit notifyLineInputRequestFulfilled(lineInputRequest()->text(), lineInputRequest()->lineEchoes());
+
+    QGlk::getMainWindow().eventQueue().push(lineInputRequest()->generateEvent(controller()->window()));
+
+    mp_LineInputRequest.reset();
+}
+
+Glk::MouseInputProvider::MouseInputProvider(Glk::WindowController* winController)
+    : InputProvider(winController), mp_MouseInputRequest{nullptr} {
+
+}
+
+void Glk::MouseInputProvider::requestMouseInput() {
+    assert(onGlkThread());
+
+    Glk::sendTaskToEventThread([=]() {
+        assert(dynamic_cast<WindowWidget*>(controller()->widget()));
+#if !defined(NDEBUG)
+        assert(!mouseInputRequest() || !mouseInputRequest()->isPending());
+#else
+        if(mouseInputRequest() && mouseInputRequest()->isPending()) {
+            log_error() << "Mouse input requested on window " << controller()->window()
+                        << " but there is already a pending mouse input request.";
+            return;
+        }
+#endif
+
+        emit notifyMouseInputRequested();
+
+        mp_MouseInputRequest = std::make_unique<MouseInputRequest>();
+
+        controller()->widget<WindowWidget>()->requestMouseInput();
+
+        QObject::connect(controller()->widget<WindowWidget>(), &WindowWidget::mouseInput,
+                         mouseInputRequest(), &MouseInputRequest::fulfill,
+                         Qt::DirectConnection);
+
+        QObject::connect(mouseInputRequest(), &MouseInputRequest::cancelled,
+                         controller()->widget<WindowWidget>(), &WindowWidget::cancelMouseInput,
+                         Qt::DirectConnection);
+
+        QObject::connect(mouseInputRequest(), &MouseInputRequest::fulfilled,
+                         this, &MouseInputProvider::onMouseInputFulfilled,
+                         Qt::DirectConnection);
+    });
+}
+
+void Glk::MouseInputProvider::cancelMouseInputRequest() {
+    assert(onGlkThread());
+
+    Glk::sendTaskToEventThread([=]() {
+        if(mouseInputRequest() && !mouseInputRequest()->isCancelled()) {
+            mouseInputRequest()->cancel();
+
+            emit notifyMouseInputRequestCancelled();
+
+            mp_MouseInputRequest.reset();
+        }
+    });
+}
+
+void Glk::MouseInputProvider::onMouseInputFulfilled() {
+    assert(onEventThread());
+
+    emit notifyMouseInputRequestFulfilled(mouseInputRequest()->point());
+
+    QGlk::getMainWindow().eventQueue().push(mouseInputRequest()->generateEvent(controller()->window()));
+
+    mp_MouseInputRequest.reset();
 }
 
 //

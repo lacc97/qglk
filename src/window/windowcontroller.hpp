@@ -27,19 +27,13 @@ namespace Glk {
             virtual ~WindowController();
 
 
-            virtual void cancelCharInput();
+            [[nodiscard]] virtual bool supportsCharInput() const;
 
-            [[nodiscard]] virtual event_t cancelLineInput();
+            [[nodiscard]] virtual bool supportsLineInput() const;
 
-            virtual void cancelMouseInput();
+            [[nodiscard]] virtual bool supportsMouseInput() const;
 
             virtual void closeWindow();
-
-            virtual void requestCharInput(bool unicode);
-
-            virtual void requestLineInput(void* buf, glui32 maxLen, glui32 initLen, bool unicode);
-
-            virtual void requestMouseInput();
 
             void requestSynchronization();
 
@@ -50,20 +44,12 @@ namespace Glk {
             virtual void synchronize();
 
 
-            [[nodiscard]] inline bool lineInputEchoes() const {
-                return m_LineInputEcho;
+            [[nodiscard]] inline KeyboardInputProvider* keyboardProvider() const {
+                return mp_KeyboardInputProvider;
             }
 
-            inline void setLineInputEcho(bool echoes) {
-                m_LineInputEcho = true;
-            }
-
-            [[nodiscard]] inline const std::set<Qt::Key>& lineInputTerminators() const {
-                return m_LineInputTerminators;
-            }
-
-            inline void setLineInputTerminators(const std::set<Qt::Key>& terminators) {
-                m_LineInputTerminators = terminators;
+            [[nodiscard]] inline MouseInputProvider* mouseProvider() const {
+                return mp_MouseInputProvider;
             }
 
             template<class WidgetT = QWidget>
@@ -91,41 +77,13 @@ namespace Glk {
         protected:
             explicit WindowController(Window* win, QWidget* widg);
 
-
-            [[nodiscard]] inline CharInputRequest* charInputRequest() const {
-                return mp_CharInputRequest.get();
-            }
-
-            inline void setCharInputRequest(CharInputRequest* cir) {
-                mp_CharInputRequest.reset(cir);
-            }
-
-            [[nodiscard]] inline LineInputRequest* lineInputRequest() const {
-                return mp_LineInputRequest.get();
-            }
-
-            inline void setLineInputRequest(LineInputRequest* lir) {
-                mp_LineInputRequest.reset(lir);
-            }
-
-            [[nodiscard]] inline MouseInputRequest* mouseInputRequest() const {
-                return mp_MouseInputRequest.get();
-            }
-
-            inline void setMouseInputRequest(MouseInputRequest* mir) {
-                mp_MouseInputRequest.reset(mir);
-            }
-
         private:
             std::unique_ptr<Window> mp_Window;
             std::unique_ptr<QWidget> mp_Widget;
             std::atomic_bool m_RequiresSynchronization;
 
-            bool m_LineInputEcho;
-            std::unique_ptr<CharInputRequest> mp_CharInputRequest;
-            std::unique_ptr<LineInputRequest> mp_LineInputRequest;
-            std::set<Qt::Key> m_LineInputTerminators;
-            std::unique_ptr<MouseInputRequest> mp_MouseInputRequest;
+            KeyboardInputProvider* mp_KeyboardInputProvider;
+            MouseInputProvider* mp_MouseInputProvider;
     };
 }
 

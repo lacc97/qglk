@@ -24,6 +24,9 @@ add_library(qglk STATIC
         AUTOMOC                     ON
         AUTOUIC                     ON
         CXX_VISIBILITY_PRESET       hidden)
+    target_compile_definitions(qglk
+        PRIVATE
+            DOTRACE)
     target_include_directories(qglk
         PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR})

@@ -29,12 +29,58 @@ Glk::WindowController::WindowController(Glk::Window* win, QWidget* widg)
     : mp_Window{win},
       mp_Widget{widg},
       m_RequiresSynchronization{false},
-      m_LineInputEcho{true},
-      mp_CharInputRequest{nullptr},
-      mp_LineInputRequest{nullptr},
-      mp_MouseInputRequest{nullptr} {
+      mp_KeyboardInputProvider{new KeyboardInputProvider{this}},
+      mp_MouseInputProvider{new MouseInputProvider{this}} {
     assert(mp_Window);
     assert(mp_Widget);
+
+    // we can do this because the lambdas are run inside a Glk::sendTaskToEventThread
+    // ensuring the glk thread is paused and the code runs in the event thread
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyCharInputRequested,
+                     [this]() {
+                         synchronize();
+                     });
+
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequested,
+                     [this]() {
+                         synchronize();
+                     });
+
+
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyCharInputRequestCancelled,
+                     [this]() {
+                         requestSynchronization();
+                     });
+
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestCancelled,
+                     [this]() {
+                         requestSynchronization();
+                     });
+
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyCharInputRequestFulfilled,
+                     [this]() {
+                         requestSynchronization();
+                     });
+
+    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestFulfilled,
+                     [this]() {
+                         requestSynchronization();
+                     });
+
+    QObject::connect(mouseProvider(), &MouseInputProvider::notifyMouseInputRequested,
+                     [this]() {
+                         synchronize();
+                     });
+
+    QObject::connect(mouseProvider(), &MouseInputProvider::notifyMouseInputRequestCancelled,
+                     [this]() {
+                         requestSynchronization();
+                     });
+
+    QObject::connect(mouseProvider(), &MouseInputProvider::notifyMouseInputRequestFulfilled,
+                     [this]() {
+                         requestSynchronization();
+                     });
 
     requestSynchronization();
 }
@@ -43,24 +89,16 @@ Glk::WindowController::~WindowController() {
     assert(!mp_Window);
 }
 
-void Glk::WindowController::cancelCharInput() {
-    log_warn() << "Failed to cancel char input event. Window " << window() << " ("
-               << Glk::Window::windowsTypeString(window()->windowType())
-               << ") does not accept char input.";
+bool Glk::WindowController::supportsCharInput() const {
+    return false;
 }
 
-event_t Glk::WindowController::cancelLineInput() {
-    log_warn() << "Failed to cancel line input event. Window " << window() << " ("
-               << Glk::Window::windowsTypeString(window()->windowType())
-               << ") does not accept line input.";
-
-    return event_t{};
+bool Glk::WindowController::supportsLineInput() const {
+    return false;
 }
 
-void Glk::WindowController::cancelMouseInput() {
-    log_warn() << "Failed to cancel mouse input event. Window " << window() << " ("
-               << Glk::Window::windowsTypeString(window()->windowType())
-               << ") does not accept mouse input.";
+bool Glk::WindowController::supportsMouseInput() const {
+    return false;
 }
 
 void Glk::WindowController::closeWindow() {
@@ -68,21 +106,6 @@ void Glk::WindowController::closeWindow() {
     assert(mp_Window);
 
     mp_Window.reset();
-}
-
-void Glk::WindowController::requestCharInput(bool unicode) {
-    log_warn() << "Window " << window() << " (" << Glk::Window::windowsTypeString(window()->windowType())
-               << ") does not accept char input.";
-}
-
-void Glk::WindowController::requestLineInput(void* buf, glui32 maxLen, glui32 initLen, bool unicode) {
-    log_warn() << "Window " << window() << " (" << Glk::Window::windowsTypeString(window()->windowType())
-               << ") does not accept line input.";
-}
-
-void Glk::WindowController::requestMouseInput() {
-    log_warn() << "Window " << window() << " (" << Glk::Window::windowsTypeString(window()->windowType())
-               << ") does not accept mouse input.";
 }
 
 void Glk::WindowController::requestSynchronization() {
