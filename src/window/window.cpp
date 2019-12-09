@@ -30,8 +30,9 @@ QString Glk::Window::windowsTypeString(glui32 type) {
     }
 }
 
-Glk::Window::Window(WindowController* winController, WindowDevice* streamDevice, PairWindow* winParent, glui32 rock)
+Glk::Window::Window(Type type, WindowController* winController, WindowDevice* streamDevice, PairWindow* winParent, glui32 rock)
     : Object{rock},
+      m_Type{type},
       mp_Controller{winController},
       mp_Stream{new WindowStream{streamDevice}},
       mp_Parent{winParent} {
@@ -45,45 +46,44 @@ Glk::Window::Window(WindowController* winController, WindowDevice* streamDevice,
 
 Glk::Window::~Window() {
     if(!QGlk::getMainWindow().windowList().removeOne(this))
-        log_warn() << (this) << " not found in window list while removing";
+        spdlog::warn("{} not found in window list while removing", *this);
     else
-        log_trace() << (this) << " removed from window list";
+        spdlog::warn("{} removed from window list", *this);
 
     Dispatch::unregisterObject(this);
 }
 
 bool Glk::Window::drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize) {
-    log_warn() << "Cannot draw image in window " << this;
-
+    spdlog::warn("Cannot draw image in window {}", *this);
     return false;
 }
 
 void Glk::Window::eraseRect(const QRect& rect) {
-    log_warn() << "Cannot erase rect in window " << this;
+    spdlog::warn("Cannot erase rect in window {}", *this);
 }
 
 void Glk::Window::fillRect(const QColor& color, const QRect& rect) {
-    log_warn() << "Cannot fill rect in window " << this;
+    spdlog::warn("Cannot fill rect in window {}", *this);
 }
 
 void Glk::Window::flowBreak() {
-    log_warn() << "Cannot break flow in window " << this;
+    spdlog::warn("Cannot break flow in window {}", *this);
 }
 
 void Glk::Window::moveCursor(glui32 x, glui32 y) {
-    log_warn() << "Cannot move cursor of window " << this;
+    spdlog::warn("Cannot move cursor of window {}", *this);
 }
 
 void Glk::Window::pushHyperlink(glui32 linkValue) {
-    log_warn() << "Cannot push hyperlink to window " << this;
+    spdlog::warn("Cannot push hyperlink to window {}", *this);
 }
 
 void Glk::Window::pushStyle(Glk::Style::Type style) {
-    log_warn() << "Cannot push style to window " << this;
+    spdlog::warn("Cannot push style to window {}", *this);
 }
 
 void Glk::Window::setBackgroundColor(const QColor& color) {
-    log_warn() << "Cannot change background colour of window " << this;
+    spdlog::warn("Cannot change background colour of window {}", *this);
 }
 
 std::ostream& operator<<(std::ostream& os, Glk::Window* win) {

@@ -10,10 +10,6 @@ namespace Glk {
 
 
             void clearWindow() override {}
-
-            [[nodiscard]] Glk::Window::Type windowType() const final {
-                return Window::Blank;
-            }
     };
 }
 

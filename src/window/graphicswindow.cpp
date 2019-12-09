@@ -8,7 +8,7 @@
 #include "stream/nulldevice.hpp"
 
 Glk::GraphicsWindow::GraphicsWindow(GraphicsWindowController* winController, PairWindow* winParent, glui32 objRock)
-    : Window(winController, new WindowDevice{this}, winParent, objRock),
+    : Window(Type::Graphics, winController, new WindowDevice{this}, winParent, objRock),
       m_Buffer{1, 1},
       m_BGColor{} {
 }

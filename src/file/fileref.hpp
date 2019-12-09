@@ -5,7 +5,11 @@
 #include <QFileInfo>
 #include <QSet>
 
+#include <fmt/format.h>
+
 #include "glk.hpp"
+
+#include "log/pointerwrap.hpp"
 
 namespace Glk {
     class FileReference : public Object {
@@ -30,7 +34,7 @@ namespace Glk {
                 return Object::Type::FileReference;
             }
             
-            QString path();
+            QString path() const;
 
             bool exists() const;
             void remove() const;
@@ -49,6 +53,29 @@ inline const frefid_t TO_FREFID(Glk::FileReference* fref) {
 }
 inline Glk::FileReference* const FROM_FREFID(frefid_t fref) {
     return reinterpret_cast<Glk::FileReference*>(fref);
+}
+
+namespace fmt {
+    template <>
+    struct formatter<Glk::FileReference> {
+        template <typename ParseContext>
+        constexpr auto parse(ParseContext &ctx) {
+            return ctx.begin();
+        }
+
+        template <typename FormatContext>
+        auto format(const Glk::FileReference& w, FormatContext &ctx) {
+            return format_to(ctx.out(), "{} ({})", w.path(), (void*)&w);
+        }
+    };
+
+    template <>
+    struct formatter<std::remove_pointer_t<frefid_t>> : formatter<Glk::FileReference> {
+        template <typename FormatContext>
+        inline auto format(std::remove_pointer_t<frefid_t>& w, FormatContext &ctx) {
+            return formatter<Glk::FileReference>::format(*FROM_FREFID(&w), ctx);
+        }
+    };
 }
 
 #endif

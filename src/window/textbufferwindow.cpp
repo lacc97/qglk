@@ -71,7 +71,7 @@ const QString Glk::TextBufferWindow::History::previous() {
 
 Glk::TextBufferWindow::TextBufferWindow(Glk::TextBufferWindowController* winController,
                                         Glk::PairWindow* winParent, glui32 winRock)
-    : Window(winController, new TextBufferDevice{this}, winParent, winRock),
+    : Window(Type::TextBuffer, winController, new TextBufferDevice{this}, winParent, winRock),
       m_Images{},
       m_Styles{QGlk::getMainWindow().textBufferStyleManager()},
       m_CurrentStyleType{Style::Normal},

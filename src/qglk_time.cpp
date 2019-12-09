@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <QDateTime>
 
 #include "glk.hpp"
@@ -27,7 +29,17 @@ inline QDateTime toQDateTime(const glkdate_t& gds, QDateTime& dt) {
 
 void glk_current_time(glktimeval_t* time) {
     QDateTime now = QDateTime::currentDateTime();
-    *reinterpret_cast<qint64*>(&(time->high_sec)) = now.toSecsSinceEpoch();
+
+    qint64 secs = now.toSecsSinceEpoch();
+    {
+        quint64 secsBits;
+        std::memcpy(&secsBits, &secs, sizeof(secsBits));
+        time->low_sec = (secsBits & 0xffffffff);
+
+        quint32 highSecsBits = (secsBits >> 32u);
+        std::memcpy(&time->high_sec, &highSecsBits, sizeof(time->high_sec));
+    }
+
     time->microsec = glsi32(now.toMSecsSinceEpoch() % 1000) * 1000;
 }
 
@@ -36,12 +48,14 @@ glsi32 glk_current_simple_time(glui32 factor) {
 }
 
 void glk_time_to_date_utc(glktimeval_t* time, glkdate_t* date) {
-    QDateTime dt = QDateTime::fromMSecsSinceEpoch(*reinterpret_cast<qint64*>(&(time->high_sec)) + (qint32(time->microsec) / 1000)).toUTC();
+    qint64 secs = (qint64(time->high_sec) << 32ul) | qint64(time->low_sec);
+    QDateTime dt = QDateTime::fromMSecsSinceEpoch(secs + (qint32(time->microsec) / 1000)).toUTC();
     fromQDateTime(dt, *date);
 }
 
 void glk_time_to_date_local(glktimeval_t* time, glkdate_t* date) {
-    QDateTime dt = QDateTime::fromMSecsSinceEpoch(*reinterpret_cast<qint64*>(&(time->high_sec)) + (qint32(time->microsec) / 1000)).toLocalTime();
+    qint64 secs = (qint64(time->high_sec) << 32ul) | qint64(time->low_sec);
+    QDateTime dt = QDateTime::fromMSecsSinceEpoch(secs + (qint32(time->microsec) / 1000)).toLocalTime();
 
     fromQDateTime(dt, *date);
 }
@@ -59,14 +73,34 @@ void glk_simple_time_to_date_local(glsi32 time, glui32 factor, glkdate_t* date) 
 void glk_date_to_time_utc(glkdate_t* date, glktimeval_t* time) {
     QDateTime dt = QDateTime::currentDateTimeUtc();
     toQDateTime(*date, dt);
-    *reinterpret_cast<qint64*>(&(time->high_sec)) = dt.toSecsSinceEpoch();
+
+    qint64 secs = dt.toSecsSinceEpoch();
+    {
+        quint64 secsBits;
+        std::memcpy(&secsBits, &secs, sizeof(secsBits));
+        time->low_sec = (secsBits & 0xffffffff);
+
+        quint32 highSecsBits = (secsBits >> 32u);
+        std::memcpy(&time->high_sec, &highSecsBits, sizeof(time->high_sec));
+    }
+
     time->microsec = glsi32(dt.toMSecsSinceEpoch() % 1000) * 1000;
 }
 
 void glk_date_to_time_local(glkdate_t* date, glktimeval_t* time) {
     QDateTime dt = QDateTime::currentDateTime();
     toQDateTime(*date, dt);
-    *reinterpret_cast<qint64*>(&(time->high_sec)) = dt.toSecsSinceEpoch();
+
+    qint64 secs = dt.toSecsSinceEpoch();
+    {
+        quint64 secsBits;
+        std::memcpy(&secsBits, &secs, sizeof(secsBits));
+        time->low_sec = (secsBits & 0xffffffff);
+
+        quint32 highSecsBits = (secsBits >> 32u);
+        std::memcpy(&time->high_sec, &highSecsBits, sizeof(time->high_sec));
+    }
+
     time->microsec = glsi32(dt.toMSecsSinceEpoch() % 1000) * 1000;
 }
 

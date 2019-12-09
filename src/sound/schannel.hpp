@@ -5,6 +5,8 @@
 #include <QMediaPlayer>
 #include <QSet>
 
+#include <fmt/format.h>
+
 #include "glk.hpp"
 
 #include "blorb/chunk.hpp"
@@ -60,6 +62,29 @@ inline const schanid_t TO_SCHANID(Glk::SoundChannel* sch) {
 }
 inline Glk::SoundChannel* const FROM_SCHANID(schanid_t sch) {
     return reinterpret_cast<Glk::SoundChannel*>(sch);
+}
+
+namespace fmt {
+    template <>
+    struct formatter<Glk::SoundChannel> {
+        template <typename ParseContext>
+        constexpr auto parse(ParseContext &ctx) {
+            return ctx.begin();
+        }
+
+        template <typename FormatContext>
+        auto format(const Glk::SoundChannel& w, FormatContext &ctx) {
+            return format_to(ctx.out(), "({})", (void*)&w);
+        }
+    };
+
+    template <>
+    struct formatter<std::remove_pointer_t<schanid_t>> : formatter<Glk::SoundChannel> {
+        template <typename FormatContext>
+        inline auto format(std::remove_pointer_t<schanid_t>& w, FormatContext &ctx) {
+            return formatter<Glk::SoundChannel>::format(*FROM_SCHANID(&w), ctx);
+        }
+    };
 }
 
 #endif

@@ -6,7 +6,11 @@
 #include <QIODevice>
 #include <QColor>
 
+#include <fmt/format.h>
+
 #include "glk.hpp"
+
+#include "log/pointerwrap.hpp"
 
 #include "style.hpp"
 #include "windowcontroller.hpp"
@@ -54,7 +58,9 @@ namespace Glk {
 
             virtual void setBackgroundColor(const QColor& color);
 
-            [[nodiscard]] virtual Glk::Window::Type windowType() const = 0;
+            [[nodiscard]] inline Glk::Window::Type windowType() const {
+                return m_Type;
+            }
 
 
             template<class ControllerT = WindowController>
@@ -82,9 +88,10 @@ namespace Glk {
             }
 
         protected:
-            Window(WindowController* winController, WindowDevice* streamDevice, PairWindow* winParent, glui32 rock = 0);
+            Window(Type type, WindowController* winController, WindowDevice* streamDevice, PairWindow* winParent, glui32 rock = 0);
 
         private:
+            Glk::Window::Type m_Type;
             WindowController* mp_Controller;
             std::unique_ptr<WindowStream> mp_Stream;
             PairWindow* mp_Parent;
@@ -97,6 +104,29 @@ inline winid_t TO_WINID(Glk::Window* win) {
 
 inline Glk::Window* FROM_WINID(winid_t win) {
     return reinterpret_cast<Glk::Window*>(win);
+}
+
+namespace fmt {
+    template <>
+    struct formatter<Glk::Window> {
+        template <typename ParseContext>
+        constexpr auto parse(ParseContext &ctx) {
+            return ctx.begin();
+        }
+
+        template <typename FormatContext>
+        auto format(const Glk::Window& w, FormatContext &ctx) {
+            return format_to(ctx.out(), "{} Window ({})", Glk::Window::windowsTypeString(w.windowType()).toStdString(), (void*)(&w));
+        }
+    };
+
+    template <>
+    struct formatter<std::remove_pointer_t<winid_t>> : formatter<Glk::Window> {
+        template <typename FormatContext>
+        inline auto format(std::remove_pointer_t<winid_t>& w, FormatContext &ctx) {
+            return formatter<Glk::Window>::format(*FROM_WINID(&w), ctx);
+        }
+    };
 }
 
 std::ostream& operator<<(std::ostream& os, Glk::Window* win);

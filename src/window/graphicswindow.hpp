@@ -25,10 +25,6 @@ namespace Glk {
 
             void setBackgroundColor(const QColor& color) override;
 
-            [[nodiscard]] Glk::Window::Type windowType() const override {
-                return Window::Graphics;
-            }
-
 
             [[nodiscard]] inline const QColor& backgroundColor() const {
                 return m_BGColor;

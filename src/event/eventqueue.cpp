@@ -167,7 +167,7 @@ void Glk::EventQueue::pushTimerEvent() {
     push({evtype_Timer, NULL, 0, 0});
 }
 
-const std::string eventTypeName(glui32 t) {
+std::string_view Glk::EventQueue::typeName(glui32 t) {
     switch(t) {
         case evtype_None:
             return "None";
@@ -205,5 +205,5 @@ const std::string eventTypeName(glui32 t) {
 }
 
 std::ostream& operator<<(std::ostream& os, const event_t& e) {
-    return os << eventTypeName(e.type) << "{" << e.win << ", " << e.val1 << ", " << e.val2 << "}";
+    return os << Glk::EventQueue::typeName(e.type) << "{" << e.win << ", " << e.val1 << ", " << e.val2 << "}";
 }

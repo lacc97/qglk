@@ -35,7 +35,7 @@ qint64 Glk::TextGridDevice::writeData(const char* data, qint64 len) {
 
 Glk::TextGridWindow::TextGridWindow(Glk::TextGridWindowController* winController, Glk::PairWindow* winParent,
                                     glui32 winRock)
-    : Window(winController, new TextGridDevice{this}, winParent, winRock),
+    : Window(Type::TextGrid, winController, new TextGridDevice{this}, winParent, winRock),
       m_CharArray{{EMPTY_CHAR}},
       m_GridSize{1, 1},
       m_Cursor(0, 0) {}

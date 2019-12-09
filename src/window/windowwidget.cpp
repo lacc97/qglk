@@ -138,7 +138,7 @@ void Glk::WindowWidget::installInputFilter(QWidget* widget) {
 }
 
 QString Glk::WindowWidget::lineInputBuffer() {
-    log_warn() << "Default Glk::WindowWidget::lineInputBuffer() implementation. Returning QString().";
+    spdlog::warn("Default Glk::WindowWidget::lineInputBuffer() implementation. Returning QString().");
 
     return QString();
 }

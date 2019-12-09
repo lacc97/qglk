@@ -20,10 +20,6 @@ namespace Glk {
 
             void clearWindow() override {}
 
-            [[nodiscard]] Glk::Window::Type windowType() const override {
-                return Window::Pair;
-            }
-
 
             [[nodiscard]] bool isDescendant(Glk::Window* win) const;
 

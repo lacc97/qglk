@@ -6,14 +6,14 @@
 #include <QPaintEvent>
 
 Glk::GraphicsWidget::GraphicsWidget() : WindowWidget{} {
-    m_DefaultBackgroundColor = palette().color(QPalette::Background);
+    m_DefaultBackgroundColor = palette().color(QPalette::Window);
 
     installInputFilter(this);
 }
 
 void Glk::GraphicsWidget::setBackgroundColor(const QColor& c) {
     QPalette pal = palette();
-    pal.setColor(QPalette::Background, c);
+    pal.setColor(QPalette::Window, c);
     setPalette(pal);
 }
 

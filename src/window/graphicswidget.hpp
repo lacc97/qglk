@@ -14,7 +14,7 @@ namespace Glk {
 
 
             [[nodiscard]] inline const QColor& backgroundColor() {
-                return palette().color(QPalette::Background);
+                return palette().color(QPalette::Window);
             }
 
             void setBackgroundColor(const QColor& c);

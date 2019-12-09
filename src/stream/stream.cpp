@@ -18,10 +18,11 @@ Glk::Stream::Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type
 Glk::Stream::~Stream() {
     close();
 
-    if(!QGlk::getMainWindow().streamList().removeOne(this))
-        log_warn() << "Stream " << (this) << " not found in stream list while removing";
-    else
-        log_debug() << "Stream " << (this) << " removed from stream list";
+    if(!QGlk::getMainWindow().streamList().removeOne(this)) {
+        spdlog::warn("Stream {} not found in stream list while removing", *this);
+    } else {
+        SPDLOG_DEBUG("Stream {} removed from stream list", *this);
+    }
 
     Glk::Dispatch::unregisterObject(this);
 
@@ -45,7 +46,7 @@ bool Glk::Stream::open(QIODevice::OpenMode om) {
     if(done) {
         Glk::Dispatch::registerObject(this);
         QGlk::getMainWindow().streamList().append(this);
-        log_debug() << "Stream " << (this) << " appended to stream list";
+        SPDLOG_DEBUG("Stream {} appended to stream list", *this);
     }
 
     return done;

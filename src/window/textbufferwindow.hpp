@@ -63,10 +63,6 @@ namespace Glk {
 
             void pushStyle(Glk::Style::Type style) override;
 
-            [[nodiscard]] Window::Type windowType() const override {
-                return TextBuffer;
-            }
-
 
             void writeString(const QString& str);
 

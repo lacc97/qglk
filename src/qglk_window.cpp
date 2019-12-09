@@ -23,7 +23,7 @@ std::string printTree(Glk::Window* root) {
             os << "  ";
 
         os << win << ": {"
-             << "parent <= " << win->parent() << ";";
+           << "parent <= " << win->parent() << ";";
 //             << "children <=" << root->children() << ";"
 //             << "layout <=" << root->layout() << ";"
 //             << "rect <=" << root->controller()->widget()->rect() << ";";
@@ -50,9 +50,9 @@ std::string printTree(Glk::Window* root) {
 // #endif
 
 winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintype, glui32 rock) {
-    log_trace() << "glk_window_open(" << split << ", " << Glk::WindowArrangement::methodString(method) << ", " << size
-                << ", " << Glk::Window::windowsTypeString(wintype) << ", " << rock << ")";
-    log_trace() << printTree(QGlk::getMainWindow().rootWindow());
+    spdlog::trace("glk_window_open({}, {}, {}, {}, {})", wrap::ptr(split), Glk::WindowArrangement::methodString(method), size,
+                  Glk::Window::windowsTypeString(wintype), rock);
+//    log_trace() << printTree(QGlk::getMainWindow().rootWindow());
 
     auto windowsType = static_cast<Glk::Window::Type>(wintype);
 
@@ -64,16 +64,17 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
             break;
 
         default:
-            log_warn() << "Cannot open window of type " << Glk::Window::windowsTypeString(wintype);
-            log_trace() << "glk_window_open(" << split << ", " << Glk::WindowArrangement::methodString(method) << ", "
-                        << size << ", " << Glk::Window::windowsTypeString(wintype) << ", " << rock << ") => NULL";
+            spdlog::warn("Tried to open window of type {}", Glk::Window::windowsTypeString(wintype));
+            spdlog::trace("glk_window_open({}, {}, {}, {}, {}) => {}", wrap::ptr(split),
+                          Glk::WindowArrangement::methodString(method), size, Glk::Window::windowsTypeString(wintype),
+                          rock, wrap::ptr((winid_t) (nullptr)));
             return NULL;
     }
 
     if(!split && !QGlk::getMainWindow().windowList().empty()) {
-        log_warn() << "Cannot open another root window";
-        log_trace() << "glk_window_open(" << split << ", " << Glk::WindowArrangement::methodString(method) << ", "
-                    << size << ", " << Glk::Window::windowsTypeString(wintype) << ", " << rock << ") => NULL";
+        spdlog::warn("Tried to open another root window");
+        spdlog::trace("glk_window_open({}, {}, {}, {}, {}) => {}", wrap::ptr(split), Glk::WindowArrangement::methodString(method),
+                      size, Glk::Window::windowsTypeString(wintype), rock, wrap::ptr((winid_t) (nullptr)));
         return NULL;
     }
 
@@ -96,17 +97,14 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
         QGlk::getMainWindow().setRootWindow(newWin);
     }
 
-    log_trace() << "glk_window_open(" << split << ", "
-                << Glk::WindowArrangement::methodString(method) << ", "
-                << size << ", " << Glk::Window::windowsTypeString(wintype) << ", "
-                << rock << ") => " << TO_WINID(newWin);
+    spdlog::trace("glk_window_open({}, {}, {}, {}, {}) => {}", wrap::ptr(split), Glk::WindowArrangement::methodString(method),
+                  size, Glk::Window::windowsTypeString(wintype), rock, wrap::ptr(newWin));
 
     return TO_WINID(newWin);
 }
 
 void glk_window_close(winid_t win, stream_result_t* result) {
-    log_trace() << "glk_window_close(" << win << ", " << result << ")";
-//    log_trace() << printTree(QGlk::getMainWindow().rootWindow());
+    SPDLOG_TRACE("glk_window_close({}, {})", wrap::ptr(win), (void*)result);
 
     Glk::Window* deadWin = FROM_WINID(win);
     Glk::PairWindow* winParent = deadWin->parent();
@@ -151,13 +149,10 @@ void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {
 }
 
 void glk_window_set_arrangement(winid_t win, glui32 method, glui32 size, winid_t keywin) {
-    log_trace() << "glk_window_set_arrangement(" << win << ", " << Glk::WindowArrangement::methodString(method) << ", "
-                << size << ", " << keywin << ")";
+    SPDLOG_TRACE("glk_window_set_arrangement({}, {}, {}, {})", wrap::ptr(win), Glk::WindowArrangement::methodString(method), size, wrap::ptr(keywin));
 
     if(FROM_WINID(win)->windowType() != Glk::Window::Pair) {
-        log_warn() << "Cannot set arrangement of window " << win << " of type "
-                   << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()) << " (must be of type "
-                   << Glk::Window::windowsTypeString(Glk::Window::Pair) << ")";
+        spdlog::warn("Cannot set arrangement of window {} (must be of type {})", wrap::ptr(win), Glk::Window::windowsTypeString(Glk::Window::Pair));
 
         return;
     }
@@ -169,13 +164,10 @@ void glk_window_set_arrangement(winid_t win, glui32 method, glui32 size, winid_t
 }
 
 void glk_window_get_arrangement(winid_t win, glui32* methodptr, glui32* sizeptr, winid_t* keywinptr) {
-    log_trace() << "glk_window_get_arrangement(" << win << ", " << methodptr << ", " << sizeptr << ", " << keywinptr
-                << ")";
+    SPDLOG_TRACE("glk_window_get_arrangement({}, {}, {}, {})", wrap::ptr(win), (void*)methodptr, (void*)sizeptr, (void*)keywinptr);
 
     if(FROM_WINID(win)->windowType() != Glk::Window::Pair) {
-        log_warn() << "Cannot get arrangement of window " << win << " of type "
-                   << Glk::Window::windowsTypeString(FROM_WINID(win)->windowType()) << " (must be of type "
-                   << Glk::Window::windowsTypeString(Glk::Window::Pair) << ")";
+        spdlog::warn("Cannot get arrangement of window {} (must be of type {})", wrap::ptr(win), Glk::Window::windowsTypeString(Glk::Window::Pair));
 
         return;
     }
@@ -193,23 +185,21 @@ void glk_window_get_arrangement(winid_t win, glui32* methodptr, glui32* sizeptr,
 }
 
 void glk_window_move_cursor(winid_t win, glui32 xpos, glui32 ypos) {
-    log_trace() << "glk_window_move_cursor(" << win << ", " << xpos << ", " << ypos << ")";
+    SPDLOG_TRACE("glk_window_move_cursor({}, {}, {})", wrap::ptr(win), xpos, ypos);
 
     FROM_WINID(win)->moveCursor(xpos, ypos);
 }
 
 void glk_window_set_echo_stream(winid_t win, strid_t str) {
-    log_trace() << "glk_window_set_echo_stream(" << win << ", " << str << ")";
+    SPDLOG_TRACE("glk_window_set_echo_stream({}, {})", wrap::ptr(win), wrap::ptr(str));
 
     FROM_WINID(win)->stream()->setEchoStream(FROM_STRID(str));
 }
 
 strid_t glk_window_get_echo_stream(winid_t win) {
-    log_trace() << "glk_window_get_echo_stream(" << win << ")";
-
     strid_t str = TO_STRID(FROM_WINID(win)->stream()->echoStream());
 
-    log_trace() << "glk_window_get_echo_stream(" << win << ") => " << str;
+    SPDLOG_TRACE("glk_window_get_echo_stream({}) => {}", wrap::ptr(win), wrap::ptr(str));
 
     return str;
 }
@@ -219,7 +209,7 @@ winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
 
     if(win == NULL) {
         if(winList.empty()) {
-            log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << ((void*) NULL);
+            SPDLOG_TRACE("glk_window_iterate({}, {}) => {}", wrap::ptr(win), wrap::ptr(rockptr), wrap::ptr(strid_t(NULL)));
             return NULL;
         }
 
@@ -228,7 +218,7 @@ winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
         if(rockptr)
             *rockptr = first->rock();
 
-        log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << TO_WINID(first);
+        SPDLOG_TRACE("glk_window_iterate({}, {}) => {}", wrap::ptr(win), wrap::ptr(rockptr), wrap::ptr(first));
 
         return TO_WINID(first);
     }
@@ -238,14 +228,14 @@ winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
     while(it != winList.cend() && (*it++) != FROM_WINID(win));
 
     if(it == winList.cend()) {
-        log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << ((void*) NULL);
+        SPDLOG_TRACE("glk_window_iterate({}, {}) => {}", wrap::ptr(win), wrap::ptr(rockptr), wrap::ptr(strid_t(NULL)));
         return NULL;
     }
 
     if(rockptr)
         *rockptr = (*it)->rock();
 
-    log_trace() << "glk_window_iterate(" << win << ", " << rockptr << ") => " << TO_WINID(*it);
+    SPDLOG_TRACE("glk_window_iterate({}, {}) => {}", wrap::ptr(win), wrap::ptr(rockptr), wrap::ptr(*it));
 
     return TO_WINID(*it);
 }
@@ -263,10 +253,10 @@ winid_t glk_window_get_parent(winid_t win) {
 }
 
 winid_t glk_window_get_sibling(winid_t win) {
-    log_trace() << "glk_window_get_sibling(" << win << ")";
+    SPDLOG_TRACE("glk_window_get_sibling({})", wrap::ptr(win));
 
     if(!FROM_WINID(win)->parent()) {
-        log_warn() << "Cannot return sibling of window " << win << " (root window has no siblings)";
+        spdlog::warn("Cannot return sibling of window {} (root window has no siblings)", wrap::ptr(win));
 
         return NULL;
     }
@@ -279,23 +269,19 @@ winid_t glk_window_get_sibling(winid_t win) {
     else if(parent->secondWindow() == FROM_WINID(win))
         sibling = TO_WINID(parent->keyWindow());
 
-    log_trace() << "glk_window_get_sibling(" << win << ") => " << sibling;
-
     return sibling;
 }
 
 winid_t glk_window_get_root() {
-    log_trace() << "glk_window_get_root()";
-
     winid_t rw = TO_WINID(QGlk::getMainWindow().rootWindow());
 
-    log_trace() << "glk_window_get_root() => " << rw;
+    SPDLOG_TRACE("glk_window_get_root() => {}", wrap::ptr(rw));
 
     return rw;
 }
 
 void glk_window_clear(winid_t win) {
-    log_trace() << "glk_window_clear(" << win << ")";
+    SPDLOG_TRACE("glk_window_clear({})", wrap::ptr(win));
 
     FROM_WINID(win)->clearWindow();
 }
@@ -312,14 +298,13 @@ void glk_set_window(winid_t win) {
 }
 
 void glk_window_set_background_color(winid_t win, glui32 color) {
-    log_trace() << "glk_window_set_background_color(" << win << ", " << color << ")";
+    SPDLOG_TRACE("glk_window_set_background_color({}, {:0x})", wrap::ptr(win), color);
 
     FROM_WINID(win)->setBackgroundColor(QColor::fromRgb(color));
 }
 
 void glk_window_fill_rect(winid_t win, glui32 color, glsi32 left, glsi32 top, glui32 width, glui32 height) {
-    log_trace() << "glk_window_fill_rect(" << win << ", " << color << ", "
-                << left << ", " << top << ", " << width << ", " << height << ")";
+    SPDLOG_TRACE("glk_window_fill_rect({}, {:0x}, {}, {}, {}, {})", wrap::ptr(win), color, left, top, width, height);
 
     FROM_WINID(win)->fillRect(QColor::fromRgb(color), QRect(left, top, width, height));
 }

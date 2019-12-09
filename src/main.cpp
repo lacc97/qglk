@@ -3,6 +3,8 @@
 #include <QApplication>
 #include <QCloseEvent>
 
+#include <spdlog/spdlog.h>
+
 #include "glk.hpp"
 
 #include "qglk.hpp"
@@ -14,6 +16,9 @@ QGlk& QGlk::getMainWindow() {
 }
 
 int main(int argc, char* argv[]) {
+    spdlog::set_pattern("[%Y-%m-%d %T.%e] [%^%L%$] %v");
+
+
     QApplication app(argc, argv);
 
     QEvent::registerEventType(Glk::TaskEvent::Type);

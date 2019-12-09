@@ -94,7 +94,7 @@ frefid_t glk_fileref_create_by_name(glui32 usage, char* name, glui32 rock) {
         filename = filename.append(".").append(extFromUsage(usage));
     
     frefid_t fref =  TO_FREFID(new Glk::FileReference(QFileInfo(filename), usage, rock));
-    log_trace() << "glk_fileref_create_by_name(" << usage << "," << QString(name) << "," << rock << ") => " << fref;
+    SPDLOG_TRACE("glk_fileref_create_by_name({}, {}, {}) => {}", usage, QString(name), rock, wrap::ptr(fref));
     return fref;
 }
 
@@ -111,7 +111,7 @@ frefid_t glk_fileref_iterate(frefid_t fref, glui32* rockptr) {
 
     if(fref == NULL) {
         if(frefList.empty()) {
-            log_trace() << "glk_fileref_iterate(" << fref << ", " << rockptr << ") => " << ((void*)NULL);
+            SPDLOG_TRACE("glk_fileref_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(rockptr), (void*)NULL);
             return NULL;
         }
 
@@ -120,7 +120,7 @@ frefid_t glk_fileref_iterate(frefid_t fref, glui32* rockptr) {
         if(rockptr)
             *rockptr = first->rock();
 
-        log_trace() << "glk_fileref_iterate(" << fref << ", " << rockptr << ") => " << TO_FREFID(first);
+        SPDLOG_TRACE("glk_fileref_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(rockptr), wrap::ptr(first));
 
         return TO_FREFID(first);
     }
@@ -130,14 +130,14 @@ frefid_t glk_fileref_iterate(frefid_t fref, glui32* rockptr) {
     while(it != frefList.cend() && (*it++) != FROM_FREFID(fref));
 
     if(it == frefList.cend()) {
-        log_trace() << "glk_fileref_iterate(" << fref << ", " << rockptr << ") => " << ((void*)NULL);
+        SPDLOG_TRACE("glk_fileref_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(rockptr), (void*)NULL);
         return NULL;
     }
 
     if(rockptr)
         *rockptr = (*it)->rock();
 
-    log_trace() << "glk_fileref_iterate(" << fref << ", " << rockptr << ") => " << TO_FREFID(*it);
+    SPDLOG_TRACE("glk_fileref_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(rockptr), wrap::ptr(*it));
 
     return TO_FREFID(*it);
 }
@@ -151,6 +151,6 @@ void glk_fileref_delete_file(frefid_t fref) {
 }
 
 glui32 glk_fileref_does_file_exist(frefid_t fref) {
-    log_trace() << "glk_fileref_does_file_exist(" << FROM_FREFID(fref)->path() << ") => " << FROM_FREFID(fref)->exists();
+    SPDLOG_TRACE("glk_fileref_does_file_exist({}) => {}", wrap::ptr(fref), FROM_FREFID(fref)->exists());
     return FROM_FREFID(fref)->exists();
 }

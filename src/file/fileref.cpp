@@ -21,15 +21,16 @@ Glk::FileReference::FileReference(const Glk::FileReference& fref_, glui32 usage_
 }
 
 Glk::FileReference::~FileReference() {
-    if(!QGlk::getMainWindow().fileReferenceList().removeOne(this))
-        log_warn() << "File reference " << (this) << " not found in file reference list while removing";
-    else
-        log_trace() << "File reference " << (this) << " removed from file reference list";
+    if(!QGlk::getMainWindow().fileReferenceList().removeOne(this)) {
+        spdlog::warn("File reference {} not found in file reference list while removing", *this);
+    } else {
+        SPDLOG_TRACE("File reference {} removed from file reference list", *this);
+    }
 
     Glk::Dispatch::unregisterObject(this);
 }
 
-QString Glk::FileReference::path() {
+QString Glk::FileReference::path() const {
     return m_FileInfo.absoluteFilePath();
 }
 

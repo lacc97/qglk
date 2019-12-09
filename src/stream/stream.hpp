@@ -4,6 +4,8 @@
 #include <QIODevice>
 #include <QSet>
 
+#include <fmt/format.h>
+
 #include "glk.hpp"
 
 #include "window/style.hpp"
@@ -112,6 +114,29 @@ inline const strid_t TO_STRID(Glk::Stream* str) {
 }
 inline Glk::Stream* const FROM_STRID(strid_t str) {
     return reinterpret_cast<Glk::Stream*>(str);
+}
+
+namespace fmt {
+    template <>
+    struct formatter<Glk::Stream> {
+        template <typename ParseContext>
+        constexpr auto parse(ParseContext &ctx) {
+            return ctx.begin();
+        }
+
+        template <typename FormatContext>
+        auto format(const Glk::Stream& w, FormatContext &ctx) {
+            return format_to(ctx.out(), "({})", (void*)&w);
+        }
+    };
+
+    template <>
+    struct formatter<std::remove_pointer_t<strid_t>> : formatter<Glk::Stream> {
+        template <typename FormatContext>
+        inline auto format(std::remove_pointer_t<strid_t>& w, FormatContext &ctx) {
+            return formatter<Glk::Stream>::format(*FROM_STRID(&w), ctx);
+        }
+    };
 }
 
 #endif

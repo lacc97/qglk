@@ -27,10 +27,11 @@ Glk::SoundChannel::SoundChannel(glui32 volume_, glui32 rock_) : Object(rock_), m
 }
 
 Glk::SoundChannel::~SoundChannel() {
-    if(!QGlk::getMainWindow().soundChannelList().removeOne(this))
-        log_warn() << "Sound channel " << (this) << " not found in sound channel list while removing";
-    else
-        log_trace() << "Sound channel " << (this) << " removed from sound channel list";
+    if(!QGlk::getMainWindow().soundChannelList().removeOne(this)) {
+        spdlog::warn("Sound channel {} not found in sound channel list while removing", *this);
+    } else {
+        SPDLOG_TRACE("Sound channel {} removed from sound channels list", *this);
+    }
 
     Glk::Dispatch::unregisterObject(this);
 }

@@ -90,7 +90,7 @@ schanid_t glk_schannel_iterate(schanid_t schan, glui32* rockptr) {
 
     if(schan == NULL) {
         if(schanList.empty()) {
-            log_trace() << "glk_schannel_iterate(" << schan << ", " << rockptr << ") => " << ((void*)NULL);
+            SPDLOG_TRACE("glk_schannel_iterate({}, {}) => {}", wrap::ptr(schan), wrap::ptr(rockptr), (void*)NULL);
             return NULL;
         }
 
@@ -99,7 +99,7 @@ schanid_t glk_schannel_iterate(schanid_t schan, glui32* rockptr) {
         if(rockptr)
             *rockptr = first->rock();
 
-        log_trace() << "glk_schannel_iterate(" << schan << ", " << rockptr << ") => " << TO_SCHANID(first);
+        SPDLOG_TRACE("glk_schannel_iterate({}, {}) => {}", wrap::ptr(schan), wrap::ptr(rockptr), wrap::ptr(first));
 
         return TO_SCHANID(first);
     }
@@ -109,14 +109,14 @@ schanid_t glk_schannel_iterate(schanid_t schan, glui32* rockptr) {
     while(it != schanList.cend() && (*it++) != FROM_SCHANID(schan));
 
     if(it == schanList.cend()) {
-        log_trace() << "glk_schannel_iterate(" << schan << ", " << rockptr << ") => " << ((void*)NULL);
+        SPDLOG_TRACE("glk_schannel_iterate({}, {}) => {}", wrap::ptr(schan), wrap::ptr(rockptr), (void*)NULL);
         return NULL;
     }
 
     if(rockptr)
         *rockptr = (*it)->rock();
 
-    log_trace() << "glk_schannel_iterate(" << schan << ", " << rockptr << ") => " << TO_SCHANID(*it);
+    SPDLOG_TRACE("glk_schannel_iterate({}, {}) => {}", wrap::ptr(schan), wrap::ptr(rockptr), wrap::ptr(*it));
 
     return TO_SCHANID(*it);
 }

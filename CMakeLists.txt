@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.11)
 project(QGlk)
 
+
+find_package(fmt REQUIRED)
+find_package(spdlog REQUIRED)
+
+
 option(BUILD_GLKTERM    "Build glkterm glkt implementation (in test subdirectory)" OFF)
 
 set(CMAKE_CXX_STANDARD 17)

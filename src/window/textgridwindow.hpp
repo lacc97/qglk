@@ -33,10 +33,6 @@ namespace Glk {
 
             void moveCursor(glui32 x, glui32 y) override;
 
-            [[nodiscard]] Glk::Window::Type windowType() const override {
-                return Window::TextGrid;
-            }
-
 
             [[nodiscard]] inline const std::vector<std::vector<glui32>>& grid() const {
                 return m_CharArray;

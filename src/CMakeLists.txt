@@ -26,13 +26,16 @@ add_library(qglk STATIC
         CXX_VISIBILITY_PRESET       hidden)
     target_compile_definitions(qglk
         PRIVATE
-            DOTRACE)
+            $<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG>
+            $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>)
     target_include_directories(qglk
         PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR})
     target_link_libraries(qglk
         PRIVATE
-            ${QT_REQUIRED_LIBS})
+            fmt::fmt
+            ${QT_REQUIRED_LIBS}
+            spdlog::spdlog)
 
 install(TARGETS qglk DESTINATION lib/glk)
 

@@ -371,13 +371,13 @@ void Glk::KeyboardInputProvider::requestCharInput(bool unicode) {
         assert(!charInputRequest() || !charInputRequest()->isPending());
 #else
         if(lineInputRequest() && lineInputRequest()->isPending()) {
-            log_error() << "Char input requested on window " << controller()->window()
-                        << " but there is already a pending char input request.";
+            spdlog::error("Char input requested on window {} but there is already a pending char input request.",
+                          wrap::ptr(controller()->window()));
             return;
         }
         if(charInputRequest() && charInputRequest()->isPending()) {
-            log_error() << "Char input requested on window " << controller()->window()
-                        << " but there is already a pending line input request.";
+            spdlog::error("Char input requested on window {} but there is already a pending line input request.",
+                          wrap::ptr(controller()->window()));
             return;
         }
 #endif
@@ -426,13 +426,13 @@ void Glk::KeyboardInputProvider::requestLineInput(void* buf, glui32 maxLen, glui
         assert(!lineInputRequest() || !lineInputRequest()->isPending());
 #else
         if(charInputRequest() && charInputRequest()->isPending()) {
-            log_error() << "Line input requested on window " << controller()->window()
-                        << " but there is already a pending line input request.";
+            spdlog::error("Line input requested on window {} but there is already a pending char input request.",
+                          wrap::ptr(controller()->window()));
             return;
         }
         if(lineInputRequest() && lineInputRequest()->isPending()) {
-            log_error() << "Line input requested on window " << controller()->window()
-                        << " but there is already a pending char input request.";
+            spdlog::error("Line input requested on window {} but there is already a pending line input request.",
+                          wrap::ptr(controller()->window()));
             return;
         }
 #endif
@@ -519,8 +519,8 @@ void Glk::MouseInputProvider::requestMouseInput() {
         assert(!mouseInputRequest() || !mouseInputRequest()->isPending());
 #else
         if(mouseInputRequest() && mouseInputRequest()->isPending()) {
-            log_error() << "Mouse input requested on window " << controller()->window()
-                        << " but there is already a pending mouse input request.";
+            spdlog::error("Mouse input requested on window {} but there is already a pending mouse input request.",
+                          wrap::ptr(controller()->window()));
             return;
         }
 #endif

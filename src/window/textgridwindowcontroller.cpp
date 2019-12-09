@@ -42,7 +42,7 @@ void Glk::TextGridWindowController::synchronize() {
 }
 
 QPoint Glk::TextGridWindowController::glkPos(const QPoint& qtPos) const {
-    log_warn() << "Requesting glk position of Qt point (" << qtPos.x() << ", " << qtPos.y() << ") for window " << TO_WINID(window()) << "(" << Window::windowsTypeString(window()->windowType()) << ")";
+    spdlog::warn("Requesting glk position of Qt point ({}, {}) for window {}", qtPos.x(), qtPos.y(), wrap::ptr(window()));
 
     return qtPos;
 }

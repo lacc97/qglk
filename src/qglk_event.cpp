@@ -28,13 +28,13 @@ void glk_exit() {
 }
 
 void glk_select(event_t* event) {
-    log_trace() << "glk_select(" << event << ")";
-    log_debug() << "Waiting for event";
+    SPDLOG_TRACE("glk_select({})", (void*)event);
+    SPDLOG_DEBUG("Waiting for event...");
 
     emit QGlk::getMainWindow().poll();
     *event = QGlk::getMainWindow().eventQueue().pop();
 
-    log_debug() << "Received event of type " << to_string(*event);
+    SPDLOG_DEBUG("Received event of type {}", *event);
 }
 
 void glk_select_poll(event_t* event) {
@@ -44,80 +44,79 @@ void glk_select_poll(event_t* event) {
 
     emit QGlk::getMainWindow().poll();
 
-    log_debug() << "Polling events";
+    SPDLOG_DEBUG("Polling events");
     *event = QGlk::getMainWindow().eventQueue().poll();
 
     if(event->type == evtype_None) {
-        log_debug() << "No event received";
+        SPDLOG_DEBUG("No event received");
     } else {
-        log_debug() << "Received event of type " << to_string(*event);
+        SPDLOG_DEBUG("Received event of type {}", *event);
     }
 }
 
 void glk_request_char_event(winid_t win) {
-    log_trace() << "glk_request_char_event(" << win << ")";
+    SPDLOG_TRACE("glk_request_char_event({})", wrap::ptr(win));
 
     if(FROM_WINID(win)->controller()->supportsCharInput())
         FROM_WINID(win)->controller()->keyboardProvider()->requestCharInput(false);
     else
-        log_warn() << FROM_WINID(win) << " does not accept char input.";
+        spdlog::warn("{} does not accept char input", wrap::ptr(win));
 }
 
 void glk_request_char_event_uni(winid_t win) {
-    log_trace() << "glk_request_char_event_uni(" << win << ")";
+    SPDLOG_TRACE("glk_request_char_event_uni({})", wrap::ptr(win));
 
     if(FROM_WINID(win)->controller()->supportsCharInput())
         FROM_WINID(win)->controller()->keyboardProvider()->requestCharInput(true);
     else
-        log_warn() << FROM_WINID(win) << " does not accept char input.";
+        spdlog::warn("{} does not accept char input.", wrap::ptr(win));
 }
 
 void glk_cancel_char_event(winid_t win) {
-    log_trace() << "glk_cancel_char_event(" << win << ")";
+    SPDLOG_TRACE("glk_cancel_char_event({})", wrap::ptr(win));
 
     if(FROM_WINID(win)->controller()->supportsCharInput())
         FROM_WINID(win)->controller()->keyboardProvider()->cancelCharInputRequest();
     else
-        log_warn() << "Failed to cancel char input event. " << FROM_WINID(win) << " does not accept char input.";
+        spdlog::warn("Failed to cancel char input event. {} does not accept char input.", wrap::ptr(win));
 }
 
 void glk_request_line_event(winid_t win, char* buf, glui32 maxlen, glui32 initlen) {
-    log_trace() << "glk_request_line_event(" << win << "," << ((void*) buf) << "," << maxlen << "," << initlen << ")";
+    SPDLOG_TRACE("glk_request_line_event({}, {}, {}, {})", wrap::ptr(win), (void*)buf, maxlen, initlen);
 
     if(FROM_WINID(win)->controller()->supportsLineInput())
         FROM_WINID(win)->controller()->keyboardProvider()->requestLineInput(buf, maxlen, initlen, false);
     else
-        log_warn() << FROM_WINID(win) << " does not accept line input.";
+        spdlog::warn("{} does not accept line input.", wrap::ptr(win));
 }
 
 void glk_request_line_event_uni(winid_t win, glui32* buf, glui32 maxlen, glui32 initlen) {
-    log_trace() << "glk_request_line_event_uni(" << win << "," << ((void*) buf) << "," << maxlen << "," << initlen
-                << ")";
+    SPDLOG_TRACE("glk_request_line_event_uni({}, {}, {}, {})", wrap::ptr(win), (void*)buf, maxlen, initlen);
 
     if(FROM_WINID(win)->controller()->supportsLineInput())
         FROM_WINID(win)->controller()->keyboardProvider()->requestLineInput(buf, maxlen, initlen, true);
     else
-        log_warn() << FROM_WINID(win) << " does not accept line input.";
+        spdlog::warn("{} does not accept line input.", wrap::ptr(win));
 }
 
 void glk_cancel_line_event(winid_t win, event_t* event) {
-    log_trace() << "glk_cancel_line_event(" << win << ")";
+    SPDLOG_TRACE("glk_cancel_line_event({}, {})", wrap::ptr(win), wrap::ptr(event));
 
     if(FROM_WINID(win)->controller()->supportsLineInput())
         FROM_WINID(win)->controller()->keyboardProvider()->cancelLineInputRequest(event);
     else
-        log_warn() << "Failed to cancel line input event. " << FROM_WINID(win) << " does not accept line input.";
+        spdlog::warn("Failed to cancel line input event. {} does not accept line input.", wrap::ptr(win));
 }
 
 void glk_set_echo_line_event(winid_t win, glui32 val) {
-    log_trace() << "glk_set_echo_line_event(" << win << ", " << (val != 0) << ")";
+    SPDLOG_TRACE("glk_set_echo_line_event({}, {})", wrap::ptr(win), (val != 0));
 
     if(FROM_WINID(win)->controller()->supportsLineInput())
         FROM_WINID(win)->controller()->keyboardProvider()->setLineInputEcho(val != 0);
 }
 
 void glk_set_terminators_line_event(winid_t win, glui32* keycodes, glui32 count) {
-    log_trace() << "glk_set_terminators_line_event(" << win << ", " << keycodes << ", " << count << ")";
+    SPDLOG_TRACE("glk_set_terminators_line_event({}, {}, {})", wrap::ptr(win), (void*)keycodes, count);
 
     if(FROM_WINID(win)->controller()->supportsLineInput()) {
         std::set<Qt::Key> keyset;
@@ -134,27 +133,27 @@ void glk_set_terminators_line_event(winid_t win, glui32* keycodes, glui32 count)
 }
 
 void glk_request_mouse_event(winid_t win) {
-    log_trace() << "glk_request_mouse_event(" << win << ")";
+    SPDLOG_TRACE("glk_request_mouse_event({})", wrap::ptr(win));
 
     if(FROM_WINID(win)->controller()->supportsMouseInput())
         FROM_WINID(win)->controller()->mouseProvider()->requestMouseInput();
     else
-        log_warn() << FROM_WINID(win) << " does not accept mouse input.";
+        spdlog::warn("{} does not accept mouse input.", wrap::ptr(win));
 }
 
 void glk_cancel_mouse_event(winid_t win) {
-    log_trace() << "glk_cancel_mouse_event(" << win << ")";
+    SPDLOG_TRACE("glk_cancel_mouse_event({})", wrap::ptr(win));
 
     if(FROM_WINID(win)->controller()->supportsMouseInput())
         FROM_WINID(win)->controller()->mouseProvider()->cancelMouseInputRequest();
     else
-        log_warn() << "Failed to cancel mouse input event. " << FROM_WINID(win) << " does not accept mouse input.";
+        spdlog::warn("Failed to cancel mouse input event. {} does not accept mouse input.", wrap::ptr(win));
 }
 
 QTimer* s_Timer = NULL;
 
 void glk_request_timer_events(glui32 millisecs) {
-    log_trace() << "glk_request_timer_events(" << millisecs << ")";
+    SPDLOG_TRACE("glk_request_timer_events({})", millisecs);
 
     Glk::sendTaskToEventThread([&] {
         if(!s_Timer) {
@@ -171,7 +170,7 @@ void glk_request_timer_events(glui32 millisecs) {
 }
 
 void glk_request_hyperlink_event(winid_t win) {
-    log_trace() << "glk_request_hyperlink_event(" << win << ")";
+    SPDLOG_TRACE("glk_request_hyperlink_event({})", wrap::ptr(win));
 
 //    Glk::sendTaskToEventThread([&] {
 //        FROM_WINID(win)->hyperlinkInputProvider()->requestHyperlinkInput();
@@ -179,7 +178,7 @@ void glk_request_hyperlink_event(winid_t win) {
 }
 
 void glk_cancel_hyperlink_event(winid_t win) {
-    log_trace() << "glk_cancel_hyperlink_event(" << win << ")";
+    SPDLOG_TRACE("glk_cancel_hyperlink_event({})", wrap::ptr(win));
 
 //    Glk::sendTaskToEventThread([&] {
 //        FROM_WINID(win)->hyperlinkInputProvider()->cancelHyperlinkInputRequest();

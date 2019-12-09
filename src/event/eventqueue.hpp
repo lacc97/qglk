@@ -6,8 +6,11 @@
 #include <QMutex>
 #include <QSemaphore>
 
+#include <fmt/format.h>
+
 #include "glk.hpp"
 
+#include "log/pointerwrap.hpp"
 #include "thread/taskrequest.hpp"
 
 namespace Glk {
@@ -16,6 +19,9 @@ namespace Glk {
     class EventQueue : public QObject {
         Q_OBJECT
     public:
+        static std::string_view typeName(glui32 t);
+
+
         explicit EventQueue(QObject* parent = nullptr);
         
 
@@ -55,6 +61,20 @@ namespace Glk {
     };
 }
 
+namespace fmt {
+    template <>
+    struct formatter<event_t> {
+        template <typename ParseContext>
+        constexpr auto parse(ParseContext &ctx) {
+            return ctx.begin();
+        }
+
+        template <typename FormatContext>
+        auto format(const event_t& e, FormatContext &ctx) {
+            return format_to(ctx.out(), "{} {{{}, {}, {}}}", Glk::EventQueue::typeName(e.type), wrap::ptr(e.win), e.val1, e.val2);
+        }
+    };
+}
 std::ostream& operator<<(std::ostream& os, const event_t& e);
 
 #endif
