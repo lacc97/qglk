@@ -56,10 +56,15 @@ void Glk::GraphicsWindow::resizeBuffer(QSize newSize) {
     assert(onEventThread());
 
     QPixmap newBuffer{newSize};
+    newBuffer.fill(Qt::transparent);
+
+    QRect dstRect = newBuffer.rect();
+    QRect srcRect = {0, 0,
+                     std::min(m_Buffer.width(), newBuffer.width()),
+                     std::min(m_Buffer.height(), newBuffer.height())};
 
     std::unique_ptr<QPainter> p = std::make_unique<QPainter>(&newBuffer);
-    p->fillRect(newBuffer.rect(), Qt::transparent);
-    p->drawPixmap(0, 0, m_Buffer);
+    p->drawPixmap(dstRect, m_Buffer, srcRect);
 
     m_Buffer = std::move(newBuffer);
 }
