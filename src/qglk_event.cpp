@@ -172,15 +172,17 @@ void glk_request_timer_events(glui32 millisecs) {
 void glk_request_hyperlink_event(winid_t win) {
     SPDLOG_TRACE("glk_request_hyperlink_event({})", wrap::ptr(win));
 
-//    Glk::sendTaskToEventThread([&] {
-//        FROM_WINID(win)->hyperlinkInputProvider()->requestHyperlinkInput();
-//    });
+    if(FROM_WINID(win)->controller()->supportsHyperlinkInput())
+        FROM_WINID(win)->controller()->hyperlinkProvider()->requestHyperlinkInput();
+    else
+        spdlog::warn("{} does not accept hyperlinks", wrap::ptr(win));
 }
 
 void glk_cancel_hyperlink_event(winid_t win) {
     SPDLOG_TRACE("glk_cancel_hyperlink_event({})", wrap::ptr(win));
 
-//    Glk::sendTaskToEventThread([&] {
-//        FROM_WINID(win)->hyperlinkInputProvider()->cancelHyperlinkInputRequest();
-//    });
+    if(FROM_WINID(win)->controller()->supportsHyperlinkInput())
+        FROM_WINID(win)->controller()->hyperlinkProvider()->cancelHyperlinkInputRequest();
+    else
+        spdlog::warn("Failed to cancel hyperlink request. {} does not accept hyperlinks.", wrap::ptr(win));
 }

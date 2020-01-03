@@ -29,6 +29,8 @@ namespace Glk {
 
             [[nodiscard]] virtual bool supportsCharInput() const;
 
+            [[nodiscard]] virtual bool supportsHyperlinkInput() const;
+
             [[nodiscard]] virtual bool supportsLineInput() const;
 
             [[nodiscard]] virtual bool supportsMouseInput() const;
@@ -43,6 +45,10 @@ namespace Glk {
 
             virtual void synchronize();
 
+
+            [[nodiscard]] inline HyperlinkInputProvider* hyperlinkProvider() const {
+                return mp_HyperlinkInputProvider;
+            }
 
             [[nodiscard]] inline KeyboardInputProvider* keyboardProvider() const {
                 return mp_KeyboardInputProvider;
@@ -84,6 +90,7 @@ namespace Glk {
 
             KeyboardInputProvider* mp_KeyboardInputProvider;
             MouseInputProvider* mp_MouseInputProvider;
+            HyperlinkInputProvider* mp_HyperlinkInputProvider;
     };
 }
 

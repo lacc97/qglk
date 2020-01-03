@@ -10,10 +10,6 @@ Glk::TextBufferBrowser::TextBufferBrowser(Glk::TextBufferWidget* wParent)
     : QTextBrowser{wParent},
       m_Images{},
       m_LineInputStartCursorPosition{-1} {
-    setReadOnly(true);
-    setOpenExternalLinks(false);
-    setOpenLinks(false);
-
     connect(this, &TextBufferBrowser::cursorPositionChanged, this, &TextBufferBrowser::onCursorPositionChanged);
 }
 
@@ -57,7 +53,10 @@ Glk::TextBufferWidget::TextBufferWidget()
     mp_Browser = new TextBufferBrowser(this);
     mp_Browser->setReadOnly(true);
     mp_Browser->setOpenExternalLinks(false);
-    mp_Browser->setOpenLinks(false);
+    mp_Browser->setOpenLinks(true);
+
+    QObject::connect(mp_Browser, &TextBufferBrowser::anchorClicked,
+                     this, &TextBufferWidget::onHyperlinkPressed);
 
     lay->addWidget(mp_Browser);
 
@@ -89,137 +88,14 @@ void Glk::TextBufferWidget::onLineInputFinished() {
     browser()->setLineInputStartCursorPosition(-1);
 }
 
+void Glk::TextBufferWidget::onHyperlinkPressed(const QUrl& url) {
+    if(hyperlinkInputPending()) {
+        bool success = false;
+        uint linkval = url.toString().toUInt(&success);
 
-//#include "textbufferwidget.hpp"
-//
-//#include <QGridLayout>
-//#include <QKeyEvent>
-//
-//#include "log/log.hpp"
-//#include "thread/taskrequest.hpp"
-//
-//Glk::TextBufferBrowser::TextBufferBrowser(Glk::TextBufferWidget* wParent)
-//    : QTextBrowser{wParent},
-//      m_Images{},
-//      m_ReceivingCharInput{false},
-//      m_ReceivingLineInput{false},
-//      m_LineTerminators{},
-//      m_LineInputStartCursorPosition{0} {
-//    setReadOnly(true);
-//    setOpenExternalLinks(false);
-//    setOpenLinks(false);
-//
-//    connect(this, &TextBufferBrowser::cursorPositionChanged, this, &TextBufferBrowser::onCursorPositionChanged);
-//}
-//
-//QVariant Glk::TextBufferBrowser::loadResource(int type, const QUrl& name) {
-//    if(type == QTextDocument::ImageResource) {
-//        int imgIndex = name.toString().toUInt();
-//
-//        if(imgIndex < m_Images.size())
-//            return QVariant::fromValue(m_Images[imgIndex]);
-//    }
-//
-//    return QTextBrowser::loadResource(type, name);
-//}
-//
-//
-//void Glk::TextBufferBrowser::requestCharInput() {
-//    assert(onEventThread());
-//    assert(!m_ReceivingLineInput);
-//    assert(!m_ReceivingCharInput);
-//
-//    m_ReceivingCharInput = true;
-//    setFocus();
-//}
-//
-//void Glk::TextBufferBrowser::requestLineInput() {
-//    assert(onEventThread());
-//    assert(!m_ReceivingCharInput);
-//    assert(!m_ReceivingLineInput);
-//
-//    m_ReceivingLineInput = true;
-//    setFocus();
-//    setReadOnly(false);
-//
-//    moveCursor(QTextCursor::End);
-//
-//    m_LineInputStartCursorPosition = textCursor().position();
-//}
-//
-//void Glk::TextBufferBrowser::onCharInputRequestCancelled() {
-//    assert(onEventThread());
-//
-//    if(m_ReceivingCharInput)
-//        endCharInputRequest();
-//}
-//
-//void Glk::TextBufferBrowser::onCursorPositionChanged() {
-//    if(m_ReceivingLineInput && m_LineInputStartCursorPosition > textCursor().position()) {
-//        auto c = textCursor();
-//        c.setPosition(m_LineInputStartCursorPosition,
-//                      c.hasSelection() ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor);
-//        setTextCursor(c);
-//    }
-//}
-//
-//void Glk::TextBufferBrowser::onLineInputRequestCancelled() {
-//    assert(onEventThread());
-//
-//    if(m_ReceivingLineInput)
-//        endLineInputRequest(Qt::Key_Enter);
-//}
-//
-//void Glk::TextBufferBrowser::endCharInputRequest() {
-//    m_ReceivingCharInput = false;
-//}
-//
-//void Glk::TextBufferBrowser::endLineInputRequest(Qt::Key terminator) {
-//    m_ReceivingLineInput = false;
-//
-//    auto c = textCursor();
-//    c.setPosition(m_LineInputStartCursorPosition);
-//    c.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
-//
-//    QString inputText = c.selectedText();
-//    assert(!inputText.contains(0x2029));
-//
-//    emit lineInput(terminator, inputText);
-//
-//    setReadOnly(true);
-//}
-//
-//void Glk::TextBufferBrowser::keyPressEvent(QKeyEvent* ev) {
-//    if(m_ReceivingCharInput) {
-//        emit characterInput(static_cast<Qt::Key>(ev->key()), ev->text());
-//        endCharInputRequest();
-//        return;
-//    } else if(m_ReceivingLineInput) {
-//        if(ev->key() == Qt::Key_Return || ev->key() == Qt::Key_Enter ||
-//           m_LineTerminators.find(static_cast<Qt::Key>(ev->key())) != m_LineTerminators.end()) {
-//            endLineInputRequest(static_cast<Qt::Key>(ev->key()));
-//            return;
-//        } else if(textCursor().position() == m_LineInputStartCursorPosition && ev->key() == Qt::Key_Backspace) {
-//            // This ensures we can't delete anything that came before the line input request.
-//            return;
-//        }
-//    }
-//
-//    QTextBrowser::keyPressEvent(ev);
-//}
-//
-//Glk::TextBufferWidget::TextBufferWidget()
-//    : QWidget{},
-//      mp_Browser{nullptr} {
-//    assert(onEventThread());
-//
-//    QLayout* lay = new QGridLayout(this);
-//    lay->setMargin(0);
-//
-//    mp_Browser = new TextBufferBrowser(this);
-//    mp_Browser->setReadOnly(true);
-//    mp_Browser->setOpenExternalLinks(false);
-//    mp_Browser->setOpenLinks(false);
-//
-//    lay->addWidget(mp_Browser);
-//}
+        if(success)
+            emit hyperlinkInput(linkval);
+        else
+            spdlog::warn("Received rubbish hyperlink input {0} at TextBufferWidget ({1})", url.toString(), (void*)this);
+    }
+}

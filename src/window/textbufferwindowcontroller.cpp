@@ -91,6 +91,10 @@ bool Glk::TextBufferWindowController::supportsCharInput() const {
     return true;
 }
 
+bool Glk::TextBufferWindowController::supportsHyperlinkInput() const {
+    return true;
+}
+
 bool Glk::TextBufferWindowController::supportsLineInput() const {
     return true;
 }

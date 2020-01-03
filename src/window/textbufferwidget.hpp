@@ -46,9 +46,14 @@ namespace Glk {
     };
 
     class TextBufferWidget : public WindowWidget {
+            Q_OBJECT
         public:
             TextBufferWidget();
 
+
+            [[nodiscard]] inline TextBufferBrowser* browser() const {
+                return mp_Browser;
+            }
 
         protected:
             QString lineInputBuffer() override;
@@ -57,10 +62,8 @@ namespace Glk {
 
             void onLineInputFinished() override;
 
-        public:
-            [[nodiscard]] inline TextBufferBrowser* browser() const {
-                return mp_Browser;
-            }
+        protected slots:
+            void onHyperlinkPressed(const QUrl& url);
 
         private:
             TextBufferBrowser* mp_Browser;

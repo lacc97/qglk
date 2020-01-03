@@ -30,6 +30,8 @@ namespace Glk {
 
             [[nodiscard]] bool supportsCharInput() const override;
 
+            [[nodiscard]] bool supportsHyperlinkInput() const override;
+
             [[nodiscard]] bool supportsLineInput() const override;
 
 

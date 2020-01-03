@@ -507,9 +507,9 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
 
 void glk_set_hyperlink(glui32 linkval) {
     if(s_CurrentStream)
-            s_CurrentStream->pushHyperlink(linkval);
+        s_CurrentStream->pushHyperlink(linkval);
 }
 
 void glk_set_hyperlink_stream(strid_t str, glui32 linkval) {
-        FROM_STRID(str)->pushHyperlink(linkval);
+    FROM_STRID(str)->pushHyperlink(linkval);
 }

@@ -37,8 +37,8 @@ void Glk::WindowWidget::cancelCharInput() {
 void Glk::WindowWidget::cancelHyperlinkInput() {
     assert(onEventThread());
 
-    assert(false);
-    // TODO implement
+    if(hyperlinkInputPending())
+        m_ReceivingHyperlinkInput = false;
 }
 
 void Glk::WindowWidget::cancelLineInput() {
@@ -71,8 +71,12 @@ void Glk::WindowWidget::requestCharInput() {
 }
 
 void Glk::WindowWidget::requestHyperlinkInput() {
-    assert(false);
-    // TODO request hyperlink input
+    assert(onEventThread());
+    assert(mp_InputWidget);
+
+    m_ReceivingHyperlinkInput = true;
+
+    onHyperlinkInputRequested();
 }
 
 void Glk::WindowWidget::requestLineInput(glui32 maxInputLength, const std::set<Qt::Key>& terminators) {

@@ -12,13 +12,17 @@
 
 namespace Glk {
     class Window;
+
     class WindowController;
 
     class InputRequest : public QObject {
-            Q_OBJECT
+        Q_OBJECT
+
             Q_DISABLE_COPY(InputRequest)
+
         public:
             InputRequest();
+
             ~InputRequest() override = default;
 
 
@@ -39,6 +43,7 @@ namespace Glk {
             [[nodiscard]] bool isPending() const;
 
         signals:
+
             void cancelled();
 
             void fulfilled();
@@ -76,6 +81,7 @@ namespace Glk {
             }
 
         public slots:
+
             void fulfill(Qt::Key key, const QString& ch);
 
         private:
@@ -93,7 +99,7 @@ namespace Glk {
             [[nodiscard]] static std::vector<Qt::Key> toQtKeyTerminators(glui32 keycode);
 
             LineInputRequest(void* buf, glui32 maxBufLen, glui32 initBufLen, bool unicode,
-                             std::set<Qt::Key>  terms, bool echoes);
+                             std::set<Qt::Key> terms, bool echoes);
 
             ~LineInputRequest() override;
 
@@ -134,6 +140,7 @@ namespace Glk {
             }
 
         public slots:
+
             void fulfill(Qt::Key terminator, const QString& text);
 
         private:
@@ -146,9 +153,9 @@ namespace Glk {
             QString m_Text;
             Qt::Key m_Terminator;
     };
-    
+
     class MouseInputRequest : public InputRequest {
-            Q_OBJECT
+        Q_OBJECT
         public:
             event_t generateEvent(Window* win) override;
 
@@ -158,10 +165,29 @@ namespace Glk {
             }
 
         public slots:
+
             void fulfill(const QPoint& qtpos);
 
         private:
             QPoint m_ClickPos;
+    };
+
+    class HyperlinkInputRequest : public InputRequest {
+        Q_OBJECT
+        public:
+            event_t generateEvent(Window* win) override;
+
+
+            [[nodiscard]] inline glui32 linkValue() const {
+                return m_LinkValue;
+            }
+
+        public slots:
+
+            void fulfill(glui32 linkval);
+
+        private:
+            glui32 m_LinkValue;
     };
 
     class InputProvider : public QObject {
@@ -177,7 +203,7 @@ namespace Glk {
     };
 
     class KeyboardInputProvider : public InputProvider {
-            Q_OBJECT
+        Q_OBJECT
         public:
             explicit KeyboardInputProvider(WindowController* winController);
 
@@ -206,13 +232,17 @@ namespace Glk {
             }
 
         public slots:
+
             void requestCharInput(bool unicode);
+
             void cancelCharInputRequest();
 
             void requestLineInput(void* buf, glui32 maxLen, glui32 initLen, bool unicode);
+
             void cancelLineInputRequest(event_t* ev);
 
         signals:
+
             void notifyCharInputRequested();
 
             void notifyCharInputRequestCancelled();
@@ -227,6 +257,7 @@ namespace Glk {
             void notifyLineInputRequestFulfilled(const QString& text, bool echoes);
 
         protected slots:
+
             void onCharInputFulfilled();
 
             void onLineInputFulfilled();
@@ -249,10 +280,13 @@ namespace Glk {
             }
 
         public slots:
+
             void requestMouseInput();
+
             void cancelMouseInputRequest();
 
         signals:
+
             void notifyMouseInputRequested();
 
             void notifyMouseInputRequestCancelled();
@@ -260,105 +294,44 @@ namespace Glk {
             void notifyMouseInputRequestFulfilled(const QPoint& point);
 
         protected slots:
+
             void onMouseInputFulfilled();
 
         private:
             std::unique_ptr<MouseInputRequest> mp_MouseInputRequest;
     };
 
-//    class KeyboardInputProvider : public QObject {
-//            Q_OBJECT
-//        public:
-//            KeyboardInputProvider(Glk::Window* parent_, bool characterInputProvider_, bool lineInputProvider_);
-//
-//            void requestCharInput(bool unicode);
-//            void cancelCharInputRequest();
-//            void requestLineInput(void* buf, glui32 maxlen, glui32 initlen, bool unicode);
-//            void cancelLineInputRequest(event_t* ev);
-//
-//            bool echoesLine() const;
-//            void setLineEcho(bool le);
-//
-//            void setTerminators(glui32* keycodes, glui32 count);
-//
-//            void clearLineInputBuffer();
-//            void fillLineInputBuffer(const QString& text);
-//
-//            bool handleKeyEvent(int key, const QString& text);
-//
-//        signals:
-//            void characterInputRequested();
-//            void characterInputRequestEnded(bool cancelled);
-//            void lineInputRequested();
-//            void lineInputRequestEnded(bool cancelled, void* buf, glui32 len, bool unicode);
-//
-//            void lineInputCharacterEntered(glui32 ch, bool doUpdate = true);
-//            void lineInputSpecialCharacterEntered(glui32 kc, bool doUpdate = true);
-//
-//        protected:
-//            Glk::Window* windowPointer();
-//
-//            void processLineInputCharacterEntered(glui32 ch, bool doUpdate = true);
-//
-//        private:
-//            bool m_CharacterInputProvider;
-//            bool m_LineInputProvider;
-//
-//            bool m_CharacterInputRequested;
-//            bool m_LineInputRequested;
-//            bool m_Unicode;
-//
-//            void* mp_LineInputBuffer;
-//            glui32 m_LineInputBufferLength;
-//            glui32 m_LineInputBufferPosition;
-//            bool m_EchoesLine;
-//            QSet<glui32> m_Terminators;
-//    };
-//
-//    class MouseInputProvider : public QObject {
-//            Q_OBJECT
-//        public:
-//            MouseInputProvider(Glk::Window* parent_, bool m_MouseInputProvider);
-//
-//            void requestMouseInput();
-//            void cancelMouseInputRequest();
-//
-//            bool handleMouseEvent(QPoint pos);
-//
-//        signals:
-//            void mouseInputRequested();
-//            void mouseInputRequestEnded(bool cancelled);
-//
-//        protected:
-//            Glk::Window* windowPointer();
-//
-//        private:
-//            bool m_MouseInputProvider;
-//            bool m_MouseInputRequested;
-//    };
-//
-//    class HyperlinkInputProvider : public QObject {
-//            Q_OBJECT
-//
-//        public:
-//            HyperlinkInputProvider(Glk::Window* parent_, bool hyperlinkInputProvider_);
-//
-//            void requestHyperlinkInput();
-//            void cancelHyperlinkInputRequest();
-//
-//            void handleHyperlinkClicked(glui32 linkval);
-//
-//        signals:
-//            void hyperlinkInputRequested();
-//            void hyperlinkInputRequestEnded(bool cancelled);
-//
-//        protected:
-//            Glk::Window* windowPointer();
-//
-//        private:
-//            bool m_HyperlinkInputProvider;
-//            bool m_HyperlinkInputRequested;
-//    };
+    class HyperlinkInputProvider : public InputProvider {
+        Q_OBJECT
+        public:
+            explicit HyperlinkInputProvider(WindowController* winController);
+
+
+            [[nodiscard]] inline HyperlinkInputRequest* hyperlinkInputRequest() const {
+                return mp_HyperlinkInputRequest.get();
+            }
+
+        public slots:
+
+            void requestHyperlinkInput();
+
+            void cancelHyperlinkInputRequest();
+
+        signals:
+
+            void notifyHyperlinkInputRequested();
+
+            void notifyHyperlinkInputRequestCancelled();
+
+            void notifyHyperlinkInputRequestFulfilled(glui32 linkval);
+
+        protected slots:
+
+            void onHyperlinkInputFulfilled();
+
+        private:
+            std::unique_ptr<HyperlinkInputRequest> mp_HyperlinkInputRequest;
+    };
 }
 
 #endif

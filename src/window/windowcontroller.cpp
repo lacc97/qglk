@@ -30,7 +30,8 @@ Glk::WindowController::WindowController(Glk::Window* win, QWidget* widg)
       mp_Widget{widg},
       m_RequiresSynchronization{false},
       mp_KeyboardInputProvider{new KeyboardInputProvider{this}},
-      mp_MouseInputProvider{new MouseInputProvider{this}} {
+      mp_MouseInputProvider{new MouseInputProvider{this}},
+      mp_HyperlinkInputProvider{new HyperlinkInputProvider{this}} {
     assert(mp_Window);
     assert(mp_Widget);
 
@@ -42,6 +43,16 @@ Glk::WindowController::WindowController(Glk::Window* win, QWidget* widg)
                      });
 
     QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequested,
+                     [this]() {
+                         synchronize();
+                     });
+
+    QObject::connect(mouseProvider(), &MouseInputProvider::notifyMouseInputRequested,
+                     [this]() {
+                         synchronize();
+                     });
+
+    QObject::connect(hyperlinkProvider(), &HyperlinkInputProvider::notifyHyperlinkInputRequested,
                      [this]() {
                          synchronize();
                      });
@@ -67,17 +78,22 @@ Glk::WindowController::WindowController(Glk::Window* win, QWidget* widg)
                          requestSynchronization();
                      });
 
-    QObject::connect(mouseProvider(), &MouseInputProvider::notifyMouseInputRequested,
-                     [this]() {
-                         synchronize();
-                     });
-
     QObject::connect(mouseProvider(), &MouseInputProvider::notifyMouseInputRequestCancelled,
                      [this]() {
                          requestSynchronization();
                      });
 
     QObject::connect(mouseProvider(), &MouseInputProvider::notifyMouseInputRequestFulfilled,
+                     [this]() {
+                         requestSynchronization();
+                     });
+
+    QObject::connect(hyperlinkProvider(), &HyperlinkInputProvider::notifyHyperlinkInputRequestCancelled,
+                     [this]() {
+                         requestSynchronization();
+                     });
+
+    QObject::connect(hyperlinkProvider(), &HyperlinkInputProvider::notifyHyperlinkInputRequestFulfilled,
                      [this]() {
                          requestSynchronization();
                      });
@@ -90,6 +106,10 @@ Glk::WindowController::~WindowController() {
 }
 
 bool Glk::WindowController::supportsCharInput() const {
+    return false;
+}
+
+bool Glk::WindowController::supportsHyperlinkInput() const {
     return false;
 }
 
