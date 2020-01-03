@@ -32,6 +32,8 @@ add_library(qglk STATIC
         PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR})
     target_link_libraries(qglk
+        PUBLIC
+            PkgConfig::tcmalloc
         PRIVATE
             fmt::fmt
             ${QT_REQUIRED_LIBS}
