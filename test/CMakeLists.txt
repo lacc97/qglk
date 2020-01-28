@@ -45,6 +45,8 @@ add_executable(model-qglk
         model.c
         ../src/glkstart.c
 )
+    set_target_properties(model-qglk PROPERTIES
+            OUTPUT_NAME     qglk-model)
     target_include_directories(model-qglk PRIVATE ../src/)
     target_link_libraries(model-qglk qglk)
 
@@ -53,6 +55,8 @@ if(${BUILD_GLKTERM})
             model.c
             glkterm-1.0.4/glkstart.c
     )
+        set_target_properties(model-glkterm PROPERTIES
+                OUTPUT_NAME glkterm-model)
         target_include_directories(model-glkterm PRIVATE glkterm-1.0.4/)
         target_link_libraries(model-glkterm glkterm)
 endif()
@@ -62,6 +66,8 @@ add_executable(multiwin-qglk
         multiwin.c
         ../src/glkstart.c
 )
+    set_target_properties(multiwin-qglk PROPERTIES
+            OUTPUT_NAME     qglk-multiwin)
     target_include_directories(multiwin-qglk PRIVATE ../src/)
     target_link_libraries(multiwin-qglk qglk)
 
@@ -70,6 +76,8 @@ if(${BUILD_GLKTERM})
             multiwin.c
             glkterm-1.0.4/glkstart.c
     )
+        set_target_properties(multiwin-glkterm PROPERTIES
+                OUTPUT_NAME glkterm-multiwin)
         target_include_directories(multiwin-glkterm PRIVATE glkterm-1.0.4/)
         target_link_libraries(multiwin-glkterm glkterm)
 endif()
@@ -94,6 +102,7 @@ set(GIT_SOURCES
 )
     
 add_executable(git-qglk ${GIT_SOURCES})
+    set_target_properties(git-qglk PROPERTIES OUTPUT_NAME qglk-git)
     target_compile_definitions(git-qglk PRIVATE "-DUSE_MMAP -DUSE_INLINE")
     target_include_directories(git-qglk PRIVATE git-1.3.5/ ../src/)
     target_link_libraries(git-qglk qglk)
@@ -101,6 +110,7 @@ install(TARGETS git-qglk DESTINATION bin)
 
 if(${BUILD_GLKTERM})
     add_executable(git-glkterm ${GIT_SOURCES})
+        set_target_properties(git-glkterm PROPERTIES OUTPUT_NAME glkterm-git)
         target_compile_definitions(git-glkterm PRIVATE "-DUSE_MMAP -DUSE_INLINE")
         target_include_directories(git-glkterm PRIVATE git-1.3.5/ glkterm-1.0.4/)
         target_link_libraries(git-glkterm glkterm ${MATH_LIBRARY})
@@ -187,6 +197,7 @@ add_executable(nitfol-qglk
         nitfol-0.5_p1/sound.c
         nitfol-0.5_p1/graphics.c
 )
+    set_target_properties(nitfol-qglk PROPERTIES OUTPUT_NAME qglk-nitfol)
     target_compile_definitions(nitfol-qglk PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
     target_include_directories(nitfol-qglk PRIVATE nitfol-0.5_p1/ ../src/)
     target_link_libraries(nitfol-qglk qglk)
@@ -199,6 +210,7 @@ if(${BUILD_GLKTERM})
             nitfol-0.5_p1/no_graph.c
             nitfol-0.5_p1/no_snd.c
     )
+        set_target_properties(nitfol-glkterm PROPERTIES OUTPUT_NAME glkterm-nitfol)
         target_compile_definitions(nitfol-glkterm PRIVATE "-DUSE_DIRECT_THREADING -DUSE_MMAP -DUSE_INLINE")
         target_include_directories(nitfol-glkterm PRIVATE nitfol-0.5_p1/ glkterm-1.0.4/)
         target_link_libraries(nitfol-glkterm glkterm ${MATH_LIBRARY})
@@ -232,6 +244,7 @@ add_executable(glulxe-qglk
         ${GLULXE_SOURCES}
         ${GLULXE_OS_SOURCES}
 )
+    set_target_properties(glulxe-qglk PROPERTIES OUTPUT_NAME qglk-glulxe)
     target_compile_definitions(glulxe-qglk PRIVATE "-DOS_UNIX")
     target_include_directories(glulxe-qglk PRIVATE glulxe-0.5.4/ ../src/)
     target_link_libraries(glulxe-qglk qglk)
@@ -281,6 +294,7 @@ set(TADS2_SOURCES
 add_executable(tads2-qglk
         ${TADS2_SOURCES}
 )
+    set_target_properties(tads2-qglk PROPERTIES OUTPUT_NAME qglk-tads2)
     target_compile_definitions(tads2-qglk PRIVATE
         OSANSI
         GLKUNIX
@@ -295,6 +309,7 @@ if(${BUILD_GLKTERM})
     add_executable(tads2-glkterm
             ${TADS2_SOURCES}
     )
+        set_target_properties(tads2-glkterm PROPERTIES OUTPUT_NAME glkterm-tads2)
         target_compile_definitions(tads2-glkterm PRIVATE
             OSANSI
             GLKTERM
