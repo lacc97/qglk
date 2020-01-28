@@ -13,42 +13,6 @@
 #include "window/pairwindow.hpp"
 #include "window/textbufferwindow.hpp"
 
-// #ifndef NDEBUG
-std::string printTree(Glk::Window* root) {
-    auto fn_print_recursive = [](auto& this_fn, Glk::Window* win, int tabs, std::ostream& os) mutable -> void {
-        if(!win)
-            return;
-
-        for(int ii = 0; ii < tabs; ii++)
-            os << "  ";
-
-        os << win << ": {"
-           << "parent <= " << win->parent() << ";";
-//             << "children <=" << root->children() << ";"
-//             << "layout <=" << root->layout() << ";"
-//             << "rect <=" << root->controller()->widget()->rect() << ";";
-
-        if(win->windowType() == Glk::Window::Pair)
-            os << "key <= " << static_cast<Glk::PairWindow*>(win)->keyWindow() << ";";
-
-        os << "}\n";
-
-        if(win->windowType() == Glk::Window::Pair) {
-            auto pw = static_cast<Glk::PairWindow*>(win);
-            this_fn(this_fn, pw->firstWindow(), tabs + 1, os);
-            this_fn(this_fn, pw->secondWindow(), tabs + 1, os);
-        }
-    };
-
-    std::stringstream ss;
-
-    ss << "\n";
-    fn_print_recursive(fn_print_recursive, root, 0, ss);
-
-    return ss.str();
-}
-// #endif
-
 winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintype, glui32 rock) {
     spdlog::trace("glk_window_open({}, {}, {}, {}, {})", wrap::ptr(split), Glk::WindowArrangement::methodString(method), size,
                   Glk::Window::windowsTypeString(wintype), rock);
