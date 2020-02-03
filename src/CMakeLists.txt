@@ -2,7 +2,7 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5Widgets REQUIRED)
-set(QT_REQUIRED_LIBS Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets )
+set(QT_REQUIRED_LIBS Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
 
 add_library(qglk STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
@@ -39,7 +39,7 @@ add_library(qglk STATIC
             ${QT_REQUIRED_LIBS}
             spdlog::spdlog)
 
-install(TARGETS qglk DESTINATION lib/glk)
+install(TARGETS qglk DESTINATION "${LIBDIR}/glk")
 
 
 add_subdirectory(blorb/)

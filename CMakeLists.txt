@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 project(QGlk)
 
+include(GNUInstallDirs)
 
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
