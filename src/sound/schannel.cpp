@@ -84,5 +84,3 @@ void Glk::SoundChannel::stop() {
 void Glk::SoundChannel::setVolume(glui32 volume, glui32 duration, bool notify) { //TODO handle duration and notify
     m_Player.setVolume(100 * volume / FullVolume);
 }
-
-#include "moc_schannel.cpp"

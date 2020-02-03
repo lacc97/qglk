@@ -58,8 +58,6 @@ bool Glk::Stream::isOpen() const {
     return mp_Device->isOpen();
 }
 
-#include "moc_stream.cpp"
-
 
 
 
