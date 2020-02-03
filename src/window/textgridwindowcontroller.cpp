@@ -29,8 +29,8 @@ void Glk::TextGridWindowController::synchronize() {
 
     if(widget()->isVisible() && (widget()->width() != 0 || widget()->height() != 0)) {
         QRect widgetContentsRect = widget()->contentsRect();
-        QSize widgetGlkSize(widgetContentsRect.width() / widget()->fontMetrics().horizontalAdvance('m'),
-                            widgetContentsRect.height() / widget()->fontMetrics().height());
+        QSize widgetGlkSize(widgetContentsRect.width() / widget<TextGridWidget>()->charWidth(),
+                            widgetContentsRect.height() / widget<TextGridWidget>()->charHeight());
 
         if(widgetGlkSize != window<TextGridWindow>()->gridSize()) {
             window<TextGridWindow>()->resizeGrid(widgetGlkSize);
@@ -57,12 +57,12 @@ QSize Glk::TextGridWindowController::glkSize() const {
 //    int effectiveWidth = std::clamp(qtUnits.width() - hMargins, 0, widget()->size().width() - hMargins);
 //    int effectiveHeight = std::clamp(qtUnits.height() - vMargins, 0, widget()->size().height() - vMargins);
 //
-//    return QSize(effectiveWidth / widget()->fontMetrics().horizontalAdvance('m'),
-//                 effectiveHeight / widget()->fontMetrics().height());
+//    return QSize(effectiveWidth / widget<TextGridWidget>()->charWidth(),
+//                 effectiveHeight / widget<TextGridWidget>()->charHeight();
 //}
 
 QSize Glk::TextGridWindowController::toQtSize(const QSize& glk) const {
-    int w = glk.width() * widget()->fontMetrics().horizontalAdvance('m');
+    int w = glk.width() * widget<TextGridWidget>()->charWidth();
     int h = glk.height() * widget()->fontMetrics().height();
 
     return {w + widget()->contentsMargins().left() + widget()->contentsMargins().right(),

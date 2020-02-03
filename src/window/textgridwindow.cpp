@@ -41,8 +41,8 @@ Glk::TextGridWindow::TextGridWindow(Glk::TextGridWindowController* winController
       m_Cursor(0, 0) {}
 
 void Glk::TextGridWindow::clearWindow() {
-    std::for_each(m_CharArray.begin(), m_CharArray.end(), [](auto& column) {
-        std::fill(column.begin(), column.end(), EMPTY_CHAR);
+    std::for_each(m_CharArray.begin(), m_CharArray.end(), [](auto& row) {
+        std::fill(row.begin(), row.end(), EMPTY_CHAR);
     });
 
     m_Cursor = {0, 0};
@@ -55,7 +55,7 @@ void Glk::TextGridWindow::moveCursor(glui32 x, glui32 y) {
 }
 
 bool Glk::TextGridWindow::writeChar(glui32 ch) {
-    QSize ws(m_CharArray.size(), m_CharArray[0].size());
+    QSize ws(m_CharArray[0].size(), m_CharArray.size());
 
     if(m_Cursor.x() < 0 || m_Cursor.y() < 0 || m_Cursor.x() >= ws.width() || m_Cursor.y() >= ws.height())
         return false;
@@ -67,7 +67,7 @@ bool Glk::TextGridWindow::writeChar(glui32 ch) {
         return true;
     }
 
-    m_CharArray[m_Cursor.x()][m_Cursor.y()] = ch;
+    m_CharArray[m_Cursor.y()][m_Cursor.x()] = ch;
     m_Cursor += QPoint(1, 0);
 
     if(m_Cursor.x() == ws.width()) {
@@ -81,22 +81,22 @@ bool Glk::TextGridWindow::writeChar(glui32 ch) {
 void Glk::TextGridWindow::resizeGrid(QSize newSize) {
     QSize oldSize = m_GridSize;
 
-    m_CharArray.resize(std::max(1, newSize.width()));
+    m_CharArray.resize(std::max(1, newSize.height()));
 
     std::for_each(m_CharArray.begin(), m_CharArray.end(), [newSize](auto& column) {
-        column.resize(std::max(1, newSize.height()));
+        column.resize(std::max(1, newSize.width()));
     });
 
-    for(int xx = oldSize.width(); xx < newSize.width(); xx++) {
-        std::for_each(m_CharArray[xx].begin(), m_CharArray[xx].end(), [](auto& ch) {
+    for(int yy = oldSize.height(); yy < newSize.height(); yy++) {
+        std::for_each(m_CharArray[yy].begin(), m_CharArray[yy].end(), [](auto& ch) {
             ch = EMPTY_CHAR;
         });
     }
 
-    if(newSize.height() > oldSize.height()) {
-        std::for_each(m_CharArray.begin(), m_CharArray.end(), [oldSize, newSize](auto& column) {
-            for(int yy = oldSize.height(); yy < newSize.height(); yy++) {
-                column[yy] = EMPTY_CHAR;
+    if(newSize.width() > oldSize.width()) {
+        std::for_each(m_CharArray.begin(), m_CharArray.end(), [oldSize, newSize](auto& width) {
+            for(int xx = oldSize.width(); xx < newSize.width(); xx++) {
+                width[xx] = EMPTY_CHAR;
             }
         });
     }
