@@ -39,7 +39,7 @@ add_library(qglk STATIC
             ${QT_REQUIRED_LIBS}
             spdlog::spdlog)
 
-install(TARGETS qglk DESTINATION "${LIBDIR}/glk")
+install(TARGETS qglk DESTINATION "${CMAKE_INSTALL_LIBDIR}/glk")
 
 
 add_subdirectory(blorb/)
