@@ -57,10 +57,10 @@ namespace Glk {
     };
 }
 
-inline const schanid_t TO_SCHANID(Glk::SoundChannel* sch) {
+inline schanid_t TO_SCHANID(Glk::SoundChannel* sch) {
     return reinterpret_cast<schanid_t>(sch);
 }
-inline Glk::SoundChannel* const FROM_SCHANID(schanid_t sch) {
+inline Glk::SoundChannel* FROM_SCHANID(schanid_t sch) {
     return reinterpret_cast<Glk::SoundChannel*>(sch);
 }
 

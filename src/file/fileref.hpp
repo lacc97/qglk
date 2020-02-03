@@ -48,10 +48,10 @@ namespace Glk {
     };
 }
 
-inline const frefid_t TO_FREFID(Glk::FileReference* fref) {
+inline frefid_t TO_FREFID(Glk::FileReference* fref) {
     return reinterpret_cast<frefid_t>(fref);
 }
-inline Glk::FileReference* const FROM_FREFID(frefid_t fref) {
+inline Glk::FileReference* FROM_FREFID(frefid_t fref) {
     return reinterpret_cast<Glk::FileReference*>(fref);
 }
 

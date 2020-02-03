@@ -109,10 +109,10 @@ namespace Glk {
     };
 }
 
-inline const strid_t TO_STRID(Glk::Stream* str) {
+inline strid_t TO_STRID(Glk::Stream* str) {
     return reinterpret_cast<strid_t>(str);
 }
-inline Glk::Stream* const FROM_STRID(strid_t str) {
+inline Glk::Stream* FROM_STRID(strid_t str) {
     return reinterpret_cast<Glk::Stream*>(str);
 }
 
