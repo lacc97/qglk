@@ -4,15 +4,16 @@
 
 #include "qglk.hpp"
 #include "event/eventqueue.hpp"
-#include "exception.hpp"
 #include "thread/taskrequest.hpp"
 #include "window/window.hpp"
 
 #include "log/log.hpp"
 
 void glk_tick() {
-    if(QGlk::getMainWindow().eventQueue().isInterrupted())
-        throw Glk::ExitException(true);
+    if(QGlk::getMainWindow().eventQueue().isInterrupted()) {
+        QGlk::getMainWindow().statusChannel().push(QGlk::GlkStatus::eINTERRUPTED);
+        coroutine::yield();
+    }
 
     emit QGlk::getMainWindow().tick();
 }
@@ -22,9 +23,8 @@ void glk_set_interrupt_handler(void (* func)(void)) {
 }
 
 void glk_exit() {
-    QGlk::getMainWindow().close();
-
-    throw Glk::ExitException();
+    QGlk::getMainWindow().statusChannel().push(QGlk::GlkStatus::eEXITED);
+    coroutine::yield();
 }
 
 void glk_select(event_t* event) {

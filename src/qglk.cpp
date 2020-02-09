@@ -11,8 +11,6 @@ extern "C" {
 #include "glkstart.h"
 }
 
-#include "exception.hpp"
-
 #include "window/pairwindow.hpp"
 
 #define ex_Void (0)
@@ -20,111 +18,6 @@ extern "C" {
 #define ex_Bool (2)
 
 static int errflag = FALSE;
-
-// Following two functions taken from glkterm-1.0.4
-//
-static int string_to_bool(char* str) {
-    if(!strcmp(str, "y") || !strcmp(str, "yes"))
-        return TRUE;
-
-    if(!strcmp(str, "n") || !strcmp(str, "no"))
-        return FALSE;
-
-    if(!strcmp(str, "on"))
-        return TRUE;
-
-    if(!strcmp(str, "off"))
-        return FALSE;
-
-    if(!strcmp(str, "+"))
-        return TRUE;
-
-    if(!strcmp(str, "-"))
-        return FALSE;
-
-    return -1;
-}
-
-static int extract_value(int argc, char* argv[], char* optname, int type,
-                         int* argnum, int* result, int defval) {
-    int optlen, val;
-    char* cx, * origcx, firstch;
-
-    optlen = strlen(optname);
-    origcx = argv[*argnum];
-    cx = origcx;
-
-    firstch = *cx;
-    cx++;
-
-    if(strncmp(cx, optname, optlen))
-        return FALSE;
-
-    cx += optlen;
-
-    switch(type) {
-
-        case ex_Void:
-            if(*cx)
-                return FALSE;
-
-            *result = TRUE;
-            return TRUE;
-
-        case ex_Int:
-            if(*cx == '\0') {
-                if((*argnum) + 1 >= argc) {
-                    cx = "";
-                } else {
-                    (*argnum) += 1;
-                    cx = argv[*argnum];
-                }
-            }
-
-            val = atoi(cx);
-
-            if(val == 0 && cx[0] != '0') {
-                printf("%s: %s must be followed by a number\n",
-                       argv[0], origcx);
-                errflag = TRUE;
-                return FALSE;
-            }
-
-            *result = val;
-            return TRUE;
-
-        case ex_Bool:
-            if(*cx == '\0') {
-                if((*argnum) + 1 >= argc) {
-                    val = -1;
-                } else {
-                    char* cx2 = argv[(*argnum) + 1];
-                    val = string_to_bool(cx2);
-
-                    if(val != -1)
-                        (*argnum) += 1;
-                }
-            } else {
-                val = string_to_bool(cx);
-
-                if(val == -1) {
-                    printf("%s: %s must be followed by a boolean value\n",
-                           argv[0], origcx);
-                    errflag = TRUE;
-                    return FALSE;
-                }
-            }
-
-            if(val == -1)
-                val = !defval;
-
-            *result = val;
-            return TRUE;
-
-    }
-
-    return FALSE;
-}
 
 Glk::Runnable::Runnable(int argc_, char** argv_)
     : argc(argc_),
@@ -138,18 +31,6 @@ void Glk::Runnable::run() {
     //
     int ix, jx, val;
     glkunix_startup_t startdata;
-
-    /* Test for compile-time errors. If one of these spouts off, you
-        must edit glk.h and recompile. */
-    if(sizeof(glui32) != 4) {
-        printf("Compile-time error: glui32 is not a 32-bit value. Please fix glk.h.\n");
-        return;
-    }
-
-    if((glui32) (-1) < 0) {
-        printf("Compile-time error: glui32 is not unsigned. Please fix glk.h.\n");
-        return;
-    }
 
     /* Now some argument-parsing. This is probably going to hurt. */
     startdata.argc = 0;
@@ -266,23 +147,25 @@ void Glk::Runnable::run() {
         return;
     }
 
-    try {
-        if(!glkunix_startup_code(&startdata)) {
-            return;
-        }
+    if(!glkunix_startup_code(&startdata)) {
+        return;
+    }
 
-        glk_main();
-    } catch(Glk::ExitException& ex) {
-        if(ex.interrupted() && bool(QGlk::getMainWindow().interruptHandler()))
+    coroutine::routine_t cor = coroutine::create(glk_main);
+    coroutine::resume(cor);
+    if(!QGlk::getMainWindow().statusChannel().empty()) {
+        QGlk::GlkStatus status = QGlk::getMainWindow().statusChannel().pop();
+        if(status == QGlk::GlkStatus::eINTERRUPTED && QGlk::getMainWindow().interruptHandler())
             QGlk::getMainWindow().interruptHandler()();
     }
 
-    return;
+    QGlk::getMainWindow().close();
 }
 
 QGlk::QGlk(int argc, char** argv)
     : QMainWindow(),
       mp_UI{new Ui::QGlk},
+      mp_StatusChannel{std::make_unique<coroutine::Channel<GlkStatus>>()},
       mp_Runnable{new Glk::Runnable(argc, argv)},
       mp_RootWindow{nullptr},
       m_DeleteQueue{},

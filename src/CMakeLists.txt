@@ -35,6 +35,7 @@ add_library(qglk STATIC
         PUBLIC
             PkgConfig::tcmalloc
         PRIVATE
+            coroutine
             fmt::fmt
             ${QT_REQUIRED_LIBS}
             spdlog::spdlog)
@@ -45,6 +46,7 @@ install(TARGETS qglk DESTINATION "${CMAKE_INSTALL_LIBDIR}/glk")
 add_subdirectory(blorb/)
 add_subdirectory(event/)
 add_subdirectory(file/)
+add_subdirectory(lib/coroutine/)
 add_subdirectory(log/)
 add_subdirectory(sound/)
 add_subdirectory(stream/)

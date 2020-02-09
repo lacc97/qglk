@@ -9,6 +9,9 @@
 #include <QRunnable>
 #include <QWidget>
 
+#define STACK_LIMIT (8*1024*1024)
+#include <coroutine.h>
+
 #include "event/eventqueue.hpp"
 #include "file/fileref.hpp"
 #include "sound/schannel.hpp"
@@ -47,6 +50,12 @@ class QGlk : public QMainWindow {
         friend void glk_tick();
 //         friend void glk_select(event_t*);
     public:
+        enum class GlkStatus {
+            eEXITED,
+            eINTERRUPTED
+        };
+
+
         static QGlk& getMainWindow();
 
         QGlk(QWidget* parent = NULL) : QMainWindow(parent) {}
@@ -65,6 +74,9 @@ class QGlk : public QMainWindow {
             assert(!win || !win->parent());
 
             mp_RootWindow = win;
+        }
+        inline coroutine::Channel<GlkStatus>& statusChannel() const {
+            return *mp_StatusChannel;
         }
         inline const Glk::Runnable* glkRunnable() const {
             return mp_Runnable;
@@ -117,6 +129,7 @@ class QGlk : public QMainWindow {
         bool handleGlkTask(Glk::TaskEvent* event);
 
         Ui::QGlk* mp_UI;
+        std::unique_ptr<coroutine::Channel<GlkStatus>> mp_StatusChannel;
         Glk::Runnable* mp_Runnable;
         Glk::Window* mp_RootWindow;
         std::deque<Glk::WindowController*> m_DeleteQueue;
