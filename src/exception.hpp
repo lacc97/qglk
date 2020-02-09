@@ -6,9 +6,16 @@
 namespace Glk {
     class ExitException : public std::exception {
         public:
-            ExitException(bool interrupted_ = false) : m_Interrupted(interrupted_) {}
+            explicit ExitException(bool interrupted_ = false) : m_Interrupted(interrupted_) {}
 
-            inline bool interrupted() const {
+            const char *what() const noexcept override {
+                if(interrupted())
+                    return "interrupted";
+                else
+                    return "exit";
+            }
+
+            [[nodiscard]] inline bool interrupted() const {
                 return m_Interrupted;
             }
 
