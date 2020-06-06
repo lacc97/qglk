@@ -16,17 +16,21 @@ Glk::Stream::Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type
 }
 
 Glk::Stream::~Stream() {
-    close();
+    if(mp_Device->isOpen()) {
+        mp_Device->close();
+        if(!mp_Device->isOpen())
+            emit closed();
 
-    auto& strList = QGlk::getMainWindow().streamList();
-    if(std::count(strList.begin(), strList.end(), this) == 0) {
-        spdlog::warn("Stream {} not found in stream list while removing", *this);
-    } else {
-        strList.remove(this);
-        SPDLOG_DEBUG("Stream {} removed from stream list", *this);
+        auto& strList = QGlk::getMainWindow().streamList();
+        if(std::count(strList.begin(), strList.end(), this) == 0) {
+            spdlog::warn("Stream {} not found in stream list while removing", *this);
+        } else {
+            strList.remove(this);
+            SPDLOG_DEBUG("Stream {} removed from stream list", *this);
+        }
+
+        Glk::Dispatch::unregisterObject(this);
     }
-
-    Glk::Dispatch::unregisterObject(this);
 
     if(glk_stream_get_current() == TO_STRID(this))
         glk_stream_set_current(NULL);

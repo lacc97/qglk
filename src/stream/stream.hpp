@@ -24,16 +24,6 @@ namespace Glk {
             Glk::Object::Type objectType() const override;
 
             virtual bool open(QIODevice::OpenMode om);
-            inline bool close() {
-                if(mp_Device->isOpen()) {
-                    mp_Device->close();
-
-                    if(!mp_Device->isOpen())
-                        emit closed();
-                }
-
-                return !mp_Device->isOpen();
-            }
 
             inline Type type() const {
                 return m_Type;
