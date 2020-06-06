@@ -4,6 +4,7 @@ if(${BUILD_GLKTERM})
   add_subdirectory(glkterm)
 endif()
 
+add_subdirectory(bocfel)
 add_subdirectory(git)
 add_subdirectory(glulxe)
 add_subdirectory(model)
