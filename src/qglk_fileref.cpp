@@ -115,7 +115,7 @@ frefid_t glk_fileref_iterate(frefid_t fref, glui32* rockptr) {
             return NULL;
         }
 
-        auto first = frefList.first();
+        auto first = frefList.front();
 
         if(rockptr)
             *rockptr = first->rock();

@@ -2,9 +2,9 @@
 #define QGLK_H
 
 #include <deque>
+#include <list>
 #include <functional>
 
-#include <QLinkedList>
 #include <QMainWindow>
 #include <QRunnable>
 #include <QWidget>
@@ -97,16 +97,16 @@ class QGlk : public QMainWindow {
         inline Glk::EventQueue& eventQueue() {
             return m_EventQueue;
         }
-        inline QLinkedList<Glk::Window*>& windowList() {
+        inline std::list<Glk::Window*>& windowList() {
             return m_WindowList;
         }
-        inline QLinkedList<Glk::Stream*>& streamList() {
+        inline std::list<Glk::Stream*>& streamList() {
             return m_StreamList;
         }
-        inline QLinkedList<Glk::FileReference*>& fileReferenceList() {
+        inline std::list<Glk::FileReference*>& fileReferenceList() {
             return m_FileReferenceList;
         }
-        inline QLinkedList<Glk::SoundChannel*>& soundChannelList() {
+        inline std::list<Glk::SoundChannel*>& soundChannelList() {
             return m_SoundChannelList;
         }
 
@@ -134,10 +134,10 @@ class QGlk : public QMainWindow {
         Glk::Window* mp_RootWindow;
         std::deque<Glk::WindowController*> m_DeleteQueue;
         Glk::EventQueue m_EventQueue;
-        QLinkedList<Glk::Window*> m_WindowList;
-        QLinkedList<Glk::Stream*> m_StreamList;
-        QLinkedList<Glk::FileReference*> m_FileReferenceList;
-        QLinkedList<Glk::SoundChannel*> m_SoundChannelList;
+        std::list<Glk::Window*> m_WindowList;
+        std::list<Glk::Stream*> m_StreamList;
+        std::list<Glk::FileReference*> m_FileReferenceList;
+        std::list<Glk::SoundChannel*> m_SoundChannelList;
 
         std::function<void(void)> m_InterruptHandler;
 

@@ -94,7 +94,7 @@ schanid_t glk_schannel_iterate(schanid_t schan, glui32* rockptr) {
             return NULL;
         }
 
-        auto first = schanList.first();
+        auto first = schanList.front();
 
         if(rockptr)
             *rockptr = first->rock();

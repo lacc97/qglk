@@ -48,7 +48,7 @@ strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
             return NULL;
         }
 
-        auto first = strList.first();
+        auto first = strList.front();
 
         if(rockptr)
             *rockptr = first->rock();

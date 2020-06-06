@@ -10,20 +10,22 @@ Glk::FileReference::FileReference(const QFileInfo& fi_, glui32 usage_, glui32 ro
     Q_ASSERT(!m_FileInfo.isDir());
 
     Glk::Dispatch::registerObject(this);
-    QGlk::getMainWindow().fileReferenceList().append(this);
+    QGlk::getMainWindow().fileReferenceList().push_back(this);
 }
 
 Glk::FileReference::FileReference(const Glk::FileReference& fref_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fref_.m_FileInfo), m_Usage(usage_) {
     Q_ASSERT(!m_FileInfo.isDir());
 
     Glk::Dispatch::registerObject(this);
-    QGlk::getMainWindow().fileReferenceList().append(this);
+    QGlk::getMainWindow().fileReferenceList().push_back(this);
 }
 
 Glk::FileReference::~FileReference() {
-    if(!QGlk::getMainWindow().fileReferenceList().removeOne(this)) {
+    auto& frfList = QGlk::getMainWindow().fileReferenceList();
+    if(std::count(frfList.begin(), frfList.end(), this) == 0) {
         spdlog::warn("File reference {} not found in file reference list while removing", *this);
     } else {
+        frfList.remove(this);
         SPDLOG_TRACE("File reference {} removed from file reference list", *this);
     }
 

@@ -190,16 +190,16 @@ QGlk::QGlk(int argc, char** argv)
 QGlk::~QGlk() {
     // windows contain their own window streams so we first delete windows, then streams
     while(!m_WindowList.empty())
-        delete m_WindowList.first();
+        delete m_WindowList.front();
 
     while(!m_StreamList.empty())
-        delete m_StreamList.first();
+        delete m_StreamList.front();
 
     while(!m_FileReferenceList.empty())
-        delete m_FileReferenceList.first();
+        delete m_FileReferenceList.front();
 
     while(!m_SoundChannelList.empty())
-        delete m_SoundChannelList.first();
+        delete m_SoundChannelList.front();
 
     delete mp_UI;
 }

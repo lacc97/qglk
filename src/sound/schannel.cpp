@@ -23,13 +23,15 @@ Glk::SoundChannel::SoundChannel(glui32 volume_, glui32 rock_) : Object(rock_), m
     m_Player.setVolume(100 * volume_ / FullVolume);
     
     Glk::Dispatch::registerObject(this);
-    QGlk::getMainWindow().soundChannelList().append(this);
+    QGlk::getMainWindow().soundChannelList().push_back(this);
 }
 
 Glk::SoundChannel::~SoundChannel() {
-    if(!QGlk::getMainWindow().soundChannelList().removeOne(this)) {
+    auto& schList = QGlk::getMainWindow().soundChannelList();
+    if(std::count(schList.begin(), schList.end(), this) == 0) {
         spdlog::warn("Sound channel {} not found in sound channel list while removing", *this);
     } else {
+        schList.remove(this);
         SPDLOG_TRACE("Sound channel {} removed from sound channels list", *this);
     }
 

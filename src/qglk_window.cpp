@@ -177,7 +177,7 @@ winid_t glk_window_iterate(winid_t win, glui32* rockptr) {
             return NULL;
         }
 
-        auto first = winList.first();
+        auto first = winList.front();
 
         if(rockptr)
             *rockptr = first->rock();

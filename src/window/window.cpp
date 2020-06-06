@@ -45,10 +45,13 @@ Glk::Window::Window(Type type, WindowController* winController, WindowDevice* st
 }
 
 Glk::Window::~Window() {
-    if(!QGlk::getMainWindow().windowList().removeOne(this))
+    auto& winList = QGlk::getMainWindow().windowList();
+    if(std::count(winList.begin(), winList.end(), this) == 0) {
         spdlog::warn("{} not found in window list while removing", *this);
-    else
-        spdlog::warn("{} removed from window list", *this);
+    } else {
+        winList.remove(this);
+        SPDLOG_DEBUG("{} removed from window list", *this);
+    }
 
     Dispatch::unregisterObject(this);
 }
