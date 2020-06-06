@@ -1,6 +1,7 @@
 #ifndef TEXTBUFFERWINDOW_HPP
 #define TEXTBUFFERWINDOW_HPP
 
+#include <list>
 #include <memory>
 #include <vector>
 
@@ -28,7 +29,7 @@ namespace Glk {
             friend class TextBufferDevice;
 
             class History {
-                    typedef QLinkedList<QString> linked_list_type;
+                    typedef std::list<QString> linked_list_type;
 
                     static constexpr int MAX_SIZE = 1000;
                 public:

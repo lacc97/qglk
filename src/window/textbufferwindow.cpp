@@ -35,9 +35,9 @@ Glk::TextBufferWindow::History::History()
 
 void Glk::TextBufferWindow::History::push(const QString& newcmd) {
     if(m_History.size() > MAX_SIZE)
-        m_History.takeLast();
+        m_History.pop_back();
 
-    m_History.prepend(newcmd);
+    m_History.push_front(newcmd);
 }
 
 void Glk::TextBufferWindow::History::resetIterator() {

@@ -23,6 +23,7 @@ add_library(qglk STATIC
       CXX_VISIBILITY_PRESET       hidden)
   target_compile_definitions(qglk
       PRIVATE
+        QT_NO_LINKED_LIST
         $<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG>
         $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>)
   target_include_directories(qglk
