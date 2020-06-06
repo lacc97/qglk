@@ -42,6 +42,13 @@ add_library(qglk STATIC
 
 install(TARGETS qglk DESTINATION "${CMAKE_INSTALL_LIBDIR}/glk")
 
+add_library(qglk_start INTERFACE)
+    target_include_directories(qglk_start
+        INTERFACE
+            ${CMAKE_CURRENT_SOURCE_DIR})
+    target_sources(qglk_start
+        INTERFACE
+            ${CMAKE_CURRENT_SOURCE_DIR}/glkstart.c)
 
 add_subdirectory(blorb/)
 add_subdirectory(event/)
