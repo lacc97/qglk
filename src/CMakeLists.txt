@@ -1,7 +1,4 @@
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
-find_package(Qt5Widgets REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Multimedia Widgets)
 set(QT_REQUIRED_LIBS Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
 
 add_library(qglk STATIC
@@ -20,35 +17,34 @@ add_library(qglk STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_unix.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_window.cpp)
-    set_target_properties(qglk PROPERTIES
-        AUTOMOC                     ON
-        AUTOUIC                     ON
-        CXX_VISIBILITY_PRESET       hidden)
-    target_compile_definitions(qglk
-        PRIVATE
-            $<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG>
-            $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>)
-    target_include_directories(qglk
-        PUBLIC
-            ${CMAKE_CURRENT_SOURCE_DIR})
-    target_link_libraries(qglk
-        PUBLIC
-            PkgConfig::tcmalloc
-        PRIVATE
-            coroutine
-            fmt::fmt
-            ${QT_REQUIRED_LIBS}
-            spdlog::spdlog)
-
-install(TARGETS qglk DESTINATION "${CMAKE_INSTALL_LIBDIR}/glk")
+  set_target_properties(qglk PROPERTIES
+      AUTOMOC                     ON
+      AUTOUIC                     ON
+      CXX_VISIBILITY_PRESET       hidden)
+  target_compile_definitions(qglk
+      PRIVATE
+        $<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG>
+        $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>)
+  target_include_directories(qglk
+      PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR})
+  target_link_libraries(qglk
+      PUBLIC
+        PkgConfig::tcmalloc
+      PRIVATE
+        coroutine
+        fmt::fmt
+        ${QT_REQUIRED_LIBS}
+        spdlog::spdlog)
+  install(TARGETS qglk DESTINATION ${CMAKE_INSTALL_LIBDIR}/glk)
 
 add_library(qglk_start INTERFACE)
-    target_include_directories(qglk_start
-        INTERFACE
-            ${CMAKE_CURRENT_SOURCE_DIR})
-    target_sources(qglk_start
-        INTERFACE
-            ${CMAKE_CURRENT_SOURCE_DIR}/glkstart.c)
+  target_include_directories(qglk_start
+      INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR})
+  target_sources(qglk_start
+      INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}/glkstart.c)
 
 add_subdirectory(blorb/)
 add_subdirectory(event/)

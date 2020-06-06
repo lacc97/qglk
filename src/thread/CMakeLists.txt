@@ -1,3 +1,3 @@
-target_sources(qglk PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/taskrequest.cpp
-    )
+target_sources(qglk
+    PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/taskrequest.cpp)
