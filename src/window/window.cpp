@@ -42,6 +42,8 @@ Glk::Window::Window(Type type, WindowController* winController, WindowDevice* st
     mp_Stream->open(QIODevice::WriteOnly);
 
     Dispatch::registerObject(this);
+    QGlk::getMainWindow().windowList().push_back(this);
+    SPDLOG_DEBUG("{} appended to window list", *this);
 }
 
 Glk::Window::~Window() {
