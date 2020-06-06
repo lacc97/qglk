@@ -1,10 +1,10 @@
 #include "eventqueue.hpp"
 
-#include "exception.hpp"
-
 #include <QMutexLocker>
 
 #include "window/window.hpp"
+
+#include "qglk.hpp"
 
 // #define evtype_TaskEvent (0xfafbfcfd)
 #define evtype_TaskEvent (0xfafbfcfd)
@@ -37,8 +37,10 @@ event_t Glk::EventQueue::pop() {
 
         QMutexLocker ml(&m_AccessMutex);
 
-        if(m_Terminate)
-            throw Glk::ExitException(true);
+        if(m_Terminate) {
+            QGlk::getMainWindow().statusChannel().push(QGlk::GlkStatus::eINTERRUPTED);
+            coroutine::yield();
+        }
 
         ev = m_Queue.dequeue();
 
@@ -82,8 +84,10 @@ event_t Glk::EventQueue::poll() {
 
     QMutexLocker ml(&m_AccessMutex);
 
-    if(m_Terminate)
-        throw Glk::ExitException(true);
+    if(m_Terminate) {
+        QGlk::getMainWindow().statusChannel().push(QGlk::GlkStatus::eINTERRUPTED);
+        coroutine::yield();
+    }
 
     if(m_Queue.isEmpty())
         return event_t{evtype_None, NULL, 0, 0};
