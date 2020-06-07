@@ -28,6 +28,8 @@ add_library(qglk STATIC
         $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>)
   target_include_directories(qglk
       PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include
+      PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR})
   target_link_libraries(qglk
       PUBLIC
@@ -42,7 +44,7 @@ add_library(qglk STATIC
 add_library(qglk_start INTERFACE)
   target_include_directories(qglk_start
       INTERFACE
-        ${CMAKE_CURRENT_SOURCE_DIR})
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include)
   target_sources(qglk_start
       INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/glkstart.c)
