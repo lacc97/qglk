@@ -6,9 +6,6 @@ include(GNUInstallDirs)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(tcmalloc REQUIRED IMPORTED_TARGET libtcmalloc_minimal)
-
 
 option(BUILD_GLKTERM    "Build glkterm glkt implementation (in test subdirectory)" OFF)
 

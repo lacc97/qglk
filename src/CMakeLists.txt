@@ -32,8 +32,6 @@ add_library(qglk STATIC
       PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR})
   target_link_libraries(qglk
-      PUBLIC
-        PkgConfig::tcmalloc
       PRIVATE
         coroutine
         fmt::fmt
