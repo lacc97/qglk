@@ -28,46 +28,6 @@ qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
     return len;
 }
 
-Glk::TextBufferWindow::History::History()
-    : m_History(),
-      m_Iterator(m_History.begin()) {
-}
-
-void Glk::TextBufferWindow::History::push(const QString& newcmd) {
-    if(m_History.size() > MAX_SIZE)
-        m_History.pop_back();
-
-    m_History.push_front(newcmd);
-}
-
-void Glk::TextBufferWindow::History::resetIterator() {
-    m_Iterator = m_History.begin();
-}
-
-const QString Glk::TextBufferWindow::History::next() {
-    if(m_History.size() == 0)
-        return QString();
-
-    if(m_Iterator == m_History.end())
-        return m_History.back();
-
-    return *(m_Iterator++);
-}
-
-const QString Glk::TextBufferWindow::History::previous() {
-    if(m_History.size() == 0)
-        return QString();
-
-    if(m_Iterator == m_History.begin())
-        return QString();
-
-    auto it = --m_Iterator;
-
-    if(it == m_History.begin())
-        return QString();
-
-    return *(--it);
-}
 
 Glk::TextBufferWindow::TextBufferWindow(Glk::TextBufferWindowController* winController,
                                         Glk::PairWindow* winParent, glui32 winRock)

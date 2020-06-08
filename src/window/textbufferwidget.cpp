@@ -6,11 +6,43 @@
 #include "log/log.hpp"
 #include "thread/taskrequest.hpp"
 
+Glk::TextBufferBrowser::History::History()
+        : m_History{} {}
+
+void Glk::TextBufferBrowser::History::push(const QString& newcmd) {
+    if(m_History.size() > MAX_SIZE)
+        m_History.pop_back();
+
+    m_History.push_front(newcmd);
+}
+
 Glk::TextBufferBrowser::TextBufferBrowser(Glk::TextBufferWidget* wParent)
     : QTextBrowser{wParent},
       m_Images{},
-      m_LineInputStartCursorPosition{-1} {
-    connect(this, &TextBufferBrowser::cursorPositionChanged, this, &TextBufferBrowser::onCursorPositionChanged);
+      m_LineInputStartCursorPosition{-1},
+      m_History{},
+      m_HistoryIterator{m_History.begin()} {
+    connect(wParent, &TextBufferWidget::lineInput, [this](Qt::Key, const QString& input) {
+        m_History.push(input);
+        m_HistoryIterator = m_History.begin();
+    });
+
+    connect(this, &TextBufferBrowser::cursorPositionChanged,
+            this, &TextBufferBrowser::onCursorPositionChanged);
+}
+
+QString Glk::TextBufferBrowser::lineInputBuffer() const {
+    if(receivingLineInput()) {
+        auto c = textCursor();
+
+        c.setPosition(lineInputStartCursorPosition());
+        c.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+
+        assert(!c.selectedText().contains(0x2029));
+        return c.selectedText();
+    } else {
+        return {};
+    }
 }
 
 QVariant Glk::TextBufferBrowser::loadResource(int type, const QUrl& name) {
@@ -25,8 +57,7 @@ QVariant Glk::TextBufferBrowser::loadResource(int type, const QUrl& name) {
 }
 
 void Glk::TextBufferBrowser::onCursorPositionChanged() {
-    if(m_LineInputStartCursorPosition >= 0 &&
-       m_LineInputStartCursorPosition > textCursor().position()) {
+    if(receivingLineInput() && m_LineInputStartCursorPosition > textCursor().position()) {
         auto c = textCursor();
         c.setPosition(m_LineInputStartCursorPosition,
                       c.hasSelection() ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor);
@@ -35,11 +66,43 @@ void Glk::TextBufferBrowser::onCursorPositionChanged() {
 }
 
 void Glk::TextBufferBrowser::keyPressEvent(QKeyEvent* ev) {
-    if(m_LineInputStartCursorPosition >= 0 && textCursor().position() == m_LineInputStartCursorPosition &&
-       ev->key() == Qt::Key_Backspace) // This ensures we can't delete anything that came before the line input request.
-        return;
+    if(receivingLineInput()) {
+        if(textCursor().position() == m_LineInputStartCursorPosition && ev->key() == Qt::Key_Backspace) {
+            // This ensures we can't delete anything that came before the line input request.
+            return;
+        }
+
+        if(ev->key() == Qt::Key_Up) {
+            if(m_HistoryIterator != m_History.end()) {
+                setLineInputBuffer(*m_HistoryIterator++);
+            }
+
+            return;
+        } else if(ev->key() == Qt::Key_Down) {
+            if(m_HistoryIterator != m_History.begin()) {
+                setLineInputBuffer(*(--m_HistoryIterator));
+            } else {
+                setLineInputBuffer({});
+            }
+
+            return;
+        }
+    }
 
     return QTextBrowser::keyPressEvent(ev);
+}
+
+void Glk::TextBufferBrowser::setLineInputBuffer(const QString& str) {
+    if(receivingLineInput()) {
+        auto c = textCursor();
+
+        c.setPosition(lineInputStartCursorPosition());
+        c.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+        c.removeSelectedText();
+
+        c.setPosition(lineInputStartCursorPosition());
+        c.insertText(str);
+    }
 }
 
 Glk::TextBufferWidget::TextBufferWidget()
@@ -65,14 +128,7 @@ Glk::TextBufferWidget::TextBufferWidget()
 }
 
 QString Glk::TextBufferWidget::lineInputBuffer() {
-    auto c = browser()->textCursor();
-    c.setPosition(browser()->lineInputStartCursorPosition());
-    c.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
-
-    QString inputText = c.selectedText();
-    assert(!inputText.contains(0x2029));
-
-    return inputText;
+    return browser()->lineInputBuffer();
 }
 
 void Glk::TextBufferWidget::onLineInputRequested() {

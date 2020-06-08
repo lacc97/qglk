@@ -14,6 +14,32 @@ namespace Glk {
 
     class TextBufferBrowser : public QTextBrowser {
         Q_OBJECT
+
+            class History {
+                    typedef std::list<QString> linked_list_type;
+
+                    static constexpr int MAX_SIZE = 1000;
+                public:
+                    using Iterator = linked_list_type::const_iterator;
+
+
+                    History();
+
+
+                    [[nodiscard]] inline Iterator begin() const {
+                        return m_History.begin();
+                    }
+
+                    [[nodiscard]] inline Iterator end() const {
+                        return m_History.end();
+                    }
+
+                    void push(const QString& newcmd);
+
+                private:
+                    linked_list_type m_History;
+            };
+
         public:
             explicit TextBufferBrowser(TextBufferWidget* wParent);
 
@@ -21,12 +47,20 @@ namespace Glk {
             QVariant loadResource(int type, const QUrl& name) override;
 
 
+            [[nodiscard]] QString lineInputBuffer() const;
+
+            void setLineInputBuffer(const QString& str);
+
             [[nodiscard]] inline int lineInputStartCursorPosition() const {
                 return m_LineInputStartCursorPosition;
             }
 
             inline void setLineInputStartCursorPosition(int liscp) {
                 m_LineInputStartCursorPosition = liscp;
+            }
+
+            [[nodiscard]] inline bool receivingLineInput() const {
+                return m_LineInputStartCursorPosition >= 0;
             }
 
             inline void setImages(const std::vector<QImage>& imgs) {
@@ -43,10 +77,12 @@ namespace Glk {
             std::vector<QImage> m_Images;
             int m_LineInputStartCursorPosition;
 
+            History m_History;
+            History::Iterator m_HistoryIterator;
     };
 
     class TextBufferWidget : public WindowWidget {
-            Q_OBJECT
+        Q_OBJECT
         public:
             TextBufferWidget();
 
@@ -63,6 +99,7 @@ namespace Glk {
             void onLineInputFinished() override;
 
         protected slots:
+
             void onHyperlinkPressed(const QUrl& url);
 
         private:
@@ -72,187 +109,3 @@ namespace Glk {
 
 
 #endif //TEXTBUFFERWIDGET_HPP
-
-//#ifndef TEXTBUFFERWIDGET_HPP
-//#define TEXTBUFFERWIDGET_HPP
-//
-//
-//#include <set>
-//
-//#include <QImage>
-//#include <QTextBrowser>
-//#include <QWidget>
-//
-//#include "glk.hpp"
-//
-//namespace Glk {
-//    class TextBufferWidget;
-//
-//    class TextBufferBrowser : public QTextBrowser {
-//        Q_OBJECT
-//        public:
-//            explicit TextBufferBrowser(TextBufferWidget* wParent);
-//
-//
-//            QVariant loadResource(int type, const QUrl& name) override;
-//
-//
-//            [[nodiscard]] inline bool charInputPending() const {
-//                return m_ReceivingCharInput;
-//            }
-//
-//            [[nodiscard]] inline bool lineInputPending() const {
-//                return m_ReceivingLineInput;
-//            }
-//
-//            void requestCharInput();
-//
-//            void requestLineInput();
-//
-//
-//            inline void setImages(const std::vector<QImage>& imgs) {
-//                m_Images = imgs;
-//            }
-//
-//            inline void setLineTerminators(const std::set<Qt::Key>& terminators) {
-//                m_LineTerminators = terminators;
-//            }
-//
-//        public slots:
-//
-//            void onCharInputRequestCancelled();
-//
-//            void onCursorPositionChanged();
-//
-//            void onLineInputRequestCancelled();
-//
-//        signals:
-//
-//            void characterInput(Qt::Key key, const QString& text);
-//
-//            void lineInput(Qt::Key terminator, const QString& text);
-//
-//        protected:
-//            void endCharInputRequest();
-//
-//            void endLineInputRequest(Qt::Key terminator);
-//
-//            void keyPressEvent(QKeyEvent* ev) override;
-//
-//        private:
-//            std::vector<QImage> m_Images;
-//            bool m_ReceivingCharInput;
-//            bool m_ReceivingLineInput;
-//            std::set<Qt::Key> m_LineTerminators;
-//            int m_LineInputStartCursorPosition;
-//
-//    };
-//
-//    class TextBufferWidget : public QWidget {
-//        public:
-//            TextBufferWidget();
-//
-//
-//            [[nodiscard]] inline TextBufferBrowser* browser() const {
-//                return mp_Browser;
-//            }
-//
-//        private:
-//            TextBufferBrowser* mp_Browser;
-//    };
-//}
-//
-//
-//#endif //TEXTBUFFERWIDGET_HPP
-//
-//#ifndef TEXTBUFFERWIDGET_HPP
-//#define TEXTBUFFERWIDGET_HPP
-//
-//
-//#include <set>
-//
-//#include <QImage>
-//#include <QTextBrowser>
-//#include <QWidget>
-//
-//#include "glk.hpp"
-//
-//namespace Glk {
-//    class TextBufferWidget;
-//
-//    class TextBufferBrowser : public QTextBrowser {
-//        Q_OBJECT
-//        public:
-//            explicit TextBufferBrowser(TextBufferWidget* wParent);
-//
-//
-//            QVariant loadResource(int type, const QUrl& name) override;
-//
-//
-//            [[nodiscard]] inline bool charInputPending() const {
-//                return m_ReceivingCharInput;
-//            }
-//
-//            [[nodiscard]] inline bool lineInputPending() const {
-//                return m_ReceivingLineInput;
-//            }
-//
-//            void requestCharInput();
-//
-//            void requestLineInput();
-//
-//
-//            inline void setImages(const std::vector<QImage>& imgs) {
-//                m_Images = imgs;
-//            }
-//
-//            inline void setLineTerminators(const std::set<Qt::Key>& terminators) {
-//                m_LineTerminators = terminators;
-//            }
-//
-//        public slots:
-//
-//            void onCharInputRequestCancelled();
-//
-//            void onCursorPositionChanged();
-//
-//            void onLineInputRequestCancelled();
-//
-//        signals:
-//
-//            void characterInput(Qt::Key key, const QString& text);
-//
-//            void lineInput(Qt::Key terminator, const QString& text);
-//
-//        protected:
-//            void endCharInputRequest();
-//
-//            void endLineInputRequest(Qt::Key terminator);
-//
-//            void keyPressEvent(QKeyEvent* ev) override;
-//
-//        private:
-//            std::vector<QImage> m_Images;
-//            bool m_ReceivingCharInput;
-//            bool m_ReceivingLineInput;
-//            std::set<Qt::Key> m_LineTerminators;
-//            int m_LineInputStartCursorPosition;
-//
-//    };
-//
-//    class TextBufferWidget : public QWidget {
-//        public:
-//            TextBufferWidget();
-//
-//
-//            [[nodiscard]] inline TextBufferBrowser* browser() const {
-//                return mp_Browser;
-//            }
-//
-//        private:
-//            TextBufferBrowser* mp_Browser;
-//    };
-//}
-//
-//
-//#endif //TEXTBUFFERWIDGET_HPP

@@ -28,26 +28,6 @@ namespace Glk {
     class TextBufferWindow : public Window {
             friend class TextBufferDevice;
 
-            class History {
-                    typedef std::list<QString> linked_list_type;
-
-                    static constexpr int MAX_SIZE = 1000;
-                public:
-                    History();
-
-                    void push(const QString& newcmd);
-
-                    void resetIterator();
-
-                    const QString next();
-
-                    const QString previous();
-
-                private:
-                    linked_list_type m_History;
-                    linked_list_type::iterator m_Iterator;
-            };
-
         public:
             TextBufferWindow(TextBufferWindowController* winController, PairWindow* winParent, glui32 winRock);
 
