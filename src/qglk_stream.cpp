@@ -2,6 +2,8 @@
 
 #include <cstring>
 
+#include <memory>
+
 #include <QBuffer>
 
 #include "qglk.hpp"
@@ -265,16 +267,14 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
     Glk::Stream* str;
 
     if(buf) {
-        QByteArray* qba = new QByteArray(QByteArray::fromRawData(buf, buflen));
-        str = new Glk::Latin1Stream(NULL, new QBuffer(qba), Glk::Stream::Type::Memory, rock);
+        auto qba = std::make_unique<QByteArray>(QByteArray::fromRawData(buf, buflen));
+        str = new Glk::Latin1Stream(NULL, new QBuffer(qba.get()), Glk::Stream::Type::Memory, rock);
 
-        QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba]() {
+        QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba = std::move(qba)]() {
             if((om & QIODevice::WriteOnly) != 0)
-                std::memcpy(buf, qba->data(), qba->size());
+                std::memcpy(buf, qba->data(), buflen);
 
             QGlk::getMainWindow().dispatch().unregisterArray(buf, buflen, false);
-
-            delete qba;
         });
     } else {
         str = new Glk::Latin1Stream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, rock);
@@ -321,16 +321,14 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
     Glk::Stream* str;
 
     if(buf) {
-        QByteArray* qba = new QByteArray(QByteArray::fromRawData(reinterpret_cast<char*>(buf), 4 * buflen));
-        str = new Glk::UnicodeStream(NULL, new QBuffer(qba), Glk::Stream::Type::Memory, rock);
+        auto qba = std::make_unique<QByteArray>(QByteArray::fromRawData(reinterpret_cast<char*>(buf), 4 * buflen));
+        str = new Glk::UnicodeStream(NULL, new QBuffer(qba.get()), Glk::Stream::Type::Memory, rock);
 
-        QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba]() {
+        QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba = std::move(qba)]() {
             if((om & QIODevice::WriteOnly) != 0)
-                std::memcpy(buf, qba->data(), qba->size());
+                std::memcpy(buf, qba->data(), 4 * buflen);
 
             QGlk::getMainWindow().dispatch().unregisterArray(buf, buflen, true);
-
-            delete qba;
         });
     } else {
         str = new Glk::UnicodeStream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, rock);
