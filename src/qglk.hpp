@@ -9,7 +9,6 @@
 #include <QRunnable>
 #include <QWidget>
 
-#define STACK_LIMIT (8*1024*1024)
 #include <coroutine.h>
 
 #include "event/eventqueue.hpp"

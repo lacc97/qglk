@@ -25,7 +25,8 @@ add_library(qglk STATIC
       PRIVATE
         QT_NO_LINKED_LIST
         $<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG>
-        $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>)
+        $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>
+        STACK_LIMIT=16777216)
   target_include_directories(qglk
       PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/../include
