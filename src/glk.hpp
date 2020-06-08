@@ -3,6 +3,7 @@
 
 #include <cstddef>
 
+#include <map>
 #include <sstream>
 
 #include <QByteArray>
@@ -28,27 +29,37 @@ extern "C" {
 namespace Glk {
     class Object;
 
-    namespace Dispatch {
-        void registerObject(Object* ptr);
+    class Dispatch {
+        using ObjectRegisterFunction = gidispatch_rock_t(void*, glui32);
+        using ObjectUnregisterFunction = void(void*, glui32, gidispatch_rock_t);
+        using ArrayRegisterFunction = gidispatch_rock_t(void*, glui32, char*);
+        using ArrayUnregisterFunction = void(void*, glui32, char*, gidispatch_rock_t);
 
-        [[nodiscard]] gidispatch_rock_t dispatchRock(Object* ptr);
+        friend void ::gidispatch_set_object_registry(ObjectRegisterFunction* reg, ObjectUnregisterFunction* unreg);
+        friend void ::gidispatch_set_retained_registry(ArrayRegisterFunction* reg, ArrayUnregisterFunction* unreg);
 
-        void unregisterObject(Object* ptr);
+        public:
+            void registerArray(void* ptr, glui32 len, bool unicode);
 
-//         gidispatch_rock_t arrayRock(void* ptr);
-        void registerArray(void* ptr, glui32 len, bool unicode);
+            void unregisterArray(void* ptr, glui32 len, bool unicode);
 
-        void unregisterArray(void* ptr, glui32 len, bool unicode);
-    }
+            void registerObject(Object* ptr);
+
+            void unregisterObject(Object* ptr);
+
+        private:
+            ObjectRegisterFunction* mf_RegisterObject{nullptr};
+            ObjectUnregisterFunction* mf_UnregisterObject{nullptr};
+
+            std::map<void*, gidispatch_rock_t> m_ArrayRegistry{};
+            ArrayRegisterFunction* mf_RegisterArray{nullptr};
+            ArrayUnregisterFunction* mf_UnregisterArray{nullptr};
+    };
 
     class Object {
             Q_DISABLE_COPY(Object)
 
-            friend void Dispatch::registerObject(Object* ptr);
-
-            friend gidispatch_rock_t Dispatch::dispatchRock(Object* ptr);
-
-            friend void Dispatch::unregisterObject(Object* ptr);
+            friend class Dispatch;
 
         public:
             enum Type : glui32 {
@@ -56,6 +67,11 @@ namespace Glk {
             };
 
             virtual ~Object() = default;
+
+
+            [[nodiscard]] inline gidispatch_rock_t dispatchRock() const {
+                return m_DispatchRock;
+            }
 
             [[nodiscard]] virtual Type objectType() const = 0;
 

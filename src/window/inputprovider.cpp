@@ -262,11 +262,11 @@ Glk::LineInputRequest::LineInputRequest(void* buf, glui32 maxBufLen, glui32 init
       m_Terminator{Qt::Key_unknown} {
     assert(onEventThread());
 
-    Glk::Dispatch::registerArray(buf, maxBufLen, unicode);
+    QGlk::getMainWindow().dispatch().registerArray(buf, maxBufLen, unicode);
 }
 
 Glk::LineInputRequest::~LineInputRequest() {
-    Glk::Dispatch::unregisterArray(m_Buffer, m_MaxBufferLength, m_Unicode);
+    QGlk::getMainWindow().dispatch().unregisterArray(m_Buffer, m_MaxBufferLength, m_Unicode);
 }
 
 event_t Glk::LineInputRequest::generateEvent(Glk::Window* win) {

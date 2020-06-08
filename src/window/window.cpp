@@ -41,7 +41,7 @@ Glk::Window::Window(Type type, WindowController* winController, WindowDevice* st
 
     mp_Stream->open(QIODevice::WriteOnly);
 
-    Dispatch::registerObject(this);
+    QGlk::getMainWindow().dispatch().registerObject(this);
     QGlk::getMainWindow().windowList().push_back(this);
     SPDLOG_DEBUG("{} appended to window list", *this);
 }
@@ -55,7 +55,7 @@ Glk::Window::~Window() {
         SPDLOG_DEBUG("{} removed from window list", *this);
     }
 
-    Dispatch::unregisterObject(this);
+    QGlk::getMainWindow().dispatch().unregisterObject(this);
 }
 
 bool Glk::Window::drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize) {

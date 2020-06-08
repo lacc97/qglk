@@ -272,7 +272,7 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
             if((om & QIODevice::WriteOnly) != 0)
                 std::memcpy(buf, qba->data(), qba->size());
 
-            Glk::Dispatch::unregisterArray(buf, buflen, false);
+            QGlk::getMainWindow().dispatch().unregisterArray(buf, buflen, false);
 
             delete qba;
         });
@@ -290,7 +290,7 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
     }
 
     if(buf)
-        Glk::Dispatch::registerArray(buf, buflen, false);
+        QGlk::getMainWindow().dispatch().registerArray(buf, buflen, false);
 
     return TO_STRID(str);
 }
@@ -328,7 +328,7 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
             if((om & QIODevice::WriteOnly) != 0)
                 std::memcpy(buf, qba->data(), qba->size());
 
-            Glk::Dispatch::unregisterArray(buf, buflen, true);
+            QGlk::getMainWindow().dispatch().unregisterArray(buf, buflen, true);
 
             delete qba;
         });
@@ -346,7 +346,7 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
     }
 
     if(buf)
-        Glk::Dispatch::registerArray(buf, buflen, true);
+        QGlk::getMainWindow().dispatch().registerArray(buf, buflen, true);
 
     return TO_STRID(str);
 }

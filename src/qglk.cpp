@@ -176,7 +176,8 @@ QGlk::QGlk(int argc, char** argv)
       m_SoundChannelList{},
       m_InterruptHandler{},
       m_DefaultStyles{},
-      m_TextBufferStyles{} {
+      m_TextBufferStyles{},
+      m_Dispatch{} {
     setMinimumSize(800, 600);
     mp_UI->setupUi(this);
 

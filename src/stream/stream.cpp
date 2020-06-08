@@ -29,7 +29,7 @@ Glk::Stream::~Stream() {
             SPDLOG_DEBUG("Stream {} removed from stream list", *this);
         }
 
-        Glk::Dispatch::unregisterObject(this);
+        QGlk::getMainWindow().dispatch().unregisterObject(this);
     }
 
     if(glk_stream_get_current() == TO_STRID(this))
@@ -50,7 +50,7 @@ bool Glk::Stream::open(QIODevice::OpenMode om) {
     bool done = mp_Device->open(om);
 
     if(done) {
-        Glk::Dispatch::registerObject(this);
+        QGlk::getMainWindow().dispatch().registerObject(this);
         QGlk::getMainWindow().streamList().push_back(this);
         SPDLOG_DEBUG("Stream {} appended to stream list", *this);
     }

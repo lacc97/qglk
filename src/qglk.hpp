@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <list>
+#include <map>
 #include <functional>
 
 #include <QMainWindow>
@@ -57,7 +58,6 @@ class QGlk : public QMainWindow {
 
         static QGlk& getMainWindow();
 
-        QGlk(QWidget* parent = NULL) : QMainWindow(parent) {}
         ~QGlk();
 
 
@@ -93,6 +93,9 @@ class QGlk : public QMainWindow {
             return m_TextBufferStyles;
         }
 
+        inline Glk::Dispatch& dispatch() {
+            return m_Dispatch;
+        }
         inline Glk::EventQueue& eventQueue() {
             return m_EventQueue;
         }
@@ -142,6 +145,8 @@ class QGlk : public QMainWindow {
 
         Glk::StyleManager m_DefaultStyles;
         Glk::StyleManager m_TextBufferStyles;
+
+        Glk::Dispatch m_Dispatch;
 };
 
 #endif // QGLK_H
