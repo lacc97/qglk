@@ -30,15 +30,16 @@ void Glk::GraphicsWindowController::synchronize() {
     if(widget<GraphicsWidget>()->backgroundColor() != window<GraphicsWindow>()->backgroundColor())
         widget<GraphicsWidget>()->setBackgroundColor(window<GraphicsWindow>()->backgroundColor());
 
-    QSize clampedWidgetSize = {std::max(1, widget<GraphicsWidget>()->buffer().width()),
-                               std::max(1, widget<GraphicsWidget>()->buffer().height())};
+    QSize clampedWidgetSize = {std::max(1, widget<GraphicsWidget>()->contentsRect().width()),
+                               std::max(1, widget<GraphicsWidget>()->contentsRect().height())};
 
     if(clampedWidgetSize != window<GraphicsWindow>()->buffer().size()) {
-        window<GraphicsWindow>()->resizeBuffer(widget<GraphicsWidget>()->buffer().size());
+        window<GraphicsWindow>()->resizeBuffer(clampedWidgetSize);
         QGlk::getMainWindow().eventQueue().push(event_t{evtype_Arrange, TO_WINID(window())});
     }
 
-    widget<GraphicsWidget>()->setBuffer(window<GraphicsWindow>()->buffer());
+    widget<GraphicsWidget>()->setBuffer(QPixmap::fromImage(window<GraphicsWindow>()->buffer()));
+    widget<GraphicsWidget>()->update();
 
     WindowController::synchronize();
 }
