@@ -20,16 +20,19 @@ void Glk::GraphicsWidget::setBackgroundColor(const QColor& c) {
 void Glk::GraphicsWidget::paintEvent(QPaintEvent* event) {
     QWidget::paintEvent(event);
 
-    QRect r = event->region().boundingRect();
+    if(!m_Buffer.isNull()) {
+        QRect r = event->region().boundingRect();
 
-    std::unique_ptr<QPainter> p = std::make_unique<QPainter>(this);
-    p->drawPixmap(r, m_Buffer, r);
+        std::unique_ptr<QPainter> p = std::make_unique<QPainter>(this);
+        p->drawPixmap(r, m_Buffer, r);
+    }
 }
 
 void Glk::GraphicsWidget::resizeEvent(QResizeEvent* event) {
     QWidget::resizeEvent(event);
 
-    m_Buffer = m_Buffer.scaled(event->size());
+    if(!m_Buffer.isNull())
+        m_Buffer = m_Buffer.scaled(event->size());
 
     emit resized();
 }
