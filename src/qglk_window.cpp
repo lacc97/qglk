@@ -77,8 +77,6 @@ void glk_window_close(winid_t win, stream_result_t* result) {
         Glk::Window* orphanSibling = winParent->removeChild(deadWin);
         Glk::PairWindow* winGrandparent = winParent->parent();
 
-        orphanSibling->setParent(winGrandparent);
-
         if(winGrandparent)
             winGrandparent->replaceChild(winParent, orphanSibling);
         else
@@ -86,8 +84,6 @@ void glk_window_close(winid_t win, stream_result_t* result) {
 
         winParent->replaceChild(deadWin, nullptr);
         winParent->replaceChild(orphanSibling, nullptr);
-
-        winParent->controller()->closeWindow();
     } else {
         QGlk::getMainWindow().setRootWindow(nullptr);
     }
@@ -100,6 +96,10 @@ void glk_window_close(winid_t win, stream_result_t* result) {
     }
 
     deadWin->controller()->closeWindow();
+
+    /* close windows from bottom to top */
+    if(winParent)
+        winParent->controller()->closeWindow();
 }
 
 void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {

@@ -68,6 +68,7 @@ Glk::Window* Glk::PairWindow::removeChild(Glk::Window* deadChild) {
 
     controller()->requestSynchronization();
 
+    survivingChild->setParent(nullptr);
     return survivingChild;
 }
 
@@ -75,13 +76,17 @@ void Glk::PairWindow::replaceChild(Glk::Window* oldChild, Glk::Window* newChild)
     assert(oldChild == mp_First || oldChild == mp_Second);
     assert(!newChild || !(newChild == mp_First || newChild == mp_Second));
     assert(newChild != this);
+    assert(!mp_Key || oldChild != mp_First);
 
-//    removeChild(oldChild);
-
-    if(oldChild == mp_First)
+    oldChild->setParent(nullptr);
+    if(oldChild == mp_First) {
         mp_First = newChild;
-    else
+    } else {
         mp_Second = newChild;
+    }
+
+    if(newChild)
+        newChild->setParent(this);
 
     setArrangement(mp_Key, mp_Arrangement.get());
 }

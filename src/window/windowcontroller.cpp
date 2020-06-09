@@ -126,6 +126,7 @@ void Glk::WindowController::closeWindow() {
     assert(mp_Window);
 
     mp_Window.reset();
+    QGlk::getMainWindow().addToDeleteQueue(this);
 }
 
 void Glk::WindowController::requestSynchronization() {

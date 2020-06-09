@@ -221,17 +221,11 @@ bool QGlk::event(QEvent* event) {
 }
 
 void QGlk::synchronize() {
-
-
-    while(!m_DeleteQueue.empty()) {
-        delete m_DeleteQueue.front();
-        m_DeleteQueue.pop_front();
-    }
-
     if(!mp_RootWindow) {
         if(centralWidget() != nullptr)
             setCentralWidget(nullptr);
     } else if(centralWidget() != mp_RootWindow->controller()->widget()) {
+        takeCentralWidget();
         setCentralWidget(mp_RootWindow->controller()->widget());
         mp_RootWindow->controller()->widget()->show();
 
@@ -247,6 +241,11 @@ void QGlk::synchronize() {
         };
 
         fn_recursive_synchronize(fn_recursive_synchronize, mp_RootWindow->controller());
+    }
+
+    while(!m_DeleteQueue.empty()) {
+        delete m_DeleteQueue.front();
+        m_DeleteQueue.pop_front();
     }
 }
 
