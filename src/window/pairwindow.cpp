@@ -48,8 +48,7 @@ Glk::Window* Glk::PairWindow::removeChild(Glk::Window* deadChild) {
 
     Glk::Window* survivingChild = (deadChild == mp_First ? mp_Second : mp_First);
 
-    Glk::PairWindow* ancestor = parent();
-
+    Glk::PairWindow* ancestor = this;
     if(deadChild->windowType() == Pair) {
         auto deadChildPairWindow = static_cast<PairWindow*>(deadChild);
 
