@@ -9,7 +9,7 @@
 
 Glk::GraphicsWindow::GraphicsWindow(GraphicsWindowController* winController, PairWindow* winParent, glui32 objRock)
     : Window(Type::Graphics, winController, new WindowDevice{this}, winParent, objRock),
-      m_Buffer{1, 1},
+      m_Buffer{1, 1, QImage::Format_ARGB32},
       m_BGColor{} {
 }
 
@@ -55,7 +55,7 @@ void Glk::GraphicsWindow::setBackgroundColor(const QColor& color) {
 void Glk::GraphicsWindow::resizeBuffer(QSize newSize) {
     assert(onEventThread());
 
-    QPixmap newBuffer{newSize};
+    QImage newBuffer{newSize, QImage::Format_ARGB32};
     newBuffer.fill(Qt::transparent);
 
     QRect dstRect = newBuffer.rect();
@@ -64,7 +64,7 @@ void Glk::GraphicsWindow::resizeBuffer(QSize newSize) {
                      std::min(m_Buffer.height(), newBuffer.height())};
 
     std::unique_ptr<QPainter> p = std::make_unique<QPainter>(&newBuffer);
-    p->drawPixmap(dstRect, m_Buffer, srcRect);
+    p->drawImage(dstRect, m_Buffer, srcRect);
 
     m_Buffer = std::move(newBuffer);
 }

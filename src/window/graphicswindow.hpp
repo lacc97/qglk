@@ -30,14 +30,14 @@ namespace Glk {
                 return m_BGColor;
             }
 
-            [[nodiscard]] inline const QPixmap& buffer() const {
+            [[nodiscard]] inline const QImage& buffer() const {
                 return m_Buffer;
             }
 
             void resizeBuffer(QSize newSize);
 
         private:
-            QPixmap m_Buffer;
+            QImage m_Buffer;
             QColor m_BGColor;
     };
 }
