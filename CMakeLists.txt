@@ -26,5 +26,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_C_VISIBILITY_PRESET   hidden)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
+add_subdirectory(lib/)
 add_subdirectory(src/)
 add_subdirectory(test/)
