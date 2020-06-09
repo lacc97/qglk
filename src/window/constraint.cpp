@@ -10,6 +10,10 @@
 
 #define BORDER_SIZE (5)
 
+Glk::WindowArrangement::WindowArrangement(Glk::WindowArrangement::Method method_, glui32 size_)
+    : m_Method(method_),
+      m_Size(size_) {}
+
 Glk::WindowArrangement* Glk::WindowArrangement::fromMethod(glui32 met, glui32 size) {
     if(isVertical(met))
         return new VerticalWindowConstraint(static_cast<Method>(met), size);
@@ -31,19 +35,17 @@ std::string Glk::WindowArrangement::methodString(glui32 met) {
     return fmt::format("{0} | {1} | {2}", dir, size, border);
 }
 
-Glk::WindowArrangement::WindowArrangement(Glk::WindowArrangement::Method method_, glui32 size_)
-    : m_Method(method_),
-      m_Size(size_) {}
+QGridLayout* Glk::WindowArrangement::setupLayout(QWidget* parent) const {
+    if(parent->layout())
+        delete parent->layout();
 
-void Glk::WindowArrangement::selectChildWindows(PairWindowController* parent, QWidget*& first, QWidget*& second) const {
-//    if(parent->window<PairWindow>()->firstWindow())
+    auto layout = new QGridLayout(parent);
+    layout->setMargin(0);
+
+    return layout;
 }
 
-void Glk::WindowArrangement::showChildWindows(Glk::PairWindowController* parentController) const {
-    assert(parentController);
-    assert(parentController->window<PairWindow>()->firstWindow());
-    assert(parentController->window<PairWindow>()->secondWindow());
-
+void Glk::WindowArrangement::showChildWidgets(Glk::PairWindowController* parentController) const {
     parentController->window<PairWindow>()->firstWindow()->controller()->widget()->show();
     parentController->window<PairWindow>()->secondWindow()->controller()->widget()->show();
 }
@@ -58,17 +60,10 @@ void Glk::HorizontalWindowConstraint::setupWidgets(PairWindowController* parentC
 
     QWidget* parent = parentController->widget();
     Window* key = parentController->window<PairWindow>()->keyWindow();
-//    QWidget* first, second;
-
     QWidget* first = parentController->window<PairWindow>()->firstWindow()->controller()->widget();
     QWidget* second = parentController->window<PairWindow>()->secondWindow()->controller()->widget();
 
-    if(parent->layout())
-        delete parent->layout();
-
-    auto layout = new QGridLayout(parent);
-    layout->setMargin(0);
-
+    QGridLayout* layout = setupLayout(parent);
     if(key) {
         if(isFixed()) {
             first->setMinimumSize(key->controller()->toQtSize({static_cast<int>(size()), 0}));
@@ -106,7 +101,7 @@ void Glk::HorizontalWindowConstraint::setupWidgets(PairWindowController* parentC
         layout->addWidget(second);
     }
 
-    showChildWindows(parentController);
+    showChildWidgets(parentController);
 }
 
 Glk::VerticalWindowConstraint::VerticalWindowConstraint(Glk::WindowArrangement::Method method_, glui32 size_)
@@ -120,12 +115,7 @@ void Glk::VerticalWindowConstraint::setupWidgets(PairWindowController* parentCon
     QWidget* first = parentController->window<PairWindow>()->firstWindow()->controller()->widget();
     QWidget* second = parentController->window<PairWindow>()->secondWindow()->controller()->widget();
 
-    if(parent->layout())
-        delete parent->layout();
-
-    auto layout = new QGridLayout(parent);
-    layout->setMargin(0);
-
+    QGridLayout* layout = setupLayout(parent);
     if(key) {
         if(isFixed()) {
             first->setMinimumSize(key->controller()->toQtSize({0, static_cast<int>(size())}));
@@ -163,6 +153,6 @@ void Glk::VerticalWindowConstraint::setupWidgets(PairWindowController* parentCon
         layout->addWidget(second);
     }
 
-    showChildWindows(parentController);
+    showChildWidgets(parentController);
 }
 

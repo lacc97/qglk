@@ -11,6 +11,8 @@
 #include "window/windowcontroller.hpp"
 #include "pairwindowcontroller.hpp"
 
+class QGridLayout;
+
 namespace Glk {
     class Window;
 
@@ -88,9 +90,9 @@ namespace Glk {
             virtual void setupWidgets(PairWindowController* parentController) const = 0;
 
         protected:
-            void selectChildWindows(PairWindowController* parent, QWidget*& first, QWidget*& second) const;
+            QGridLayout* setupLayout(QWidget* parent) const;
 
-            void showChildWindows(PairWindowController* parent) const;
+            void showChildWidgets(PairWindowController* parentController) const;
 
         private:
             Method m_Method;
