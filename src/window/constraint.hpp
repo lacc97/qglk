@@ -1,6 +1,8 @@
 #ifndef CONSTRAINT_HPP
 #define CONSTRAINT_HPP
 
+#include <string>
+
 #include <QPair>
 #include <QRect>
 
@@ -49,7 +51,7 @@ namespace Glk {
 
             [[nodiscard]] static WindowArrangement* fromMethod(glui32 met, glui32 size);
 
-            [[nodiscard]] static QString methodString(glui32 met);
+            [[nodiscard]] static std::string methodString(glui32 met);
 
             WindowArrangement(Method method_, glui32 size_);
 

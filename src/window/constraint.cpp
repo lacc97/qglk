@@ -1,6 +1,9 @@
 #include "constraint.hpp"
 
-#include <QDebug>
+#include <string_view>
+
+#include <fmt/format.h>
+
 #include <QGridLayout>
 
 #include "pairwindow.hpp"
@@ -14,21 +17,18 @@ Glk::WindowArrangement* Glk::WindowArrangement::fromMethod(glui32 met, glui32 si
         return new HorizontalWindowConstraint(static_cast<Method>(met), size);
 }
 
-QString Glk::WindowArrangement::methodString(glui32 met) {
-    QString method;
+std::string Glk::WindowArrangement::methodString(glui32 met) {
+    std::string_view dir;
+    if(isVertical(met))
+        dir = (VerticalWindowConstraint{static_cast<Method>(met), 0}.constrainsAbove() ? "Above" : "Below");
+    else
+        dir = (HorizontalWindowConstraint{static_cast<Method>(met), 0}.constrainsLeft() ? "Left" : "Right");
 
-    if(isVertical(met)) {
-        VerticalWindowConstraint vwc(static_cast<Method>(met), 0);
-        method.append(vwc.constrainsAbove() ? QStringLiteral("Above") : QStringLiteral("Below"));
-    } else {
-        HorizontalWindowConstraint hwc(static_cast<Method>(met), 0);
-        method.append(hwc.constrainsLeft() ? QStringLiteral("Left") : QStringLiteral("Right"));
-    }
+    std::string_view size = isProportional(met) ? "Proportional" : "Fixed";
 
-    method.append(isProportional(met) ? QStringLiteral(" | Proportional") : QStringLiteral(" | Fixed"));
-    method.append(isBordered(met) ? QStringLiteral(" | Border") : QStringLiteral(" | NoBorder"));
+    std::string_view border = isBordered(met) ? "Border" : "NoBorder";
 
-    return method;
+    return fmt::format("{0} | {1} | {2}", dir, size, border);
 }
 
 Glk::WindowArrangement::WindowArrangement(Glk::WindowArrangement::Method method_, glui32 size_)
