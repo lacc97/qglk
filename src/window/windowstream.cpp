@@ -44,27 +44,13 @@ void Glk::WindowStream::pushHyperlink(glui32 linkValue) {
     windowDevice()->window()->pushHyperlink(linkValue);
 }
 
-void Glk::WindowStream::writeUnicodeBuffer(glui32* buf, glui32 len) {
-    if(mp_EchoStream)
-        mp_EchoStream->writeUnicodeBuffer(buf, len);
-
-    UnicodeStream::writeUnicodeBuffer(buf, len);
-}
-
-void Glk::WindowStream::writeUnicodeChar(glui32 ch) {
-    if(mp_EchoStream)
-        mp_EchoStream->writeUnicodeChar(ch);
-
-    UnicodeStream::writeUnicodeChar(ch);
-}
-
-void Glk::WindowStream::writeUnicodeString(glui32* str) {
-    if(mp_EchoStream)
-        mp_EchoStream->writeUnicodeString(str);
-
-    UnicodeStream::writeUnicodeString(str);
-}
-
 void Glk::WindowStream::onEchoStreamClosed() {
     mp_EchoStream = nullptr;
+}
+
+void Glk::WindowStream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
+    if(mp_EchoStream)
+        mp_EchoStream->writeUnicodeBuffer(buf);
+
+    UnicodeStream::writeUnicodeBuffer(buf);
 }

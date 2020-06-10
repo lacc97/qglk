@@ -34,6 +34,10 @@ namespace Glk {
         public:
             explicit WindowStream(WindowDevice* dev);
 
+
+            void writeUnicodeBuffer(buffer::buffer_view<glui32> buf) override;
+
+
             [[nodiscard]] inline Glk::Stream* echoStream() const {
                 return mp_EchoStream;
             }
@@ -44,18 +48,11 @@ namespace Glk {
 
             void pushHyperlink(glui32 linkval) override;
 
-            void writeUnicodeBuffer(glui32* buf, glui32 len) override;
-
-            void writeUnicodeChar(glui32 ch) override;
-
-            void writeUnicodeString(glui32* str) override;
-
             [[nodiscard]] inline WindowDevice* windowDevice() const {
                 return static_cast<WindowDevice*>(device());
             }
 
         public slots:
-
             void onEchoStreamClosed();
 
         private:

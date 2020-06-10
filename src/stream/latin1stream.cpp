@@ -1,5 +1,10 @@
 #include "latin1stream.hpp"
 
+#include <algorithm>
+#include <memory>
+
+#include <buffer/small_buffer.hpp>
+
 Glk::Latin1Stream::Latin1Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, glui32 rock_) : Stream(parent_, device_, type_, false, rock_) {}
 
 Glk::Latin1Stream::~Latin1Stream() {
@@ -13,111 +18,60 @@ void Glk::Latin1Stream::setPosition(glui32 pos) {
     device()->seek(pos);
 }
 
-void Glk::Latin1Stream::writeBuffer(char* buf, glui32 len) {
-    qint64 writtenb = device()->write(buf, len);
+
+void Glk::Latin1Stream::writeBuffer(buffer::byte_buffer_view buf) {
+    qint64 writtenb = device()->write(buf.data(), buf.size());
 
     if(writtenb != -1)
         updateWriteCount(glui32(writtenb));
 }
 
-void Glk::Latin1Stream::writeChar(unsigned char ch) {
-    if(device()->putChar(*reinterpret_cast<char*>(&ch)))
-        updateWriteCount(1);
+void Glk::Latin1Stream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
+    buffer::small_byte_buffer<BUFSIZ> cbuf{buf.size()};
+
+    std::transform(buf.begin(), buf.end(), cbuf.begin(), [](glui32 ch) -> char {
+        return (ch >= 0x100) ? '?' : char(ch);
+    });
+
+    writeBuffer(cbuf);
 }
 
-void Glk::Latin1Stream::writeString(char* str) {
-    qint64 writtenb = device()->write(str);
-
-    if(writtenb != -1)
-        updateWriteCount(glui32(writtenb));
-}
-
-void Glk::Latin1Stream::writeUnicodeBuffer(glui32* buf, glui32 len) {
-    char* cbuf = new char[len];
-
-    for(glui32 ii = 0; ii < len; ii++)
-        cbuf[ii] = (buf[ii] >= 0x100 ? '?' : char(buf[ii]));
-
-    writeBuffer(cbuf, len);
-
-    delete[] cbuf;
-}
-
-void Glk::Latin1Stream::writeUnicodeChar(glui32 ch) {
-    char c = (ch >= 0x100 ? '?' : char(ch));
-    writeChar(c);
-}
-
-void Glk::Latin1Stream::writeUnicodeString(glui32* str) {
-    glui32 len;
-
-    for(len = 0; str[len] != 0; len++);
-
-    char* cbuf = new char[len];
-
-    for(glui32 ii = 0; ii < len; ii++)
-        cbuf[ii] = (str[ii] >= 0x100 ? '?' : char(str[ii]));
-
-    writeBuffer(cbuf, len);
-
-    delete[] cbuf;
-}
-
-glui32 Glk::Latin1Stream::readBuffer(char* buf, glui32 len) {
-    qint64 numr = device()->read(buf, len);
-
-    if(numr > 0)
-        updateReadCount(glui32(numr));
-    else
+glui32 Glk::Latin1Stream::readBuffer(buffer::byte_buffer_span buf) {
+    qint64 numr = device()->read(buf.data(), buf.size());
+    if(numr <= 0)
         return 0;
 
+    updateReadCount(glui32(numr));
     return glui32(numr);
 }
 
-glsi32 Glk::Latin1Stream::readChar() {
-    unsigned char c;
-
-    if(device()->getChar(reinterpret_cast<char*>(&c))) {
-        updateReadCount(1);
-        return c;
-    } else {
-        return -1;
-    }
-}
-
-glui32 Glk::Latin1Stream::readLine(char* buf, glui32 len) {
-    qint64 numr = device()->readLine(buf, len);
-
-    if(numr > 0)
-        updateReadCount(glui32(numr));
-    else
+glui32 Glk::Latin1Stream::readLine(buffer::byte_buffer_span buf) {
+    qint64 numr = device()->readLine(buf.data(), buf.size());
+    if(numr <= 0)
         return 0;
 
+    updateReadCount(glui32(numr));
     return glui32(numr);
 }
 
-glui32 Glk::Latin1Stream::readUnicodeBuffer(glui32* buf, glui32 len) {
-    char* cbuf = new char[len];
+glui32 Glk::Latin1Stream::readUnicodeBuffer(buffer::buffer_span<glui32> buf) {
+    buffer::small_byte_buffer<BUFSIZ> cbuf{buf.size()};
 
-    glui32 numr = readBuffer(cbuf, len);
-
-    for(glui32 ii = 0; ii < numr; ii++)
-        buf[ii] = cbuf[ii];
+    glui32 numr = readBuffer(cbuf);
+    std::transform(cbuf.begin(), cbuf.begin() + numr, buf.begin(), [](char ch) -> glui32 {
+        return ch;
+    });
 
     return numr;
 }
 
-glsi32 Glk::Latin1Stream::readUnicodeChar() {
-    return readChar();
-}
+glui32 Glk::Latin1Stream::readUnicodeLine(buffer::buffer_span<glui32> buf) {
+    buffer::small_byte_buffer<BUFSIZ> cbuf{buf.size()};
 
-glui32 Glk::Latin1Stream::readUnicodeLine(glui32* buf, glui32 len) {
-    char* cbuf = new char[len];
-
-    glui32 numr = readLine(cbuf, len);
-
-    for(glui32 ii = 0; ii < numr + 1; ii++)
-        buf[ii] = cbuf[ii];
+    glui32 numr = readLine(cbuf);
+    std::transform(cbuf.begin(), cbuf.begin() + numr, buf.begin(), [](char ch) -> glui32 {
+        return ch;
+    });
 
     return numr;
 }

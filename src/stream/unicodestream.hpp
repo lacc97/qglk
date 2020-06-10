@@ -13,21 +13,18 @@ namespace Glk {
             glui32 position() const override;
             void setPosition(glui32 pos) override;
 
-            void writeBuffer(char* buf, glui32 len) override;
-            void writeChar(unsigned char ch) override;
-            void writeString(char* str) override;
+            void writeBuffer(buffer::byte_buffer_view buf) override;
 
-            void writeUnicodeBuffer(glui32* buf, glui32 len) override;
-            void writeUnicodeChar(glui32 ch) override;
-            void writeUnicodeString(glui32* str) override;
+            void writeUnicodeBuffer(buffer::buffer_view<glui32> buf) override;
 
-            glui32 readBuffer(char* buf, glui32 len) override;
-            glsi32 readChar() override;
-            glui32 readLine(char* buf, glui32 len) override;
+            glui32 readBuffer(buffer::byte_buffer_span buf) override;
+            glui32 readLine(buffer::byte_buffer_span buf) override;
 
-            glui32 readUnicodeBuffer(glui32* buf, glui32 len) override;
-            glsi32 readUnicodeChar() override;
-            glui32 readUnicodeLine(glui32* buf, glui32 len) override;
+            glui32 readUnicodeBuffer(buffer::buffer_span<glui32> buf) override;
+            glui32 readUnicodeLine(buffer::buffer_span<glui32> buf) override;
+
+        private:
+            bool isStreamBigEndian() const;
     };
 }
 

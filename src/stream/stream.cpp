@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cstring>
 
-#include <QBuffer>
+#include <string_view>
 
 #include "glk.hpp"
 #include "qglk.hpp"
@@ -63,8 +63,3 @@ void Glk::Stream::pushStyle(Style::Type sty) {}
 bool Glk::Stream::isOpen() const {
     return mp_Device->isOpen();
 }
-
-
-
-
-

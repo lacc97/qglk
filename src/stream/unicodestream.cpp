@@ -2,11 +2,19 @@
 
 #include <cstring>
 
+#include <buffer/small_buffer.hpp>
+#include <buffer/static_buffer.hpp>
+
 #include <QtEndian>
 
-Glk::UnicodeStream::UnicodeStream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, glui32 rock_) : Stream(parent_, device_, type_, true, rock_) {}
+Glk::UnicodeStream::UnicodeStream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, glui32 rock_) : Stream(
+        parent_, device_, type_, true, rock_) {}
 
 Glk::UnicodeStream::~UnicodeStream() {
+}
+
+bool Glk::UnicodeStream::isStreamBigEndian() const {
+    return (!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource));
 }
 
 glui32 Glk::UnicodeStream::position() const {
@@ -25,186 +33,125 @@ void Glk::UnicodeStream::setPosition(glui32 pos) {
 //     }
 }
 
-void Glk::UnicodeStream::writeBuffer(char* buf, glui32 len) {
-    glui32* ibuf = new glui32[len];
+void Glk::UnicodeStream::writeBuffer(buffer::byte_buffer_view buf) {
+    buffer::small_buffer<glui32, BUFSIZ / sizeof(glui32)> ibuf{buf.size()};
 
-    for(glui32 ii = 0; ii < len; ii++)
-        ibuf[ii] = reinterpret_cast<unsigned char*>(buf)[ii];
-
-    writeUnicodeBuffer(ibuf, len);
-
-    delete[] ibuf;
-}
-
-void Glk::UnicodeStream::writeChar(unsigned char ch) {
-    writeUnicodeChar(ch);
-}
-
-void Glk::UnicodeStream::writeString(char* str) {
-    glui32 len = qstrlen(str);
-    glui32* ibuf = new glui32[len];
-
-    for(glui32 ii = 0; ii < len; ii++)
-        ibuf[ii] = reinterpret_cast<unsigned char*>(str)[ii];
-
-    writeUnicodeBuffer(ibuf, len);
-
-    delete[] ibuf;
-}
-
-void Glk::UnicodeStream::writeUnicodeBuffer(glui32* buf, glui32 len) {
-//     if(isInTextMode()) {
-//
-//     } else {
-    glui32* newbuf;
-
-    if(!isInTextMode() && (!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))) {
-        newbuf = new glui32[len];
-        std::memcpy(newbuf, buf, sizeof(glui32)*len);
-
-        for(glui32 ii = 0; ii < len; ii++)
-            newbuf[ii] = qToBigEndian(newbuf[ii]);
+    if(isStreamBigEndian()) {
+        std::transform(buf.begin(), buf.end(), ibuf.begin(), [](char ch) -> glui32 {
+            return qToBigEndian<glui32>(ch);
+        });
     } else {
-        newbuf = buf;
+        std::transform(buf.begin(), buf.end(), ibuf.begin(), [](char ch) -> glui32 {
+            return ch;
+        });
     }
 
-    qint64 writtenb = device()->write(reinterpret_cast<char*>(newbuf), sizeof(glui32)*len);
-
+    qint64 writtenb = device()->write(reinterpret_cast<char*>(ibuf.data()), sizeof(glui32) * ibuf.size());
     if(writtenb != -1)
         updateWriteCount(glui32(writtenb) / sizeof(glui32));
-
-    if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))
-        delete[] newbuf;
-
-//     }
 }
 
-void Glk::UnicodeStream::writeUnicodeChar(glui32 ch) {
-//     if(isInTextMode()) {
-//
-//     } else {
-    if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))
-        ch = qToBigEndian(ch);
+void Glk::UnicodeStream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
+    buffer::small_buffer<glui32, BUFSIZ / sizeof(glui32)> ibuf{buf.size()};
 
-    qint64 writtenb = device()->write(reinterpret_cast<char*>(&ch), sizeof(glui32));
-
-    if(writtenb != -1)
-        updateWriteCount(1);
-
-//     }
-}
-
-void Glk::UnicodeStream::writeUnicodeString(glui32* str) {
-    glui32 len;
-
-    for(len = 0; str[len] != 0; len++);
-
-    writeUnicodeBuffer(str, len);
-    return;
-}
-
-glui32 Glk::UnicodeStream::readBuffer(char* buf, glui32 len) {
-    glui32* ibuf = new glui32[len];
-
-    glui32 numr = readUnicodeBuffer(ibuf, len);
-
-    for(glui32 ii = 0; ii < numr; ii++)
-        buf[ii] = (ibuf[ii] >= 0x100 ? '?' : ibuf[ii]);
-
-    delete[] ibuf;
-
-    return numr;
-}
-
-glsi32 Glk::UnicodeStream::readChar() {
-    glsi32 ch = readUnicodeChar();
-
-    return (ch >= 0x100 ? '?' : ch);
-}
-
-glui32 Glk::UnicodeStream::readLine(char* buf, glui32 len) {
-    glui32* ibuf = new glui32[len];
-
-    glui32 numr = readUnicodeLine(ibuf, len);
-
-    for(glui32 ii = 0; ii < numr + 1; ii++)
-        buf[ii] = (ibuf[ii] >= 0x100 ? '?' : ibuf[ii]);
-
-    delete[] ibuf;
-
-    return numr;
-}
-
-glui32 Glk::UnicodeStream::readUnicodeBuffer(glui32* buf, glui32 len) {
-//     if(isInTextMode()) {
-//
-//     } else {
-    qint64 numr = device()->read(reinterpret_cast<char*>(buf), sizeof(glui32)*len);
-
-    if(numr > 0)
-        updateReadCount(glui32(numr) / sizeof(glui32));
-    else
-        return 0;
-    
-    glui32 readcount = glui32(numr) / sizeof(glui32);
-
-    if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource)) {
-        for(glui32 ii = 0; ii < readcount; ii++)
-            buf[ii] = qFromBigEndian(buf[ii]);
+    buffer::buffer_view<glui32> writebuf = buf;
+    if(isStreamBigEndian()) {
+        std::transform(buf.begin(), buf.end(), ibuf.begin(), [](char ch) -> glui32 {
+            return qToBigEndian<glui32>(ch);
+        });
+        writebuf = ibuf;
     }
 
+    qint64 writtenb = device()->write(reinterpret_cast<const char*>(writebuf.data()), sizeof(glui32) * writebuf.size());
+    if(writtenb != -1)
+        updateWriteCount(glui32(writtenb) / sizeof(glui32));
+}
+
+glui32 Glk::UnicodeStream::readBuffer(buffer::byte_buffer_span buf) {
+    buffer::small_buffer<glui32, BUFSIZ / sizeof(glui32)> ibuf{buf.size()};
+
+    glui32 numr = readUnicodeBuffer(ibuf);
+    std::transform(ibuf.begin(), ibuf.begin() + numr, buf.begin(), [](glui32 ch) -> char {
+        return (ch >= 0x100) ? '?' : char(ch);
+    });
+
+    return numr;
+}
+
+glui32 Glk::UnicodeStream::readLine(buffer::byte_buffer_span buf) {
+    buffer::small_buffer<glui32, BUFSIZ / sizeof(glui32)> ibuf{buf.size()};
+
+    glui32 numr = readUnicodeLine(ibuf);
+    std::transform(ibuf.begin(), ibuf.begin() + numr, buf.begin(), [](glui32 ch) -> char {
+        return (ch >= 0x100) ? '?' : char(ch);
+    });
+
+    return numr;
+}
+
+glui32 Glk::UnicodeStream::readUnicodeBuffer(buffer::buffer_span<glui32> buf) {
+    //     if(isInTextMode()) {
+//
+//     } else {
+    qint64 numr = device()->read(reinterpret_cast<char*>(buf.data()), sizeof(glui32) * buf.size());
+    if(numr <= 0)
+        return 0;
+
+    glui32 readcount = glui32(numr) / sizeof(glui32);
+
+    if(isStreamBigEndian()) {
+        buf = buf.subspan(readcount);
+        std::transform(buf.begin(), buf.end(), buf.begin(), [](glui32 ch) -> glui32 {
+            return qFromBigEndian<glui32>(ch);
+        });
+    }
+
+    updateReadCount(readcount);
     return readcount;
 //     }
 }
 
-glsi32 Glk::UnicodeStream::readUnicodeChar() {
+glui32 Glk::UnicodeStream::readUnicodeLine(buffer::buffer_span<glui32> buf) {
 //     if(isInTextMode()) {
 //
 //     } else {
-    glsi32 ch;
+    buffer::buffer_span<glui32> peekdata;
+    {
+        qint64 numr = device()->peek(reinterpret_cast<char*>(buf.data()), sizeof(glui32) * (buf.size() - 1));
+        if(numr <= 0)
+            return 0;
 
-    if(device()->read(reinterpret_cast<char*>(&ch), sizeof(glui32)) > 0) {
-        updateReadCount(1);
-
-        if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))
-            return qFromBigEndian(ch);
-        else
-            return ch;
-    } else {
-        return -1;
+        /* we work only with the valid data from the peek */
+        peekdata = buf.first(glui32(numr) / sizeof(glui32));
     }
 
-//     }
-}
+    glui32 readcount;
+    {
+        /* look for a newline */
+        glui32 nl = isStreamBigEndian() ? qToBigEndian<glui32>('\n') : '\n';
+        auto nlpos = std::find(peekdata.begin(), peekdata.end(), nl);
 
-glui32 Glk::UnicodeStream::readUnicodeLine(glui32* buf, glui32 len) {
-//     if(isInTextMode()) {
-//
-//     } else {
-    glui32 numr;
+        /* if we find a newline, we must count it */
+        readcount = std::distance(peekdata.begin(), nlpos) + (nlpos != peekdata.end() ? 1 : 0);
 
-    for(numr = 0; numr < len - 1; numr++) {
-        if(device()->read(reinterpret_cast<char*>(buf + numr), sizeof(glui32)) <= 0)
-            break;
-
-        if(*(buf+ numr) == 0)
-            break;
-        
-        if(!isInTextMode() && (type() == Glk::Stream::Type::File || type() == Glk::Stream::Type::Resource))
-            *(buf+ numr) = qFromBigEndian(*(buf+ numr));
-        
-        if(*(buf+ numr) == '\n') {
-            numr++;
-            break;
-        }
+        /* we don't care about anything after the newline */
+        peekdata = peekdata.first(readcount);
     }
-    
-    *(buf+numr) = 0;
 
-    updateReadCount(numr);
+    /* convert from big endian if necessary */
+    if(isStreamBigEndian()) {
+        std::transform(peekdata.begin(), peekdata.end(), peekdata.begin(), [](glui32 ch) -> glui32 {
+            return qFromBigEndian<glui32>(ch);
+        });
+    }
 
-    return numr;
+    /* null terminator isn't counted */
+    buf[readcount] = 0;
+
+    device()->skip(readcount*sizeof(glui32));
+
+    updateReadCount(readcount);
+    return readcount;
 //     }
 }
-
 
