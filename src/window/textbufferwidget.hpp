@@ -47,6 +47,25 @@ namespace Glk {
             QVariant loadResource(int type, const QUrl& name) override;
 
 
+            void pushInputStyle();
+
+
+            [[nodiscard]] inline QTextBlockFormat inputBlockFormat() const {
+                return m_InputBlockFormat;
+            }
+
+            inline void setInputBlockFormat(QTextBlockFormat f) {
+                m_InputBlockFormat = std::move(f);
+            }
+
+            [[nodiscard]] inline QTextCharFormat inputCharFormat() const {
+                return m_InputCharFormat;
+            }
+
+            inline void setInputCharFormat(QTextCharFormat f) {
+                m_InputCharFormat = std::move(f);
+            }
+
             [[nodiscard]] QString lineInputBuffer() const;
 
             void setLineInputBuffer(const QString& str);
@@ -74,7 +93,11 @@ namespace Glk {
             void keyPressEvent(QKeyEvent* ev) override;
 
         private:
+            QTextCharFormat m_InputCharFormat;
+            QTextBlockFormat m_InputBlockFormat;
+
             std::vector<QImage> m_Images;
+
             int m_LineInputStartCursorPosition;
 
             History m_History;

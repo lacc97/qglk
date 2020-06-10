@@ -56,40 +56,52 @@ QVariant Glk::TextBufferBrowser::loadResource(int type, const QUrl& name) {
     return QTextBrowser::loadResource(type, name);
 }
 
+void Glk::TextBufferBrowser::pushInputStyle() {
+    setCurrentCharFormat(inputCharFormat());
+}
+
 void Glk::TextBufferBrowser::onCursorPositionChanged() {
-    if(receivingLineInput() && m_LineInputStartCursorPosition > textCursor().position()) {
-        auto c = textCursor();
+    auto c = textCursor();
+    if(receivingLineInput() && m_LineInputStartCursorPosition > c.position()) {
         c.setPosition(m_LineInputStartCursorPosition,
                       c.hasSelection() ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor);
         setTextCursor(c);
+
+        pushInputStyle();
     }
 }
 
 void Glk::TextBufferBrowser::keyPressEvent(QKeyEvent* ev) {
     if(receivingLineInput()) {
-        if(textCursor().position() == m_LineInputStartCursorPosition && ev->key() == Qt::Key_Backspace) {
-            // This ensures we can't delete anything that came before the line input request.
-            return;
-        }
+        switch(ev->key()) {
+            case Qt::Key_Backspace:
+                if(textCursor().position() == m_LineInputStartCursorPosition) {
+                    /* insert dummy space so we don't delete anything before the prompt */
+                    insertPlainText(" ");
+                }
+                break;
 
-        if(ev->key() == Qt::Key_Up) {
-            if(m_HistoryIterator != m_History.end()) {
-                setLineInputBuffer(*m_HistoryIterator++);
-            }
+            case Qt::Key_Up:
+                if(m_HistoryIterator != m_History.end()) {
+                    setLineInputBuffer(*m_HistoryIterator++);
+                }
+                return;
 
-            return;
-        } else if(ev->key() == Qt::Key_Down) {
-            if(m_HistoryIterator != m_History.begin()) {
-                setLineInputBuffer(*(--m_HistoryIterator));
-            } else {
-                setLineInputBuffer({});
-            }
-
-            return;
+            case Qt::Key_Down:
+                if(m_HistoryIterator != m_History.begin()) {
+                    setLineInputBuffer(*(--m_HistoryIterator));
+                } else {
+                    setLineInputBuffer({});
+                }
+                return;
         }
     }
 
-    return QTextBrowser::keyPressEvent(ev);
+    QTextBrowser::keyPressEvent(ev);
+
+    if(receivingLineInput()) {
+        pushInputStyle();
+    }
 }
 
 void Glk::TextBufferBrowser::setLineInputBuffer(const QString& str) {
@@ -101,7 +113,10 @@ void Glk::TextBufferBrowser::setLineInputBuffer(const QString& str) {
         c.removeSelectedText();
 
         c.setPosition(lineInputStartCursorPosition());
+        c.setCharFormat(m_InputCharFormat);
         c.insertText(str);
+
+        pushInputStyle();
     }
 }
 
@@ -136,6 +151,8 @@ void Glk::TextBufferWidget::onLineInputRequested() {
 
     browser()->moveCursor(QTextCursor::End);
     browser()->setLineInputStartCursorPosition(browser()->textCursor().position());
+
+    browser()->pushInputStyle();
 }
 
 void Glk::TextBufferWidget::onLineInputFinished() {

@@ -19,21 +19,6 @@ Glk::TextBufferWindowController::TextBufferWindowController(Glk::PairWindow* win
         mp_Cursor = new QTextCursor{mp_EventThreadDocument};
     });
 
-    QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequested,
-                     [this]() {
-                         assert(onEventThread());
-
-                         auto tbBrowser = widget<TextBufferWidget>()->browser();
-
-                         Style style = window<TextBufferWindow>()->styles()[Style::Input];
-                         QTextCursor tbBrowserCursor{widget<TextBufferWidget>()->browser()->document()};
-                         tbBrowserCursor.movePosition(QTextCursor::End);
-                         tbBrowserCursor.setBlockFormat(style.blockFormat());
-                         tbBrowserCursor.setCharFormat(style.charFormat());
-
-                         tbBrowser->setTextCursor(tbBrowserCursor);
-                     });
-
     QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestCancelled,
                      [this](const QString& text, bool lineEchoes) {
                          if(lineEchoes && !text.isEmpty())
@@ -52,6 +37,8 @@ Glk::TextBufferWindowController::TextBufferWindowController(Glk::PairWindow* win
 }
 
 Glk::TextBufferWindowController::~TextBufferWindowController() {
+    assert(Glk::onGlkThread());
+
     Glk::sendTaskToEventThread([this]() {
         delete mp_Cursor;
         delete mp_EventThreadDocument;
@@ -61,8 +48,10 @@ Glk::TextBufferWindowController::~TextBufferWindowController() {
 void Glk::TextBufferWindowController::synchronize() {
     assert(onEventThread());
 
-    if(!keyboardProvider()->lineInputRequest() || !keyboardProvider()->lineInputRequest()->isPending())
+    if(!keyboardProvider()->lineInputRequest() || !keyboardProvider()->lineInputRequest()->isPending()) {
         synchronizeText();
+        synchronizeInputStyle();
+    }
 
     WindowController::synchronize();
 }
@@ -141,12 +130,15 @@ QWidget* Glk::TextBufferWindowController::createWidget() {
     return w;
 }
 
-void Glk::TextBufferWindowController::synchronizeText() {
-    assert(onEventThread());
+void Glk::TextBufferWindowController::synchronizeInputStyle() {
+    Style inputStyle = window<TextBufferWindow>()->styles()[Style::Input];
 
+    widget<TextBufferWidget>()->browser()->setInputBlockFormat(inputStyle.blockFormat());
+    widget<TextBufferWidget>()->browser()->setInputCharFormat(inputStyle.charFormat());
+}
+
+void Glk::TextBufferWindowController::synchronizeText() {
     widget<TextBufferWidget>()->browser()->setImages(window<TextBufferWindow>()->images());
 
     widget<TextBufferWidget>()->browser()->setHtml(mp_EventThreadDocument->toHtml());
-
-    widget<TextBufferWidget>()->browser()->moveCursor(QTextCursor::End);
 }

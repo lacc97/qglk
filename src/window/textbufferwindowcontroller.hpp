@@ -47,11 +47,13 @@ namespace Glk {
             [[nodiscard]] static QWidget* createWidget();
 
 
-            QTextDocument* mp_EventThreadDocument;
-            QTextCursor* mp_Cursor;
-
+            void synchronizeInputStyle();
 
             void synchronizeText();
+
+
+            QTextDocument* mp_EventThreadDocument;
+            QTextCursor* mp_Cursor;
     };
 }
 
