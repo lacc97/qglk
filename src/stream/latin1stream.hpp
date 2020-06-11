@@ -7,11 +7,11 @@ namespace Glk {
     class Latin1Stream final : public Stream {
             Q_OBJECT
         public:
-            Latin1Stream(QObject* parent_, QIODevice* device_, Type type_, glui32 rock_ = 0);
+            Latin1Stream(QObject* parent_, std::unique_ptr<std::streambuf> buf_, Type type_, bool text_, glui32 rock_);
             ~Latin1Stream();
             
             glui32 position() const final;
-            void setPosition(glui32 pos) final;
+            void setPosition(glsi32 off, std::ios_base::seekdir dir) final;
 
             void writeBuffer(buffer::byte_buffer_view buf) override;
 

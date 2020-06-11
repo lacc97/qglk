@@ -15,18 +15,16 @@
 namespace Glk {
     class TextBufferWindow;
 
-    class TextBufferDevice : public WindowDevice {
+    class TextBufferBuf : public WindowBuf {
         public:
-            explicit TextBufferDevice(TextBufferWindow* win);
+            explicit TextBufferBuf(TextBufferWindow* win);
 
         protected:
-            qint64 readData(char* data, qint64 maxlen) override;
-
-            qint64 writeData(const char* data, qint64 len) override;
+            std::streamsize xsputn(const char_type* s, std::streamsize count) final;
     };
 
     class TextBufferWindow : public Window {
-            friend class TextBufferDevice;
+            friend class TextBufferBuf;
 
         public:
             TextBufferWindow(TextBufferWindowController* winController, PairWindow* winParent, glui32 winRock);

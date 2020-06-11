@@ -39,7 +39,6 @@ namespace Glk {
             bool exists() const;
             void remove() const;
 
-            QFile* file() const; // returns unowned pointer
             glui32 usage() const;
 
         private:

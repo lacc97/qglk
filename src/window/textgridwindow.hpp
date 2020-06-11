@@ -12,14 +12,12 @@
 namespace Glk {
     class TextGridWindow;
 
-    class TextGridDevice : public WindowDevice {
+    class TextGridBuf : public WindowBuf {
         public:
-            explicit TextGridDevice(TextGridWindow* win);
+            explicit TextGridBuf(TextGridWindow* win);
 
         protected:
-            qint64 readData(char* data, qint64 maxlen) override;
-
-            qint64 writeData(const char* data, qint64 len) override;
+            std::streamsize xsputn(const char_type* s, std::streamsize count) final;
     };
 
     class TextGridWindow : public Window {

@@ -6,11 +6,11 @@
 namespace Glk {
     class Window;
 
-    class WindowDevice : public QIODevice {
+    class WindowBuf : public std::streambuf {
         public:
-            explicit WindowDevice(Window* win);
+            explicit WindowBuf(Window* win);
 
-            ~WindowDevice() override = default;
+            ~WindowBuf() override = default;
 
             template<class WindowT = Window>
             [[nodiscard]] inline WindowT* window() const {
@@ -21,9 +21,9 @@ namespace Glk {
             }
 
         protected:
-            qint64 readData(char* data, qint64 maxlen) override;
+            int_type overflow(int_type ch) final;
 
-            qint64 writeData(const char* data, qint64 len) override;
+            std::streamsize xsputn(const char_type* s, std::streamsize count) override;
 
         private:
             Window* mp_Window;
@@ -32,7 +32,7 @@ namespace Glk {
     class WindowStream : public UnicodeStream {
         Q_OBJECT
         public:
-            explicit WindowStream(WindowDevice* dev);
+            explicit WindowStream(std::unique_ptr<WindowBuf> winbuf);
 
 
             void writeUnicodeBuffer(buffer::buffer_view<glui32> buf) override;
@@ -48,8 +48,8 @@ namespace Glk {
 
             void pushHyperlink(glui32 linkval) override;
 
-            [[nodiscard]] inline WindowDevice* windowDevice() const {
-                return static_cast<WindowDevice*>(device());
+            [[nodiscard]] inline WindowBuf* windowBuf() const {
+                return static_cast<WindowBuf*>(streambuf());
             }
 
         public slots:

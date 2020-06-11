@@ -7,11 +7,11 @@ namespace Glk {
     class UnicodeStream : public Stream {
             Q_OBJECT
         public:
-            UnicodeStream(QObject* parent_, QIODevice* device_, Type type_, glui32 rock_ = 0);
+            UnicodeStream(QObject* parent_, std::unique_ptr<std::streambuf> buf_, Type type_, bool text_, glui32 rock_);
             virtual ~UnicodeStream();
 
             glui32 position() const override;
-            void setPosition(glui32 pos) override;
+            void setPosition(glsi32 off, std::ios_base::seekdir dir) override;
 
             void writeBuffer(buffer::byte_buffer_view buf) override;
 

@@ -30,16 +30,14 @@ QString Glk::Window::windowsTypeString(glui32 type) {
     }
 }
 
-Glk::Window::Window(Type type, WindowController* winController, WindowDevice* streamDevice, PairWindow* winParent, glui32 rock)
+Glk::Window::Window(Type type, WindowController* winController, std::unique_ptr<WindowBuf> streambuf, PairWindow* winParent, glui32 rock)
     : Object{rock},
       m_Type{type},
       mp_Controller{winController},
-      mp_Stream{new WindowStream{streamDevice}},
+      mp_Stream{std::make_unique<WindowStream>(std::move(streambuf))},
       mp_Parent{winParent} {
     assert(mp_Controller);
     assert(mp_Stream);
-
-    mp_Stream->open(QIODevice::WriteOnly);
 
     QGlk::getMainWindow().dispatch().registerObject(this);
     QGlk::getMainWindow().windowList().push_back(this);

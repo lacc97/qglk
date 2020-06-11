@@ -13,25 +13,20 @@
 #include "log/log.hpp"
 
 
-Glk::TextBufferDevice::TextBufferDevice(Glk::TextBufferWindow* win)
-    : WindowDevice{win} {}
+Glk::TextBufferBuf::TextBufferBuf(Glk::TextBufferWindow* win)
+    : WindowBuf{win} {}
 
-qint64 Glk::TextBufferDevice::readData(char* data, qint64 maxlen) {
-    return 0;
-}
+std::streamsize Glk::TextBufferBuf::xsputn(const char_type* s, std::streamsize count) {
+    assert(count % 4 == 0);
 
-qint64 Glk::TextBufferDevice::writeData(const char* data, qint64 len) {
-    assert(len % 4 == 0);
+    window<TextBufferWindow>()->writeString(QString::fromUcs4((const glui32*)s, count / sizeof(glui32)));
 
-    window<TextBufferWindow>()->writeString(QString::fromUcs4(reinterpret_cast<const glui32*>(data), len / 4));
-
-    return len;
+    return count;
 }
 
 
-Glk::TextBufferWindow::TextBufferWindow(Glk::TextBufferWindowController* winController,
-                                        Glk::PairWindow* winParent, glui32 winRock)
-    : Window(Type::TextBuffer, winController, new TextBufferDevice{this}, winParent, winRock),
+Glk::TextBufferWindow::TextBufferWindow(Glk::TextBufferWindowController* winController, Glk::PairWindow* winParent, glui32 winRock)
+    : Window(Type::TextBuffer, winController, std::make_unique<TextBufferBuf>(this), winParent, winRock),
       m_Images{},
       m_Styles{QGlk::getMainWindow().textBufferStyleManager()},
       m_CurrentStyleType{Style::Normal},

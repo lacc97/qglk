@@ -1,8 +1,10 @@
 #ifndef STREAM_STREAM_HPP
 #define STREAM_STREAM_HPP
 
-#include <QIODevice>
-#include <QSet>
+#include <memory>
+#include <streambuf>
+
+#include <QObject>
 
 #include <buffer/buffer_span.hpp>
 #include <buffer/buffer_view.hpp>
@@ -21,12 +23,10 @@ namespace Glk {
                 Memory, File, Resource, Window
             };
 
-            Stream(QObject* parent_, QIODevice* device_, Type type_, bool unicode_ = false, glui32 rock_ = 0);
+            Stream(QObject* parent_, std::unique_ptr<std::streambuf> buf_, Type type_, bool text_, bool unicode_, glui32 rock_);
             virtual ~Stream();
 
             Glk::Object::Type objectType() const override;
-
-            virtual bool open(QIODevice::OpenMode om);
 
             inline Type type() const {
                 return m_Type;
@@ -36,18 +36,13 @@ namespace Glk {
             
             virtual void pushHyperlink(glui32 linkval) {}
 
-            bool isOpen() const;
-
             inline bool isUnicode() const {
                 return m_Unicode;
             }
 
-            virtual void setPosition(glui32 pos) = 0;
+            virtual void setPosition(glsi32 off, std::ios_base::seekdir dir) = 0;
             virtual glui32 position() const = 0;
 
-            inline glui32 size() const {
-                return mp_Device->size();
-            }
             inline glui32 readCount() const {
                 return m_ReadChars;
             }
@@ -55,7 +50,7 @@ namespace Glk {
                 return m_WriteChars;
             }
             inline bool isInTextMode() const {
-                return mp_Device->isTextModeEnabled();
+                return m_TextMode;
             }
 
 
@@ -115,8 +110,8 @@ namespace Glk {
             void closed();
 
         protected:
-            inline QIODevice* device() const {
-                return mp_Device;
+            inline std::streambuf* streambuf() const {
+                return mp_Streambuf.get();
             }
             inline void updateReadCount(glui32 charread) {
                 m_ReadChars += charread;
@@ -126,12 +121,14 @@ namespace Glk {
             }
 
         private:
-            QIODevice* mp_Device;
-            bool m_Unicode;
-            glui32 m_ReadChars;
-            glui32 m_WriteChars;
-
             Type m_Type;
+            bool m_TextMode;
+            bool m_Unicode;
+
+            std::unique_ptr<std::streambuf> mp_Streambuf;
+
+            glui32 m_ReadChars{0};
+            glui32 m_WriteChars{0};
     };
 }
 

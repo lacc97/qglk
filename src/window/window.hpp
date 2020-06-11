@@ -88,7 +88,7 @@ namespace Glk {
             }
 
         protected:
-            Window(Type type, WindowController* winController, WindowDevice* streamDevice, PairWindow* winParent, glui32 rock = 0);
+            Window(Type type, WindowController* winController, std::unique_ptr<WindowBuf> streambuf, PairWindow* winParent, glui32 rock = 0);
 
         private:
             Glk::Window::Type m_Type;

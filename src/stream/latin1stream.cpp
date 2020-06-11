@@ -5,25 +5,21 @@
 
 #include <buffer/small_buffer.hpp>
 
-Glk::Latin1Stream::Latin1Stream(QObject* parent_, QIODevice* device_, Glk::Stream::Type type_, glui32 rock_) : Stream(parent_, device_, type_, false, rock_) {}
+Glk::Latin1Stream::Latin1Stream(QObject* parent_, std::unique_ptr<std::streambuf> buf_, Type type_, bool text_, glui32 rock_)
+        : Stream(parent_, std::move(buf_), type_, text_, false, rock_) {}
 
-Glk::Latin1Stream::~Latin1Stream() {
-}
+Glk::Latin1Stream::~Latin1Stream() = default;
 
 glui32 Glk::Latin1Stream::position() const {
-    return glui32(device()->pos());
+    return glui32(streambuf()->pubseekoff(0, std::ios_base::cur));
 }
 
-void Glk::Latin1Stream::setPosition(glui32 pos) {
-    device()->seek(pos);
+void Glk::Latin1Stream::setPosition(glsi32 off, std::ios_base::seekdir dir) {
+    streambuf()->pubseekoff(off, dir);
 }
-
 
 void Glk::Latin1Stream::writeBuffer(buffer::byte_buffer_view buf) {
-    qint64 writtenb = device()->write(buf.data(), buf.size());
-
-    if(writtenb != -1)
-        updateWriteCount(glui32(writtenb));
+    updateWriteCount(streambuf()->sputn(buf.data(), buf.size()));
 }
 
 void Glk::Latin1Stream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
@@ -37,21 +33,43 @@ void Glk::Latin1Stream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
 }
 
 glui32 Glk::Latin1Stream::readBuffer(buffer::byte_buffer_span buf) {
-    qint64 numr = device()->read(buf.data(), buf.size());
-    if(numr <= 0)
-        return 0;
-
-    updateReadCount(glui32(numr));
-    return glui32(numr);
+    glui32 numr = streambuf()->sgetn(buf.data(), buf.size());
+    updateReadCount(numr);
+    return numr;
 }
 
 glui32 Glk::Latin1Stream::readLine(buffer::byte_buffer_span buf) {
-    qint64 numr = device()->readLine(buf.data(), buf.size());
-    if(numr <= 0)
-        return 0;
+    auto oldstrpos = streambuf()->pubseekoff(0, std::ios_base::cur);
 
-    updateReadCount(glui32(numr));
-    return glui32(numr);
+    buffer::byte_buffer_span peekdata;
+    {
+        std::streamsize numr = streambuf()->sgetn(buf.data(),buf.size() - 1);
+        if(numr <= 0)
+            return 0;
+
+        /* we work only with the valid data from the peek */
+        peekdata = buf.first(numr);
+    }
+
+    glui32 readcount;
+    {
+        /* look for a newline */
+        auto nlpos = std::find(peekdata.begin(), peekdata.end(), '\n');
+
+        /* if we find a newline, we must count it */
+        readcount = std::distance(peekdata.begin(), nlpos) + (nlpos != peekdata.end() ? 1 : 0);
+
+        /* we don't care about anything after the newline */
+        peekdata = peekdata.first(readcount);
+    }
+
+    /* null terminator isn't counted */
+    buf[readcount] = 0;
+
+    streambuf()->pubseekpos(oldstrpos + (decltype(oldstrpos))readcount);
+
+    updateReadCount(readcount);
+    return readcount;
 }
 
 glui32 Glk::Latin1Stream::readUnicodeBuffer(buffer::buffer_span<glui32> buf) {

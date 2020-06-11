@@ -2,16 +2,20 @@
 
 #include <cstring>
 
+#include <filesystem>
+#include <fstream>
 #include <memory>
 
-#include <QBuffer>
+#include <buffer/small_buffer.hpp>
 
 #include "qglk.hpp"
 
 #include "blorb/chunk.hpp"
 #include "log/log.hpp"
+#include "stream/chunkbuf.hpp"
 #include "stream/latin1stream.hpp"
-#include "stream/nulldevice.hpp"
+#include "stream/membuf.hpp"
+#include "stream/nullbuf.hpp"
 #include "stream/unicodestream.hpp"
 
 Glk::Stream* s_CurrentStream = NULL;
@@ -84,15 +88,15 @@ glui32 glk_stream_get_rock(strid_t str) {
 void glk_stream_set_position(strid_t str, glsi32 pos, glui32 seekmode) {
     switch(seekmode) {
         case seekmode_Start:
-            FROM_STRID(str)->setPosition(pos);
+            FROM_STRID(str)->setPosition(pos, std::ios_base::beg);
             return;
 
         case seekmode_End:
-            FROM_STRID(str)->setPosition(FROM_STRID(str)->size() - pos);
+            FROM_STRID(str)->setPosition(pos, std::ios_base::end);
             return;
 
         case seekmode_Current:
-            FROM_STRID(str)->setPosition(FROM_STRID(str)->position() + pos);
+            FROM_STRID(str)->setPosition(pos, std::ios_base::cur);
             return;
     }
 }
@@ -244,263 +248,149 @@ namespace {
 strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_memory({}, {}, {}, {})", (void*)buf, buflen, streamFileMode(fmode), rock);
 
-    QIODevice::OpenMode om;
-
-    switch(fmode) {
-        case filemode_Write:
-            om = QIODevice::WriteOnly;
-            break;
-
-        case filemode_Read:
-            om = QIODevice::ReadOnly;
-            break;
-
-        case filemode_ReadWrite:
-            om = QIODevice::ReadWrite;
-            break;
-
-        case filemode_WriteAppend:
-            om = QIODevice::WriteOnly | QIODevice::Append;
-            break;
-    }
-
-    Glk::Stream* str;
-
+    std::unique_ptr<std::streambuf> streambuf;
     if(buf) {
-        auto qba = std::make_unique<QByteArray>(QByteArray::fromRawData(buf, buflen));
-        str = new Glk::Latin1Stream(NULL, new QBuffer(qba.get()), Glk::Stream::Type::Memory, rock);
+        if(fmode == filemode_Read)
+            streambuf = std::make_unique<Glk::RegisteredMemBuf<true>>(buf, buflen, false);
+        else
+            streambuf = std::make_unique<Glk::RegisteredMemBuf<false>>(buf, buflen, false);
 
-        QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba = std::move(qba)]() {
-            if((om & QIODevice::WriteOnly) != 0)
-                std::memcpy(buf, qba->data(), buflen);
-
-            QGlk::getMainWindow().dispatch().unregisterArray(buf, buflen, false);
-        });
+        if(fmode == filemode_WriteAppend)
+            streambuf->pubseekoff(0, std::ios_base::end);
     } else {
-        str = new Glk::Latin1Stream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, rock);
+        streambuf = std::make_unique<Glk::NullBuf>();
     }
 
-    if(!str->open(om)) {
-        delete str;
-
-       spdlog::warn("Failed to open '{}' memory stream for buffer {} ({} bytes)", streamFileMode(fmode),
-                    (void*)buf, buflen);
-
-        return NULL;
-    }
-
-    if(buf)
-        QGlk::getMainWindow().dispatch().registerArray(buf, buflen, false);
-
-    return TO_STRID(str);
+    return TO_STRID(new Glk::Latin1Stream{nullptr, std::move(streambuf), Glk::Stream::Type::Memory, false, rock});
 }
 
 strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_memory_uni({}, {}, {}, {})", (void*)buf, buflen, streamFileMode(fmode), rock);
 
-    QIODevice::OpenMode om;
-
-    switch(fmode) {
-        case filemode_Write:
-            om = QIODevice::WriteOnly;
-            break;
-
-        case filemode_Read:
-            om = QIODevice::ReadOnly;
-            break;
-
-        case filemode_ReadWrite:
-            om = QIODevice::ReadWrite;
-            break;
-
-        case filemode_WriteAppend:
-            om = QIODevice::WriteOnly | QIODevice::Append;
-            break;
-    }
-
-    Glk::Stream* str;
-
+    std::unique_ptr<std::streambuf> streambuf;
     if(buf) {
-        auto qba = std::make_unique<QByteArray>(QByteArray::fromRawData(reinterpret_cast<char*>(buf), 4 * buflen));
-        str = new Glk::UnicodeStream(NULL, new QBuffer(qba.get()), Glk::Stream::Type::Memory, rock);
+        if(fmode == filemode_Read)
+            streambuf = std::make_unique<Glk::RegisteredMemBuf<true>>((char*)buf, sizeof(glui32)*buflen, true);
+        else
+            streambuf = std::make_unique<Glk::RegisteredMemBuf<false>>((char*)buf, sizeof(glui32)*buflen, true);
 
-        QObject::connect(str, &QObject::destroyed, [buf, buflen, om, qba = std::move(qba)]() {
-            if((om & QIODevice::WriteOnly) != 0)
-                std::memcpy(buf, qba->data(), 4 * buflen);
-
-            QGlk::getMainWindow().dispatch().unregisterArray(buf, buflen, true);
-        });
+        if(fmode == filemode_WriteAppend)
+            streambuf->pubseekoff(0, std::ios_base::end);
     } else {
-        str = new Glk::UnicodeStream(NULL, new Glk::NullDevice(), Glk::Stream::Type::Memory, rock);
+        streambuf = std::make_unique<Glk::NullBuf>();
     }
 
-    if(!str->open(om)) {
-        delete str;
-
-        spdlog::warn("Failed to open '{}' unicode memory stream for buffer {} ({} words)", streamFileMode(fmode),
-                     (void*)buf, buflen);
-
-        return NULL;
-    }
-
-    if(buf)
-        QGlk::getMainWindow().dispatch().registerArray(buf, buflen, true);
-
-    return TO_STRID(str);
+    return TO_STRID(new Glk::UnicodeStream{nullptr, std::move(streambuf), Glk::Stream::Type::Memory, false, rock});
 }
 
 strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_file({}, {}, {})", wrap::ptr(fileref), streamFileMode(fmode));
 
-    QIODevice::OpenMode om;
+    std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
+    {
+        auto path = std::filesystem::path{FROM_FREFID(fileref)->path().toStdU16String()};
 
-    switch(fmode) {
-        case filemode_Write:
-            om = QIODevice::WriteOnly;
-            break;
+        std::filebuf* openbuf{};
+        switch(fmode) {
+            case filemode_Write:
+                openbuf = filebuf->open(path, std::ios_base::out);
+                break;
 
-        case filemode_Read:
-            om = QIODevice::ReadOnly;
-            break;
+            case filemode_Read:
+                openbuf = filebuf->open(path, std::ios_base::in);
+                break;
 
-        case filemode_ReadWrite:
-            om = QIODevice::ReadWrite;
-            break;
+            case filemode_ReadWrite:
+                openbuf = filebuf->open(path, std::ios_base::in | std::ios_base::out);
+                break;
 
-        case filemode_WriteAppend:
-            om = QIODevice::WriteOnly | QIODevice::Append;
-            break;
+            case filemode_WriteAppend:
+                openbuf = filebuf->open(path, std::ios_base::out | std::ios_base::ate);
+                break;
+        }
+
+        if(!openbuf) {
+            spdlog::warn("Failed to open '{}' file stream for {}", streamFileMode(fmode), wrap::ptr(fileref));
+            return NULL;
+        }
     }
 
-    switch(FROM_FREFID(fileref)->usage() & 0x100) {
-        case Glk::FileReference::TextMode:
-            om |= QIODevice::Text;
-            break;
-    }
+    bool textMode = false;
+    if((FROM_FREFID(fileref)->usage() & 0x100) == Glk::FileReference::TextMode)
+        textMode = true;
 
-    Glk::Stream* str = new Glk::Latin1Stream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, rock);
-    if(!str->open(om)) {
-        delete str;
-
-        spdlog::warn("Failed to open '{}' file stream for {}", streamFileMode(fmode), wrap::ptr(fileref));
-
-        return NULL;
-    }
-
-    return TO_STRID(str);
+    return TO_STRID(new Glk::Latin1Stream{nullptr, std::move(filebuf), Glk::Stream::Type::File, textMode, rock});
 }
 
 strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_file_uni({}, {}, {})", wrap::ptr(fileref), streamFileMode(fmode), rock);
 
-    QIODevice::OpenMode om;
+    std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
+    {
+        auto path = std::filesystem::path{FROM_FREFID(fileref)->path().toStdU16String()};
 
-    switch(fmode) {
-        case filemode_Write:
-            om = QIODevice::WriteOnly;
-            break;
+        std::filebuf* openbuf{};
+        switch(fmode) {
+            case filemode_Write:
+                openbuf = filebuf->open(path, std::ios_base::out);
+                break;
 
-        case filemode_Read:
-            om = QIODevice::ReadOnly;
-            break;
+            case filemode_Read:
+                openbuf = filebuf->open(path, std::ios_base::in);
+                break;
 
-        case filemode_ReadWrite:
-            om = QIODevice::ReadWrite;
-            break;
+            case filemode_ReadWrite:
+                openbuf = filebuf->open(path, std::ios_base::in | std::ios_base::out);
+                break;
 
-        case filemode_WriteAppend:
-            om = QIODevice::WriteOnly | QIODevice::Append;
-            break;
+            case filemode_WriteAppend:
+                openbuf = filebuf->open(path, std::ios_base::out | std::ios_base::ate);
+                break;
+        }
+
+        if(!openbuf) {
+            spdlog::warn("Failed to open '{}' file stream for {}", streamFileMode(fmode), wrap::ptr(fileref));
+            return NULL;
+        }
     }
 
-    switch(FROM_FREFID(fileref)->usage() & 0x100) {
-        case Glk::FileReference::TextMode:
-            om |= QIODevice::Text;
-            break;
-    }
+    bool textMode = false;
+    if((FROM_FREFID(fileref)->usage() & 0x100) == Glk::FileReference::TextMode)
+        textMode = true;
 
-    Glk::Stream* str = new Glk::UnicodeStream(NULL, FROM_FREFID(fileref)->file(), Glk::Stream::Type::File, rock);
-    if(!str->open(om)) {
-        delete str;
-
-        spdlog::warn("Failed to open '{}' unicode file stream for {}", streamFileMode(fmode), wrap::ptr(fileref));
-
-        return NULL;
-    }
-
-    return TO_STRID(str);
+    return TO_STRID(new Glk::UnicodeStream{nullptr, std::move(filebuf), Glk::Stream::Type::File, textMode, rock});
 }
 
 strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_resource({}, {})", filenum, rock);
 
-    Glk::Blorb::Chunk* chunk;
-
-    if(!(chunk = new Glk::Blorb::Chunk(Glk::Blorb::loadResource(filenum)))->isValid()) {
-        delete chunk;
+    Glk::Blorb::Chunk chunk{Glk::Blorb::loadResource(filenum)};
+    if(!chunk.isValid())
         return NULL;
-    }
 
-    QByteArray* qba = new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()));
-    Glk::Stream* str = new Glk::Latin1Stream(NULL, new QBuffer(qba), Glk::Stream::Type::Resource, rock);
+    bool textMode = false;
+    if(chunk.type() == Glk::Blorb::ChunkType::TEXT)
+        textMode = true;
 
-    QObject::connect(str, &QObject::destroyed, [qba, chunk]() {
-        delete qba;
+    std::unique_ptr<std::streambuf> streambuf = std::make_unique<Glk::ChunkBuf>(std::move(chunk));
 
-        Glk::Blorb::unloadChunk(*chunk);
-        delete chunk;
-    });
-
-    QIODevice::OpenMode om = QIODevice::ReadOnly;
-
-    if(chunk->type() == Glk::Blorb::ChunkType::TEXT)
-        om |= QIODevice::Text;
-
-    if(!str->open(om)) {
-        delete str;
-
-        spdlog::warn("Failed to open resource stream for file {}", filenum);
-
-        return NULL;
-    }
-
-    return TO_STRID(str);
+    return TO_STRID(new Glk::Latin1Stream{nullptr, std::move(streambuf), Glk::Stream::Type::Resource, textMode, rock});
 }
 
 strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_resource_uni({}, {})", filenum, rock);
 
-    Glk::Blorb::Chunk* chunk;
-
-    if(!(chunk = new Glk::Blorb::Chunk(Glk::Blorb::loadResource(filenum)))->isValid()) {
-        delete chunk;
+    Glk::Blorb::Chunk chunk{Glk::Blorb::loadResource(filenum)};
+    if(!chunk.isValid())
         return NULL;
-    }
 
-    QByteArray* qba = new QByteArray(QByteArray::fromRawData(chunk->data(), chunk->length()));
-    Glk::Stream* str = new Glk::UnicodeStream(NULL, new QBuffer(qba), Glk::Stream::Type::Resource, rock);
+    bool textMode = false;
+    if(chunk.type() == Glk::Blorb::ChunkType::TEXT)
+        textMode = true;
 
-    QObject::connect(str, &QObject::destroyed, [qba, chunk]() {
-        delete qba;
+    std::unique_ptr<std::streambuf> streambuf = std::make_unique<Glk::ChunkBuf>(std::move(chunk));
 
-        Glk::Blorb::unloadChunk(*chunk);
-        delete chunk;
-    });
-
-    QIODevice::OpenMode om = QIODevice::ReadOnly;
-
-    if(chunk->type() == Glk::Blorb::ChunkType::TEXT)
-        om |= QIODevice::Text;
-
-    if(!str->open(om)) {
-        delete str;
-
-        spdlog::warn("Failed to open resource stream for file {}", filenum);
-
-        return NULL;
-    }
-
-    return TO_STRID(str);
+    return TO_STRID(new Glk::UnicodeStream{nullptr, std::move(streambuf), Glk::Stream::Type::Resource, textMode, rock});
 }
 
 void glk_set_hyperlink(glui32 linkval) {

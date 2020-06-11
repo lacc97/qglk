@@ -9,7 +9,7 @@
 
 Glk::PairWindow::PairWindow(Window* key, Window* first, Window* second, WindowArrangement* winArrangement,
                             PairWindowController* winController, PairWindow* parent)
-    : Window(Type::Pair, winController,new WindowDevice{this},parent),
+    : Window(Type::Pair, winController, std::make_unique<WindowBuf>(this), parent),
       mp_Key{key},
       mp_First{first},
       mp_Second{second},

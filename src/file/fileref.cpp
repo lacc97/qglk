@@ -44,10 +44,6 @@ void Glk::FileReference::remove() const {
     QFile::remove(m_FileInfo.absoluteFilePath());
 }
 
-QFile* Glk::FileReference::file() const {
-    return new QFile(m_FileInfo.absoluteFilePath());
-}
-
 glui32 Glk::FileReference::usage() const {
     return m_Usage;
 }

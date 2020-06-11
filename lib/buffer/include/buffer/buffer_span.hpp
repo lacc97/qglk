@@ -125,7 +125,7 @@ namespace buffer {
 
         template<typename OtherCharT, span_allowed_t<OtherCharT, true> = true>
         inline size_type copy_to(buffer_span<OtherCharT, true> dst, size_type count, size_type pos = 0) const noexcept {
-          auto src = subspan(pos, count);
+          auto src = subspan(pos, std::min(count, dst.size()));
           std::memmove(dst.data(), src.data(), src.size());
           return src.size();
         }
