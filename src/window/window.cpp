@@ -56,7 +56,7 @@ Glk::Window::~Window() {
     QGlk::getMainWindow().dispatch().unregisterObject(this);
 }
 
-bool Glk::Window::drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize) {
+bool Glk::Window::drawImage(glui32 img, glsi32 param1, glsi32 param2, QSize size) {
     spdlog::warn("Cannot draw image in window {}", *this);
     return false;
 }

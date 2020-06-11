@@ -42,7 +42,7 @@ namespace Glk {
 
             virtual void clearWindow() = 0;
 
-            virtual bool drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize);
+            virtual bool drawImage(glui32 img, glsi32 param1, glsi32 param2, QSize size);
 
             virtual void eraseRect(const QRect& rect);
 

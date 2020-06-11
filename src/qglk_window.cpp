@@ -340,25 +340,11 @@ glui32 glk_image_get_info(glui32 image, glui32* width, glui32* height) {
 }
 
 glui32 glk_image_draw(winid_t win, glui32 image, glsi32 val1, glsi32 val2) {
-    Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
-
-    if(!imgchunk.isValid())
-        return FALSE;
-
-    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
-
-    return (FROM_WINID(win)->drawImage(img, val1, val2, img.size()) ? TRUE : FALSE);
+    return (FROM_WINID(win)->drawImage(image, val1, val2, {}) ? TRUE : FALSE);
 }
 
 glui32 glk_image_draw_scaled(winid_t win, glui32 image, glsi32 val1, glsi32 val2, glui32 width, glui32 height) {
-    Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
-
-    if(!imgchunk.isValid())
-        return FALSE;
-
-    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
-
-    return (FROM_WINID(win)->drawImage(img, val1, val2, QSize(width, height)) ? TRUE : FALSE);
+    return (FROM_WINID(win)->drawImage(image, val1, val2, QSize(width, height)) ? TRUE : FALSE);
 }
 
 void glk_window_flow_break(winid_t win) {

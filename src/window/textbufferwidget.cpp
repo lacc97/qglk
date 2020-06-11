@@ -156,8 +156,11 @@ void Glk::TextBufferWidget::onLineInputRequested() {
 }
 
 void Glk::TextBufferWidget::onLineInputFinished() {
+    assert(browser()->lineInputStartCursorPosition() != -1);
+
     browser()->setReadOnly(true);
 
+    browser()->setLineInputBuffer({});
     browser()->setLineInputStartCursorPosition(-1);
 }
 

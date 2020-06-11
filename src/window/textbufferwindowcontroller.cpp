@@ -11,14 +11,7 @@
 #include "textbufferwindow.hpp"
 
 Glk::TextBufferWindowController::TextBufferWindowController(Glk::PairWindow* winParent, glui32 winRock)
-    : WindowController(new TextBufferWindow(this, winParent, winRock), createWidget()),
-      mp_EventThreadDocument{nullptr},
-      mp_Cursor{nullptr} {
-    Glk::sendTaskToEventThread([this]() {
-        mp_EventThreadDocument = new QTextDocument;
-        mp_Cursor = new QTextCursor{mp_EventThreadDocument};
-    });
-
+    : WindowController(new TextBufferWindow(this, winParent, winRock), createWidget()) {
     QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestCancelled,
                      [this](const QString& text, bool lineEchoes) {
                          if(lineEchoes && !text.isEmpty())
@@ -36,14 +29,7 @@ Glk::TextBufferWindowController::TextBufferWindowController(Glk::PairWindow* win
                      });
 }
 
-Glk::TextBufferWindowController::~TextBufferWindowController() {
-    assert(Glk::onGlkThread());
-
-    Glk::sendTaskToEventThread([this]() {
-        delete mp_Cursor;
-        delete mp_EventThreadDocument;
-    });
-}
+Glk::TextBufferWindowController::~TextBufferWindowController() = default;
 
 void Glk::TextBufferWindowController::synchronize() {
     assert(onEventThread());
@@ -88,35 +74,33 @@ bool Glk::TextBufferWindowController::supportsLineInput() const {
     return true;
 }
 
-void Glk::TextBufferWindowController::clearDocument() {
-    Glk::postTaskToEventThread([this]() {
-        mp_EventThreadDocument->clear();
-        mp_Cursor->movePosition(QTextCursor::Start);
-        requestSynchronization();
-    });
-}
+void Glk::TextBufferWindowController::pushCommand(Glk::TextBufferWindowController::Command cmd) {
+    std::visit([this](auto&& c) {
+        using T = std::decay_t<decltype(c)>;
 
-void Glk::TextBufferWindowController::flowBreak() {
-    Glk::postTaskToEventThread([this]() {
-        mp_Cursor->insertBlock();
-        requestSynchronization();
-    });
-}
+        if constexpr(std::is_same_v<T, TextBufferCommand::WriteText>) {
+            if(!m_Commands.empty()) {
+                auto merged = std::visit([&c](auto&& b) -> bool {
+                    using U = std::decay_t<decltype(b)>;
 
-void Glk::TextBufferWindowController::writeHTML(const QString& html) {
-    Glk::postTaskToEventThread([this, html]() {
-        mp_Cursor->insertHtml(html);
-        requestSynchronization();
-    });
-}
+                    if constexpr(std::is_same_v<U, TextBufferCommand::WriteText>) {
+                        /* merge two consecutive WriteText commands together */
+                        b.text.append(c.text);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }, m_Commands.back());
 
-void Glk::TextBufferWindowController::writeString(const QString& str, const QTextCharFormat& chFmt,
-                                                  const QTextBlockFormat& blkFmt) {
-    Glk::postTaskToEventThread([this, str, chFmt, blkFmt]() {
-        mp_Cursor->setBlockFormat(blkFmt);
-        mp_Cursor->insertText(str, chFmt);
-        requestSynchronization();
-    });
+                if(merged)
+                    return;
+            }
+        }
+
+        m_Commands.emplace_back(std::move(c));
+    }, cmd);
+
+    requestSynchronization();
 }
 
 QWidget* Glk::TextBufferWindowController::createWidget() {
@@ -138,7 +122,72 @@ void Glk::TextBufferWindowController::synchronizeInputStyle() {
 }
 
 void Glk::TextBufferWindowController::synchronizeText() {
-    widget<TextBufferWidget>()->browser()->setImages(window<TextBufferWindow>()->images());
+    QTextDocument& doc = *widget<TextBufferWidget>()->browser()->document();
+    QTextCursor cur{&doc};
 
-    widget<TextBufferWidget>()->browser()->setHtml(mp_EventThreadDocument->toHtml());
+    glui32 link = 0;
+    Style style = window<TextBufferWindow>()->styles()[Style::Type::Normal];
+    QTextCharFormat charFormat = style.charFormat();
+
+    auto fn_push_link = [&cur, &link, &style, &charFormat](glui32 newLink) {
+        link = newLink;
+        charFormat = style.charFormat();
+
+        if(link != 0) {
+            charFormat.setAnchor(true);
+            charFormat.setAnchorHref(QStringLiteral("%1").arg(link));
+            charFormat.setForeground(Qt::blue);
+            charFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+        }
+
+        cur.setCharFormat(charFormat);
+    };
+    auto fn_push_style = [&cur, &link, &style, &fn_push_link](Style newStyle) {
+        style = std::move(newStyle);
+        cur.setBlockFormat(style.blockFormat());
+        fn_push_link(link);
+    };
+
+    cur.movePosition(QTextCursor::End);
+    for(const auto& cmd : m_Commands) {
+        std::visit([&doc, &cur, &fn_push_link, &fn_push_style](auto&& cmd) {
+            using T = std::decay_t<decltype(cmd)>;
+
+            if constexpr(std::is_same_v<T, TextBufferCommand::Clear>) {
+                doc.clear();
+                cur.movePosition(QTextCursor::Start);
+            }
+            if constexpr(std::is_same_v<T, TextBufferCommand::FlowBreak>) {
+                cur.insertBlock();
+            }
+            if constexpr(std::is_same_v<T, TextBufferCommand::HyperlinkPush>) {
+                fn_push_link(cmd.link);
+            }
+            if constexpr(std::is_same_v<T, TextBufferCommand::StylePush>) {
+                fn_push_style(std::move(cmd.style));
+            }
+            if constexpr(std::is_same_v<T, TextBufferCommand::WriteImage>) {
+                std::u16string_view fmtStr;
+                if(cmd.size.isEmpty())
+                    fmtStr = u"<img src=\"{0}\" alt=\"Image #{0}\" style=\"{3}\" />";
+                else
+                    fmtStr = u"<img src=\"{0}\" alt=\"Image #{0}\" width=\"{1}\" height=\"{2}\" style=\"{3}\" />";
+
+                QString imgHtml;
+                fmt::format_to(std::back_inserter(imgHtml), fmtStr,
+                               cmd.image, cmd.size.width(), cmd.size.height(), cmd.style);
+
+                cur.insertHtml(imgHtml);
+            }
+            if constexpr(std::is_same_v<T, TextBufferCommand::WriteText>) {
+                cur.insertText(cmd.text);
+            }
+        }, cmd);
+    }
+
+    m_Commands.clear();
+
+    /* store current style and hyperlink for next time */
+    m_Commands.emplace_back(TextBufferCommand::StylePush{std::move(style)});
+    m_Commands.emplace_back(TextBufferCommand::HyperlinkPush{link});
 }

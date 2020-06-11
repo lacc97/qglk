@@ -19,7 +19,7 @@ Glk::TextBufferBuf::TextBufferBuf(Glk::TextBufferWindow* win)
 std::streamsize Glk::TextBufferBuf::xsputn(const char_type* s, std::streamsize count) {
     assert(count % 4 == 0);
 
-    window<TextBufferWindow>()->writeString(QString::fromUcs4((const glui32*)s, count / sizeof(glui32)));
+    window<TextBufferWindow>()->writeString(QString::fromUcs4((const char32_t*)s, count / sizeof(glui32)));
 
     return count;
 }
@@ -27,58 +27,43 @@ std::streamsize Glk::TextBufferBuf::xsputn(const char_type* s, std::streamsize c
 
 Glk::TextBufferWindow::TextBufferWindow(Glk::TextBufferWindowController* winController, Glk::PairWindow* winParent, glui32 winRock)
     : Window(Type::TextBuffer, winController, std::make_unique<TextBufferBuf>(this), winParent, winRock),
-      m_Images{},
-      m_Styles{QGlk::getMainWindow().textBufferStyleManager()},
-      m_CurrentStyleType{Style::Normal},
-      m_CurrentBlockFormat{m_Styles[m_CurrentStyleType].blockFormat()},
-      m_CurrentCharFormat{m_Styles[m_CurrentStyleType].charFormat()},
-      m_NonHyperlinkCharFormat{m_CurrentCharFormat},
-      m_CurrentHyperlink{0} {
+      m_Styles{QGlk::getMainWindow().textBufferStyleManager()} {
     assert(onGlkThread());
 }
 
 void Glk::TextBufferWindow::clearWindow() {
     assert(onGlkThread());
 
-    m_Images.clear();
-
-    controller<TextBufferWindowController>()->clearDocument();
+    controller<TextBufferWindowController>()->pushCommand(TextBufferCommand::Clear{});
 }
 
-bool Glk::TextBufferWindow::drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize) {
+bool Glk::TextBufferWindow::drawImage(glui32 img, glsi32 param1, glsi32 param2, QSize size) {
     assert(onGlkThread());
 
-    size_t imgNum = m_Images.size();
-    m_Images.push_back(img);
-
-    QString altAttrib = QStringLiteral("alt=\"%1\"").arg(imgNum);
-    QString sizeAttrib = QStringLiteral("width=\"%1\" height=\"%2\"").arg(imgSize.width()).arg(imgSize.height());
-    QString alignAttrib;
-
+    std::u16string_view style;
     switch(param1) {
         case imagealign_InlineUp:
-            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg(QStringLiteral("top"));
+            style = u"vertical-align: top";
             break;
 
         case imagealign_InlineCenter:
-            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg(QStringLiteral("middle"));
+            style = u"vertical-align: middle";
             break;
 
         case imagealign_InlineDown:
-            alignAttrib = QStringLiteral("style=\"vertical-align: %1;\"").arg(QStringLiteral("bottom"));
+            style = u"vertical-align: bottom";
             break;
 
         case imagealign_MarginLeft:
-            alignAttrib = QStringLiteral("style=\"float: %1;\"").arg(QStringLiteral("left"));
+            style = u"float: left";
             break;
 
         case imagealign_MarginRight:
-            alignAttrib = QStringLiteral("style=\"float: %1;\"").arg(QStringLiteral("right"));
+            style = u"float: right";
             break;
     }
 
-    controller<TextBufferWindowController>()->writeHTML(
-        QStringLiteral("<img src=\"%1\" %2 %3 %4 />").arg(imgNum).arg(altAttrib).arg(sizeAttrib).arg(alignAttrib));
+    controller<TextBufferWindowController>()->pushCommand(TextBufferCommand::WriteImage{img, size, style});
 
     return true;
 }
@@ -86,34 +71,28 @@ bool Glk::TextBufferWindow::drawImage(const QImage& img, glsi32 param1, glsi32 p
 void Glk::TextBufferWindow::flowBreak() {
     assert(onGlkThread());
 
-    controller<TextBufferWindowController>()->flowBreak();
+    controller<TextBufferWindowController>()->pushCommand(TextBufferCommand::FlowBreak{});
 }
 
 void Glk::TextBufferWindow::pushHyperlink(glui32 linkValue) {
     assert(onGlkThread());
 
-    m_CurrentHyperlink = linkValue;
-    m_CurrentCharFormat = m_NonHyperlinkCharFormat;
-
-    if(m_CurrentHyperlink != 0) {
-        m_CurrentCharFormat.setAnchor(true);
-        m_CurrentCharFormat.setAnchorHref(QStringLiteral("%1").arg(m_CurrentHyperlink));
-        m_CurrentCharFormat.setForeground(Qt::blue);
-        m_CurrentCharFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-    }
+    controller<TextBufferWindowController>()->pushCommand(TextBufferCommand::HyperlinkPush{linkValue});
 }
 
 void Glk::TextBufferWindow::pushStyle(Glk::Style::Type style) {
     assert(onGlkThread());
 
-    m_CurrentStyleType = style;
-    m_CurrentBlockFormat = m_Styles[m_CurrentStyleType].blockFormat();
-    m_CurrentCharFormat = m_Styles[m_CurrentStyleType].charFormat();
-    m_NonHyperlinkCharFormat = m_CurrentCharFormat;
+    controller<TextBufferWindowController>()->pushCommand(TextBufferCommand::StylePush{m_Styles[style]});
 
-    pushHyperlink(m_CurrentHyperlink);
+//    m_CurrentStyleType = style;
+//    m_CurrentBlockFormat = m_Styles[m_CurrentStyleType].blockFormat();
+//    m_CurrentCharFormat = m_Styles[m_CurrentStyleType].charFormat();
+//    m_NonHyperlinkCharFormat = m_CurrentCharFormat;
+//
+//    pushHyperlink(m_CurrentHyperlink);
 }
 
-void Glk::TextBufferWindow::writeString(const QString& str) {
-    controller<TextBufferWindowController>()->writeString(str, m_CurrentCharFormat, m_CurrentBlockFormat);
+void Glk::TextBufferWindow::writeString(QString str) {
+    controller<TextBufferWindowController>()->pushCommand(TextBufferCommand::WriteText{std::move(str)});
 }

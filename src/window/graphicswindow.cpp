@@ -21,12 +21,12 @@ void Glk::GraphicsWindow::clearWindow() {
     controller()->requestSynchronization();
 }
 
-bool Glk::GraphicsWindow::drawImage(const QImage& img, glsi32 param1, glsi32 param2, QSize imgSize) {
+bool Glk::GraphicsWindow::drawImage(glui32 img, glsi32 param1, glsi32 param2, QSize size) {
     assert(onGlkThread());
 
     std::unique_ptr<QPainter> p = std::make_unique<QPainter>(&m_Buffer);
     p->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    p->drawImage(QRect{param1, param2, imgSize.width(), imgSize.height()}, img);
+//    p->drawImage(QRect{param1, param2, size.width(), size.height()}, img);
 
     controller()->requestSynchronization();
 
