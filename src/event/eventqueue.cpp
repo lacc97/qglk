@@ -35,14 +35,14 @@ event_t Glk::EventQueue::pop() {
 
         m_Semaphore.acquire(1);
 
-        QMutexLocker ml(&m_AccessMutex);
-
         if(m_Terminate) {
             QGlk::getMainWindow().statusChannel().push(QGlk::GlkStatus::eINTERRUPTED);
             coroutine::yield();
         }
 
-        ev = m_Queue.dequeue();
+        QMutexLocker ml(&m_AccessMutex);
+
+        ev =m_Queue.dequeue();
 
         if(ev.type == evtype_TaskEvent) {
             TaskEvent* tev = m_TaskEventQueue.dequeue();
@@ -82,12 +82,12 @@ event_t Glk::EventQueue::poll() {
 
     emit canSynchronize();
 
-    QMutexLocker ml(&m_AccessMutex);
-
     if(m_Terminate) {
         QGlk::getMainWindow().statusChannel().push(QGlk::GlkStatus::eINTERRUPTED);
         coroutine::yield();
     }
+
+    QMutexLocker ml(&m_AccessMutex);
 
     if(m_Queue.isEmpty())
         return event_t{evtype_None, NULL, 0, 0};
