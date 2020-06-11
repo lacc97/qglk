@@ -6,6 +6,7 @@
 #include <map>
 #include <functional>
 
+#include <QCache>
 #include <QMainWindow>
 #include <QRunnable>
 #include <QWidget>
@@ -62,6 +63,8 @@ class QGlk : public QMainWindow {
 
 
         void addToDeleteQueue(Glk::WindowController* winController);
+
+        QImage loadImage(glui32 image);
 
         void run();
 
@@ -143,6 +146,7 @@ class QGlk : public QMainWindow {
 
         std::function<void(void)> m_InterruptHandler;
 
+        QCache<glui32, QImage> m_ImageCache;
         Glk::StyleManager m_DefaultStyles;
         Glk::StyleManager m_TextBufferStyles;
 

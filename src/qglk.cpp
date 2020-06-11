@@ -175,6 +175,7 @@ QGlk::QGlk(int argc, char** argv)
       m_FileReferenceList{},
       m_SoundChannelList{},
       m_InterruptHandler{},
+      m_ImageCache{512*1024*1024}, /* image cache of up to 512 MiB */
       m_DefaultStyles{},
       m_TextBufferStyles{},
       m_Dispatch{} {
@@ -207,6 +208,20 @@ QGlk::~QGlk() {
 
 void QGlk::addToDeleteQueue(Glk::WindowController* winController) {
     m_DeleteQueue.push_back(winController);
+}
+
+QImage QGlk::loadImage(glui32 image) {
+    if(m_ImageCache.contains(image)) {
+        return *m_ImageCache[image];
+    } else {
+        Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
+        if(!imgchunk.isValid())
+            return {};
+
+        QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
+        m_ImageCache.insert(image, new QImage{img}, img.sizeInBytes());
+        return img;
+    }
 }
 
 void QGlk::run() {

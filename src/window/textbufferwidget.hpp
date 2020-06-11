@@ -82,10 +82,6 @@ namespace Glk {
                 return m_LineInputStartCursorPosition >= 0;
             }
 
-            inline void setImages(const std::vector<QImage>& imgs) {
-                m_Images = imgs;
-            }
-
         public slots:
             void onCursorPositionChanged();
 
@@ -95,8 +91,6 @@ namespace Glk {
         private:
             QTextCharFormat m_InputCharFormat;
             QTextBlockFormat m_InputBlockFormat;
-
-            std::vector<QImage> m_Images;
 
             int m_LineInputStartCursorPosition;
 

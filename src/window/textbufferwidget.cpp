@@ -6,6 +6,8 @@
 #include "log/log.hpp"
 #include "thread/taskrequest.hpp"
 
+#include "qglk.hpp"
+
 Glk::TextBufferBrowser::History::History()
         : m_History{} {}
 
@@ -18,7 +20,6 @@ void Glk::TextBufferBrowser::History::push(const QString& newcmd) {
 
 Glk::TextBufferBrowser::TextBufferBrowser(Glk::TextBufferWidget* wParent)
     : QTextBrowser{wParent},
-      m_Images{},
       m_LineInputStartCursorPosition{-1},
       m_History{},
       m_HistoryIterator{m_History.begin()} {
@@ -47,10 +48,12 @@ QString Glk::TextBufferBrowser::lineInputBuffer() const {
 
 QVariant Glk::TextBufferBrowser::loadResource(int type, const QUrl& name) {
     if(type == QTextDocument::ImageResource) {
-        int imgIndex = name.toString().toUInt();
-
-        if(imgIndex < m_Images.size())
-            return QVariant::fromValue(m_Images[imgIndex]);
+        glui32 imgIndex = name.toString().toUInt();
+        QImage img = QGlk::getMainWindow().loadImage(imgIndex);
+        if(img.isNull())
+            return {};
+        else
+            return img;
     }
 
     return QTextBrowser::loadResource(type, name);

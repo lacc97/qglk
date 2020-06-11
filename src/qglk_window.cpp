@@ -320,13 +320,7 @@ glui32 glk_style_measure(winid_t win, glui32 styl, glui32 hint, glui32* result) 
 }
 
 glui32 glk_image_get_info(glui32 image, glui32* width, glui32* height) {
-    Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
-
-    if(!imgchunk.isValid())
-        return FALSE;
-
-    QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
-
+    QImage img = QGlk::getMainWindow().loadImage(image);
     if(img.isNull())
         return FALSE;
 

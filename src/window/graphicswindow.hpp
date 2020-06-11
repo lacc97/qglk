@@ -17,7 +17,7 @@ namespace Glk {
 
             void clearWindow() override;
 
-            bool drawImage(glui32 img, glsi32 param1, glsi32 param2, QSize size) override;
+            bool drawImage(glui32 image, glsi32 param1, glsi32 param2, QSize size) override;
 
             void eraseRect(const QRect& rect) override;
 
