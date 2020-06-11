@@ -9,6 +9,8 @@
 #include "glk.hpp"
 
 #include "window/windowcontroller.hpp"
+
+#include "pairwidget.hpp"
 #include "pairwindowcontroller.hpp"
 
 class QGridLayout;
@@ -90,7 +92,7 @@ namespace Glk {
             virtual void setupWidgets(PairWindowController* parentController) const = 0;
 
         protected:
-            QGridLayout* setupLayout(QWidget* parent) const;
+            QGridLayout* setupLayout(PairWidget* parent) const;
 
             void showChildWidgets(PairWindowController* parentController) const;
 

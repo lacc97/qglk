@@ -3,6 +3,7 @@
 #include "log/log.hpp"
 #include "thread/taskrequest.hpp"
 
+#include "pairwidget.hpp"
 #include "pairwindow.hpp"
 
 Glk::PairWindowController* Glk::PairWindowController::createController(Glk::Window* winKey, Glk::Window* winFirst,
@@ -74,7 +75,7 @@ QWidget* Glk::PairWindowController::createWidget() {
     QWidget* w = nullptr;
 
     Glk::sendTaskToEventThread([&w]() {
-        w = new QWidget;
+        w = new PairWidget;
         w->hide();
     });
 

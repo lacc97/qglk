@@ -45,6 +45,8 @@ Glk::Window::Window(Type type, WindowController* winController, std::unique_ptr<
 }
 
 Glk::Window::~Window() {
+    QGlk::getMainWindow().eventQueue().cleanWindowEvents(TO_WINID(this));
+
     auto& winList = QGlk::getMainWindow().windowList();
     if(std::count(winList.begin(), winList.end(), this) == 0) {
         spdlog::warn("{} not found in window list while removing", *this);

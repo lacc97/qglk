@@ -35,9 +35,9 @@ std::string Glk::WindowArrangement::methodString(glui32 met) {
     return fmt::format("{0} | {1} | {2}", dir, size, border);
 }
 
-QGridLayout* Glk::WindowArrangement::setupLayout(QWidget* parent) const {
-    if(parent->layout())
-        delete parent->layout();
+QGridLayout* Glk::WindowArrangement::setupLayout(PairWidget* parent) const {
+    delete parent->layout();
+    parent->clearChildren();
 
     auto layout = new QGridLayout(parent);
     layout->setMargin(0);
@@ -58,7 +58,7 @@ void Glk::HorizontalWindowConstraint::setupWidgets(PairWindowController* parentC
     assert(parentController->window<PairWindow>()->firstWindow());
     assert(parentController->window<PairWindow>()->secondWindow());
 
-    QWidget* parent = parentController->widget();
+    PairWidget* parent = parentController->widget<PairWidget>();
     Window* key = parentController->window<PairWindow>()->keyWindow();
     QWidget* first = parentController->window<PairWindow>()->firstWindow()->controller()->widget();
     QWidget* second = parentController->window<PairWindow>()->secondWindow()->controller()->widget();
@@ -110,7 +110,7 @@ Glk::VerticalWindowConstraint::VerticalWindowConstraint(Glk::WindowArrangement::
 void Glk::VerticalWindowConstraint::setupWidgets(PairWindowController* parentController) const {
     assert(parentController);
 
-    QWidget* parent = parentController->widget();
+    PairWidget* parent = parentController->widget<PairWidget>();
     Window* key = parentController->window<PairWindow>()->keyWindow();
     QWidget* first = parentController->window<PairWindow>()->firstWindow()->controller()->widget();
     QWidget* second = parentController->window<PairWindow>()->secondWindow()->controller()->widget();

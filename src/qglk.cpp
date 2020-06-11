@@ -207,7 +207,8 @@ QGlk::~QGlk() {
 }
 
 void QGlk::addToDeleteQueue(Glk::WindowController* winController) {
-    m_DeleteQueue.push_back(winController);
+    if(std::find(m_DeleteQueue.begin(), m_DeleteQueue.end(), winController) == m_DeleteQueue.end())
+        m_DeleteQueue.push_back(winController);
 }
 
 QImage QGlk::loadImage(glui32 image) {

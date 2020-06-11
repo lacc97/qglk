@@ -52,9 +52,7 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
                                                                                       method, size),
                                                                                   splitParent)->window<Glk::PairWindow>();
 
-        if(splitParent)
-            splitParent->replaceChild(splitWin, pairWindow);
-        else
+        if(!splitParent)
             QGlk::getMainWindow().setRootWindow(pairWindow);
 
     } else {
@@ -71,24 +69,21 @@ void glk_window_close(winid_t win, stream_result_t* result) {
     SPDLOG_TRACE("glk_window_close({}, {})", wrap::ptr(win), (void*)result);
 
     Glk::Window* deadWin = FROM_WINID(win);
+
     Glk::PairWindow* winParent = deadWin->parent();
-
     if(winParent) {
-        Glk::Window* orphanSibling = winParent->removeChild(deadWin);
+        Glk::Window* survivingSibling = winParent->sibling(deadWin);
+
         Glk::PairWindow* winGrandparent = winParent->parent();
-
         if(winGrandparent)
-            winGrandparent->replaceChild(winParent, orphanSibling);
-        else
-            QGlk::getMainWindow().setRootWindow(orphanSibling);
-
-        winParent->replaceChild(deadWin, nullptr);
-        winParent->replaceChild(orphanSibling, nullptr);
+            winGrandparent->replaceChild(winParent, survivingSibling);
+        else {
+            winParent->removeChild(survivingSibling);
+            QGlk::getMainWindow().setRootWindow(survivingSibling);
+        }
     } else {
         QGlk::getMainWindow().setRootWindow(nullptr);
     }
-
-    QGlk::getMainWindow().eventQueue().cleanWindowEvents(win);
 
     if(result) {
         result->readcount = deadWin->stream()->readCount();
@@ -96,8 +91,6 @@ void glk_window_close(winid_t win, stream_result_t* result) {
     }
 
     deadWin->controller()->closeWindow();
-
-    /* close windows from bottom to top */
     if(winParent)
         winParent->controller()->closeWindow();
 }

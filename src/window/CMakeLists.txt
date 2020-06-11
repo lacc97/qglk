@@ -7,6 +7,7 @@ target_sources(qglk
       ${CMAKE_CURRENT_SOURCE_DIR}/graphicswindow.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/graphicswindowcontroller.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/inputprovider.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/pairwidget.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/pairwindow.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/pairwindowcontroller.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/style.cpp

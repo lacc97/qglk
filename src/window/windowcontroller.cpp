@@ -123,10 +123,11 @@ bool Glk::WindowController::supportsMouseInput() const {
 
 void Glk::WindowController::closeWindow() {
     assert(onGlkThread());
-    assert(mp_Window);
 
-    mp_Window.reset();
-    QGlk::getMainWindow().addToDeleteQueue(this);
+    if(mp_Window) {
+        mp_Window.reset();
+        QGlk::getMainWindow().addToDeleteQueue(this);
+    }
 }
 
 void Glk::WindowController::requestSynchronization() {

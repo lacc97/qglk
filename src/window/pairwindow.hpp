@@ -23,9 +23,13 @@ namespace Glk {
 
             [[nodiscard]] bool isDescendant(Glk::Window* win) const;
 
-            // Returns reamining sibling
-            Glk::Window* removeChild(Window* deadChild);
+            /// removes direct child and purges any key windows in the subtree from our ancestors
+            ///   this is left with one less child (and maybe without a key window)
+            ///   deadChild is left orphan
+            void removeChild(Window* child);
 
+            /// replaces direct child with a new window
+            ///    preserves key windows of ancestors if they can still be found in new subbranch
             void replaceChild(Window* oldChild, Window* newChild);
 
             void setArrangement(Window* key, WindowArrangement* arrange);
@@ -46,6 +50,8 @@ namespace Glk {
             [[nodiscard]] inline Window* secondWindow() const {
                 return mp_Second;
             }
+
+            Window* sibling(Window* win) const;
 
         private:
             Window* mp_Key;

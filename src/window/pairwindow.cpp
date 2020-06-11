@@ -21,7 +21,14 @@ Glk::PairWindow::PairWindow(Window* key, Window* first, Window* second, WindowAr
 
     assert(mp_Key == mp_First);
 
+    assert(!mp_First->parent() || !mp_Second->parent());
+
+    if(mp_First->parent())
+        mp_First->parent()->replaceChild(mp_First, this);
     mp_First->setParent(this);
+
+    if(mp_Second->parent())
+        mp_Second->parent()->replaceChild(mp_Second, this);
     mp_Second->setParent(this);
 }
 
@@ -42,40 +49,33 @@ bool Glk::PairWindow::isDescendant(Glk::Window* win) const {
     return des;
 }
 
-Glk::Window* Glk::PairWindow::removeChild(Glk::Window* deadChild) {
-    assert(deadChild);
-    assert(deadChild == mp_First || deadChild == mp_Second);
+void Glk::PairWindow::removeChild(Glk::Window* child) {
+    assert(child);
 
-    Glk::Window* survivingChild = (deadChild == mp_First ? mp_Second : mp_First);
-
-    Glk::PairWindow* ancestor = this;
-    if(deadChild->windowType() == Pair) {
-        auto deadChildPairWindow = static_cast<PairWindow*>(deadChild);
-
-        while(ancestor) {
-            if(ancestor->keyWindow() && deadChildPairWindow->isDescendant(ancestor->keyWindow()))
-                ancestor->setArrangement(nullptr, ancestor->arrangement());
-            ancestor = ancestor->parent();
-        }
-    } else {
-        while(ancestor) {
-            if(ancestor->keyWindow() && ancestor->keyWindow() == deadChild)
-                ancestor->setArrangement(nullptr, ancestor->arrangement());
-            ancestor = ancestor->parent();
-        }
-    }
-
-    controller()->requestSynchronization();
-
-    survivingChild->setParent(nullptr);
-    return survivingChild;
+    replaceChild(child, nullptr);
 }
 
 void Glk::PairWindow::replaceChild(Glk::Window* oldChild, Glk::Window* newChild) {
     assert(oldChild == mp_First || oldChild == mp_Second);
-    assert(!newChild || !(newChild == mp_First || newChild == mp_Second));
+    assert(newChild != oldChild);
     assert(newChild != this);
-    assert(!mp_Key || oldChild != mp_First);
+    assert(!newChild || !(newChild == mp_First || newChild == mp_Second));
+
+    auto fn_is_key_invalid = [oldChild, newChild](Window* key) -> bool {
+        if(newChild && newChild->windowType() == Pair) {
+            if(oldChild->windowType() == Pair) {
+                return static_cast<PairWindow*>(oldChild)->isDescendant(key) &&
+                       !static_cast<PairWindow*>(newChild)->isDescendant(key);
+            } else {
+                return key == oldChild && !static_cast<PairWindow*>(newChild)->isDescendant(key);
+            }
+        } else if(oldChild->windowType() == Pair) {
+            return key != newChild && static_cast<PairWindow*>(oldChild)->isDescendant(key);
+        } else {
+            return key != newChild && key == oldChild;
+        }
+    };
+
 
     oldChild->setParent(nullptr);
     if(oldChild == mp_First) {
@@ -84,8 +84,17 @@ void Glk::PairWindow::replaceChild(Glk::Window* oldChild, Glk::Window* newChild)
         mp_Second = newChild;
     }
 
-    if(newChild)
+    for(PairWindow* ancestor = this; ancestor; ancestor = ancestor->parent()) {
+        if(ancestor->keyWindow() && fn_is_key_invalid(ancestor->keyWindow()))
+            ancestor->setArrangement(nullptr, ancestor->arrangement());
+    }
+
+    if(newChild) {
+        if(newChild->parent() && newChild->parent() != this)
+            newChild->parent()->removeChild(newChild);
+
         newChild->setParent(this);
+    }
 
     setArrangement(mp_Key, mp_Arrangement.get());
 }
@@ -110,4 +119,13 @@ void Glk::PairWindow::setArrangement(Glk::Window* key, Glk::WindowArrangement* a
     }
 
     controller()->requestSynchronization();
+}
+
+Glk::Window* Glk::PairWindow::sibling(Glk::Window* win) const {
+    assert(win == mp_First || win == mp_Second);
+
+    if(win == mp_First)
+        return mp_Second;
+    else
+        return mp_First;
 }
