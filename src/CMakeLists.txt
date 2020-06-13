@@ -34,7 +34,7 @@ add_library(qglk STATIC
         ${CMAKE_CURRENT_SOURCE_DIR})
   target_link_libraries(qglk
       PRIVATE
-        buffer coroutine
+        bit_cast buffer coroutine
         fmt::fmt
         ${QT_REQUIRED_LIBS}
         spdlog::spdlog)

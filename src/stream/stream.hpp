@@ -6,6 +6,8 @@
 
 #include <QObject>
 
+#include <bit_cast.hpp>
+
 #include <buffer/buffer_span.hpp>
 #include <buffer/buffer_view.hpp>
 
@@ -81,7 +83,7 @@ namespace Glk {
             // ASCII read methods
             inline glsi32 readChar() {
                 char ch;
-                return (readBuffer(&ch, 1) == 1) ? ch : -1;
+                return (readBuffer(&ch, 1) == 1) ? bit_cast<unsigned char>(ch) : -1;
             }
             inline glui32 readBuffer(char* buf, glui32 len) {
                 return readBuffer({buf, len});

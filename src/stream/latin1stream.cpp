@@ -26,7 +26,7 @@ void Glk::Latin1Stream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
     buffer::small_byte_buffer<BUFSIZ> cbuf{buf.size()};
 
     std::transform(buf.begin(), buf.end(), cbuf.begin(), [](glui32 ch) -> char {
-        return (ch >= 0x100) ? '?' : char(ch);
+        return (ch >= 0x100) ? '?' : bit_cast<char>(static_cast<unsigned char>(ch));
     });
 
     writeBuffer(cbuf);
@@ -77,7 +77,7 @@ glui32 Glk::Latin1Stream::readUnicodeBuffer(buffer::buffer_span<glui32> buf) {
 
     glui32 numr = readBuffer(cbuf);
     std::transform(cbuf.begin(), cbuf.begin() + numr, buf.begin(), [](char ch) -> glui32 {
-        return ch;
+        return bit_cast<unsigned char>(ch);
     });
 
     return numr;
@@ -88,7 +88,7 @@ glui32 Glk::Latin1Stream::readUnicodeLine(buffer::buffer_span<glui32> buf) {
 
     glui32 numr = readLine(cbuf);
     std::transform(cbuf.begin(), cbuf.begin() + numr, buf.begin(), [](char ch) -> glui32 {
-        return ch;
+        return bit_cast<unsigned char>(ch);
     });
 
     return numr;

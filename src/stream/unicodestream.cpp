@@ -33,11 +33,11 @@ void Glk::UnicodeStream::writeBuffer(buffer::byte_buffer_view buf) {
 
     if(isStreamBigEndian()) {
         std::transform(buf.begin(), buf.end(), ibuf.begin(), [](char ch) -> glui32 {
-            return qToBigEndian<glui32>(ch);
+            return qToBigEndian<glui32>(bit_cast<unsigned char>(ch));
         });
     } else {
         std::transform(buf.begin(), buf.end(), ibuf.begin(), [](char ch) -> glui32 {
-            return ch;
+            return bit_cast<unsigned char>(ch);
         });
     }
 
@@ -50,7 +50,7 @@ void Glk::UnicodeStream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
     buffer::buffer_view<glui32> writebuf = buf;
     if(isStreamBigEndian()) {
         std::transform(buf.begin(), buf.end(), ibuf.begin(), [](char ch) -> glui32 {
-            return qToBigEndian<glui32>(ch);
+            return qToBigEndian<glui32>(bit_cast<unsigned char>(ch));
         });
         writebuf = ibuf;
     }
@@ -63,7 +63,7 @@ glui32 Glk::UnicodeStream::readBuffer(buffer::byte_buffer_span buf) {
 
     glui32 numr = readUnicodeBuffer(ibuf);
     std::transform(ibuf.begin(), ibuf.begin() + numr, buf.begin(), [](glui32 ch) -> char {
-        return (ch >= 0x100) ? '?' : char(ch);
+        return (ch >= 0x100) ? '?' : bit_cast<char>(static_cast<unsigned char>(ch));
     });
 
     return numr;
@@ -74,7 +74,7 @@ glui32 Glk::UnicodeStream::readLine(buffer::byte_buffer_span buf) {
 
     glui32 numr = readUnicodeLine(ibuf);
     std::transform(ibuf.begin(), ibuf.begin() + numr, buf.begin(), [](glui32 ch) -> char {
-        return (ch >= 0x100) ? '?' : char(ch);
+        return (ch >= 0x100) ? '?' : bit_cast<char>(static_cast<unsigned char>(ch));
     });
 
     return numr;
@@ -87,7 +87,7 @@ glui32 Glk::UnicodeStream::readUnicodeBuffer(buffer::buffer_span<glui32> buf) {
     glui32 readcount = streambuf()->sgetn((char*)buf.data(), sizeof(glui32)*buf.size()) / sizeof(glui32);
 
     if(isStreamBigEndian()) {
-        buf = buf.subspan(readcount);
+        buf = buf.first(readcount);
         std::transform(buf.begin(), buf.end(), buf.begin(), [](glui32 ch) -> glui32 {
             return qFromBigEndian<glui32>(ch);
         });
