@@ -86,6 +86,8 @@ glui32 glk_stream_get_rock(strid_t str) {
 }
 
 void glk_stream_set_position(strid_t str, glsi32 pos, glui32 seekmode) {
+    SPDLOG_TRACE("glk_stream_set_position({}, {}, {})", wrap::ptr(str), pos, wrap::seekmode(seekmode));
+
     switch(seekmode) {
         case seekmode_Start:
             FROM_STRID(str)->setPosition(pos, std::ios_base::beg);
@@ -102,7 +104,11 @@ void glk_stream_set_position(strid_t str, glsi32 pos, glui32 seekmode) {
 }
 
 glui32 glk_stream_get_position(strid_t str) {
-    return FROM_STRID(str)->position();
+    glui32 pos = FROM_STRID(str)->position();
+
+    SPDLOG_TRACE("glk_stream_get_pos({}) => {}", wrap::ptr(str), pos);
+
+    return pos;
 }
 
 void glk_put_char(unsigned char ch) {
@@ -284,7 +290,7 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
 }
 
 strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
-    SPDLOG_TRACE("glk_stream_open_file({}, {}, {})", wrap::ptr(fileref), streamFileMode(fmode));
+    SPDLOG_TRACE("glk_stream_open_file({}, {}, {})", wrap::ptr(fileref), streamFileMode(fmode), rock);
 
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {

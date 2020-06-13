@@ -10,7 +10,7 @@
 
 #include "glk.hpp"
 
-#include "log/pointerwrap.hpp"
+#include "log/format.hpp"
 #include "thread/taskrequest.hpp"
 
 namespace Glk {

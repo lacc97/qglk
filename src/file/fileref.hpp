@@ -9,7 +9,7 @@
 
 #include "glk.hpp"
 
-#include "log/pointerwrap.hpp"
+#include "log/format.hpp"
 
 namespace Glk {
     class FileReference : public Object {
