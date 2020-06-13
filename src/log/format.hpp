@@ -9,6 +9,10 @@ extern "C" {
 
 namespace wrap {
     namespace detail {
+        struct filemode_wrap {
+            glui32 filemode;
+        };
+
         template<class T>
         struct ptr_wrap {
             T* ptr;
@@ -17,6 +21,10 @@ namespace wrap {
         struct seekmode_wrap {
             glui32 seekmode;
         };
+    }
+
+    inline auto filemode(glui32 filemode) {
+        return detail::filemode_wrap{filemode};
     }
 
     template <class T>
@@ -30,6 +38,35 @@ namespace wrap {
 }
 
 namespace fmt {
+    template <>
+    struct formatter<wrap::detail::filemode_wrap> : formatter<std::string_view> {
+        template <typename FormatContext>
+        inline auto format(wrap::detail::filemode_wrap fmode, FormatContext& ctx) {
+            using namespace std::string_view_literals;
+
+            auto s = "<unknown filemode>"sv;
+            switch(fmode.filemode) {
+                case filemode_Write:
+                    s = "out"sv;
+                    break;
+
+                case filemode_Read:
+                    s = "in"sv;
+                    break;
+
+                case filemode_ReadWrite:
+                    s = "out | in"sv;
+                    break;
+
+                case filemode_WriteAppend:
+                    s = "out | ate"sv;
+                    break;
+            }
+
+            return formatter<std::string_view>::format(s, ctx);
+        }
+    };
+
     template <class T>
     struct formatter<wrap::detail::ptr_wrap<T>> : formatter<T> {
         template <typename FormatContext>

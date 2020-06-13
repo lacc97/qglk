@@ -162,17 +162,25 @@ void glk_set_style_stream(strid_t str, glui32 styl) {
 glsi32 glk_get_char_stream(strid_t str) {
     glsi32 ch = FROM_STRID(str)->readChar();
 
-    SPDLOG_TRACE("glk_get_char_stream({}) => {}", wrap::ptr(str), QString::fromUcs4(reinterpret_cast<glui32*>(&ch), 1));
+    SPDLOG_TRACE("glk_get_char_stream({}) => {}", wrap::ptr(str), ch);
 
     return ch;
 }
 
 glui32 glk_get_line_stream(strid_t str, char* buf, glui32 len) {
-    return FROM_STRID(str)->readLine(buf, len);
+    glui32 count = FROM_STRID(str)->readLine(buf, len);
+
+    SPDLOG_TRACE("glk_get_line_stream({}, {}, {}) => {}", wrap::ptr(str), (void*)buf, len, QString(buf));
+
+    return count;
 }
 
 glui32 glk_get_buffer_stream(strid_t str, char* buf, glui32 len) {
-    return FROM_STRID(str)->readBuffer(buf, len);
+    glui32 count = FROM_STRID(str)->readBuffer(buf, len);
+
+    SPDLOG_TRACE("glk_get_buffer_stream({}, {}, {}) => {}", wrap::ptr(str), (void*)buf, len, count);
+
+    return count;
 }
 
 void glk_put_char_uni(glui32 ch) {
@@ -217,42 +225,29 @@ void glk_put_buffer_stream_uni(strid_t str, glui32* buf, glui32 len) {
 glsi32 glk_get_char_stream_uni(strid_t str) {
     glsi32 ch = FROM_STRID(str)->readUnicodeChar();
 
-    SPDLOG_TRACE("glk_get_char_stream_uni({}) => {}", wrap::ptr(str), QString::fromUcs4(reinterpret_cast<glui32*>(&ch), 1));
+    SPDLOG_TRACE("glk_get_char_stream_uni({}) => {}", wrap::ptr(str), ch);
 
     return ch;
 }
 
 glui32 glk_get_buffer_stream_uni(strid_t str, glui32* buf, glui32 len) {
-    return FROM_STRID(str)->readUnicodeBuffer(buf, len);
+    glui32 count = FROM_STRID(str)->readUnicodeBuffer(buf, len);
+
+    SPDLOG_TRACE("glk_get_buffer_stream_uni({}, {}, {}) => {}", wrap::ptr(str), (void*)buf, len, count);
+
+    return count;
 }
 
 glui32 glk_get_line_stream_uni(strid_t str, glui32* buf, glui32 len) {
-    return FROM_STRID(str)->readUnicodeLine(buf, len);
-}
+    glui32 count = FROM_STRID(str)->readUnicodeLine(buf, len);
 
-namespace {
-    inline std::string_view streamFileMode(glui32 fmode) {
-        switch(fmode) {
-            case filemode_Write:
-                return "w";
+    SPDLOG_TRACE("glk_get_line_stream_uni({}, {}, {}) => {}", wrap::ptr(str), (void*)buf, len, QString::fromUcs4(buf, count));
 
-            case filemode_Read:
-                return "r";
-
-            case filemode_ReadWrite:
-                return "rw";
-
-            case filemode_WriteAppend:
-                return "a";
-
-            default:
-                return "<unknown>";
-        }
-    }
+    return count;
 }
 
 strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 rock) {
-    SPDLOG_TRACE("glk_stream_open_memory({}, {}, {}, {})", (void*)buf, buflen, streamFileMode(fmode), rock);
+    SPDLOG_TRACE("glk_stream_open_memory({}, {}, {}, {})", (void*)buf, buflen, wrap::filemode(fmode), rock);
 
     std::unique_ptr<std::streambuf> streambuf;
     if(buf) {
@@ -271,7 +266,7 @@ strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 ro
 }
 
 strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glui32 rock) {
-    SPDLOG_TRACE("glk_stream_open_memory_uni({}, {}, {}, {})", (void*)buf, buflen, streamFileMode(fmode), rock);
+    SPDLOG_TRACE("glk_stream_open_memory_uni({}, {}, {}, {})", (void*)buf, buflen, wrap::filemode(fmode), rock);
 
     std::unique_ptr<std::streambuf> streambuf;
     if(buf) {
@@ -290,7 +285,7 @@ strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glu
 }
 
 strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
-    SPDLOG_TRACE("glk_stream_open_file({}, {}, {})", wrap::ptr(fileref), streamFileMode(fmode), rock);
+    SPDLOG_TRACE("glk_stream_open_file({}, {}, {})", wrap::ptr(fileref), wrap::filemode(fmode), rock);
 
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {
@@ -316,7 +311,7 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
         }
 
         if(!openbuf) {
-            spdlog::warn("Failed to open '{}' file stream for {}", streamFileMode(fmode), wrap::ptr(fileref));
+            spdlog::warn("Failed to open '{}' file stream for {}", wrap::filemode(fmode), wrap::ptr(fileref));
             return NULL;
         }
     }
@@ -329,7 +324,7 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
 }
 
 strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
-    SPDLOG_TRACE("glk_stream_open_file_uni({}, {}, {})", wrap::ptr(fileref), streamFileMode(fmode), rock);
+    SPDLOG_TRACE("glk_stream_open_file_uni({}, {}, {})", wrap::ptr(fileref), wrap::filemode(fmode), rock);
 
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {
@@ -355,7 +350,7 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
         }
 
         if(!openbuf) {
-            spdlog::warn("Failed to open '{}' file stream for {}", streamFileMode(fmode), wrap::ptr(fileref));
+            spdlog::warn("Failed to open '{}' file stream for {}", wrap::filemode(fmode), wrap::ptr(fileref));
             return NULL;
         }
     }
