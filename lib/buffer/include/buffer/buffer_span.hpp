@@ -26,10 +26,10 @@ namespace buffer {
         using span_allowed_t = std::enable_if_t<type_compatible_v<OtherCharT> && (OtherMutable || !Mutable), bool>;
 
         template <typename OtherCharT, bool OtherMutable>
-        using span_allowed_in_constructor_t = std::enable_if_t<!std::is_same_v<OtherCharT, CharT>, span_allowed_t<OtherCharT, OtherMutable>>;
+        using span_allowed_in_constructor_t = std::enable_if_t<!std::is_same_v<OtherCharT, CharT> || Mutable != OtherMutable, span_allowed_t<OtherCharT, OtherMutable>>;
 
         template <typename OtherCharT, bool OtherMutable>
-        using span_allowed_in_assignment_t = std::enable_if_t<!std::is_same_v<OtherCharT, CharT>, span_allowed_t<OtherCharT, OtherMutable>>;
+        using span_allowed_in_assignment_t = std::enable_if_t<!std::is_same_v<OtherCharT, CharT> || Mutable != OtherMutable, span_allowed_t<OtherCharT, OtherMutable>>;
 
       public:
         using value_type = std::conditional_t<Mutable, CharT, const CharT>;
