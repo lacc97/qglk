@@ -69,7 +69,7 @@ namespace buffer::detail {
       }
 
       [[nodiscard]] inline buffer::buffer_span<CharT> first(size_type n) noexcept {
-        return buffer::buffer_view<CharT>{*this}.first(n);
+        return buffer::buffer_span<CharT>{*this}.first(n);
       }
 
       [[nodiscard]] inline buffer::buffer_view<CharT> first(size_type n) const noexcept {
