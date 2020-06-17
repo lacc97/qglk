@@ -289,7 +289,7 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
 
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {
-        auto path = std::filesystem::path{FROM_FREFID(fileref)->path().toStdU16String()};
+        auto path = FROM_FREFID(fileref)->path();
 
         std::filebuf* openbuf{};
         switch(fmode) {
@@ -328,7 +328,7 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
 
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {
-        auto path = std::filesystem::path{FROM_FREFID(fileref)->path().toStdU16String()};
+        auto path = FROM_FREFID(fileref)->path();
 
         std::filebuf* openbuf{};
         switch(fmode) {

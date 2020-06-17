@@ -1,11 +1,10 @@
 #ifndef FILEREF_HPP
 #define FILEREF_HPP
 
-#include <QFile>
-#include <QFileInfo>
-#include <QSet>
+#include <filesystem>
 
 #include <fmt/format.h>
+#include <fmt/printf.h>
 
 #include "glk.hpp"
 
@@ -13,8 +12,6 @@
 
 namespace Glk {
     class FileReference : public Object {
-        Q_DISABLE_COPY(FileReference)
-        
         public:
             enum Usage : glui32 {
                 SavedGame = fileusage_SavedGame,
@@ -26,7 +23,7 @@ namespace Glk {
                 TextMode = fileusage_TextMode
             };
 
-            FileReference(const QFileInfo& fi_, glui32 usage_, glui32 rock_);
+            FileReference(const std::filesystem::path& path_, glui32 usage_, glui32 rock_);
             FileReference(const FileReference& fref_, glui32 usage_, glui32 rock_);
             ~FileReference();
 
@@ -34,7 +31,9 @@ namespace Glk {
                 return Object::Type::FileReference;
             }
             
-            QString path() const;
+            [[nodiscard]] const std::filesystem::path& path() const {
+                return m_Path;
+            }
 
             bool exists() const;
             void remove() const;
@@ -42,7 +41,7 @@ namespace Glk {
             glui32 usage() const;
 
         private:
-            QFileInfo m_FileInfo;
+            std::filesystem::path m_Path;
             glui32 m_Usage;
     };
 }

@@ -27,9 +27,12 @@ namespace wrap {
         return detail::filemode_wrap{filemode};
     }
 
-    template <class T>
-    inline auto ptr(T* ptr) {
-        return detail::ptr_wrap<T>{ptr};
+    template <class T, std::enable_if_t<std::is_pointer_v<T> || std::is_null_pointer_v<T>, bool> = true>
+    inline auto ptr(T ptr) {
+        if constexpr(std::is_null_pointer_v<T>)
+            return std::string_view{"<null>"};
+        else
+            return detail::ptr_wrap<std::remove_pointer_t<T>>{ptr};
     }
 
     inline auto seekmode(glui32 seekmode) {

@@ -6,16 +6,21 @@
 
 #include "log/log.hpp"
 
-Glk::FileReference::FileReference(const QFileInfo& fi_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fi_), m_Usage(usage_) {
-    Q_ASSERT(!m_FileInfo.isDir());
+
+Glk::FileReference::FileReference(const std::filesystem::path& path_, glui32 usage_, glui32 rock_)
+        : Object(rock_),
+          m_Path(std::filesystem::absolute(path_)),
+          m_Usage(usage_) {
+    Q_ASSERT(!std::filesystem::is_directory(m_Path));
 
     QGlk::getMainWindow().dispatch().registerObject(this);
     QGlk::getMainWindow().fileReferenceList().push_back(this);
 }
 
-Glk::FileReference::FileReference(const Glk::FileReference& fref_, glui32 usage_, glui32 rock_) : Object(rock_), m_FileInfo(fref_.m_FileInfo), m_Usage(usage_) {
-    Q_ASSERT(!m_FileInfo.isDir());
-
+Glk::FileReference::FileReference(const Glk::FileReference& fref_, glui32 usage_, glui32 rock_)
+        : Object(rock_),
+          m_Path(fref_.m_Path),
+          m_Usage(usage_) {
     QGlk::getMainWindow().dispatch().registerObject(this);
     QGlk::getMainWindow().fileReferenceList().push_back(this);
 }
@@ -32,16 +37,12 @@ Glk::FileReference::~FileReference() {
     QGlk::getMainWindow().dispatch().unregisterObject(this);
 }
 
-QString Glk::FileReference::path() const {
-    return m_FileInfo.absoluteFilePath();
-}
-
 bool Glk::FileReference::exists() const {
-    return m_FileInfo.exists();
+    return std::filesystem::exists(m_Path);
 }
 
 void Glk::FileReference::remove() const {
-    QFile::remove(m_FileInfo.absoluteFilePath());
+    std::filesystem::remove(m_Path);
 }
 
 glui32 Glk::FileReference::usage() const {
