@@ -12,24 +12,6 @@
 
 #include "qglk.hpp"
 
-
-QString Glk::Window::windowsTypeString(glui32 type) {
-    switch(type) {
-        case Blank:
-            return QStringLiteral("Blank");
-        case Graphics:
-            return QStringLiteral("Graphics");
-        case Pair:
-            return QStringLiteral("Pair");
-        case TextBuffer:
-            return QStringLiteral("TextBuffer");
-        case TextGrid:
-            return QStringLiteral("TextGrid");
-        default:
-            return QStringLiteral("Unknown");
-    }
-}
-
 Glk::Window::Window(Type type, WindowController* winController, std::unique_ptr<WindowBuf> streambuf, PairWindow* winParent, glui32 rock)
     : Object{rock},
       m_Type{type},
@@ -89,11 +71,4 @@ void Glk::Window::pushStyle(Glk::Style::Type style) {
 
 void Glk::Window::setBackgroundColor(const QColor& color) {
     spdlog::warn("Cannot change background colour of window {}", *this);
-}
-
-std::ostream& operator<<(std::ostream& os, Glk::Window* win) {
-    if(win)
-        return os << Glk::Window::windowsTypeString(win->windowType()).toStdString() << "(" << ((void*)win) << ")";
-    else
-        return os << "null";
 }

@@ -29,8 +29,6 @@ namespace Glk {
                 TextGrid = wintype_TextGrid,
             };
 
-            static QString windowsTypeString(glui32 type);
-
 
             ~Window() override;
 
@@ -116,7 +114,7 @@ namespace fmt {
 
         template <typename FormatContext>
         auto format(const Glk::Window& w, FormatContext &ctx) {
-            return format_to(ctx.out(), "{} Window ({})", Glk::Window::windowsTypeString(w.windowType()).toStdString(), (void*)(&w));
+            return format_to(ctx.out(), "{} Window ({})", wrap::wintype(w.windowType()), (void*)(&w));
         }
     };
 
@@ -127,11 +125,6 @@ namespace fmt {
             return formatter<Glk::Window>::format(*FROM_WINID(&w), ctx);
         }
     };
-}
-
-std::ostream& operator<<(std::ostream& os, Glk::Window* win);
-inline std::ostream& operator<<(std::ostream& os, winid_t win) {
-    return os << FROM_WINID(win);
 }
 
 #endif

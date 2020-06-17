@@ -21,20 +21,6 @@ Glk::WindowArrangement* Glk::WindowArrangement::fromMethod(glui32 met, glui32 si
         return new HorizontalWindowConstraint(static_cast<Method>(met), size);
 }
 
-std::string Glk::WindowArrangement::methodString(glui32 met) {
-    std::string_view dir;
-    if(isVertical(met))
-        dir = (VerticalWindowConstraint{static_cast<Method>(met), 0}.constrainsAbove() ? "Above" : "Below");
-    else
-        dir = (HorizontalWindowConstraint{static_cast<Method>(met), 0}.constrainsLeft() ? "Left" : "Right");
-
-    std::string_view size = isProportional(met) ? "Proportional" : "Fixed";
-
-    std::string_view border = isBordered(met) ? "Border" : "NoBorder";
-
-    return fmt::format("{0} | {1} | {2}", dir, size, border);
-}
-
 QGridLayout* Glk::WindowArrangement::setupLayout(PairWidget* parent) const {
     delete parent->layout();
     parent->clearChildren();

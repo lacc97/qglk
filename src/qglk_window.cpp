@@ -14,8 +14,8 @@
 #include "window/textbufferwindow.hpp"
 
 winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintype, glui32 rock) {
-    SPDLOG_TRACE("glk_window_open({}, {}, {}, {}, {})", wrap::ptr(split), Glk::WindowArrangement::methodString(method), size,
-                 Glk::Window::windowsTypeString(wintype), rock);
+    SPDLOG_TRACE("glk_window_open({}, {}, {}, {}, {})", wrap::ptr(split), wrap::splitmethod(method), size,
+                 wrap::wintype(wintype), rock);
 //    log_trace() << printTree(QGlk::getMainWindow().rootWindow());
 
     auto windowsType = static_cast<Glk::Window::Type>(wintype);
@@ -28,17 +28,17 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
             break;
 
         default:
-            spdlog::warn("Tried to open window of type {}", Glk::Window::windowsTypeString(wintype));
+            spdlog::warn("Tried to open window of type {}", wrap::wintype(wintype));
             SPDLOG_TRACE("glk_window_open({}, {}, {}, {}, {}) => {}", wrap::ptr(split),
-                         Glk::WindowArrangement::methodString(method), size, Glk::Window::windowsTypeString(wintype),
+                         wrap::splitmethod(method), size, wrap::wintype(wintype),
                          rock, wrap::ptr((winid_t) (nullptr)));
             return NULL;
     }
 
     if(!split && !QGlk::getMainWindow().windowList().empty()) {
         spdlog::warn("Tried to open another root window");
-        SPDLOG_TRACE("glk_window_open({}, {}, {}, {}, {}) => {}", wrap::ptr(split), Glk::WindowArrangement::methodString(method),
-                     size, Glk::Window::windowsTypeString(wintype), rock, wrap::ptr((winid_t) (nullptr)));
+        SPDLOG_TRACE("glk_window_open({}, {}, {}, {}, {}) => {}", wrap::ptr(split), wrap::splitmethod(method),
+                     size, wrap::wintype(wintype), rock, wrap::ptr((winid_t) (nullptr)));
         return NULL;
     }
 
@@ -59,8 +59,8 @@ winid_t glk_window_open(winid_t split, glui32 method, glui32 size, glui32 wintyp
         QGlk::getMainWindow().setRootWindow(newWin);
     }
 
-    SPDLOG_TRACE("glk_window_open({}, {}, {}, {}, {}) => {}", wrap::ptr(split), Glk::WindowArrangement::methodString(method),
-                 size, Glk::Window::windowsTypeString(wintype), rock, wrap::ptr(newWin));
+    SPDLOG_TRACE("glk_window_open({}, {}, {}, {}, {}) => {}", wrap::ptr(split), wrap::splitmethod(method),
+                 size, wrap::wintype(wintype), rock, wrap::ptr(newWin));
 
     return TO_WINID(newWin);
 }
@@ -81,6 +81,8 @@ void glk_window_close(winid_t win, stream_result_t* result) {
             winParent->removeChild(survivingSibling);
             QGlk::getMainWindow().setRootWindow(survivingSibling);
         }
+
+        winParent->controller()->closeWindow();
     } else {
         QGlk::getMainWindow().setRootWindow(nullptr);
     }
@@ -91,8 +93,6 @@ void glk_window_close(winid_t win, stream_result_t* result) {
     }
 
     deadWin->controller()->closeWindow();
-    if(winParent)
-        winParent->controller()->closeWindow();
 }
 
 void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {
@@ -106,10 +106,10 @@ void glk_window_get_size(winid_t win, glui32* widthptr, glui32* heightptr) {
 }
 
 void glk_window_set_arrangement(winid_t win, glui32 method, glui32 size, winid_t keywin) {
-    SPDLOG_TRACE("glk_window_set_arrangement({}, {}, {}, {})", wrap::ptr(win), Glk::WindowArrangement::methodString(method), size, wrap::ptr(keywin));
+    SPDLOG_TRACE("glk_window_set_arrangement({}, {}, {}, {})", wrap::ptr(win), wrap::splitmethod(method), size, wrap::ptr(keywin));
 
     if(FROM_WINID(win)->windowType() != Glk::Window::Pair) {
-        spdlog::warn("Cannot set arrangement of window {} (must be of type {})", wrap::ptr(win), Glk::Window::windowsTypeString(Glk::Window::Pair));
+        spdlog::warn("Cannot set arrangement of window {} (must be of type {})", wrap::ptr(win), wrap::wintype(Glk::Window::Pair));
 
         return;
     }
@@ -124,7 +124,7 @@ void glk_window_get_arrangement(winid_t win, glui32* methodptr, glui32* sizeptr,
     SPDLOG_TRACE("glk_window_get_arrangement({}, {}, {}, {})", wrap::ptr(win), (void*)methodptr, (void*)sizeptr, (void*)keywinptr);
 
     if(FROM_WINID(win)->windowType() != Glk::Window::Pair) {
-        spdlog::warn("Cannot get arrangement of window {} (must be of type {})", wrap::ptr(win), Glk::Window::windowsTypeString(Glk::Window::Pair));
+        spdlog::warn("Cannot get arrangement of window {} (must be of type {})", wrap::ptr(win), wrap::wintype(Glk::Window::Pair));
 
         return;
     }

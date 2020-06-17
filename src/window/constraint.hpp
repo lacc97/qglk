@@ -55,8 +55,6 @@ namespace Glk {
 
             [[nodiscard]] static WindowArrangement* fromMethod(glui32 met, glui32 size);
 
-            [[nodiscard]] static std::string methodString(glui32 met);
-
             WindowArrangement(Method method_, glui32 size_);
 
             virtual ~WindowArrangement() = default;
