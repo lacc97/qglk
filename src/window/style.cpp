@@ -232,6 +232,7 @@ void Glk::Style::setHint(glui32 hint, glui32 value) {
                     m_Font.setWeight(QFont::Normal);
                     break;
             }
+            break;
 
         case stylehint_Oblique:
             m_Font.setItalic(value);
