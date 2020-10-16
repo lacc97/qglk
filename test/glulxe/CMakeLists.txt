@@ -31,7 +31,7 @@ function(add_glulxe_executable _glk)
       ${_srcsDir}/profile.c
       ${_srcsDir}/debugger.c)
     set_target_properties(${_target} PROPERTIES
-        OUTPUT_NAME ${_glk}-bocfel)
+        OUTPUT_NAME ${_glk}-glulxe)
     target_compile_definitions(${_target}
         PRIVATE
           ${_osDef})
