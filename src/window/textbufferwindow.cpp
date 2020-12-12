@@ -84,13 +84,6 @@ void Glk::TextBufferWindow::pushStyle(Glk::Style::Type style) {
     assert(onGlkThread());
 
     controller<TextBufferWindowController>()->pushCommand(TextBufferCommand::StylePush{m_Styles[style]});
-
-//    m_CurrentStyleType = style;
-//    m_CurrentBlockFormat = m_Styles[m_CurrentStyleType].blockFormat();
-//    m_CurrentCharFormat = m_Styles[m_CurrentStyleType].charFormat();
-//    m_NonHyperlinkCharFormat = m_CurrentCharFormat;
-//
-//    pushHyperlink(m_CurrentHyperlink);
 }
 
 void Glk::TextBufferWindow::writeString(QString str) {

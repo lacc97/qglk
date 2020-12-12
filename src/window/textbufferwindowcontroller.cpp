@@ -14,16 +14,20 @@ Glk::TextBufferWindowController::TextBufferWindowController(Glk::PairWindow* win
     : WindowController(new TextBufferWindow(this, winParent, winRock), createWidget()) {
     QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestCancelled,
                      [this](const QString& text, bool lineEchoes) {
-                         if(lineEchoes && !text.isEmpty())
+                         if(lineEchoes && !text.isEmpty()) {
+                             window<TextBufferWindow>()->pushStyle(Glk::Style::Type::Input);
                              window<TextBufferWindow>()->writeString(text + '\n');
+                         }
 
                          requestSynchronization();
                      });
 
     QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestFulfilled,
                      [this](const QString& text, bool lineEchoes) {
-                         if(lineEchoes && !text.isEmpty())
+                         if(lineEchoes && !text.isEmpty()) {
+                             window<TextBufferWindow>()->pushStyle(Glk::Style::Type::Input);
                              window<TextBufferWindow>()->writeString(text + '\n');
+                         }
 
                          requestSynchronization();
                      });
