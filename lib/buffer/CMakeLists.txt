@@ -1,3 +1,6 @@
+cmake_minimum_required(VERSION 3.18)
+project(buffer)
+
 add_library(buffer INTERFACE)
     target_sources(buffer
             INTERFACE

@@ -3,13 +3,17 @@
 
 #include <variant>
 
-#include "buffer_base.hpp"
 #include "buffer.hpp"
+#include "private/buffer_base.hpp"
+#include "private/byte.hpp"
+#include "private/span_def.hpp"
+#include "private/visit.hpp"
 
 namespace buffer {
-  template <typename CharT, size_t StaticN>
+  template<typename CharT, size_t StaticN>
   class small_buffer : public detail::buffer_base<CharT, small_buffer<CharT, StaticN>> {
       using base_type = detail::buffer_base<CharT, small_buffer<CharT, StaticN>>;
+      friend class detail::buffer_base<CharT, small_buffer<CharT, StaticN>>;
 
       struct array {
         std::array<CharT, StaticN> a;
@@ -30,14 +34,20 @@ namespace buffer {
       };
 
       using array_type = array;
-      using vector_type = std::vector<CharT, detail::default_init_allocator<CharT>>;
+      using vector_type = std::vector<CharT, detail::default_init_allocator < CharT>>;
 
     public:
       inline constexpr small_buffer() noexcept = default;
 
-      inline small_buffer(typename base_type::size_type n)
+      inline explicit small_buffer(typename base_type::size_type n)
         : small_buffer{} {
         resize(n);
+      }
+
+      template<typename OtherCharT, std::enable_if_t<base_type::template is_compatible_v<OtherCharT>, bool> = true>
+      inline explicit small_buffer(OtherCharT* p, typename base_type::size_type n)
+        : small_buffer{n} {
+        std::memcpy(storage_pointer(), p, n * sizeof(CharT));
       }
 
       inline small_buffer(const small_buffer&) = default;
@@ -52,27 +62,8 @@ namespace buffer {
       inline small_buffer& operator=(small_buffer&&) noexcept = default;
 
 
-      inline typename base_type::pointer storage_pointer() {
-        return std::visit([](auto&& s) -> typename base_type::pointer {
-          return s.data();
-        }, m_Storage);
-      }
-
-      inline typename base_type::const_pointer storage_pointer() const {
-        return std::visit([](auto&& s) -> typename base_type::const_pointer {
-          return s.data();
-        }, m_Storage);
-      }
-
-      inline typename base_type::size_type storage_size() const {
-        return std::visit([](auto&& s) -> typename base_type::size_type {
-          return s.size();
-          }, m_Storage);
-      }
-
-
       inline void resize(typename base_type::size_type n) {
-        std::visit([this, n](auto&& s) -> void {
+        detail::rollbear::visit([this, n](auto&& s) -> void {
           using T = std::decay_t<decltype(s)>;
 
           if constexpr(std::is_same_v<T, array_type>) {
@@ -90,7 +81,7 @@ namespace buffer {
       }
 
       inline void resize(typename base_type::size_type n, const typename base_type::value_type& value) {
-        std::visit([this, n, &value](auto&& s) -> void {
+        detail::rollbear::visit([this, n, &value](auto&& s) -> void {
           using T = std::decay_t<decltype(s)>;
 
           if constexpr(std::is_same_v<T, array_type>) {
@@ -110,12 +101,38 @@ namespace buffer {
         }, m_Storage);
       }
 
+      inline operator buffer_span<CharT>() noexcept {
+        return {this->data(), this->size()};
+      }
+      inline operator buffer_view<CharT>() const noexcept {
+        return {this->data(), this->size()};
+      }
+
+    protected:
+      [[nodiscard]] inline typename base_type::pointer storage_pointer() noexcept {
+        return detail::rollbear::visit([](auto&& s) -> typename base_type::pointer {
+          return s.data();
+        }, m_Storage);
+      }
+
+      [[nodiscard]] inline typename base_type::maybe_const_pointer storage_pointer() const noexcept {
+        return detail::rollbear::visit([](auto&& s) -> typename base_type::maybe_const_pointer {
+          return s.data();
+        }, m_Storage);
+      }
+
+      [[nodiscard]] inline typename base_type::size_type storage_size() const noexcept {
+        return detail::rollbear::visit([](auto&& s) -> typename base_type::size_type {
+          return s.size();
+        }, m_Storage);
+      }
+
     private:
       std::variant<array_type, vector_type> m_Storage;
   };
 
-  template <size_t StaticN>
-  using small_byte_buffer = small_buffer<char, StaticN>;
+  template<size_t StaticN>
+  using small_byte_buffer = small_buffer<byte, StaticN>;
 }
 
 #endif //BUFFER_SMALL_BUFFER_HPP

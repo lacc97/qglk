@@ -19,7 +19,7 @@ void Glk::Latin1Stream::setPosition(glsi32 off, std::ios_base::seekdir dir) {
 }
 
 void Glk::Latin1Stream::writeBuffer(buffer::byte_buffer_view buf) {
-    updateWriteCount(streambuf()->sputn(buf.data(), buf.size()));
+    updateWriteCount(streambuf()->sputn(reinterpret_cast<const char*>(buf.data()), buf.size()));
 }
 
 void Glk::Latin1Stream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
@@ -33,7 +33,7 @@ void Glk::Latin1Stream::writeUnicodeBuffer(buffer::buffer_view<glui32> buf) {
 }
 
 glui32 Glk::Latin1Stream::readBuffer(buffer::byte_buffer_span buf) {
-    glui32 numr = streambuf()->sgetn(buf.data(), buf.size());
+    glui32 numr = streambuf()->sgetn(reinterpret_cast<char*>(buf.data()), buf.size());
     updateReadCount(numr);
     return numr;
 }
@@ -43,7 +43,7 @@ glui32 Glk::Latin1Stream::readLine(buffer::byte_buffer_span buf) {
 
     buffer::byte_buffer_span peekdata;
     {
-        std::streamsize numr = streambuf()->sgetn(buf.data(),buf.size() - 1);
+        std::streamsize numr = streambuf()->sgetn(reinterpret_cast<char*>(buf.data()),buf.size() - 1);
         if(numr <= 0)
             return 0;
 

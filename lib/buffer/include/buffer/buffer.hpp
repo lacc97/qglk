@@ -4,7 +4,9 @@
 #include <memory>
 #include <vector>
 
-#include "buffer_base.hpp"
+#include "private/buffer_base.hpp"
+#include "private/byte.hpp"
+#include "private/span_def.hpp"
 
 namespace buffer {
   namespace detail {
@@ -37,13 +39,14 @@ namespace buffer {
   template <typename CharT>
   class buffer : public detail::buffer_base<CharT, buffer<CharT>> {
       using base_type = detail::buffer_base<CharT, buffer<CharT>>;
+      friend class detail::buffer_base<CharT, buffer<CharT>>;
 
       using vector_type = std::vector<CharT, detail::default_init_allocator<CharT>>;
 
     public:
       inline constexpr buffer() noexcept = default;
 
-      inline buffer(typename base_type::size_type n)
+      inline explicit buffer(typename base_type::size_type n)
         : m_Storage(n) {}
 
       inline buffer(const buffer&) = default;
@@ -56,19 +59,6 @@ namespace buffer {
       inline buffer& operator=(const buffer&) = default;
 
       inline buffer& operator=(buffer&&) noexcept = default;
-
-
-      inline typename base_type::pointer storage_pointer() {
-        return m_Storage.data();
-      }
-
-      inline typename base_type::const_pointer storage_pointer() const {
-        return m_Storage.data();
-      }
-
-      inline typename base_type::size_type storage_size() const {
-        return m_Storage.size();
-      }
 
 
       inline void reserve(typename base_type::size_type n) {
@@ -87,11 +77,31 @@ namespace buffer {
         m_Storage.shrink_to_fit();
       }
 
+      inline operator buffer_span<CharT>() noexcept {
+        return {this->data(), this->size()};
+      }
+      inline operator buffer_view<CharT>() const noexcept {
+        return {this->data(), this->size()};
+      }
+
+    protected:
+      [[nodiscard]] inline typename base_type::pointer storage_pointer() noexcept {
+        return m_Storage.data();
+      }
+
+      [[nodiscard]] inline typename base_type::maybe_const_pointer storage_pointer() const noexcept {
+        return m_Storage.data();
+      }
+
+      [[nodiscard]] inline typename base_type::size_type storage_size() const noexcept {
+        return m_Storage.size();
+      }
+
     private:
       vector_type m_Storage;
   };
 
-  using byte_buffer = buffer<char>;
+  using byte_buffer = buffer<byte>;
 }
 
 #endif //BUFFER_BUFFER_HPP

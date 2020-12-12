@@ -3,12 +3,16 @@
 
 #include <array>
 
-#include "buffer_base.hpp"
+#include "private/buffer_base.hpp"
+#include "private/byte.hpp"
+#include "private/conversion_helpers.hpp"
+#include "private/span_def.hpp"
 
 namespace buffer {
   template <typename CharT, size_t N>
   class static_buffer : public detail::buffer_base<CharT, static_buffer<CharT, N>> {
       using base_type = detail::buffer_base<CharT, static_buffer<CharT, N>>;
+      friend class detail::buffer_base<CharT, static_buffer<CharT, N>>;
 
       using array_type = std::array<CharT, N>;
 
@@ -26,16 +30,23 @@ namespace buffer {
 
       inline constexpr static_buffer& operator=(static_buffer&&) noexcept = default;
 
+      inline operator buffer_span<CharT>() noexcept {
+        return {this->data(), this->size()};
+      }
+      inline operator buffer_view<CharT>() const noexcept {
+        return {this->data(), this->size()};
+      }
 
-      inline typename base_type::pointer storage_pointer() {
+    protected:
+      [[nodiscard]] inline typename base_type::pointer storage_pointer() noexcept {
         return m_Storage.data();
       }
 
-      inline typename base_type::const_pointer storage_pointer() const {
+      [[nodiscard]] inline typename base_type::maybe_const_pointer storage_pointer() const noexcept {
         return m_Storage.data();
       }
 
-      inline typename base_type::size_type storage_size() const {
+      [[nodiscard]] inline typename base_type::size_type storage_size() const noexcept {
         return m_Storage.size();
       }
 
@@ -43,8 +54,25 @@ namespace buffer {
       array_type m_Storage;
   };
 
+  template <typename CharT, size_t N>
+  struct conversion_traits<static_buffer<CharT, N>> {
+  inline static constexpr bool is_specialised = true;
+
+
+  using src_char_type = CharT;
+
+
+  inline static constexpr buffer_span<src_char_type> to_span(static_buffer<CharT, N>& sb) noexcept {
+    return buffer_span<src_char_type>{sb.data(), sb.size()};
+  }
+
+  inline static constexpr buffer_view<src_char_type> to_view(const static_buffer<CharT, N>& sb) noexcept {
+    return buffer_view<src_char_type>{sb.data(), sb.size()};
+  }
+};
+
   template <size_t N>
-  using static_byte_buffer = static_buffer<char, N>;
+  using static_byte_buffer = static_buffer<byte, N>;
 }
 
 #endif //BUFFER_STATIC_BUFFER_HPP

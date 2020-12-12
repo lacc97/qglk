@@ -57,7 +57,9 @@ template<bool ReadOnly>
 std::streamsize Glk::MemBuf<ReadOnly>::xsgetn(char* s, std::streamsize n) {
     buffer::byte_buffer_span buf{s, static_cast<size_t>(n)};
 
-    std::streamsize copycount = m_Buffer.copy_to(buf, m_Buffer.size(), m_Position);
+    std::streamsize copycount = 0;
+    if(m_Position < std::streamsize(m_Buffer.size()))
+        copycount = buf.copy_from(m_Buffer.subview(m_Position));
     m_Position += copycount;
 
     return copycount;
@@ -68,7 +70,8 @@ std::streamsize Glk::MemBuf<ReadOnly>::xsputn(const char* s, std::streamsize cou
     if constexpr(!ReadOnly) {
         buffer::buffer_view<char> buf{s, static_cast<size_t>(count)};
 
-        buf.copy_to(m_Buffer.subspan(m_Position), buf.size());
+        if(m_Position < std::streamsize(m_Buffer.size()))
+            buf.copy_to(m_Buffer.subspan(m_Position));
         m_Position += buf.size();
 
         return buf.size();
