@@ -1,4 +1,4 @@
-#include "glk.hpp"
+#include <glk.hpp>
 
 #include "window/window.hpp"
 
@@ -40,7 +40,7 @@ glui32 glk_gestalt_ext(glui32 id, glui32 val, glui32* arr, glui32 arrlen) {
                 default:
                     return (val >= 32 && val <= 126);
             }
-        
+
         case gestalt_CharOutput:
             if(QChar::isPrint(val))
                 return gestalt_CharOutput_ExactPrint;

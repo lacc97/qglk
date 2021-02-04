@@ -88,8 +88,8 @@ void glk_window_close(winid_t win, stream_result_t* result) {
     }
 
     if(result) {
-        result->readcount = deadWin->stream()->readCount();
-        result->writecount = deadWin->stream()->writeCount();
+        result->readcount = deadWin->stream()->get_read_count();
+        result->writecount = deadWin->stream()->get_write_count();
     }
 
     deadWin->controller()->closeWindow();
@@ -150,11 +150,11 @@ void glk_window_move_cursor(winid_t win, glui32 xpos, glui32 ypos) {
 void glk_window_set_echo_stream(winid_t win, strid_t str) {
     SPDLOG_TRACE("glk_window_set_echo_stream({}, {})", wrap::ptr(win), wrap::ptr(str));
 
-    FROM_WINID(win)->stream()->setEchoStream(FROM_STRID(str));
+    FROM_WINID(win)->stream()->set_echo(str);
 }
 
 strid_t glk_window_get_echo_stream(winid_t win) {
-    strid_t str = TO_STRID(FROM_WINID(win)->stream()->echoStream());
+    strid_t str = FROM_WINID(win)->stream()->get_echo();
 
     SPDLOG_TRACE("glk_window_get_echo_stream({}) => {}", wrap::ptr(win), wrap::ptr(str));
 
@@ -244,14 +244,14 @@ void glk_window_clear(winid_t win) {
 }
 
 strid_t glk_window_get_stream(winid_t win) {
-    return TO_STRID(FROM_WINID(win)->stream());
+    return FROM_WINID(win)->stream();
 }
 
 void glk_set_window(winid_t win) {
     if(!win)
-        glk_stream_set_current(NULL);
+        glk_stream_set_current(nullptr);
     else
-        glk_stream_set_current(TO_STRID(FROM_WINID(win)->stream()));
+        glk_stream_set_current(FROM_WINID(win)->stream());
 }
 
 void glk_window_set_background_color(winid_t win, glui32 color) {

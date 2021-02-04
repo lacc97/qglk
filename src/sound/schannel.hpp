@@ -7,8 +7,9 @@
 
 #include <fmt/format.h>
 
-#include "glk.hpp"
+#include <glk.hpp>
 
+#include "object.hpp"
 #include "blorb/chunk.hpp"
 
 namespace Glk {

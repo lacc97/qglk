@@ -2,8 +2,8 @@
 
 #include <QTimer>
 
-#include "qglk.hpp"
 #include "event/eventqueue.hpp"
+#include "qglk.hpp"
 #include "thread/taskrequest.hpp"
 #include "window/window.hpp"
 

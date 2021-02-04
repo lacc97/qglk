@@ -8,18 +8,13 @@
 
 #include "textgridwindowcontroller.hpp"
 #include "window.hpp"
+#include "window_stream_driver.hpp"
+
+namespace qglk::stream_drivers {
+  class text_grid;
+}
 
 namespace Glk {
-    class TextGridWindow;
-
-    class TextGridBuf : public WindowBuf {
-        public:
-            explicit TextGridBuf(TextGridWindow* win);
-
-        protected:
-            std::streamsize xsputn(const char_type* s, std::streamsize count) final;
-    };
-
     class TextGridWindow : public Window {
         public:
             TextGridWindow(TextGridWindowController* winController, PairWindow* winParent, glui32 winRock);
@@ -55,6 +50,16 @@ namespace Glk {
             QSize m_GridSize;
             QPoint m_Cursor;
     };
+}
+
+namespace qglk::stream_drivers {
+  class text_grid : public window {
+   public:
+    explicit text_grid(Glk::TextGridWindow* win) : window{win} {}
+
+   protected:
+    auto xsputn(const char_type* s, std::streamsize count) -> std::streamsize final;
+  };
 }
 
 #endif

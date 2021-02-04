@@ -3,13 +3,12 @@
 #include <cassert>
 
 #include "qglk.hpp"
-#include "stream/nulldevice.hpp"
 #include "pairwindowcontroller.hpp"
-
+#include "window_stream_driver.hpp"
 
 Glk::PairWindow::PairWindow(Window* key, Window* first, Window* second, WindowArrangement* winArrangement,
                             PairWindowController* winController, PairWindow* parent)
-    : Window(Type::Pair, winController, std::make_unique<WindowBuf>(this), parent),
+    : Window(Type::Pair, winController, std::make_unique<qglk::stream_drivers::window>(this), parent),
       mp_Key{key},
       mp_First{first},
       mp_Second{second},

@@ -8,13 +8,19 @@
 
 #include <fmt/format.h>
 
-#include "glk.hpp"
+#include <glk.hpp>
 
+#include "object.hpp"
 #include "log/format.hpp"
+
+#include "stream/stream.hpp"
 
 #include "style.hpp"
 #include "windowcontroller.hpp"
-#include "windowstream.hpp"
+
+namespace qglk::stream_drivers {
+  class window;
+}
 
 namespace Glk {
     class PairWindow;
@@ -81,17 +87,17 @@ namespace Glk {
                 return mp_Controller->glkSize();
             }
 
-            [[nodiscard]] inline WindowStream* stream() const {
+            [[nodiscard]] inline qglk::stream* stream() const {
                 return mp_Stream.get();
             }
 
         protected:
-            Window(Type type, WindowController* winController, std::unique_ptr<WindowBuf> streambuf, PairWindow* winParent, glui32 rock = 0);
+            Window(Type type, WindowController* winController, std::unique_ptr<qglk::stream_drivers::window> streambuf, PairWindow* winParent, glui32 rock = 0);
 
         private:
             Glk::Window::Type m_Type;
             WindowController* mp_Controller;
-            std::unique_ptr<WindowStream> mp_Stream;
+            std::unique_ptr<qglk::stream> mp_Stream;
             PairWindow* mp_Parent;
     };
 }

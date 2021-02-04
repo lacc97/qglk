@@ -10,26 +10,23 @@
 
 #include "qglk.hpp"
 
-Glk::TextGridBuf::TextGridBuf(Glk::TextGridWindow* win)
-    : WindowBuf{win} {}
+auto qglk::stream_drivers::text_grid::xsputn(const char_type* s, std::streamsize count) -> std::streamsize {
+  assert(count % 4 == 0);
 
-std::streamsize Glk::TextGridBuf::xsputn(const char* s, std::streamsize count) {
-    assert(count % 4 == 0);
+  auto buf = reinterpret_cast<const glui32*>(s);
+  qint64 len = count / 4;
 
-    auto buf = reinterpret_cast<const glui32*>(s);
-    qint64 bufLen = count / 4;
+  qint64 write_count;
+  for(write_count = 0; write_count < len; write_count++) {
+    if(!get_window<Glk::TextGridWindow>()->writeChar(buf[write_count]))
+      break;
+  }
 
-    qint64 writeCount;
-    for(writeCount = 0; writeCount < bufLen; writeCount++) {
-        if(!window<TextGridWindow>()->writeChar(buf[writeCount]))
-            break;
-    }
-
-    return writeCount * 4;
+  return write_count * 4;
 }
 
 Glk::TextGridWindow::TextGridWindow(Glk::TextGridWindowController* winController, Glk::PairWindow* winParent, glui32 winRock)
-    : Window(Type::TextGrid, winController, std::make_unique<TextGridBuf>(this), winParent, winRock),
+    : Window(Type::TextGrid, winController, std::make_unique<qglk::stream_drivers::text_grid>(this), winParent, winRock),
       m_CharArray{{EMPTY_CHAR}},
       m_GridSize{1, 1},
       m_Cursor(0, 0) {}

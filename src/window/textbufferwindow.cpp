@@ -12,21 +12,14 @@
 
 #include "log/log.hpp"
 
-
-Glk::TextBufferBuf::TextBufferBuf(Glk::TextBufferWindow* win)
-    : WindowBuf{win} {}
-
-std::streamsize Glk::TextBufferBuf::xsputn(const char_type* s, std::streamsize count) {
-    assert(count % 4 == 0);
-
-    window<TextBufferWindow>()->writeString(QString::fromUcs4((const char32_t*)s, count / sizeof(glui32)));
-
-    return count;
+auto qglk::stream_drivers::text_buffer::xsputn(const char_type* s, std::streamsize count) -> std::streamsize {
+  assert(count % 4 == 0);
+  get_window<Glk::TextBufferWindow>()->writeString(QString::fromUcs4((const char32_t*)s, count / sizeof(glui32)));
+  return count;
 }
 
-
 Glk::TextBufferWindow::TextBufferWindow(Glk::TextBufferWindowController* winController, Glk::PairWindow* winParent, glui32 winRock)
-    : Window(Type::TextBuffer, winController, std::make_unique<TextBufferBuf>(this), winParent, winRock),
+    : Window(Type::TextBuffer, winController, std::make_unique<qglk::stream_drivers::text_buffer>(this), winParent, winRock),
       m_Styles{QGlk::getMainWindow().textBufferStyleManager()} {
     assert(onGlkThread());
 }

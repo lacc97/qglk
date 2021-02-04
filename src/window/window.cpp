@@ -4,22 +4,20 @@
 
 #include "log/log.hpp"
 
-#include "window/blankwindow.hpp"
-#include "window/graphicswindow.hpp"
-#include "window/pairwindow.hpp"
-#include "window/textbufferwindow.hpp"
-#include "window/textgridwindow.hpp"
-
 #include "qglk.hpp"
 
-Glk::Window::Window(Type type, WindowController* winController, std::unique_ptr<WindowBuf> streambuf, PairWindow* winParent, glui32 rock)
+#include "window_stream_driver.hpp"
+
+Glk::Window::Window(Type type, WindowController* winController, std::unique_ptr<qglk::stream_drivers::window> streambuf, PairWindow* winParent, glui32 rock)
     : Object{rock},
       m_Type{type},
       mp_Controller{winController},
-      mp_Stream{std::make_unique<WindowStream>(std::move(streambuf))},
+      mp_Stream{std::make_unique<qglk::stream>(0)},
       mp_Parent{winParent} {
     assert(mp_Controller);
     assert(mp_Stream);
+
+    mp_Stream->init(glk_stream_struct::eWindow, true, true, std::move(streambuf));
 
     QGlk::getMainWindow().dispatch().registerObject(this);
     QGlk::getMainWindow().windowList().push_back(this);

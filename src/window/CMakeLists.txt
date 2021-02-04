@@ -20,5 +20,4 @@ target_sources(qglk
       ${CMAKE_CURRENT_SOURCE_DIR}/textgridwindowcontroller.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/window.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/windowcontroller.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/windowstream.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/windowwidget.cpp)

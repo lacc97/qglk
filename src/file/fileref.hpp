@@ -6,8 +6,9 @@
 #include <fmt/format.h>
 #include <fmt/printf.h>
 
-#include "glk.hpp"
+#include <glk.hpp>
 
+#include "object.hpp"
 #include "log/format.hpp"
 
 namespace Glk {

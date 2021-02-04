@@ -13,6 +13,7 @@
 
 #include <coroutine.h>
 
+#include "dispatch.hpp"
 #include "event/eventqueue.hpp"
 #include "file/fileref.hpp"
 #include "sound/schannel.hpp"
@@ -105,7 +106,7 @@ class QGlk : public QMainWindow {
         inline std::list<Glk::Window*>& windowList() {
             return m_WindowList;
         }
-        inline std::list<Glk::Stream*>& streamList() {
+        inline std::list<strid_t>& streamList() {
             return m_StreamList;
         }
         inline std::list<Glk::FileReference*>& fileReferenceList() {
@@ -140,7 +141,7 @@ class QGlk : public QMainWindow {
         std::deque<Glk::WindowController*> m_DeleteQueue;
         Glk::EventQueue m_EventQueue;
         std::list<Glk::Window*> m_WindowList;
-        std::list<Glk::Stream*> m_StreamList;
+        std::list<strid_t> m_StreamList;
         std::list<Glk::FileReference*> m_FileReferenceList;
         std::list<Glk::SoundChannel*> m_SoundChannelList;
 

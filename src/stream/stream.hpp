@@ -1,169 +1,102 @@
 #ifndef STREAM_STREAM_HPP
 #define STREAM_STREAM_HPP
 
-#include <memory>
-#include <streambuf>
+#include <cstring>
 
-#include <QObject>
+#include <memory>
+#include <span>
+#include <streambuf>
 
 #include <bit_cast.hpp>
 
-#include <buffer/buffer_span.hpp>
-#include <buffer/buffer_view.hpp>
-
-#include <fmt/format.h>
-
-#include "glk.hpp"
+#include <glk.hpp>
 
 #include "window/style.hpp"
 
-namespace Glk {
-    class Stream : public QObject, public Object {
-            Q_OBJECT
-        public:
-            enum class Type {
-                Memory, File, Resource, Window
-            };
+#include "object.hpp"
 
-            Stream(QObject* parent_, std::unique_ptr<std::streambuf> buf_, Type type_, bool text_, bool unicode_, glui32 rock_);
-            virtual ~Stream();
+namespace qglk {
+    using stream = glk_stream_struct;
+    using stream_driver = std::streambuf;
+}    // namespace qglk
 
-            Glk::Object::Type objectType() const override;
+struct glk_stream_struct final : public qglk::object {
+  public:
+    enum type { eMemory = 1, eFile = 2, eResource = 3, eWindow = 4 };
 
-            inline Type type() const {
-                return m_Type;
-            }
+    explicit glk_stream_struct(glui32 rock) : qglk::object{rock, qglk::object::eStream} {}
 
-            virtual void pushStyle(Style::Type sty);
-            
-            virtual void pushHyperlink(glui32 linkval) {}
+    void init(type type, bool unicode, bool text, std::unique_ptr<qglk::stream_driver> driver) noexcept;
+    void destroy() noexcept;
 
-            inline bool isUnicode() const {
-                return m_Unicode;
-            }
+    [[nodiscard]] glsi32 read_char() noexcept {
+        char ch;
+        return (read_buffer(&ch, 1) == 1) ? bit_cast<unsigned char>(ch) : -1;
+    }
+    [[nodiscard]] glui32 read_line(char* buf, glui32 len) noexcept;
+    [[nodiscard]] glui32 read_buffer(char* buf, glui32 len) noexcept;
 
-            virtual void setPosition(glsi32 off, std::ios_base::seekdir dir) = 0;
-            virtual glui32 position() const = 0;
+    [[nodiscard]] glsi32 read_unicode_char() noexcept {
+        glui32 ch;
+        return (read_unicode_buffer(&ch, 1) == 1) ? bit_cast<glsi32>(ch) : -1;
+    }
+    [[nodiscard]] glui32 read_unicode_line(glui32* buf, glui32 len) noexcept;
+    [[nodiscard]] glui32 read_unicode_buffer(glui32* buf, glui32 len) noexcept;
 
-            inline glui32 readCount() const {
-                return m_ReadChars;
-            }
-            inline glui32 writeCount() const {
-                return m_WriteChars;
-            }
-            inline bool isInTextMode() const {
-                return m_TextMode;
-            }
+    void push_hyperlink(glui32 linkval) noexcept;
+    void push_style(Glk::Style::Type type) noexcept;
+
+    void write_char(char ch) noexcept {
+        write_buffer(&ch, 1);
+    }
+    void write_string(char* s) noexcept {
+        write_buffer(s, std::strlen(s));
+    }
+    void write_buffer(char* buf, glui32 len) noexcept;
+
+    void write_unicode_char(glui32 ch) noexcept {
+        write_unicode_buffer(&ch, 1);
+    }
+    void write_unicode_string(glui32* s) noexcept {
+        write_unicode_buffer(s, std::basic_string_view<glui32>(s).length());
+    }
+    void write_unicode_buffer(glui32* buf, glui32 len) noexcept;
+
+    glui32 get_position() noexcept;
+    void set_position(glui32 pos, glui32 seekmode) noexcept;
+
+    [[nodiscard]] strid_t get_echo() const noexcept {
+        return mp_echo;
+    }
+    void set_echo(strid_t echo) noexcept {
+        mp_echo = echo;
+    }
+
+    [[nodiscard]] glui32 get_read_count() const noexcept {
+        return m_read_count;
+    }
+    [[nodiscard]] glui32 get_write_count() const noexcept {
+        return m_write_count;
+    }
+
+  private:
+    static inline char from_unicode(glui32 ch) noexcept {
+        return (ch >= 0x100u) ? '?' : bit_cast<char>(static_cast<unsigned char>(ch));
+    }
+    static inline glui32 to_unicode(char ch) noexcept {
+        return bit_cast<unsigned char>(ch);
+    }
 
 
-            // ASCII write methods
-            inline void writeBuffer(char* buf, glui32 len) {
-                writeBuffer(buffer::byte_buffer_view{buf, len});
-            }
-            inline void writeString(char* str) {
-                writeBuffer(buffer::byte_buffer_view{str, std::basic_string_view<char>{str}.length()});
-            }
-            inline void writeChar(unsigned char ch) {
-                writeBuffer(buffer::byte_buffer_view{reinterpret_cast<char*>(&ch), 1});
-            }
-            virtual void writeBuffer(buffer::byte_buffer_view buf) = 0;
+    type m_type{};
+    bool m_unicode : 1 {};
+    bool m_text : 1 {};
+    bool m_big_endian : 1 {};
+    std::unique_ptr<qglk::stream_driver> mp_driver;
 
-            // Unicode write methods
-            inline void writeUnicodeBuffer(glui32* buf, glui32 len) {
-                writeUnicodeBuffer(buffer::buffer_view<glui32>{buf, len});
-            }
-            inline void writeUnicodeString(glui32* str) {
-                writeUnicodeBuffer(buffer::buffer_view<glui32>{str, std::basic_string_view<glui32>{str}.length()});
-            }
-            inline void writeUnicodeChar(glui32 ch) {
-                writeUnicodeBuffer(buffer::buffer_view<glui32>{&ch, 1});
-            }
-            virtual void writeUnicodeBuffer(buffer::buffer_view<glui32> buf) = 0;
+    glui32 m_read_count{}, m_write_count{};
 
-            // ASCII read methods
-            inline glsi32 readChar() {
-                char ch;
-                return (readBuffer(&ch, 1) == 1) ? bit_cast<unsigned char>(ch) : -1;
-            }
-            inline glui32 readBuffer(char* buf, glui32 len) {
-                return readBuffer({buf, len});
-            }
-            virtual glui32 readBuffer(buffer::byte_buffer_span buf) = 0;
-            inline glui32 readLine(char* buf, glui32 len) {
-                return readLine({buf, len});
-            }
-            virtual glui32 readLine(buffer::byte_buffer_span buf) = 0;
-
-            // Unicode read methods
-            inline glsi32 readUnicodeChar() {
-                glui32 ch;
-                return (readUnicodeBuffer(&ch, 1) == 1) ? ch : -1;
-            }
-            inline glui32 readUnicodeBuffer(glui32* buf, glui32 len) {
-                return readUnicodeBuffer({buf, len});
-            }
-            virtual glui32 readUnicodeBuffer(buffer::buffer_span<glui32> buf) = 0;
-            inline glui32 readUnicodeLine(glui32* buf, glui32 len) {
-                return readUnicodeLine({buf, len});
-            }
-            virtual glui32 readUnicodeLine(buffer::buffer_span<glui32> buf) = 0;
-
-        signals:
-            void closed();
-
-        protected:
-            inline std::streambuf* streambuf() const {
-                return mp_Streambuf.get();
-            }
-            inline void updateReadCount(glui32 charread) {
-                m_ReadChars += charread;
-            }
-            inline void updateWriteCount(glui32 charwrit) {
-                m_WriteChars += charwrit;
-            }
-
-        private:
-            Type m_Type;
-            bool m_TextMode;
-            bool m_Unicode;
-
-            std::unique_ptr<std::streambuf> mp_Streambuf;
-
-            glui32 m_ReadChars{0};
-            glui32 m_WriteChars{0};
-    };
-}
-
-inline strid_t TO_STRID(Glk::Stream* str) {
-    return reinterpret_cast<strid_t>(str);
-}
-inline Glk::Stream* FROM_STRID(strid_t str) {
-    return reinterpret_cast<Glk::Stream*>(str);
-}
-
-namespace fmt {
-    template <>
-    struct formatter<Glk::Stream> {
-        template <typename ParseContext>
-        constexpr auto parse(ParseContext &ctx) {
-            return ctx.begin();
-        }
-
-        template <typename FormatContext>
-        auto format(const Glk::Stream& w, FormatContext &ctx) {
-            return format_to(ctx.out(), "({})", (void*)&w);
-        }
-    };
-
-    template <>
-    struct formatter<std::remove_pointer_t<strid_t>> : formatter<Glk::Stream> {
-        template <typename FormatContext>
-        inline auto format(std::remove_pointer_t<strid_t>& w, FormatContext &ctx) {
-            return formatter<Glk::Stream>::format(*FROM_STRID(&w), ctx);
-        }
-    };
-}
+    strid_t mp_echo{};
+};
 
 #endif
-
-

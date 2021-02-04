@@ -3,13 +3,14 @@ project(QGlk)
 
 include(GNUInstallDirs)
 
+find_package(cppcoro REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 
 
 option(BUILD_GLKTERM    "Build glkterm glkt implementation (in test subdirectory)" OFF)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 if(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")

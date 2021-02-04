@@ -2,6 +2,7 @@ find_package(Qt5 REQUIRED COMPONENTS Core Gui Multimedia Widgets)
 set(QT_REQUIRED_LIBS Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
 
 add_library(qglk STATIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/dispatch.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/gi_blorb.c
     ${CMAKE_CURRENT_SOURCE_DIR}/gi_dispa.c
@@ -16,7 +17,8 @@ add_library(qglk STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_stream.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/qglk_unix.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/qglk_window.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/qglk_window.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/object.cpp)
   set_target_properties(qglk PROPERTIES
       AUTOMOC                     ON
       AUTOUIC                     ON
@@ -31,9 +33,11 @@ add_library(qglk STATIC
       PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/../include
       PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR})
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/utils)
   target_link_libraries(qglk
       PRIVATE
+        cppcoro::cppcoro
         bit_cast buffer coroutine
         fmt::fmt
         ${QT_REQUIRED_LIBS}

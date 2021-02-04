@@ -2,109 +2,93 @@
 
 #include <cstring>
 
-#include <filesystem>
 #include <fstream>
 #include <memory>
 
-#include <buffer/small_buffer.hpp>
-
 #include "qglk.hpp"
 
-#include "blorb/chunk.hpp"
 #include "log/log.hpp"
-#include "stream/chunkbuf.hpp"
-#include "stream/latin1stream.hpp"
-#include "stream/membuf.hpp"
-#include "stream/nullbuf.hpp"
-#include "stream/unicodestream.hpp"
+#include "stream/chunk_driver.hpp"
+#include "stream/memory_driver.hpp"
+#include "stream/null_driver.hpp"
 
-Glk::Stream* s_CurrentStream = NULL;
+strid_t sp_CurrentStream = NULL;
 void glk_stream_set_current(strid_t str) {
     SPDLOG_TRACE("glk_stream_set_current({})", wrap::ptr(str));
 
-    s_CurrentStream = FROM_STRID(str);
+    sp_CurrentStream = str;
 }
 
 strid_t glk_stream_get_current(void) {
     SPDLOG_TRACE("glk_stream_get_current() => {}", wrap::ptr(s_CurrentStream));
 
-    return TO_STRID(s_CurrentStream);
+    return sp_CurrentStream;
 }
 
 void glk_stream_close(strid_t str, stream_result_t* result) {
-    SPDLOG_TRACE("glk_stream_close({}, {})", wrap::ptr(str), (void*)(result));
+    SPDLOG_TRACE("glk_stream_close({}, {})", wrap::ptr(str), (void*) (result));
 
     if(result) {
-        result->readcount = FROM_STRID(str)->readCount();
-        result->writecount = FROM_STRID(str)->writeCount();
+        result->readcount = str->get_read_count();
+        result->writecount = str->get_write_count();
     }
 
-    if(TO_STRID(s_CurrentStream) == str)
-        s_CurrentStream = NULL;
+    if(sp_CurrentStream == str)
+        sp_CurrentStream = nullptr;
 
-    delete FROM_STRID(str);
+    str->destroy();
+
+    delete str;
 }
 
 strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
     const auto& strList = QGlk::getMainWindow().streamList();
 
-    if(str == NULL) {
+    if(str == nullptr) {
         if(strList.empty()) {
-            SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(strid_t(NULL)));
-            return NULL;
+            SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(strid_t(nullptr)));
+            return nullptr;
         }
 
         auto first = strList.front();
 
         if(rockptr)
-            *rockptr = first->rock();
+            *rockptr = first->get_rock();
 
         SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(first));
 
-        return TO_STRID(first);
+        return first;
     }
 
     auto it = strList.cbegin();
-
-    while(it != strList.cend() && (*it++) != FROM_STRID(str));
+    while(it != strList.cend() && (*it++) != str)
+        ;
 
     if(it == strList.cend()) {
-        SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(strid_t(NULL)));
-        return NULL;
+        SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(strid_t(nullptr)));
+        return nullptr;
     }
 
     if(rockptr)
-        *rockptr = (*it)->rock();
+        *rockptr = (*it)->get_rock();
 
     SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(*it));
 
-    return TO_STRID(*it);
+    return *it;
 }
 
 glui32 glk_stream_get_rock(strid_t str) {
-    return FROM_STRID(str)->rock();
+    return str->get_rock();
 }
 
 void glk_stream_set_position(strid_t str, glsi32 pos, glui32 seekmode) {
     SPDLOG_TRACE("glk_stream_set_position({}, {}, {})", wrap::ptr(str), pos, wrap::seekmode(seekmode));
 
-    switch(seekmode) {
-        case seekmode_Start:
-            FROM_STRID(str)->setPosition(pos, std::ios_base::beg);
-            return;
-
-        case seekmode_End:
-            FROM_STRID(str)->setPosition(pos, std::ios_base::end);
-            return;
-
-        case seekmode_Current:
-            FROM_STRID(str)->setPosition(pos, std::ios_base::cur);
-            return;
-    }
+    str->set_position(pos, seekmode);
 }
 
 glui32 glk_stream_get_position(strid_t str) {
-    glui32 pos = FROM_STRID(str)->position();
+    glui32 pos = str->get_position();
 
     SPDLOG_TRACE("glk_stream_get_pos({}) => {}", wrap::ptr(str), pos);
 
@@ -114,53 +98,53 @@ glui32 glk_stream_get_position(strid_t str) {
 void glk_put_char(unsigned char ch) {
     SPDLOG_TRACE("glk_put_char({})", QString(ch));
 
-    if(s_CurrentStream)
-        s_CurrentStream->writeChar(ch);
+    if(sp_CurrentStream)
+        sp_CurrentStream->write_char(bit_cast<char>(ch));
 }
 
 void glk_put_char_stream(strid_t str, unsigned char ch) {
     SPDLOG_TRACE("glk_put_char_stream({}, {})", wrap::ptr(str), QString(ch));
 
-    FROM_STRID(str)->writeChar(ch);
+    str->write_char(bit_cast<char>(ch));
 }
 
 void glk_put_string(char* s) {
     SPDLOG_TRACE("glk_put_string({})", QString(s));
 
-    if(s_CurrentStream)
-        s_CurrentStream->writeString(s);
+    if(sp_CurrentStream)
+        sp_CurrentStream->write_string(s);
 }
 
 void glk_put_string_stream(strid_t str, char* s) {
     SPDLOG_TRACE("glk_put_string({}, {})", wrap::ptr(str), QString(s));
 
-    FROM_STRID(str)->writeString(s);
+    str->write_string(s);
 }
 
 void glk_put_buffer(char* buf, glui32 len) {
     SPDLOG_TRACE("glk_put_buffer({})", QString::fromLatin1(buf, len));
 
-    if(s_CurrentStream)
-        s_CurrentStream->writeBuffer(buf, len);
+    if(sp_CurrentStream)
+        sp_CurrentStream->write_buffer(buf, len);
 }
 
 void glk_put_buffer_stream(strid_t str, char* buf, glui32 len) {
     SPDLOG_TRACE("glk_put_buffer_stream({}, {})", wrap::ptr(str), QString::fromLatin1(buf, len));
 
-    FROM_STRID(str)->writeBuffer(buf, len);
+    str->write_buffer(buf, len);
 }
 
 void glk_set_style(glui32 styl) {
-    if(s_CurrentStream)
-        s_CurrentStream->pushStyle(static_cast<Glk::Style::Type>(styl));
+    if(sp_CurrentStream)
+        sp_CurrentStream->push_style(static_cast<Glk::Style::Type>(styl));
 }
 
 void glk_set_style_stream(strid_t str, glui32 styl) {
-    FROM_STRID(str)->pushStyle(static_cast<Glk::Style::Type>(styl));
+    str->push_style(static_cast<Glk::Style::Type>(styl));
 }
 
 glsi32 glk_get_char_stream(strid_t str) {
-    glsi32 ch = FROM_STRID(str)->readChar();
+    glsi32 ch = str->read_char();
 
     SPDLOG_TRACE("glk_get_char_stream({}) => {}", wrap::ptr(str), ch);
 
@@ -168,17 +152,17 @@ glsi32 glk_get_char_stream(strid_t str) {
 }
 
 glui32 glk_get_line_stream(strid_t str, char* buf, glui32 len) {
-    glui32 count = FROM_STRID(str)->readLine(buf, len);
+    glui32 count = str->read_line(buf, len);
 
-    SPDLOG_TRACE("glk_get_line_stream({}, {}, {}) => {}", wrap::ptr(str), (void*)buf, len, QString(buf));
+    SPDLOG_TRACE("glk_get_line_stream({}, {}, {}) => {}", wrap::ptr(str), (void*) buf, len, QString(buf));
 
     return count;
 }
 
 glui32 glk_get_buffer_stream(strid_t str, char* buf, glui32 len) {
-    glui32 count = FROM_STRID(str)->readBuffer(buf, len);
+    glui32 count = str->read_buffer(buf, len);
 
-    SPDLOG_TRACE("glk_get_buffer_stream({}, {}, {}) => {}", wrap::ptr(str), (void*)buf, len, count);
+    SPDLOG_TRACE("glk_get_buffer_stream({}, {}, {}) => {}", wrap::ptr(str), (void*) buf, len, count);
 
     return count;
 }
@@ -186,44 +170,44 @@ glui32 glk_get_buffer_stream(strid_t str, char* buf, glui32 len) {
 void glk_put_char_uni(glui32 ch) {
     SPDLOG_TRACE("glk_put_char_uni({})", QString::fromUcs4(&ch, 1));
 
-    if(s_CurrentStream)
-        s_CurrentStream->writeUnicodeChar(ch);
-}
-
-void glk_put_string_uni(glui32* s) {
-    SPDLOG_TRACE("glk_put_string_uni({})", QString::fromUcs4(s));
-
-    if(s_CurrentStream)
-        s_CurrentStream->writeUnicodeString(s);
-}
-
-void glk_put_buffer_uni(glui32* buf, glui32 len) {
-    SPDLOG_TRACE("glk_put_buffer_uni({})", QString::fromUcs4(buf, len));
-
-    if(s_CurrentStream)
-        s_CurrentStream->writeUnicodeBuffer(buf, len);
+    if(sp_CurrentStream)
+        sp_CurrentStream->write_unicode_char(ch);
 }
 
 void glk_put_char_stream_uni(strid_t str, glui32 ch) {
     SPDLOG_TRACE("glk_put_char_stream_uni({}, {})", wrap::ptr(str), QString::fromUcs4(&ch, 1));
 
-    FROM_STRID(str)->writeUnicodeChar(ch);
+    str->write_unicode_char(ch);
+}
+
+void glk_put_string_uni(glui32* s) {
+    SPDLOG_TRACE("glk_put_string_uni({})", QString::fromUcs4(s));
+
+    if(sp_CurrentStream)
+        sp_CurrentStream->write_unicode_string(s);
 }
 
 void glk_put_string_stream_uni(strid_t str, glui32* s) {
     SPDLOG_TRACE("glk_put_string_stream_uni({}, {})", wrap::ptr(str), QString::fromUcs4(s));
 
-    FROM_STRID(str)->writeUnicodeString(s);
+    str->write_unicode_string(s);
+}
+
+void glk_put_buffer_uni(glui32* buf, glui32 len) {
+    SPDLOG_TRACE("glk_put_buffer_uni({})", QString::fromUcs4(buf, len));
+
+    if(sp_CurrentStream)
+        sp_CurrentStream->write_unicode_buffer(buf, len);
 }
 
 void glk_put_buffer_stream_uni(strid_t str, glui32* buf, glui32 len) {
     SPDLOG_TRACE("glk_put_buffer_stream_uni({}, {})", wrap::ptr(str), QString::fromUcs4(buf, len));
 
-    FROM_STRID(str)->writeUnicodeBuffer(buf, len);
+    str->write_unicode_buffer(buf, len);
 }
 
 glsi32 glk_get_char_stream_uni(strid_t str) {
-    glsi32 ch = FROM_STRID(str)->readUnicodeChar();
+    glsi32 ch = str->read_unicode_char();
 
     SPDLOG_TRACE("glk_get_char_stream_uni({}) => {}", wrap::ptr(str), ch);
 
@@ -231,62 +215,72 @@ glsi32 glk_get_char_stream_uni(strid_t str) {
 }
 
 glui32 glk_get_buffer_stream_uni(strid_t str, glui32* buf, glui32 len) {
-    glui32 count = FROM_STRID(str)->readUnicodeBuffer(buf, len);
+    glui32 count = str->read_unicode_buffer(buf, len);
 
-    SPDLOG_TRACE("glk_get_buffer_stream_uni({}, {}, {}) => {}", wrap::ptr(str), (void*)buf, len, count);
+    SPDLOG_TRACE("glk_get_buffer_stream_uni({}, {}, {}) => {}", wrap::ptr(str), (void*) buf, len, count);
 
     return count;
 }
 
 glui32 glk_get_line_stream_uni(strid_t str, glui32* buf, glui32 len) {
-    glui32 count = FROM_STRID(str)->readUnicodeLine(buf, len);
+    glui32 count = str->read_unicode_line(buf, len);
 
-    SPDLOG_TRACE("glk_get_line_stream_uni({}, {}, {}) => {}", wrap::ptr(str), (void*)buf, len, QString::fromUcs4(buf, count));
+    SPDLOG_TRACE("glk_get_line_stream_uni({}, {}, {}) => {}", wrap::ptr(str), (void*) buf, len, QString::fromUcs4(buf, count));
 
     return count;
 }
 
 strid_t glk_stream_open_memory(char* buf, glui32 buflen, glui32 fmode, glui32 rock) {
-    SPDLOG_TRACE("glk_stream_open_memory({}, {}, {}, {})", (void*)buf, buflen, wrap::filemode(fmode), rock);
+    SPDLOG_TRACE("glk_stream_open_memory({}, {}, {}, {})", (void*) buf, buflen, wrap::filemode(fmode), rock);
+
+    auto stream = std::make_unique<qglk::stream>(rock);
 
     std::unique_ptr<std::streambuf> streambuf;
     if(buf) {
         if(fmode == filemode_Read)
-            streambuf = std::make_unique<Glk::RegisteredMemBuf<true>>(buf, buflen, false);
+            streambuf = std::make_unique<qglk::stream_drivers::registered_memory<true>>(std::span(buf, buflen));
         else
-            streambuf = std::make_unique<Glk::RegisteredMemBuf<false>>(buf, buflen, false);
+            streambuf = std::make_unique<qglk::stream_drivers::registered_memory<false>>(std::span(buf, buflen));
 
         if(fmode == filemode_WriteAppend)
             streambuf->pubseekoff(0, std::ios_base::end);
     } else {
-        streambuf = std::make_unique<Glk::NullBuf>();
+        streambuf = std::make_unique<qglk::stream_drivers::null>();
     }
 
-    return TO_STRID(new Glk::Latin1Stream{nullptr, std::move(streambuf), Glk::Stream::Type::Memory, false, rock});
+    stream->init(qglk::stream::eMemory, false, false, std::move(streambuf));
+
+    return stream.release();
 }
 
 strid_t glk_stream_open_memory_uni(glui32* buf, glui32 buflen, glui32 fmode, glui32 rock) {
-    SPDLOG_TRACE("glk_stream_open_memory_uni({}, {}, {}, {})", (void*)buf, buflen, wrap::filemode(fmode), rock);
+    SPDLOG_TRACE("glk_stream_open_memory_uni({}, {}, {}, {})", (void*) buf, buflen, wrap::filemode(fmode), rock);
+
+    auto stream = std::make_unique<qglk::stream>(rock);
 
     std::unique_ptr<std::streambuf> streambuf;
     if(buf) {
         if(fmode == filemode_Read)
-            streambuf = std::make_unique<Glk::RegisteredMemBuf<true>>((char*)buf, sizeof(glui32)*buflen, true);
+            streambuf = std::make_unique<qglk::stream_drivers::registered_memory<true>>(std::span(buf, buflen));
         else
-            streambuf = std::make_unique<Glk::RegisteredMemBuf<false>>((char*)buf, sizeof(glui32)*buflen, true);
+            streambuf = std::make_unique<qglk::stream_drivers::registered_memory<false>>(std::span(buf, buflen));
 
         if(fmode == filemode_WriteAppend)
             streambuf->pubseekoff(0, std::ios_base::end);
     } else {
-        streambuf = std::make_unique<Glk::NullBuf>();
+        streambuf = std::make_unique<qglk::stream_drivers::null>();
     }
 
-    return TO_STRID(new Glk::UnicodeStream{nullptr, std::move(streambuf), Glk::Stream::Type::Memory, false, rock});
+    stream->init(qglk::stream::eMemory, true, false, std::move(streambuf));
+
+    return stream.release();
 }
 
 strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_file({}, {}, {})", wrap::ptr(fileref), wrap::filemode(fmode), rock);
 
+    auto stream = std::make_unique<qglk::stream>(rock);
+
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {
         auto path = FROM_FREFID(fileref)->path();
@@ -312,7 +306,7 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
 
         if(!openbuf) {
             spdlog::warn("Failed to open '{}' file stream for {}", wrap::filemode(fmode), wrap::ptr(fileref));
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -320,12 +314,16 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
     if((FROM_FREFID(fileref)->usage() & 0x100) == Glk::FileReference::TextMode)
         textMode = true;
 
-    return TO_STRID(new Glk::Latin1Stream{nullptr, std::move(filebuf), Glk::Stream::Type::File, textMode, rock});
+    stream->init(qglk::stream::eFile, false, textMode, std::move(filebuf));
+
+    return stream.release();
 }
 
 strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_file_uni({}, {}, {})", wrap::ptr(fileref), wrap::filemode(fmode), rock);
 
+    auto stream = std::make_unique<qglk::stream>(rock);
+
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {
         auto path = FROM_FREFID(fileref)->path();
@@ -351,7 +349,7 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
 
         if(!openbuf) {
             spdlog::warn("Failed to open '{}' file stream for {}", wrap::filemode(fmode), wrap::ptr(fileref));
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -359,46 +357,52 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
     if((FROM_FREFID(fileref)->usage() & 0x100) == Glk::FileReference::TextMode)
         textMode = true;
 
-    return TO_STRID(new Glk::UnicodeStream{nullptr, std::move(filebuf), Glk::Stream::Type::File, textMode, rock});
+    stream->init(qglk::stream::eFile, true, textMode, std::move(filebuf));
+
+    return stream.release();
 }
 
 strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_resource({}, {})", filenum, rock);
 
+    auto stream = std::make_unique<qglk::stream>(rock);
+
     Glk::Blorb::Chunk chunk{Glk::Blorb::loadResource(filenum)};
     if(!chunk.isValid())
-        return NULL;
+        return nullptr;
 
     bool textMode = false;
     if(chunk.type() == Glk::Blorb::Chunk::Type::TEXT)
         textMode = true;
 
-    std::unique_ptr<std::streambuf> streambuf = std::make_unique<Glk::ChunkBuf>(std::move(chunk));
+    stream->init(qglk::stream::eResource, false, textMode, std::make_unique<qglk::stream_drivers::chunk>(std::move(chunk)));
 
-    return TO_STRID(new Glk::Latin1Stream{nullptr, std::move(streambuf), Glk::Stream::Type::Resource, textMode, rock});
+    return stream.release();
 }
 
 strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
     SPDLOG_TRACE("glk_stream_open_resource_uni({}, {})", filenum, rock);
 
+    auto stream = std::make_unique<qglk::stream>(rock);
+
     Glk::Blorb::Chunk chunk{Glk::Blorb::loadResource(filenum)};
     if(!chunk.isValid())
-        return NULL;
+        return nullptr;
 
     bool textMode = false;
     if(chunk.type() == Glk::Blorb::Chunk::Type::TEXT)
         textMode = true;
 
-    std::unique_ptr<std::streambuf> streambuf = std::make_unique<Glk::ChunkBuf>(std::move(chunk));
+    stream->init(qglk::stream::eResource, true, textMode, std::make_unique<qglk::stream_drivers::chunk>(std::move(chunk)));
 
-    return TO_STRID(new Glk::UnicodeStream{nullptr, std::move(streambuf), Glk::Stream::Type::Resource, textMode, rock});
+    return stream.release();
 }
 
 void glk_set_hyperlink(glui32 linkval) {
-    if(s_CurrentStream)
-        s_CurrentStream->pushHyperlink(linkval);
+    if(sp_CurrentStream)
+        sp_CurrentStream->push_hyperlink(linkval);
 }
 
 void glk_set_hyperlink_stream(strid_t str, glui32 linkval) {
-    FROM_STRID(str)->pushHyperlink(linkval);
+    str->push_hyperlink(linkval);
 }

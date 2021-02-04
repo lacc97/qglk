@@ -10,7 +10,7 @@ extern "C" {
 
 #include "log/log.hpp"
 
-#include "stream/latin1stream.hpp"
+#include "stream/stream.hpp"
 
 void glkunix_set_base_file(char* filename) {
     SPDLOG_TRACE("glkunix_set_base_file({0})", filename);
@@ -31,11 +31,15 @@ void glkunix_set_base_file(char* filename) {
 strid_t glkunix_stream_open_pathname(char* pathname, glui32 textmode, glui32 rock) {
     SPDLOG_TRACE("glkunix_stream_open_pathname({0}, {1}, {2})", pathname, (bool)textmode, rock);
 
+    auto stream = std::make_unique<qglk::stream>(rock);
+
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     if(!filebuf->open(std::filesystem::path{pathname}, std::ios_base::in)) {
         spdlog::error("Failed to open file '{}'", pathname);
-        return NULL;
+        return nullptr;
     }
 
-    return TO_STRID(new Glk::Latin1Stream{nullptr, std::move(filebuf), Glk::Stream::Type::File, textmode != 0, rock});
+    stream->init(glk_stream_struct::eFile, false, textmode != 0, std::move(filebuf));
+
+    return stream.release();
 }

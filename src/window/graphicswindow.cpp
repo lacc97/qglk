@@ -5,10 +5,11 @@
 #include <QResizeEvent>
 
 #include "qglk.hpp"
-#include "stream/nulldevice.hpp"
+
+#include "window_stream_driver.hpp"
 
 Glk::GraphicsWindow::GraphicsWindow(GraphicsWindowController* winController, PairWindow* winParent, glui32 objRock)
-    : Window(Type::Graphics, winController, std::make_unique<WindowBuf>(this), winParent, objRock),
+    : Window(Type::Graphics, winController, std::make_unique<qglk::stream_drivers::window>(this), winParent, objRock),
       m_Buffer{1, 1, QImage::Format_ARGB32},
       m_BGColor{} {
 }

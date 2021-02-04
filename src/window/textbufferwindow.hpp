@@ -10,20 +10,15 @@
 #include "stylemanager.hpp"
 #include "textbufferwindowcontroller.hpp"
 #include "window.hpp"
+#include "window_stream_driver.hpp"
+
+namespace qglk::stream_drivers {
+  class text_buffer;
+}
 
 namespace Glk {
-    class TextBufferWindow;
-
-    class TextBufferBuf : public WindowBuf {
-        public:
-            explicit TextBufferBuf(TextBufferWindow* win);
-
-        protected:
-            std::streamsize xsputn(const char_type* s, std::streamsize count) final;
-    };
-
     class TextBufferWindow : public Window {
-            friend class TextBufferBuf;
+            friend class ::qglk::stream_drivers::text_buffer;
 
         public:
             TextBufferWindow(TextBufferWindowController* winController, PairWindow* winParent, glui32 winRock);
@@ -52,6 +47,16 @@ namespace Glk {
         private:
             StyleManager m_Styles;
     };
+}
+
+namespace qglk::stream_drivers {
+  class text_buffer : public window {
+   public:
+    explicit text_buffer(Glk::TextBufferWindow* win) : window{win} {}
+
+   protected:
+    auto xsputn(const char_type* s, std::streamsize count) -> std::streamsize final;
+  };
 }
 
 #endif
