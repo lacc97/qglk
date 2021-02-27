@@ -370,7 +370,7 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
         return NULL;
 
     bool textMode = false;
-    if(chunk.type() == Glk::Blorb::ChunkType::TEXT)
+    if(chunk.type() == Glk::Blorb::Chunk::Type::TEXT)
         textMode = true;
 
     std::unique_ptr<std::streambuf> streambuf = std::make_unique<Glk::ChunkBuf>(std::move(chunk));
@@ -386,7 +386,7 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
         return NULL;
 
     bool textMode = false;
-    if(chunk.type() == Glk::Blorb::ChunkType::TEXT)
+    if(chunk.type() == Glk::Blorb::Chunk::Type::TEXT)
         textMode = true;
 
     std::unique_ptr<std::streambuf> streambuf = std::make_unique<Glk::ChunkBuf>(std::move(chunk));

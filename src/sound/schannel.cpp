@@ -43,11 +43,9 @@ bool Glk::SoundChannel::play(glui32 snd, glui32 repeats, bool notify) { //TODO h
     m_Buffer.close();
 
     Glk::Blorb::Chunk newc = Glk::Blorb::loadResource(snd, Glk::Blorb::ResourceUsage::Sound);
-
     if(!newc.isValid())
         return false;
 
-    Glk::Blorb::unloadChunk(m_Chunk);
     m_Chunk = std::move(newc);
 
     m_Buffer.setData(QByteArray::fromRawData(m_Chunk.data(), m_Chunk.length()));

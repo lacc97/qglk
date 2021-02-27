@@ -69,21 +69,7 @@ void glk_schannel_set_volume_ext(schanid_t chan, glui32 vol, glui32 duration, gl
     FROM_SCHANID(chan)->setVolume(vol, duration, notify);
 }
 
-void glk_sound_load_hint(glui32 snd, glui32 flag) {
-    switch(flag) {
-        case 0:
-            if(Glk::Blorb::isResourceLoaded(snd, Glk::Blorb::ResourceUsage::Sound)) {
-                Glk::Blorb::Chunk c = Glk::Blorb::loadResource(snd, Glk::Blorb::ResourceUsage::Sound);
-                Glk::Blorb::unloadChunk(c);
-            }
-
-            break;
-
-        case 1:
-            Glk::Blorb::loadResource(snd, Glk::Blorb::ResourceUsage::Sound);
-            break;
-    }
-}
+void glk_sound_load_hint(glui32 snd, glui32 flag) {}
 
 schanid_t glk_schannel_iterate(schanid_t schan, glui32* rockptr) {
     const auto& schanList = QGlk::getMainWindow().soundChannelList();
