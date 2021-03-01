@@ -19,8 +19,7 @@ gidispatch_rock_t gidispatch_get_objrock(void* obj, glui32 objclass) {
             return static_cast<strid_t>(obj)->get_dispatch_rock();
 
         case Glk::Object::Type::FileReference:
-            glkobj = FROM_FREFID(reinterpret_cast<frefid_t>(obj));
-            break;
+            return static_cast<frefid_t>(obj)->get_dispatch_rock();
 
         case Glk::Object::Type::SoundChannel:
             glkobj = FROM_SCHANID(reinterpret_cast<schanid_t>(obj));
@@ -43,7 +42,7 @@ void gidispatch_set_object_registry(gidispatch_rock_t (* reg)(void* obj, glui32 
     dispatch.mf_UnregisterObject = unreg;
     if(reg) {
         for(frefid_t fref = glk_fileref_iterate(nullptr, nullptr); fref; fref = glk_fileref_iterate(fref, nullptr))
-            dispatch.registerObject(FROM_FREFID(fref));
+            dispatch.registerObject(fref);
 
         for(schanid_t schan = glk_schannel_iterate(nullptr, nullptr); schan; schan = glk_schannel_iterate(schan, nullptr))
             dispatch.registerObject(FROM_SCHANID(schan));

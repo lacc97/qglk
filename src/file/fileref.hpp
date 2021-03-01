@@ -11,68 +11,54 @@
 #include "object.hpp"
 #include "log/format.hpp"
 
-namespace Glk {
-    class FileReference : public Object {
-        public:
-            enum Usage : glui32 {
-                SavedGame = fileusage_SavedGame,
-                Transcript = fileusage_Transcript,
-                InputRecord = fileusage_InputRecord,
-                Data = fileusage_Data,
+namespace qglk {
+    using file_reference = glk_fileref_struct;
+}
 
-                BinaryMode = fileusage_BinaryMode,
-                TextMode = fileusage_TextMode
-            };
+struct glk_fileref_struct final : public qglk::object {
+  public:
+    enum usage {
+        eSavedGame = fileusage_SavedGame,
+        eTranscript = fileusage_Transcript,
+        eInputRecord = fileusage_InputRecord,
+        eData = fileusage_Data,
 
-            FileReference(const std::filesystem::path& path_, glui32 usage_, glui32 rock_);
-            FileReference(const FileReference& fref_, glui32 usage_, glui32 rock_);
-            ~FileReference();
-
-            Glk::Object::Type objectType() const override {
-                return Object::Type::FileReference;
-            }
-            
-            [[nodiscard]] const std::filesystem::path& path() const {
-                return m_Path;
-            }
-
-            bool exists() const;
-            void remove() const;
-
-            glui32 usage() const;
-
-        private:
-            std::filesystem::path m_Path;
-            glui32 m_Usage;
+        eBinaryMode = fileusage_BinaryMode,
+        eTextMode = fileusage_TextMode
     };
-}
 
-inline frefid_t TO_FREFID(Glk::FileReference* fref) {
-    return reinterpret_cast<frefid_t>(fref);
-}
-inline Glk::FileReference* FROM_FREFID(frefid_t fref) {
-    return reinterpret_cast<Glk::FileReference*>(fref);
-}
+    explicit glk_fileref_struct(glui32 rock) : qglk::object{rock, qglk::object::eFileReference} {}
+
+    void init(const std::filesystem::path& path, glui32 usage) noexcept;
+    void init(frefid_t fref, glui32 usage) noexcept;
+    void destroy() noexcept;
+
+    [[nodiscard]] const std::filesystem::path& get_path() const noexcept {
+        return m_path;
+    }
+    [[nodiscard]] glui32 get_usage() const noexcept {
+        return m_usage;
+    }
+
+    [[nodiscard]] bool exists() const;
+    void remove() const;
+
+  private:
+    glui32 m_usage;
+    std::filesystem::path m_path;
+};
 
 namespace fmt {
     template <>
-    struct formatter<Glk::FileReference> {
+    struct formatter<qglk::file_reference> {
         template <typename ParseContext>
         constexpr auto parse(ParseContext &ctx) {
             return ctx.begin();
         }
 
         template <typename FormatContext>
-        auto format(const Glk::FileReference& w, FormatContext &ctx) {
-            return format_to(ctx.out(), "{} ({})", w.path(), (void*)&w);
-        }
-    };
-
-    template <>
-    struct formatter<std::remove_pointer_t<frefid_t>> : formatter<Glk::FileReference> {
-        template <typename FormatContext>
-        inline auto format(std::remove_pointer_t<frefid_t>& w, FormatContext &ctx) {
-            return formatter<Glk::FileReference>::format(*FROM_FREFID(&w), ctx);
+        auto format(const qglk::file_reference& w, FormatContext &ctx) {
+            return format_to(ctx.out(), "{} ({})", w.get_path(), fmt::ptr(&w));
         }
     };
 }

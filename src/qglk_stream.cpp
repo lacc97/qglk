@@ -283,7 +283,7 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
 
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {
-        auto path = FROM_FREFID(fileref)->path();
+        const auto& path = fileref->get_path();
 
         std::filebuf* openbuf{};
         switch(fmode) {
@@ -311,7 +311,7 @@ strid_t glk_stream_open_file(frefid_t fileref, glui32 fmode, glui32 rock) {
     }
 
     bool textMode = false;
-    if((FROM_FREFID(fileref)->usage() & 0x100) == Glk::FileReference::TextMode)
+    if((fileref->get_usage() & qglk::file_reference::eTextMode) == qglk::file_reference::eTextMode)
         textMode = true;
 
     stream->init(qglk::stream::eFile, false, textMode, std::move(filebuf));
@@ -326,7 +326,7 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
 
     std::unique_ptr<std::filebuf> filebuf = std::make_unique<std::filebuf>();
     {
-        auto path = FROM_FREFID(fileref)->path();
+        const auto& path = fileref->get_path();
 
         std::filebuf* openbuf{};
         switch(fmode) {
@@ -354,7 +354,7 @@ strid_t glk_stream_open_file_uni(frefid_t fileref, glui32 fmode, glui32 rock) {
     }
 
     bool textMode = false;
-    if((FROM_FREFID(fileref)->usage() & 0x100) == Glk::FileReference::TextMode)
+    if((fileref->get_usage() & qglk::file_reference::eTextMode) == qglk::file_reference::eTextMode)
         textMode = true;
 
     stream->init(qglk::stream::eFile, true, textMode, std::move(filebuf));

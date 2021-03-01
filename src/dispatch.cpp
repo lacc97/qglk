@@ -12,11 +12,6 @@ void Glk::Dispatch::registerObject(Glk::Object* ptr) {
                 ptr->m_DispatchRock = mf_RegisterObject(static_cast<Glk::Window*>(ptr), glui32(ptr->objectType()));
                 return;
 
-            case Glk::Object::Type::FileReference:
-                assert(dynamic_cast<Glk::FileReference*>(ptr));
-                ptr->m_DispatchRock = mf_RegisterObject(static_cast<Glk::FileReference*>(ptr), glui32(ptr->objectType()));
-                return;
-
             case Glk::Object::Type::SoundChannel:
                 assert(dynamic_cast<Glk::SoundChannel*>(ptr));
                 ptr->m_DispatchRock = mf_RegisterObject(static_cast<Glk::SoundChannel*>(ptr), glui32(ptr->objectType()));
@@ -35,7 +30,13 @@ void Glk::Dispatch::registerObject(qglk::object* ptr) {
 
     switch(ptr->get_type()) {
         case qglk::object::eStream:
+            assert(dynamic_cast<qglk::stream*>(ptr));
             ptr->m_dispatch_rock = mf_RegisterObject(static_cast<qglk::stream*>(ptr), static_cast<glui32>(ptr->get_type()));
+            return;
+
+        case qglk::object::eFileReference:
+            assert(dynamic_cast<qglk::file_reference*>(ptr));
+            ptr->m_dispatch_rock = mf_RegisterObject(static_cast<qglk::file_reference*>(ptr), static_cast<glui32>(ptr->get_type()));
             return;
 
         default:
@@ -50,11 +51,6 @@ void Glk::Dispatch::unregisterObject(Glk::Object* ptr) {
             case Glk::Object::Type::Window:
                 assert(dynamic_cast<Glk::Window*>(ptr));
                 mf_UnregisterObject(static_cast<Glk::Window*>(ptr), glui32(ptr->objectType()), ptr->m_DispatchRock);
-                return;
-
-            case Glk::Object::Type::FileReference:
-                assert(dynamic_cast<Glk::FileReference*>(ptr));
-                mf_UnregisterObject(static_cast<Glk::FileReference*>(ptr), glui32(ptr->objectType()), ptr->m_DispatchRock);
                 return;
 
             case Glk::Object::Type::SoundChannel:
@@ -74,6 +70,12 @@ void Glk::Dispatch::unregisterObject(qglk::object* ptr) {
 
     switch(ptr->get_type()) {
         case qglk::object::eStream:
+            assert(dynamic_cast<qglk::stream*>(ptr));
+            mf_UnregisterObject(static_cast<qglk::stream*>(ptr), glui32(ptr->get_type()), ptr->get_dispatch_rock());
+            return;
+
+        case qglk::object::eFileReference:
+            assert(dynamic_cast<qglk::file_reference*>(ptr));
             mf_UnregisterObject(static_cast<qglk::stream*>(ptr), glui32(ptr->get_type()), ptr->get_dispatch_rock());
             return;
 
