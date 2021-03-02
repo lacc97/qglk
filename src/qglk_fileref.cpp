@@ -138,38 +138,13 @@ void glk_fileref_destroy(frefid_t fref) {
     delete fref;
 }
 
-frefid_t glk_fileref_iterate(frefid_t fref, glui32* rockptr) {
-    const auto& frefList = QGlk::getMainWindow().fileReferenceList();
+frefid_t glk_fileref_iterate(frefid_t fref, glui32* p_rock) {
+    auto* next_fref = QGlk::getMainWindow().fileReferenceList().next(fref);
+    if(next_fref && p_rock)
+        *p_rock = next_fref->get_rock();
 
-    if(fref == NULL) {
-        if(frefList.empty()) {
-            SPDLOG_TRACE("glk_fileref_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(rockptr), wrap::ptr(nullptr));
-            return NULL;
-        }
-
-        auto first = frefList.front();
-
-        if(rockptr)
-            *rockptr = first->get_rock();
-
-        SPDLOG_TRACE("glk_fileref_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(rockptr), wrap::ptr(first));
-        return first;
-    }
-
-    auto it = frefList.cbegin();
-
-    while(it != frefList.cend() && (*it++) != fref);
-
-    if(it == frefList.cend()) {
-        SPDLOG_TRACE("glk_fileref_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(rockptr), wrap::ptr(nullptr));
-        return NULL;
-    }
-
-    if(rockptr)
-        *rockptr = (*it)->get_rock();
-
-    SPDLOG_TRACE("glk_fileref_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(rockptr), wrap::ptr(*it));
-    return *it;
+    SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(fref), wrap::ptr(p_rock), wrap::ptr(next_fref));
+    return next_fref;
 }
 
 glui32 glk_fileref_get_rock(frefid_t fref) {

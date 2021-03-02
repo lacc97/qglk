@@ -171,8 +171,6 @@ QGlk::QGlk(int argc, char** argv)
       m_DeleteQueue{},
       m_EventQueue{},
       m_WindowList{},
-      m_StreamList{},
-      m_FileReferenceList{},
       m_SoundChannelList{},
       m_InterruptHandler{},
       m_ImageCache{512*1024*1024}, /* image cache of up to 512 MiB */
@@ -194,11 +192,15 @@ QGlk::~QGlk() {
     while(!m_WindowList.empty())
         delete m_WindowList.front();
 
-    while(!m_StreamList.empty())
-        delete m_StreamList.front();
+    for(auto* p : m_StreamList.as_range()) {
+        static_cast<qglk::stream*>(p)->destroy();
+        delete p;
+    }
 
-    while(!m_FileReferenceList.empty())
-        delete m_FileReferenceList.front();
+    for(auto* p : m_FileReferenceList.as_range()) {
+        static_cast<qglk::file_reference*>(p)->destroy();
+        delete p;
+    }
 
     while(!m_SoundChannelList.empty())
         delete m_SoundChannelList.front();

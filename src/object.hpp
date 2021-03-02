@@ -3,10 +3,16 @@
 
 #include <cstddef>
 
+#include <any>
+#include <list>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <type_traits>
+
+#include <cppcoro/generator.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <QByteArray>
 #include <QMetaType>
@@ -48,11 +54,20 @@ namespace Glk {
 }    // namespace Glk
 
 namespace qglk {
+    class object;
+
+    template <typename T>
+    concept glk_object = std::is_base_of_v<object, T> && !std::is_same_v<object, T>;
+
     class object {
+        friend class object_list;
+
         friend class ::Glk::Dispatch;
 
       public:
         enum type : glui32 { eWindow = 0, eStream = 1, eFileReference = 2, eSoundChannel = 3 };
+
+        virtual ~object() = default;
 
         [[nodiscard]] constexpr glui32 get_rock() const noexcept {
             return m_rock;
@@ -68,17 +83,60 @@ namespace qglk {
       protected:
         explicit constexpr object(glui32 rock, type type) noexcept : m_type{type}, m_rock{rock}, m_dispatch_rock{} {}
 
-        void init_base() noexcept;
-        void destroy_base() noexcept;
+        void register_object() noexcept;
+        void unregister_object() noexcept;
 
       private:
         type m_type;
         glui32 m_rock;
         gidispatch_rock_t m_dispatch_rock;
+
+
+        std::make_signed_t<size_t> m_index{-1};
     };
 
-    template <typename T>
-    concept glk_object = std::is_base_of_v<object, T>;
+    class object_list {
+        struct entry {
+            explicit entry(object* p) noexcept : ptr{p} {}
+
+            bool operator<(object* p) const noexcept {
+                return ptr < p;
+            }
+
+            object* ptr;
+            bool deleted{false};
+        };
+
+      public:
+        explicit object_list(object::type type) : m_type{type} {}
+
+        void add(object* p_t);
+        void remove(object* p_t);
+
+        template <glk_object T>
+        T* next(T* p_cur) const noexcept {
+            auto* p_next = next_impl(p_cur);
+
+            assert(!p_next || p_next->get_type() == m_type);
+            return static_cast<T*>(p_next);
+        }
+
+        cppcoro::generator<object*> as_range() const noexcept;
+
+
+      private:
+        size_t get_entry_count() const noexcept {
+            assert(m_entries.size() >= m_free_list.size());
+            return m_entries.size() - m_free_list.size();
+        }
+
+        object* next_impl(object* p_cur) const noexcept;
+
+        object::type m_type;
+
+        std::vector<entry> m_entries;
+        std::vector<size_t> m_free_list;
+    };
 }    // namespace qglk
 
 #endif    //QGLK_OBJECT_HPP

@@ -31,8 +31,7 @@ namespace {
 
 void glk_stream_struct::destroy() noexcept {
     QGlk::getMainWindow().streamList().remove(this);
-
-    destroy_base();
+    unregister_object();
 }
 
 glui32 glk_stream_struct::read_buffer(char* buf, glui32 len) noexcept {
@@ -128,9 +127,8 @@ glui32 glk_stream_struct::read_unicode_line(glui32* buf, glui32 len) noexcept {
 }
 
 void glk_stream_struct::init(glk_stream_struct::type type, bool unicode, bool text, std::unique_ptr<qglk::stream_driver> driver) noexcept {
-    init_base();
-
-    QGlk::getMainWindow().streamList().push_back(this);
+    register_object();
+    QGlk::getMainWindow().streamList().add(this);
 
     m_type = type;
     m_unicode = unicode;

@@ -41,40 +41,13 @@ void glk_stream_close(strid_t str, stream_result_t* result) {
     delete str;
 }
 
-strid_t glk_stream_iterate(strid_t str, glui32* rockptr) {
-    const auto& strList = QGlk::getMainWindow().streamList();
+strid_t glk_stream_iterate(strid_t str, glui32* p_rock) {
+    auto* next_str = QGlk::getMainWindow().streamList().next(str);
+    if(next_str && p_rock)
+        *p_rock = next_str->get_rock();
 
-    if(str == nullptr) {
-        if(strList.empty()) {
-            SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(strid_t(nullptr)));
-            return nullptr;
-        }
-
-        auto first = strList.front();
-
-        if(rockptr)
-            *rockptr = first->get_rock();
-
-        SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(first));
-
-        return first;
-    }
-
-    auto it = strList.cbegin();
-    while(it != strList.cend() && (*it++) != str)
-        ;
-
-    if(it == strList.cend()) {
-        SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(strid_t(nullptr)));
-        return nullptr;
-    }
-
-    if(rockptr)
-        *rockptr = (*it)->get_rock();
-
-    SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(rockptr), wrap::ptr(*it));
-
-    return *it;
+    SPDLOG_TRACE("glk_stream_iterate({}, {}) => {}", wrap::ptr(str), wrap::ptr(p_rock), wrap::ptr(next_str));
+    return next_str;
 }
 
 glui32 glk_stream_get_rock(strid_t str) {

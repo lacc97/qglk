@@ -106,10 +106,10 @@ class QGlk : public QMainWindow {
         inline std::list<Glk::Window*>& windowList() {
             return m_WindowList;
         }
-        inline std::list<strid_t>& streamList() {
+        inline qglk::object_list& streamList() {
             return m_StreamList;
         }
-        inline std::list<frefid_t>& fileReferenceList() {
+        inline qglk::object_list& fileReferenceList() {
             return m_FileReferenceList;
         }
         inline std::list<Glk::SoundChannel*>& soundChannelList() {
@@ -141,8 +141,8 @@ class QGlk : public QMainWindow {
         std::deque<Glk::WindowController*> m_DeleteQueue;
         Glk::EventQueue m_EventQueue;
         std::list<Glk::Window*> m_WindowList;
-        std::list<strid_t> m_StreamList;
-        std::list<frefid_t> m_FileReferenceList;
+        qglk::object_list m_StreamList{qglk::object::type::eStream};
+        qglk::object_list m_FileReferenceList{qglk::object::type::eFileReference};
         std::list<Glk::SoundChannel*> m_SoundChannelList;
 
         std::function<void(void)> m_InterruptHandler;
