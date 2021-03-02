@@ -95,9 +95,18 @@ namespace Glk {
             Window(Type type, WindowController* winController, std::unique_ptr<qglk::stream_drivers::window> streambuf, PairWindow* winParent, glui32 rock = 0);
 
         private:
+            struct stream_deleter {
+                inline void operator()(qglk::stream* ptr) {
+                    if(ptr) {
+                        ptr->destroy();
+                        delete ptr;
+                    }
+                }
+            };
+
             Glk::Window::Type m_Type;
             WindowController* mp_Controller;
-            std::unique_ptr<qglk::stream> mp_Stream;
+            std::unique_ptr<qglk::stream, stream_deleter> mp_Stream;
             PairWindow* mp_Parent;
     };
 }

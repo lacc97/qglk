@@ -12,7 +12,7 @@ Glk::Window::Window(Type type, WindowController* winController, std::unique_ptr<
     : Object{rock},
       m_Type{type},
       mp_Controller{winController},
-      mp_Stream{std::make_unique<qglk::stream>(0)},
+      mp_Stream{new qglk::stream{0}},
       mp_Parent{winParent} {
     assert(mp_Controller);
     assert(mp_Stream);
