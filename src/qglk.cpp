@@ -159,6 +159,7 @@ void Glk::Runnable::run() {
             QGlk::getMainWindow().interruptHandler()();
     }
 
+    free(startdata.argv);
     QGlk::getMainWindow().close();
 }
 
@@ -192,13 +193,13 @@ QGlk::~QGlk() {
     while(!m_WindowList.empty())
         delete m_WindowList.front();
 
-    for(auto* p : m_StreamList.as_range()) {
-        static_cast<qglk::stream*>(p)->destroy();
+    for(auto* p : m_StreamList.as_range<qglk::stream>()) {
+        p->destroy();
         delete p;
     }
 
-    for(auto* p : m_FileReferenceList.as_range()) {
-        static_cast<qglk::file_reference*>(p)->destroy();
+    for(auto* p : m_FileReferenceList.as_range<qglk::file_reference>()) {
+        p->destroy();
         delete p;
     }
 

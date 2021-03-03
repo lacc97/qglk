@@ -67,7 +67,6 @@ namespace qglk {
       public:
         enum type : glui32 { eWindow = 0, eStream = 1, eFileReference = 2, eSoundChannel = 3 };
 
-        virtual ~object() = default;
 
         [[nodiscard]] constexpr glui32 get_rock() const noexcept {
             return m_rock;
@@ -81,7 +80,8 @@ namespace qglk {
         }
 
       protected:
-        explicit constexpr object(glui32 rock, type type) noexcept : m_type{type}, m_rock{rock}, m_dispatch_rock{} {}
+        explicit object(glui32 rock, type type) noexcept : m_type{type}, m_rock{rock}, m_dispatch_rock{} {}
+        virtual ~object() = default;
 
         void register_object() noexcept;
         void unregister_object() noexcept;
@@ -91,22 +91,10 @@ namespace qglk {
         glui32 m_rock;
         gidispatch_rock_t m_dispatch_rock;
 
-
-        std::make_signed_t<size_t> m_index{-1};
+        std::list<object*>::iterator m_iterator;
     };
 
     class object_list {
-        struct entry {
-            explicit entry(object* p) noexcept : ptr{p} {}
-
-            bool operator<(object* p) const noexcept {
-                return ptr < p;
-            }
-
-            object* ptr;
-            bool deleted{false};
-        };
-
       public:
         explicit object_list(object::type type) : m_type{type} {}
 
@@ -117,25 +105,27 @@ namespace qglk {
         T* next(T* p_cur) const noexcept {
             auto* p_next = next_impl(p_cur);
 
-            assert(!p_next || p_next->get_type() == m_type);
+            assert(!p_next || dynamic_cast<T*>(p_next));
             return static_cast<T*>(p_next);
         }
 
-        cppcoro::generator<object*> as_range() const noexcept;
+        template <typename T = object> requires std::is_base_of_v<object, T>
+        cppcoro::generator<T*> as_range() const noexcept {
+            auto it = m_list.begin();
+            while(it != m_list.end()) {
+                auto* p = *it;
+                ++it;
 
-
-      private:
-        size_t get_entry_count() const noexcept {
-            assert(m_entries.size() >= m_free_list.size());
-            return m_entries.size() - m_free_list.size();
+                assert(dynamic_cast<T*>(p));
+                co_yield static_cast<T*>(p);
+            }
         }
 
+      private:
         object* next_impl(object* p_cur) const noexcept;
 
         object::type m_type;
-
-        std::vector<entry> m_entries;
-        std::vector<size_t> m_free_list;
+        std::list<object*> m_list;
     };
 }    // namespace qglk
 
