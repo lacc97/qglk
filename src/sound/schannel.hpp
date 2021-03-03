@@ -51,7 +51,7 @@ namespace Glk {
         private:
             QMediaPlayer m_Player;
             SoundRepeater m_Repeater;
-            Glk::Blorb::Chunk m_Chunk;
+            qglk::blorb::chunk m_Chunk;
             QBuffer m_Buffer;
 
             bool m_Paused;

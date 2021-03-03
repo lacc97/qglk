@@ -8,10 +8,10 @@
 namespace qglk::stream_drivers {
     class chunk : public memory<true> {
       public:
-        explicit chunk(Glk::Blorb::Chunk ch) : memory<true>{std::span(ch.data(), ch.length())}, m_chunk{std::move(ch)} {}
+        explicit chunk(qglk::blorb::chunk ch) : memory<true>{ch.get_data()}, m_chunk{std::move(ch)} {}
 
       private:
-        Glk::Blorb::Chunk m_chunk;
+        qglk::blorb::chunk m_chunk;
     };
 }    // namespace qglk::stream_drivers
 

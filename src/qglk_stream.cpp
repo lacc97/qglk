@@ -340,12 +340,12 @@ strid_t glk_stream_open_resource(glui32 filenum, glui32 rock) {
 
     auto stream = std::make_unique<qglk::stream>(rock);
 
-    Glk::Blorb::Chunk chunk{Glk::Blorb::loadResource(filenum)};
-    if(!chunk.isValid())
+    qglk::blorb::chunk chunk{qglk::blorb::load_resource(filenum)};
+    if(!chunk.is_valid())
         return nullptr;
 
     bool textMode = false;
-    if(chunk.type() == Glk::Blorb::Chunk::Type::TEXT)
+    if(chunk.get_type() == qglk::blorb::chunk::type::e_TEXT)
         textMode = true;
 
     stream->init(qglk::stream::eResource, false, textMode, std::make_unique<qglk::stream_drivers::chunk>(std::move(chunk)));
@@ -358,12 +358,12 @@ strid_t glk_stream_open_resource_uni(glui32 filenum, glui32 rock) {
 
     auto stream = std::make_unique<qglk::stream>(rock);
 
-    Glk::Blorb::Chunk chunk{Glk::Blorb::loadResource(filenum)};
-    if(!chunk.isValid())
+    qglk::blorb::chunk chunk{qglk::blorb::load_resource(filenum)};
+    if(!chunk.is_valid())
         return nullptr;
 
     bool textMode = false;
-    if(chunk.type() == Glk::Blorb::Chunk::Type::TEXT)
+    if(chunk.get_type() == qglk::blorb::chunk::type::e_TEXT)
         textMode = true;
 
     stream->init(qglk::stream::eResource, true, textMode, std::make_unique<qglk::stream_drivers::chunk>(std::move(chunk)));

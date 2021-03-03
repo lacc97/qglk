@@ -6,9 +6,9 @@
 #include <unordered_map>
 
 namespace {
-    class SafeMap {
+    class safe_map {
       public:
-        [[nodiscard]] std::shared_ptr<Glk::Blorb::Chunk::Data> get(glui32 number) const noexcept {
+        [[nodiscard]] std::shared_ptr<qglk::blorb::chunk::data> get(glui32 number) const noexcept {
             std::lock_guard lock{m_mutex};
             auto it = m_map.find(number);
             if(it != m_map.end())
@@ -16,49 +16,34 @@ namespace {
             else
                 return {};
         }
-        void set(glui32 number, std::weak_ptr<Glk::Blorb::Chunk::Data> ptr) noexcept {
+        void set(glui32 number, std::weak_ptr<qglk::blorb::chunk::data> ptr) noexcept {
             std::lock_guard lock{m_mutex};
             m_map.try_emplace(number, std::move(ptr));
         }
 
       private:
         mutable std::mutex m_mutex;
-        std::unordered_map<glui32, std::weak_ptr<Glk::Blorb::Chunk::Data>> m_map;
+        std::unordered_map<glui32, std::weak_ptr<qglk::blorb::chunk::data>> m_map;
     };
 
-    SafeMap s_chunk_map;
-}
+    safe_map s_chunk_map;
+}    // namespace
 
-bool Glk::Blorb::isChunkLoaded(glui32 chunknum) noexcept {
-    return static_cast<bool>(s_chunk_map.get(chunknum));
-}
-
-bool Glk::Blorb::isResourceLoaded(glui32 filenum, Glk::Blorb::ResourceUsage usage) noexcept {
-    giblorb_map_t* rmap;
-    if(!(rmap = giblorb_get_resource_map()))
-        return false;
-
-    giblorb_result_t res;
-    if(giblorb_load_resource(rmap, giblorb_method_DontLoad, &res, static_cast<glui32>(usage), filenum) != giblorb_err_None)
-        return false;
-
-    return static_cast<bool>(s_chunk_map.get(res.chunknum));
-}
-Glk::Blorb::Chunk Glk::Blorb::loadResource(glui32 filenum, Glk::Blorb::ResourceUsage usage) noexcept {
+qglk::blorb::chunk qglk::blorb::load_resource(glui32 filenum, qglk::blorb::resource_usage usage) noexcept {
     giblorb_map_t* rmap;
 
     if(!(rmap = giblorb_get_resource_map()))
-        return Chunk();
+        return chunk();
 
     giblorb_result_t res;
 
     if(giblorb_load_resource(rmap, giblorb_method_DontLoad, &res, static_cast<glui32>(usage), filenum) != giblorb_err_None)
-        return Chunk();
+        return chunk();
 
-    return loadChunk(res.chunknum);
+    return load_chunk(res.chunknum);
 }
 
-Glk::Blorb::Chunk Glk::Blorb::loadChunkByType(glui32 chunktype, glui32 count) noexcept {
+qglk::blorb::chunk qglk::blorb::load_chunk_by_type(glui32 chunktype, glui32 count) noexcept {
     giblorb_map_t* rmap;
     if(!(rmap = giblorb_get_resource_map()))
         return {};
@@ -67,20 +52,20 @@ Glk::Blorb::Chunk Glk::Blorb::loadChunkByType(glui32 chunktype, glui32 count) no
     if(giblorb_load_chunk_by_type(rmap, giblorb_method_DontLoad, &res, static_cast<glui32>(chunktype), count) != giblorb_err_None)
         return {};
 
-    return Chunk::loadByNumber(res.chunknum);
+    return chunk::load_by_number(res.chunknum);
 }
 
-Glk::Blorb::Chunk Glk::Blorb::Chunk::loadByNumber(glui32 number) noexcept {
-    constexpr auto fn_deleter = [](Chunk::Data* ptr) -> void {
-      if(!ptr)
-          return;
+qglk::blorb::chunk qglk::blorb::chunk::load_by_number(glui32 number) noexcept {
+    constexpr auto fn_deleter = [](chunk::data* ptr) -> void {
+        if(!ptr)
+            return;
 
-      giblorb_unload_chunk(giblorb_get_resource_map(), ptr->number);
-      delete ptr;
+        giblorb_unload_chunk(giblorb_get_resource_map(), ptr->number);
+        delete ptr;
     };
 
     if(auto ptr = s_chunk_map.get(number))
-        return Chunk{std::move(ptr)};
+        return chunk{std::move(ptr)};
 
     giblorb_map_t* rmap;
     if(!(rmap = giblorb_get_resource_map()))
@@ -90,7 +75,7 @@ Glk::Blorb::Chunk Glk::Blorb::Chunk::loadByNumber(glui32 number) noexcept {
     if(giblorb_load_chunk_by_number(rmap, giblorb_method_Memory, &res, number) != giblorb_err_None)
         return {};
 
-    std::shared_ptr<Data> ptr(new Data{static_cast<Type>(res.chunktype), res.chunknum, res.length, res.data.ptr}, fn_deleter);
+    std::shared_ptr<data> ptr(new data{static_cast<type>(res.chunktype), res.chunknum, res.length, res.data.ptr}, fn_deleter);
     s_chunk_map.set(number, ptr);
-    return Chunk{std::move(ptr)};
+    return chunk{std::move(ptr)};
 }

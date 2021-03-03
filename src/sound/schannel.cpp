@@ -42,13 +42,14 @@ bool Glk::SoundChannel::play(glui32 snd, glui32 repeats, bool notify) { //TODO h
     m_Player.setMedia(QMediaContent());
     m_Buffer.close();
 
-    Glk::Blorb::Chunk newc = Glk::Blorb::loadResource(snd, Glk::Blorb::ResourceUsage::Sound);
-    if(!newc.isValid())
+    qglk::blorb::chunk newc = qglk::blorb::load_resource(snd, qglk::blorb::resource_usage::e_Sound);
+    if(!newc.is_valid())
         return false;
 
     m_Chunk = std::move(newc);
 
-    m_Buffer.setData(QByteArray::fromRawData(m_Chunk.data(), m_Chunk.length()));
+    const auto snd_data = std::as_bytes(m_Chunk.get_data());
+    m_Buffer.setData(QByteArray::fromRawData(reinterpret_cast<const char*>(snd_data.data()), snd_data.size()));
     m_Buffer.open(QIODevice::ReadOnly);
     m_Buffer.seek(0);
 

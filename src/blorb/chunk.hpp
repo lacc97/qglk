@@ -2,82 +2,65 @@
 #define CHUNK_HPP
 
 #include <memory>
+#include <span>
 
 #include "glk.hpp"
 
-namespace Glk {
-    namespace Blorb {
-        enum class LoadMethod : glui32 {
-            DontLoad = giblorb_method_DontLoad,
-            Memory = giblorb_method_Memory,
-            FilePos = giblorb_method_FilePos
+namespace qglk {
+    namespace blorb {
+        enum class load_method : glui32 { e_DontLoad = giblorb_method_DontLoad, e_Memory = giblorb_method_Memory, e_FilePos = giblorb_method_FilePos };
+
+        enum class resource_usage : glui32 { e_None = 0, e_Picture = giblorb_ID_Pict, e_Sound = giblorb_ID_Snd, e_Executable = giblorb_ID_Exec };
+
+        class chunk {
+          public:
+            enum class type : glui32 {
+                e_None = 0,
+                e_ANNO = giblorb_ID_ANNO,
+                e_AUTH = giblorb_ID_AUTH,
+                e_BINA = giblorb_ID_BINA,
+                e_JPEG = giblorb_ID_JPEG,
+                e_PNG = giblorb_ID_PNG,
+                e_TEXT = giblorb_ID_TEXT
+            };
+
+            struct data {
+                enum type type;
+                glui32 number, length;
+                const void* data;
+            };
+
+            static chunk load_by_number(glui32 number) noexcept;
+
+            constexpr chunk() noexcept = default;
+
+            [[nodiscard]] inline glui32 get_number() const {
+                return is_valid() ? mp_data->number : 0;
+            }
+            [[nodiscard]] inline std::span<const char> get_data() const {
+                return is_valid() ? std::span{static_cast<const char*>(mp_data->data), mp_data->length} : std::span<const char>{};
+            }
+            [[nodiscard]] inline type get_type() const {
+                return is_valid() ? mp_data->type : type::e_None;
+            }
+
+            [[nodiscard]] inline bool is_valid() const {
+                return static_cast<bool>(mp_data);
+            }
+
+          private:
+            explicit chunk(std::shared_ptr<data> data) noexcept : mp_data{std::move(data)} {}
+
+            std::shared_ptr<data> mp_data;
         };
 
-        enum class ResourceUsage : glui32 {
-            None = 0,
-            Picture = giblorb_ID_Pict,
-            Sound = giblorb_ID_Snd,
-            Executable = giblorb_ID_Exec
-        };
+        chunk load_resource(glui32 filenum, resource_usage usage = resource_usage::e_None) noexcept;
 
-        class Chunk {
-                friend bool unloadChunk(Chunk& chunk);
-            public:
-                enum class Type : glui32 {
-                    NONE = 0,
-                    ANNO = giblorb_ID_ANNO,
-                    AUTH = giblorb_ID_AUTH,
-                    BINA = giblorb_ID_BINA,
-                    JPEG = giblorb_ID_JPEG,
-                    PNG = giblorb_ID_PNG,
-                    TEXT = giblorb_ID_TEXT
-                };
-
-                struct Data {
-                    Type type;
-                    glui32 number, length;
-                    const void* data;
-                };
-
-                static Chunk loadByNumber(glui32 number) noexcept;
-
-                constexpr Chunk() noexcept = default;
-
-                [[nodiscard]] inline glui32 number() const {
-                    return isValid() ? mp_Data->number : 0;
-                }
-                [[nodiscard]] inline const char* data() const {
-                    return isValid() ? static_cast<const char*>(mp_Data->data) : nullptr;
-                }
-                [[nodiscard]] inline glui32 length() const {
-                    return isValid() ? mp_Data->length : 0;
-                }
-                [[nodiscard]] inline Type type() const {
-                    return isValid() ? mp_Data->type : Type::NONE;
-                }
-
-                [[nodiscard]] inline bool isValid() const {
-                    return static_cast<bool>(mp_Data);
-                }
-
-            private:
-                explicit Chunk(std::shared_ptr<Data> data) noexcept : mp_Data{std::move(data)} {}
-
-                std::shared_ptr<Data> mp_Data;
-        };
-
-        Chunk loadResource(glui32 filenum, ResourceUsage usage = ResourceUsage::None) noexcept;
-        [[deprecated]] bool isResourceLoaded(glui32 filenum, ResourceUsage usage = ResourceUsage::None) noexcept;
-
-        inline Chunk loadChunk(glui32 chunknum) noexcept {
-            return Chunk::loadByNumber(chunknum);
+        inline chunk load_chunk(glui32 chunknum) noexcept {
+            return chunk::load_by_number(chunknum);
         }
-        Chunk loadChunkByType(glui32 chunktype, glui32 count) noexcept;
-        [[deprecated]] bool isChunkLoaded(glui32 chunknum) noexcept;
-    }
-}
+        chunk load_chunk_by_type(glui32 chunktype, glui32 count) noexcept;
+    }    // namespace blorb
+}    // namespace Glk
 
 #endif
-
-
-

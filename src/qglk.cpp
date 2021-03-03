@@ -218,11 +218,12 @@ QImage QGlk::loadImage(glui32 image) {
     if(m_ImageCache.contains(image)) {
         return *m_ImageCache[image];
     } else {
-        Glk::Blorb::Chunk imgchunk = Glk::Blorb::loadResource(image, Glk::Blorb::ResourceUsage::Picture);
-        if(!imgchunk.isValid())
+        qglk::blorb::chunk imgchunk = qglk::blorb::load_resource(image, qglk::blorb::resource_usage::e_Picture);
+        if(!imgchunk.is_valid())
             return {};
 
-        QImage img = QImage::fromData(reinterpret_cast<const uchar*>(imgchunk.data()), imgchunk.length());
+        const auto img_data = std::as_bytes(imgchunk.get_data());
+        QImage img = QImage::fromData(reinterpret_cast<const uchar*>(img_data.data()), img_data.size());
         m_ImageCache.insert(image, new QImage{img}, img.sizeInBytes());
         return img;
     }
