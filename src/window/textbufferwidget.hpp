@@ -93,6 +93,8 @@ namespace Glk {
             QTextBlockFormat m_InputBlockFormat;
 
             int m_LineInputStartCursorPosition;
+            // to avoid infinite recursion when handling cursor/selection signals
+            bool m_HandlingCursorSignal;
 
             History m_History;
             History::Iterator m_HistoryIterator;

@@ -21,6 +21,7 @@ void Glk::TextBufferBrowser::History::push(const QString& newcmd) {
 Glk::TextBufferBrowser::TextBufferBrowser(Glk::TextBufferWidget* wParent)
     : QTextBrowser{wParent},
       m_LineInputStartCursorPosition{-1},
+      m_HandlingCursorSignal{false},
       m_History{},
       m_HistoryIterator{m_History.begin()} {
     connect(wParent, &TextBufferWidget::lineInput, [this](Qt::Key, const QString& input) {
@@ -28,6 +29,8 @@ Glk::TextBufferBrowser::TextBufferBrowser(Glk::TextBufferWidget* wParent)
         m_HistoryIterator = m_History.begin();
     });
 
+    connect(this, &TextBufferBrowser::selectionChanged,
+            this, &TextBufferBrowser::onCursorPositionChanged);
     connect(this, &TextBufferBrowser::cursorPositionChanged,
             this, &TextBufferBrowser::onCursorPositionChanged);
 }
@@ -65,12 +68,27 @@ void Glk::TextBufferBrowser::pushInputStyle() {
 
 void Glk::TextBufferBrowser::onCursorPositionChanged() {
     auto c = textCursor();
-    if(receivingLineInput() && m_LineInputStartCursorPosition > c.position()) {
-        c.setPosition(m_LineInputStartCursorPosition,
-                      c.hasSelection() ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor);
+    if(!m_HandlingCursorSignal && receivingLineInput()) {
+        m_HandlingCursorSignal = true;
+
+        if(m_LineInputStartCursorPosition > c.position() || m_LineInputStartCursorPosition > c.anchor()) {
+            if(c.hasSelection()) {
+                if(c.selectionStart() < m_LineInputStartCursorPosition
+                    || c.selectionEnd() < m_LineInputStartCursorPosition) {
+                    c.clearSelection();
+                    c.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+                }
+                c.setPosition(m_LineInputStartCursorPosition, QTextCursor::KeepAnchor);
+            } else {
+                c.setPosition(m_LineInputStartCursorPosition, QTextCursor::MoveAnchor);
+            }
+        }
+
         setTextCursor(c);
 
         pushInputStyle();
+
+        m_HandlingCursorSignal = false;
     }
 }
 
