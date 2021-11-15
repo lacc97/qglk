@@ -15,9 +15,12 @@ Glk::TextBufferWindowController::TextBufferWindowController(Glk::PairWindow* win
     QObject::connect(keyboardProvider(), &KeyboardInputProvider::notifyLineInputRequestCancelled,
                      [this](const QString& text, bool lineEchoes) {
                          if(lineEchoes && !text.isEmpty()) {
-                              Glk::postTaskToGlkThread([this, text = text + '\n']() {
-                                 window<TextBufferWindow>()->pushStyle(Glk::Style::Type::Input);
-                                 window<TextBufferWindow>()->writeString(text);
+                             Glk::postTaskToGlkThread([this, text = text + '\n']() {
+                                 auto win = window<TextBufferWindow>();
+                                 if(win) {
+                                     win->pushStyle(Glk::Style::Type::Input);
+                                     win->writeString(text);
+                                 }
                              });
                          }
 
@@ -28,8 +31,11 @@ Glk::TextBufferWindowController::TextBufferWindowController(Glk::PairWindow* win
                      [this](const QString& text, bool lineEchoes) {
                          if(lineEchoes && !text.isEmpty()) {
                              Glk::postTaskToGlkThread([this, text = text + '\n']() {
-                                 window<TextBufferWindow>()->pushStyle(Glk::Style::Type::Input);
-                                 window<TextBufferWindow>()->writeString(text);
+                                 auto win = window<TextBufferWindow>();
+                                 if(win) {
+                                     win->pushStyle(Glk::Style::Type::Input);
+                                     win->writeString(text);
+                                 }
                              });
                          }
 
