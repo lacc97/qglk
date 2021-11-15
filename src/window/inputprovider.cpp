@@ -539,15 +539,11 @@ void Glk::MouseInputProvider::requestMouseInput() {
 
     Glk::sendTaskToEventThread([=]() {
         assert(dynamic_cast<WindowWidget*>(controller()->widget()));
-#if !defined(NDEBUG)
-        assert(!mouseInputRequest() || !mouseInputRequest()->isPending());
-#else
         if(mouseInputRequest() && mouseInputRequest()->isPending()) {
             spdlog::error("Mouse input requested on window {} but there is already a pending mouse input request.",
                           wrap::ptr(controller()->window()));
             return;
         }
-#endif
 
         emit notifyMouseInputRequested();
 
