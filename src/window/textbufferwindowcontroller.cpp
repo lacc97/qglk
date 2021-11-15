@@ -171,11 +171,11 @@ void Glk::TextBufferWindowController::synchronizeText() {
                 fn_push_style(std::move(cmd.style));
             }
             if constexpr(std::is_same_v<T, TextBufferCommand::WriteImage>) {
-                std::u16string_view fmtStr;
+                std::string_view fmtStr;
                 if(cmd.size.isEmpty())
-                    fmtStr = u"<img src=\"{0}\" alt=\"Image #{0}\" style=\"{3}\" />";
+                    fmtStr = "<img src=\"{0}\" alt=\"Image #{0}\" style=\"{3}\" />";
                 else
-                    fmtStr = u"<img src=\"{0}\" alt=\"Image #{0}\" width=\"{1}\" height=\"{2}\" style=\"{3}\" />";
+                    fmtStr = "<img src=\"{0}\" alt=\"Image #{0}\" width=\"{1}\" height=\"{2}\" style=\"{3}\" />";
 
                 QString imgHtml;
                 fmt::format_to(std::back_inserter(imgHtml), fmtStr,

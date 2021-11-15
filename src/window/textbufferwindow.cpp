@@ -40,26 +40,26 @@ void Glk::TextBufferWindow::clearWindow() {
 bool Glk::TextBufferWindow::drawImage(glui32 img, glsi32 param1, glsi32 param2, QSize size) {
     assert(onGlkThread());
 
-    std::u16string_view style;
+    std::string_view style;
     switch(param1) {
         case imagealign_InlineUp:
-            style = u"vertical-align: top";
+            style = "vertical-align: top";
             break;
 
         case imagealign_InlineCenter:
-            style = u"vertical-align: middle";
+            style = "vertical-align: middle";
             break;
 
         case imagealign_InlineDown:
-            style = u"vertical-align: bottom";
+            style = "vertical-align: bottom";
             break;
 
         case imagealign_MarginLeft:
-            style = u"float: left";
+            style = "float: left";
             break;
 
         case imagealign_MarginRight:
-            style = u"float: right";
+            style = "float: right";
             break;
     }
 

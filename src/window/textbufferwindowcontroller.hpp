@@ -33,7 +33,7 @@ namespace Glk {
         struct WriteImage {
             glui32 image;
             QSize size;
-            std::u16string_view style;
+            std::string_view style;
         };
 
         struct WriteText {
