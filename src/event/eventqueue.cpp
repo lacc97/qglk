@@ -20,6 +20,8 @@ void Glk::EventQueue::requestImmediateSynchronization() {
     QMutexLocker ml(&m_AccessMutex);
 
     if(m_Queue.empty()) {
+        // we synchronize everytime there is a pop/poll so we insert
+        // a dummy event in case the queue is empty
         m_Queue.push_front({evtype_None});
         m_Semaphore.release(1);
     }
@@ -100,7 +102,10 @@ event_t Glk::EventQueue::poll() {
                 ev = m_Queue.takeAt(ii--);
                 TaskEvent* tev = m_TaskEventQueue.dequeue();
                 ml.unlock();
-                tev->execute();     // TODO this bit looks dodgy
+                // this is safe because we don't ever remove events from
+                // the queue (i.e. call pop/poll/clean) during a task
+                // TODO: ensure this using an assert?
+                tev->execute();
                 ml.relock();
                 delete tev;
                 m_Semaphore.acquire(1);

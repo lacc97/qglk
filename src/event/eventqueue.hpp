@@ -26,10 +26,11 @@ namespace Glk {
         
 
         event_t pop();
+        // remove events associated with given window
         event_t popLineEvent(Glk::Window* win);
         event_t poll();
         
-
+        // tell glk thread to terminate
         void interrupt();
 
         [[nodiscard]] inline bool isInterrupted() const {
@@ -55,6 +56,10 @@ namespace Glk {
         QQueue<event_t> m_Queue;
         QQueue<TaskEvent*> m_TaskEventQueue;
         QMutex m_AccessMutex;
+
+        // this semaphore is used as a wait/notify mechanism so that
+        // calling pop waits until a new event is received
+        // (i.e. release on event push, acquire on event pop)
         QSemaphore m_Semaphore;
         
         bool m_Terminate;
